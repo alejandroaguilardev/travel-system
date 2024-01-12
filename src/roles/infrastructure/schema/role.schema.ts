@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
 
 @Schema({
-  collection: 'permissions',
+  collection: 'roles',
   ...SCHEMA_OPTIONS,
 })
 export class RoleModel {

@@ -25,7 +25,7 @@ export class UserCreatorMother {
       secondLastName: secondLastName ?? LastNameMother.create(),
       email: email ?? EmailMother.create(),
       password: password ?? PasswordMother.create(),
-      roles: roles ?? [],
+      roles: roles ?? [UuidMother.create()],
     };
   }
 }

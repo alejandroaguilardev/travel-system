@@ -16,5 +16,6 @@ import { MongoPermissionRepository } from './infrastructure/persistence/mongo-pe
   ],
   controllers: [PermissionsController],
   providers: [PermissionsService, MongoPermissionRepository],
+  exports: [MongoPermissionRepository],
 })
 export class PermissionsModule {}

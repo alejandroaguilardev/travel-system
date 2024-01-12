@@ -6,6 +6,7 @@ import { UsersModule } from './users/infrastructure/users.module';
 import { RolesModule } from './roles/infrastructure/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { BcryptService } from './common/infrastructure/services/bcrypt.service';
+import { SeederModule } from './seeder/infrastructure/seeder.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { BcryptService } from './common/infrastructure/services/bcrypt.service';
     UsersModule,
     RolesModule,
     PermissionsModule,
+    SeederModule,
   ],
   controllers: [],
   providers: [BcryptService],

@@ -21,7 +21,7 @@ export class UserModel {
   email: string;
   @Prop({ type: String, required: false })
   password: string;
-  @Prop({ type: [{ type: String, ref: 'roles' }], required: false })
+  @Prop({ type: [{ type: String, ref: 'roles' }], required: true })
   roles: string[];
 }
 

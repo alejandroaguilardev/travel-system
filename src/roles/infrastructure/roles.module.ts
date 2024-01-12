@@ -11,5 +11,6 @@ import { RoleModel, RoleSchema } from './schema/role.schema';
   ],
   controllers: [RolesController],
   providers: [RolesService, MongoRoleRepository],
+  exports: [MongoRoleRepository],
 })
 export class RolesModule {}

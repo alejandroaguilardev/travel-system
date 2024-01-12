@@ -28,7 +28,7 @@ export class User {
       secondLastName: this.secondLastName.value,
       email: this.email.value,
       password: this.password.value,
-      role: this.roles.toPrimitive(),
+      roles: this.roles.toPrimitive(),
     };
   }
 
