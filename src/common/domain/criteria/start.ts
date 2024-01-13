@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 import { NumberValueObject } from '../value-object/number-value-object';
 
 export class Start extends NumberValueObject {
@@ -8,7 +8,7 @@ export class Start extends NumberValueObject {
 
   isValidStart(): void {
     if (!this.isPositive()) {
-      throw new InvalidArgumentError(
+      throw new ErrorInvalidadArgument(
         'El criterio de búsqueda no puede ser un número negativo',
       );
     }

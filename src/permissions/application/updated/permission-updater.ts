@@ -2,7 +2,7 @@ import { PermissionRepository } from '../../domain/permission.repository';
 import { UpdatePermissionRequest } from './update-permission';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { PermissionFactory } from '../../domain/permission.factory';
-import { InvalidArgumentError } from '../../../common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { PermissionResponse } from '../response/permission.response';
 import {
   MessageDefault,
@@ -22,11 +22,7 @@ export class PermissionUpdater {
     const response =
       await this.permissionRepository.searchById<PermissionResponse>(uuid);
     if (!response) {
-      throw new InvalidArgumentError(
-        'Permiso no encontrado: El sistema no pudo hallar el permiso especificado',
-        400,
-        'not_found',
-      );
+      throw new ErrorNotFound(ErrorNotFound.messageDefault('permiso'));
     }
 
     const updatePermission = PermissionFactory.update(

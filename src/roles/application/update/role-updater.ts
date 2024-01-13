@@ -8,7 +8,7 @@ import {
 import { RoleFactory } from '../../domain/role.factory';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { RoleResponse } from '../response/role.response';
-import { InvalidArgumentError } from '../../../common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 
 export class RoleUpdater {
   constructor(private readonly roleRepository: RoleRepository) {}
@@ -21,11 +21,7 @@ export class RoleUpdater {
     const response = await this.roleRepository.searchById<RoleResponse>(uuid);
 
     if (!response) {
-      throw new InvalidArgumentError(
-        'Rol no encontrado: El sistema no pudo hallar el permiso especificado',
-        400,
-        'not_found',
-      );
+      throw new ErrorNotFound(ErrorNotFound.messageDefault('rol'));
     }
 
     const roleUpdate = RoleFactory.update(

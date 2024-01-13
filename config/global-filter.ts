@@ -5,7 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { DomainError } from '../src/common/domain/value-object/domain-error';
+import { ErrorDomain } from '../src/common/domain/errors/error-domain';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -21,7 +21,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     if (
       exception instanceof HttpException ||
-      exception instanceof DomainError
+      exception instanceof ErrorDomain
     ) {
       status = exception.getStatus();
       message = exception.message;

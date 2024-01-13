@@ -1,6 +1,6 @@
 import { Hashing } from '../../../common/application/services/hashing';
 import { JWT } from '../services/jwt';
-import { InvalidArgumentError } from '../../../common/domain/value-object/invalid-argument-error';
+import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 import { UserRepository } from '../../../users/domain/user.repository';
 import { UserEmail } from '../../../users/domain/user-email';
 import { UserPassword } from '../../../users/domain/user-password';
@@ -26,7 +26,7 @@ export class LoginUser {
     const user = await this.userRepository.searchEmail(credentials.email);
 
     if (!user) {
-      throw new InvalidArgumentError('El email es incorrecto');
+      throw new ErrorBadRequest('El email es incorrecto');
     }
 
     if (
@@ -35,7 +35,7 @@ export class LoginUser {
         this.hashing,
       )
     ) {
-      throw new InvalidArgumentError('El password es incorrecto');
+      throw new ErrorBadRequest('El password es incorrecto');
     }
 
     delete user.password;

@@ -2,7 +2,8 @@ import { roleRepositoryMock } from '../domain/role.repository.mock';
 import { RoleSearchById } from '../../../src/roles/application/search-by-id/role-search-by-id';
 import { RoleMother } from '../domain/role-mother';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
+
 describe('RoleFind', () => {
   const searchByIdMock = jest.fn();
   let roleSearchById: RoleSearchById;
@@ -32,11 +33,7 @@ describe('RoleFind', () => {
 
   it('should_failed_role_find_id', async () => {
     const dto = RoleMother.create();
-    const error = new InvalidArgumentError(
-      'Rol no encontrado: El sistema no pudo hallar el permiso especificado',
-      400,
-      'not_found',
-    );
+    const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     searchByIdMock.mockRejectedValueOnce(error);
     try {
       await roleSearchById.execute(dto.id);

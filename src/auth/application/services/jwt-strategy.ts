@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../../../common/domain/value-object/invalid-argument-error';
+import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserRepository } from '../../../users/domain/user.repository';
 import { JwtPayload } from './jwt';
@@ -11,7 +11,7 @@ export class JwtStrategy {
     const { id } = payload;
     const uuid = new Uuid(id);
     const user = await this.userRepository.searchById<UserResponse>(uuid);
-    if (!user) throw new InvalidArgumentError('Token no Válido');
+    if (!user) throw new ErrorBadRequest('Token no Válido');
     delete user.password;
     return user;
   }

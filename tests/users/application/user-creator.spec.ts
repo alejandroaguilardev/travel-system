@@ -1,6 +1,6 @@
 import { UserCreatorMother } from '../domain/create-user-mother';
 import { UserCreator } from '../../../src/users/application/create/user-creator';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../../../src/common/domain/errors/error-invalid-argument';
 import { userRepositoryMockMethods } from '../domain/user-repository-mock-methods';
 import { BcryptService } from '../../../src/common/infrastructure/services/bcrypt.service';
 import { UserFactory } from '../../../src/users/domain/user-factory';
@@ -46,7 +46,7 @@ describe('userCreator', () => {
 
   it('should_handle_error_during_user_creation', async () => {
     const newUser = UserCreatorMother.create({ email: 'ale' });
-    const error = new InvalidArgumentError(
+    const error = new ErrorInvalidadArgument(
       'No es un email de usuario válido de dominio',
     );
     saveMock.mockRejectedValue(error);

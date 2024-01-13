@@ -1,7 +1,7 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserRepository } from '../../domain/user.repository';
 import { UpdateUserRequest } from './update-user-request';
-import { InvalidArgumentError } from '../../../common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { UserFactory } from '../../domain/user-factory';
 import { UserResponse } from '../response/user.response';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
@@ -21,7 +21,7 @@ export class UserUpdater {
     const response = await this.userRepository.searchById<UserResponse>(uuid);
 
     if (!response) {
-      throw new InvalidArgumentError('El usuario no existe');
+      throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
 
     const user = UserFactory.update(userRequest, UserFactory.create(response));

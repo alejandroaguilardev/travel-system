@@ -1,7 +1,7 @@
 import { UserFind } from '../../../src/users/application/find/user-find';
 import { userRepositoryMockMethods } from '../domain/user-repository-mock-methods';
 import { UserCreatorMother } from '../domain/create-user-mother';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../../../src/common/domain/errors/error-invalid-argument';
 
 describe('UserFind', () => {
   const searchByIdMock = jest.fn();
@@ -31,7 +31,7 @@ describe('UserFind', () => {
   });
 
   it('should failed Uuid find user', async () => {
-    const error = new InvalidArgumentError(
+    const error = new ErrorInvalidadArgument(
       `<Uuid> No es un identificador válido <${'1'}>`,
     );
     searchByIdMock.mockRejectedValue(error);

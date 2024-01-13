@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from './invalid-argument-error';
+import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 
 type Primitives = string | string | number | boolean | boolean | Date;
 
@@ -12,7 +12,7 @@ export abstract class ValueObjectArray<T extends Primitives> {
 
   private ensureValueIsDefined(value: T[]): void {
     if (value === null || value === undefined) {
-      throw new InvalidArgumentError('Valor de Arreglo no definido');
+      throw new ErrorInvalidadArgument('Valor de Arreglo no definido');
     }
   }
 }

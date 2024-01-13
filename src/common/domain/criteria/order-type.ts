@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 
 export enum OrderValue {
   ASC = 'asc',
@@ -17,7 +17,7 @@ export class OrderType {
     const array = [OrderValue.ASC, OrderValue.DESC];
 
     if (!array.includes(operator) && operator !== undefined) {
-      throw new InvalidArgumentError(
+      throw new ErrorInvalidadArgument(
         'El operator de ordenamiento no es válido',
       );
     }

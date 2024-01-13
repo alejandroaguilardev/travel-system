@@ -3,7 +3,7 @@ import { UserRemover } from '../../../src/users/application/remove/user-remover'
 import { UuidMother } from '../../common/domain/uuid-mother';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { LastNameMother } from '../domain/last-name-mother';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../../../src/common/domain/errors/error-invalid-argument';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 
 describe('UserRemover', () => {
@@ -33,7 +33,7 @@ describe('UserRemover', () => {
 
   it('should_failed_uuid_remove_user', async () => {
     const userId = LastNameMother.create();
-    const error = new InvalidArgumentError(
+    const error = new ErrorInvalidadArgument(
       `<Uuid> No es un identificador válido <${userId}>`,
     );
     removeMock.mockRejectedValueOnce(error);

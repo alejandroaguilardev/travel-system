@@ -5,7 +5,7 @@ import { StringMother } from '../../common/domain/string.mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { RoleFactory } from '../../../src/roles/domain/role.factory';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 
 describe('RoleUpdater', () => {
   const updateMock = jest.fn();
@@ -42,11 +42,7 @@ describe('RoleUpdater', () => {
   it('should_failed_role_updater', async () => {
     const dto = RoleMother.create();
     const name = StringMother.create({ count: { min: 1, max: 1 } });
-    const error = new InvalidArgumentError(
-      'Role no encontrado: El sistema no pudo hallar el permiso especificado',
-      400,
-      'not_found',
-    );
+    const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     searchMockById.mockRejectedValueOnce(error);
     try {
       await roleUpdater.update(dto.id, { name });

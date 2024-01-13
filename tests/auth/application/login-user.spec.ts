@@ -4,7 +4,7 @@ import { LoginUser } from '../../../src/auth/application/login/login-user';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { BcryptService } from '../../../src/common/infrastructure/services/bcrypt.service';
 import { JWTAdapterService } from '../../../src/auth/infrastructure/services/jwt.service';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorBadRequest } from '../../../src/common/domain/errors/error-bad-request';
 import { PasswordMother } from '../../users/domain/password-mother';
 
 describe('loginUser', () => {
@@ -61,7 +61,7 @@ describe('loginUser', () => {
     generateTokenMock.mockReturnValueOnce('123');
     searchEmailMock.mockResolvedValue(null);
 
-    const error = new InvalidArgumentError('El email es incorrecto');
+    const error = new ErrorBadRequest('El email es incorrecto');
     try {
       await loginUser.login({ email, password });
       fail('Fallo la prueba should failed log email credentials');
@@ -80,7 +80,7 @@ describe('loginUser', () => {
     generateTokenMock.mockReturnValueOnce('123');
     searchEmailMock.mockResolvedValueOnce({ ...dto, password: passwordHash });
 
-    const error = new InvalidArgumentError('El password es incorrecto');
+    const error = new ErrorBadRequest('El password es incorrecto');
     try {
       await loginUser.login({ email: dto.email, password: passwordIncorrect });
       fail('Fallo la prueba should failed log password credentials');

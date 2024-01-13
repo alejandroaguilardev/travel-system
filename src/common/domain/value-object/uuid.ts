@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from './invalid-argument-error';
+import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 import { ValueObject } from './value-object';
 
 export class Uuid extends ValueObject<string> {
@@ -9,7 +9,7 @@ export class Uuid extends ValueObject<string> {
 
   private ensureIsValidUuid(id: string): void {
     if (!this.isValidUUID(id)) {
-      throw new InvalidArgumentError(
+      throw new ErrorInvalidadArgument(
         `<${this?.constructor?.name}> No es un identificador válido <${id}>`,
       );
     }

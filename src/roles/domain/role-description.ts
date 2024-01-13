@@ -1,5 +1,5 @@
 import { StringValueObject } from '../../common/domain/value-object/string-value-object';
-import { InvalidArgumentError } from '../../common/domain/value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid-argument';
 
 export class RoleDescription extends StringValueObject {
   constructor(value: string) {
@@ -9,7 +9,7 @@ export class RoleDescription extends StringValueObject {
 
   private isValid() {
     if (this.value.length > 255) {
-      throw new InvalidArgumentError(
+      throw new ErrorInvalidadArgument(
         'La descripción debe ser menor a 255 caracteres',
       );
     }

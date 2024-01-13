@@ -3,7 +3,7 @@ import { UserCreatorMother } from '../domain/create-user-mother';
 import { userRepositoryMockMethods } from '../domain/user-repository-mock-methods';
 import { UserFactory } from '../../../src/users/domain/user-factory';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 
 describe('updateUser', () => {
@@ -61,7 +61,7 @@ describe('updateUser', () => {
     const userMother = UserCreatorMother.create();
     const { id } = userMother;
 
-    const error = new InvalidArgumentError('El usuario no existe');
+    const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     updateMock.mockRejectedValue(error);
     try {
       await updateUser.update(id, { name: 'pedro' });

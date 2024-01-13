@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../value-object/invalid-argument-error';
+import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 import { StringValueObject } from '../value-object/string-value-object';
 
 export class FilterOperator extends StringValueObject {
@@ -24,7 +24,7 @@ export class FilterOperator extends StringValueObject {
       FilterOperator.NOT_CONTAINS,
     ];
     if (!array.includes(operator)) {
-      throw new InvalidArgumentError(operator);
+      throw new ErrorInvalidadArgument(operator);
     }
   }
 }

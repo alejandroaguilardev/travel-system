@@ -1,7 +1,7 @@
 import { PermissionFind } from '../../../src/permissions/application/find/permission-find';
 import { PermissionMother } from '../domain/PermissionMother';
 import { permissionRepositoryMethodsMock } from '../domain/permission-repository-methods.mock';
-import { InvalidArgumentError } from '../../../src/common/domain/value-object/invalid-argument-error';
+import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 
 describe('PermissionFind', () => {
   const searchByIdMock = jest.fn();
@@ -27,11 +27,7 @@ describe('PermissionFind', () => {
   it('should_not_found_user_find_by_id', async () => {
     const response = PermissionMother.create();
     const { id } = response;
-    const error = new InvalidArgumentError(
-      'Permiso no encontrado: El sistema no pudo hallar el permiso especificado',
-      400,
-      'not_found',
-    );
+    const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     searchByIdMock.mockRejectedValueOnce(error);
     try {
       await permissionFind.find(id);
