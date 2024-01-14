@@ -3,8 +3,8 @@ import { GlobalFilterPropertiesRequest } from './global-filter-properties';
 import { SortingRequest } from './sorting';
 
 export interface CriteriaRequest {
-  start?: number;
-  size?: number;
+  start: number;
+  size: number;
   filters: FilterRequest[];
   sorting: SortingRequest[];
   globalFilter: string;

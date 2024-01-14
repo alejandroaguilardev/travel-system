@@ -88,8 +88,8 @@ export class MongoCriteriaConverter {
     return query;
   }
 
-  private static querySort(sorting: Sorting[]) {
-    const sortQuery = {};
+  private static querySort(sorting: Sorting[]): Record<string, 1 | -1> {
+    const sortQuery: Record<string, 1 | -1> = {};
     for (const sort of sorting) {
       sortQuery[sort.orderBy.value] =
         sort.orderType.value === OrderValue.DESC ? -1 : 1;

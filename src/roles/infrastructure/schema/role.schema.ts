@@ -9,7 +9,7 @@ import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-opti
 export class RoleModel {
   @Prop({ type: String, index: true, unique: true, required: true })
   id: string;
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, unique: true, required: true })
   name: string;
   @Prop({ type: String, required: false })
   description: string;

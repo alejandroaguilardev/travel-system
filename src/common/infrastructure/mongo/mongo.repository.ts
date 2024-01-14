@@ -33,7 +33,7 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
       .sort(sortQuery)
       .lean();
 
-    const count: number = await this.model.find().countDocuments();
+    const count: number = await this.count();
     return { rows, count };
   }
 
@@ -50,5 +50,10 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
 
   remove(permissionId: Uuid): Promise<void> {
     return this.model.findOneAndDelete({ id: permissionId.value });
+  }
+
+  protected async count(): Promise<number> {
+    const count: number = await this.model.find().countDocuments();
+    return count;
   }
 }

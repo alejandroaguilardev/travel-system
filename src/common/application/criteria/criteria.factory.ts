@@ -14,7 +14,7 @@ import { GlobalFilterProperties } from '../../domain/criteria/global-filter-prop
 import { Criteria } from '../../domain/criteria/criteria';
 
 export class CriteriaFactory {
-  static fromData(criteriaRequest: CriteriaRequest): Criteria {
+  static fromData(criteriaRequest: Partial<CriteriaRequest>): Criteria {
     const {
       start,
       size,
@@ -36,11 +36,21 @@ export class CriteriaFactory {
     );
   }
 
-  private static converter(criteriaRequest: CriteriaRequest) {
+  private static converter(criteriaRequest: Partial<CriteriaRequest>) {
+    const {
+      filters = [],
+      globalFilter = '',
+      globalFilterProperties = [],
+      selectProperties = [],
+      sorting = [],
+      size = 10,
+      start = 0,
+    } = criteriaRequest;
+
     return {
-      start: new Start(criteriaRequest.start),
-      size: new Size(criteriaRequest.size),
-      filters: criteriaRequest.filters.map(
+      start: new Start(start),
+      size: new Size(size),
+      filters: filters.map(
         (f) =>
           new Filter(
             new FilterField(f.field),
@@ -48,18 +58,18 @@ export class CriteriaFactory {
             new FilterValue(f.value),
           ),
       ),
-      sorting: criteriaRequest.sorting.map(
+      sorting: sorting.map(
         (s) => new Sorting(new OrderBy(s.orderBy), new OrderType(s.orderType)),
       ),
-      globalFilter: new GlobalFilter(criteriaRequest.globalFilter),
-      globalFilterProperties: criteriaRequest.globalFilterProperties.map(
+      globalFilter: new GlobalFilter(globalFilter),
+      globalFilterProperties: globalFilterProperties.map(
         (g) =>
           new GlobalFilterProperties(
             new FilterField(g.field),
             new FilterValue(g.value),
           ),
       ),
-      selectProperties: new SelectProperties(criteriaRequest.selectProperties),
+      selectProperties: new SelectProperties(selectProperties),
     };
   }
 }

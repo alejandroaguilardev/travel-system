@@ -5,5 +5,5 @@ export class LoginAuthDto implements LoginUserRequest {
   @IsEmail()
   email: string;
   @IsString()
-  password: string = '';
+  password: string;
 }
