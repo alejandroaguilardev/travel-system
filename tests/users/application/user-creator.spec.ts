@@ -47,7 +47,7 @@ describe('userCreator', () => {
   it('should_handle_error_during_user_creation', async () => {
     const newUser = UserCreatorMother.create({ email: 'ale' });
     const error = new ErrorInvalidadArgument(
-      'No es un email de usuario válido de dominio',
+      'No es un email válido de dominio',
     );
     saveMock.mockRejectedValue(error);
     try {

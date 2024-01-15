@@ -8,6 +8,7 @@ import { getModelToken } from '@nestjs/mongoose';
 import * as request from 'supertest';
 import { UserCreatorMother } from '../domain/create-user-mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
+import { StringMother } from '../../common/domain/string.mother';
 
 describe('UsersController', () => {
   let app: INestApplication;
@@ -62,7 +63,7 @@ describe('UsersController', () => {
 
     const response = await request(app.getHttpServer())
       .patch(`/users/${id}`)
-      .send({ name: 'pedro' })
+      .send({ name: StringMother.create({ count: { min: 1, max: 1 } }) })
       .expect(200);
 
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
