@@ -17,7 +17,7 @@ export class Contract {
     readonly client: Uuid,
     readonly status: ContractStatus,
     readonly startDate: ContractStartDate,
-    readonly endDate: ContractEndDate,
+    public endDate: ContractEndDate,
     readonly services: ContractServices,
     readonly guideNumber: ContractGuideNumber,
     readonly pets: ContractPets,
@@ -65,5 +65,9 @@ export class Contract {
     }
 
     return contract;
+  }
+
+  setEndDate(date: ContractEndDate) {
+    this.endDate = date;
   }
 }

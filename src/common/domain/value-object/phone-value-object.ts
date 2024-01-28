@@ -2,11 +2,10 @@ import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 import { StringValueObject } from './string-value-object';
 
 export class PhoneValueObject extends StringValueObject {
-  private phoneRegex: RegExp = /^\d{10}$/;
-
+  private phoneRegex: RegExp = /^\d{8,15}$/;
   constructor(value: string) {
     super(value);
-    if (value.trim()) {
+    if (value.trim().length > 0) {
       this.ensurePhoneIsValid(value);
     }
   }

@@ -22,7 +22,7 @@ export class MongoContractRepository
 
   async searchContractByClient(clientId: Uuid): Promise<ContractResponse[]> {
     const rows = await this.contractModel
-      .find({ client: clientId.value })
+      .find({ client: clientId.value, endDate: null })
       .select(['-_id', '-__v', '-createdAt', '-updatedAt'])
       .sort({ createdAt: -1 })
       .lean();

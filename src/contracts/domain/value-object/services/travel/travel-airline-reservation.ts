@@ -3,6 +3,7 @@ import { TravelCode } from './travel-code';
 import { TravelFlightNumber } from './travel-flight-number';
 import { TravelDestinationAirport } from './travel-destination-airport';
 import { TravelDepartureDate } from './travel-departure-date';
+import { TravelArrivalDate } from './travel-arrival-date';
 
 export class TravelAirlineReservation {
   constructor(
@@ -11,6 +12,7 @@ export class TravelAirlineReservation {
     readonly departureAirport: TravelDepartureAirport,
     readonly destinationAirport: TravelDestinationAirport,
     readonly departureDate: TravelDepartureDate,
+    readonly arrivalDate: TravelArrivalDate,
   ) {}
 
   toJson() {
@@ -20,6 +22,7 @@ export class TravelAirlineReservation {
       departureAirport: this.departureAirport.value,
       destinationAirport: this.destinationAirport.value,
       departureDate: this.departureDate.value,
+      arrivalDate: this.arrivalDate.value,
     };
   }
 }

@@ -3,7 +3,7 @@ import { StatusDefinition } from '../../domain/interfaces/status';
 import { Type } from 'class-transformer';
 import { CageDefinition, CageChosen } from '../../domain/interfaces/cage';
 
-class CageChosenDto implements CageChosen {
+class CageChosenDto implements Partial<CageChosen> {
   @IsString()
   modelCage?: string;
   @IsString()

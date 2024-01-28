@@ -10,6 +10,7 @@ import { MessageDefault } from '../../../src/common/domain/response/response-mes
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UuidMother } from '../../common/domain/uuid-mother';
 import { NumberMother } from '../domain/number.mother';
+import { ContractFinish } from '../../../src/contracts/application/finish/contract-finish';
 
 describe('ContractsController', () => {
   let app: INestApplication;
@@ -44,6 +45,22 @@ describe('ContractsController', () => {
       .expect(201);
 
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+  });
+
+  it('/contracts/:id/finish (POST)', async () => {
+    const contractDto = ContractCreatorMother.create();
+
+    await request(app.getHttpServer())
+      .post('/contracts')
+      .send(contractDto)
+      .expect(201);
+
+    const response = await request(app.getHttpServer())
+      .post(`/contracts/${contractDto.id}/finish`)
+      .send()
+      .expect(400);
+
+    expect(response.body.message).toBe(ContractFinish.messageNotCompleted());
   });
 
   it('/contracts (GET)', async () => {
@@ -94,6 +111,35 @@ describe('ContractsController', () => {
 
     expect(response.body.services.documentation.chipCertificate).toEqual(
       dto.documentation.chipCertificate,
+    );
+  });
+
+  it(':id/cage/client (PATCH)', async () => {
+    const dto = ContractCreatorMother.create();
+
+    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
+
+    const response = await request(app.getHttpServer())
+      .patch(`/contracts/${dto.id}/cage/client`)
+      .send(dto.cage)
+      .expect(200);
+
+    expect(response.body.services.cage.chosen).toEqual(dto.cage.chosen);
+  });
+
+  it(':id/travel/client (PATCH)', async () => {
+    const dto = ContractCreatorMother.create();
+    const dtoTwo = ContractCreatorMother.createWithTravel();
+
+    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
+
+    const response = await request(app.getHttpServer())
+      .patch(`/contracts/${dto.id}/travel/client`)
+      .send(dtoTwo.services.travel)
+      .expect(200);
+
+    expect(response.body.services.travel.airlineReservation.code).toEqual(
+      dtoTwo.services.travel.airlineReservation.code,
     );
   });
 

@@ -14,6 +14,11 @@ import { ContractResponse } from '../application/response/contract.response';
 import { ContractSearchByIdClient } from '../application/search-contract-by-client/search-contract-by-client';
 import { DocumentationDto } from './dto/documentation.dto';
 import { ContractDocumentationUpdater } from '../application/update/documentation-updater';
+import { CageDto } from './dto/cage.dto';
+import { ContractCageUpdater } from '../application/update/cage-updater';
+import { TravelDto } from './dto/travel.dto';
+import { ContractTravelUpdater } from '../application/update/travel-updater';
+import { ContractFinish } from '../application/finish/contract-finish';
 
 @Injectable()
 export class ContractsService {
@@ -24,6 +29,11 @@ export class ContractsService {
   create(createContractDto: CreateContractDto): Promise<ResponseSuccess> {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
     return contractsCreator.execute(createContractDto);
+  }
+
+  finish(id: string): Promise<ResponseSuccess> {
+    const contractFinish = new ContractFinish(this.mongoContractRepository);
+    return contractFinish.execute(id);
   }
 
   findAll(criteriaDto: CriteriaDto): Promise<ResponseSearch<ContractSearch>> {
@@ -61,6 +71,20 @@ export class ContractsService {
       this.mongoContractRepository,
     );
     return contractDocumentationUpdater.execute(id, documentationDto);
+  }
+
+  updateCage(id: string, cageDto: CageDto): Promise<ContractResponse> {
+    const contractDocumentationUpdater = new ContractCageUpdater(
+      this.mongoContractRepository,
+    );
+    return contractDocumentationUpdater.execute(id, cageDto);
+  }
+
+  updateTravel(id: string, travelDto: TravelDto): Promise<ContractResponse> {
+    const contractTravelUpdater = new ContractTravelUpdater(
+      this.mongoContractRepository,
+    );
+    return contractTravelUpdater.execute(id, travelDto);
   }
 
   remove(id: string): Promise<ResponseSuccess> {

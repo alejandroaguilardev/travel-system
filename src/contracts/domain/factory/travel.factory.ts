@@ -17,6 +17,7 @@ import { TravelReceptor } from '../value-object/services/travel/travel-receptor'
 import { TravelDefinition } from '../interfaces/travel';
 import { TypeTraveling } from '../value-object/services/travel/type-traveling';
 import { TypeTraveling as TypeTravelingType } from '../interfaces/travel';
+import { TravelArrivalDate } from '../value-object/services/travel/travel-arrival-date';
 
 export class ContractTravelFactory {
   static create(
@@ -24,7 +25,7 @@ export class ContractTravelFactory {
     typeTraveling: string,
   ): ContractTravel {
     return new ContractTravel(
-      new ContractStatus(hasServiceIncluded ? 'pending' : 'none'),
+      new ContractStatus('pending'),
       new ContractHasServiceIncluded(hasServiceIncluded),
       new TypeTraveling(typeTraveling as TypeTravelingType),
       new TravelAirlineReservation(
@@ -33,6 +34,7 @@ export class ContractTravelFactory {
         new TravelDepartureAirport(''),
         new TravelDestinationAirport(''),
         new TravelDepartureDate(null),
+        new TravelArrivalDate(null),
       ),
       new TravelPetPerCharge(
         new TravelReceptor(''),
@@ -58,6 +60,7 @@ export class ContractTravelFactory {
           travel.airlineReservation.destinationAirport,
         ),
         new TravelDepartureDate(travel.airlineReservation.departureDate),
+        new TravelArrivalDate(travel.airlineReservation.arrivalDate),
       ),
       new TravelPetPerCharge(
         new TravelReceptor(travel.petPerCharge.receptor),

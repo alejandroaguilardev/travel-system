@@ -19,7 +19,7 @@ export class TravelPetPerCharge {
     return {
       receptor: this.receptor.value,
       email: this.email.value,
-      phone: this.email.value,
+      phone: this.phone.value,
       pickupDateTime: this.pickupDateTime.value,
       pickupLocation: this.pickupLocation.value,
       specialRequests: this.specialRequests.value,

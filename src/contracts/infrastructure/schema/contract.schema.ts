@@ -79,6 +79,7 @@ export class ContractModel implements ContractDefinition {
           departureAirport: String,
           destinationAirport: String,
           departureDate: Date,
+          arrivalDate: Date,
         },
         petPerCharge: {
           receptor: String,

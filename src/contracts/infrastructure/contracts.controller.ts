@@ -13,6 +13,8 @@ import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { DocumentationDto } from './dto/documentation.dto';
+import { CageDto } from './dto/cage.dto';
+import { TravelDto } from './dto/travel.dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -21,6 +23,10 @@ export class ContractsController {
   @Post()
   create(@Body() createContractDto: CreateContractDto) {
     return this.contractsService.create(createContractDto);
+  }
+  @Post(':id/finish')
+  finish(@Param('id') id: string) {
+    return this.contractsService.finish(id);
   }
 
   @Get()
@@ -44,6 +50,16 @@ export class ContractsController {
     @Body() documentationDto: DocumentationDto,
   ) {
     return this.contractsService.updateDocumentation(id, documentationDto);
+  }
+
+  @Patch(':id/cage/client')
+  updateCage(@Param('id') id: string, @Body() cageDto: CageDto) {
+    return this.contractsService.updateCage(id, cageDto);
+  }
+
+  @Patch(':id/travel/client')
+  updateTravel(@Param('id') id: string, @Body() travelDto: TravelDto) {
+    return this.contractsService.updateTravel(id, travelDto);
   }
 
   @Patch(':id')
