@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UserSeeder } from '../application/user/seeder-user';
 import { ResponseSuccess } from '../../common/domain/response/response-success';
 import { UUIDService } from '../../common/infrastructure/services/uuid.service';
@@ -8,6 +8,7 @@ import { MongoRoleRepository } from '../../roles/infrastructure/persistence/mong
 import { RoleSeeder } from '../application/role/seeder-role';
 import { PermissionSeeder } from '../application/permission/seeder-permission';
 import { ResponseMessage } from '../../common/domain/response/response-message';
+import { BcryptService } from '../../common/infrastructure/services/bcrypt.service';
 
 @Injectable()
 export class SeederService {
@@ -16,6 +17,7 @@ export class SeederService {
     private readonly mongoRoleRepository: MongoRoleRepository,
     private readonly userMongoRepository: UserMongoRepository,
     private readonly uuid: UUIDService,
+    private readonly bcrypt: BcryptService,
   ) {}
 
   async seeder(): Promise<ResponseSuccess> {
@@ -24,15 +26,11 @@ export class SeederService {
       this.uuid,
     );
     const roleSeeder = new RoleSeeder(this.mongoRoleRepository, this.uuid);
-    const userSeeder = new UserSeeder(this.userMongoRepository, this.uuid);
-
-    if (
-      (await userSeeder.isInitProject()) ||
-      (await roleSeeder.isInitProject()) ||
-      (await permissionSeeder.isInitProject())
-    ) {
-      throw new BadRequestException('Hay datos en la base de datos');
-    }
+    const userSeeder = new UserSeeder(
+      this.userMongoRepository,
+      this.bcrypt,
+      this.uuid,
+    );
 
     const permissions = await permissionSeeder.execute();
     const roles = await roleSeeder.execute(permissions);

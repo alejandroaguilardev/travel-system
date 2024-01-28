@@ -1,5 +1,5 @@
 import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { CriteriaRequest } from '../../application/criteria/criteria';
 import { FilterRequest } from '../../application/criteria/filter';
 import { SortingRequest } from '../../application/criteria/sorting';
@@ -10,23 +10,47 @@ export class CriteriaDto implements CriteriaRequest {
   @IsNumber()
   @Type(() => Number)
   start: number = 0;
+
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   size: number = 10;
+
   @IsOptional()
   @IsArray()
+  @IsArray()
+  @Transform(({ value }): FilterRequest[] => {
+    if (typeof value === 'string') return JSON.parse(value);
+    return [];
+  })
   filters: FilterRequest[] = [];
+
   @IsOptional()
   @IsArray()
+  @IsArray()
+  @Transform(({ value }): SortingRequest[] => {
+    if (typeof value === 'string') return JSON.parse(value);
+    return [];
+  })
   sorting: SortingRequest[] = [];
+
   @IsOptional()
   @IsString()
   globalFilter: string = '';
+
   @IsOptional()
   @IsArray()
+  @Transform(({ value }): GlobalFilterPropertiesRequest[] => {
+    if (typeof value === 'string') return JSON.parse(value);
+    return [];
+  })
   globalFilterProperties: GlobalFilterPropertiesRequest[] = [];
+
   @IsOptional()
-  @IsArray()
+  @IsString({ each: true })
+  @Transform(({ value }): GlobalFilterPropertiesRequest[] => {
+    if (typeof value === 'string') return JSON.parse(value);
+    return [];
+  })
   selectProperties: string[] = [];
 }

@@ -1,18 +1,17 @@
 import { ContractDefinition } from '../../domain/interfaces/contract';
+import { CageDefinition } from '../../domain/interfaces/cage';
+import { DocumentationDefinition } from '../../domain/interfaces/documentation';
+import { TypeTraveling } from '../../domain/interfaces/travel';
 
 export interface ContractCreateRequest
   extends Omit<
     ContractDefinition,
     'status' | 'endDate' | 'guideNumber' | 'services'
   > {
-  documentation: {
-    hasServiceIncluded: boolean;
-  };
-  cage: {
-    hasServiceIncluded: boolean;
-  };
+  cage: CageDefinition;
+  documentation: DocumentationDefinition;
   travel: {
     hasServiceIncluded: boolean;
-    travelingWithPet: boolean;
+    typeTraveling: TypeTraveling;
   };
 }

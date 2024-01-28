@@ -24,10 +24,7 @@ export class ContractUpdater {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));
     }
 
-    const contractUpdate = ContractFactory.update(
-      contractRequest,
-      ContractFactory.converter(response),
-    );
+    const contractUpdate = ContractFactory.update(contractRequest, response);
 
     await this.contractRepository.update(uuid, contractUpdate);
 

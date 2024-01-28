@@ -57,7 +57,12 @@ describe('ContractsController', () => {
 
   it('/contracts/:id (GET)', async () => {
     const id = UuidMother.create();
-    request(app.getHttpServer()).get(`/permissions/${id}`).expect(400);
+    request(app.getHttpServer()).get(`/contracts/${id}`).expect(400);
+  });
+
+  it('/contracts/client/:id (GET)', async () => {
+    const id = UuidMother.create();
+    request(app.getHttpServer()).get(`/contracts/client/${id}`).expect(400);
   });
 
   it('/contracts (PATCH)', async () => {
@@ -75,6 +80,21 @@ describe('ContractsController', () => {
       .expect(200);
 
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+  });
+
+  it(':id/documentation/client (PATCH)', async () => {
+    const dto = ContractCreatorMother.create();
+
+    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
+
+    const response = await request(app.getHttpServer())
+      .patch(`/contracts/${dto.id}/documentation/client`)
+      .send(dto.documentation)
+      .expect(200);
+
+    expect(response.body.services.documentation.chipCertificate).toEqual(
+      dto.documentation.chipCertificate,
+    );
   });
 
   it('/contracts (DELETE)', async () => {

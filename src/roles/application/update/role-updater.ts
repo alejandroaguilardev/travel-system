@@ -7,7 +7,7 @@ import {
 } from '../../../common/domain/response/response-message';
 import { RoleFactory } from '../../domain/role.factory';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { RoleResponse } from '../response/role.response';
+import { RoleByIdResponse } from '../response/role.response';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 
 export class RoleUpdater {
@@ -18,7 +18,8 @@ export class RoleUpdater {
     roleRequest: RoleUpdaterRequest,
   ): Promise<ResponseSuccess> {
     const uuid = new Uuid(id);
-    const response = await this.roleRepository.searchById<RoleResponse>(uuid);
+    const response =
+      await this.roleRepository.searchById<RoleByIdResponse>(uuid);
 
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('rol'));
@@ -28,7 +29,6 @@ export class RoleUpdater {
       roleRequest,
       RoleFactory.create(response),
     );
-
     await this.roleRepository.update(uuid, roleUpdate);
 
     return ResponseMessage.createDefaultMessage(

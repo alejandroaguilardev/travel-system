@@ -1,6 +1,5 @@
 import { ContractStatus } from '../value-object/contract-status';
 import { ContractDocumentation } from '../value-object/services/service-documentation';
-import { ContractHasServiceIncluded } from '../value-object/contract-has-service.included';
 import { DocumentationVaccinationCertificate } from '../value-object/services/documentation/documentation-vaccination-certificate';
 import { DocumentationIsApplied } from '../value-object/services/documentation/documentation-is-applied';
 import { DocumentationHealthCertificate } from '../value-object/services/documentation/documentation-health-certificate';
@@ -12,45 +11,58 @@ import { DocumentationEmocionalSupportCertificate } from '../value-object/servic
 import { DocumentationDefinition } from '../interfaces/documentation';
 
 export class ContractDocumentationFactory {
-  static create(hasServiceIncluded: boolean): ContractDocumentation {
-    const documentationIsApplied = new DocumentationIsApplied(false);
+  static create(documentation: DocumentationDefinition): ContractDocumentation {
     return new ContractDocumentation(
-      new ContractStatus(ContractStatus.status.pending),
-      new ContractHasServiceIncluded(hasServiceIncluded),
-      new DocumentationVaccinationCertificate(documentationIsApplied),
-      new DocumentationHealthCertificate(documentationIsApplied),
-      new DocumentationChipCertificate(documentationIsApplied),
-      new DocumentationSenasaDocuments(documentationIsApplied),
-      new DocumentationRabiesSerologicalTest(documentationIsApplied),
-      new DocumentationImportLicense(documentationIsApplied),
-      new DocumentationEmocionalSupportCertificate(documentationIsApplied),
-    );
-  }
-
-  static converter(data: DocumentationDefinition): ContractDocumentation {
-    return new ContractDocumentation(
-      new ContractStatus(data.status),
-      new ContractHasServiceIncluded(data.hasServiceIncluded),
+      new ContractStatus(
+        documentation.status === 'none' ? 'pending' : documentation.status,
+      ),
       new DocumentationVaccinationCertificate(
-        new DocumentationIsApplied(data.vaccinationCertificate.isApplied),
+        new DocumentationIsApplied(
+          documentation.vaccinationCertificate.isApplied,
+        ),
+        new DocumentationIsApplied(
+          documentation.vaccinationCertificate.hasServiceIncluded,
+        ),
       ),
       new DocumentationHealthCertificate(
-        new DocumentationIsApplied(data.healthCertificate.isApplied),
+        new DocumentationIsApplied(documentation.healthCertificate.isApplied),
+        new DocumentationIsApplied(
+          documentation.healthCertificate.hasServiceIncluded,
+        ),
       ),
       new DocumentationChipCertificate(
-        new DocumentationIsApplied(data.chipCertificate.isApplied),
+        new DocumentationIsApplied(documentation.chipCertificate.isApplied),
+        new DocumentationIsApplied(
+          documentation.chipCertificate.hasServiceIncluded,
+        ),
       ),
       new DocumentationSenasaDocuments(
-        new DocumentationIsApplied(data.senasaDocuments.isApplied),
+        new DocumentationIsApplied(documentation.senasaDocuments.isApplied),
+        new DocumentationIsApplied(
+          documentation.senasaDocuments.hasServiceIncluded,
+        ),
       ),
       new DocumentationRabiesSerologicalTest(
-        new DocumentationIsApplied(data.rabiesSeroLogicalTest.isApplied),
+        new DocumentationIsApplied(
+          documentation.rabiesSeroLogicalTest.isApplied,
+        ),
+        new DocumentationIsApplied(
+          documentation.rabiesSeroLogicalTest.hasServiceIncluded,
+        ),
       ),
       new DocumentationImportLicense(
-        new DocumentationIsApplied(data.importLicense.isApplied),
+        new DocumentationIsApplied(documentation.importLicense.isApplied),
+        new DocumentationIsApplied(
+          documentation.importLicense.hasServiceIncluded,
+        ),
       ),
       new DocumentationEmocionalSupportCertificate(
-        new DocumentationIsApplied(data.emotionalSupportCertificate.isApplied),
+        new DocumentationIsApplied(
+          documentation.emotionalSupportCertificate.isApplied,
+        ),
+        new DocumentationIsApplied(
+          documentation.emotionalSupportCertificate.hasServiceIncluded,
+        ),
       ),
     );
   }

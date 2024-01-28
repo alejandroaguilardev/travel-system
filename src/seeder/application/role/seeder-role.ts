@@ -4,6 +4,8 @@ import { RoleFactory } from '../../../roles/domain/role.factory';
 import { SeederRoleResponse } from '../response/seeder-role.response';
 import { SeederPermissionsResponse } from '../response/seeder-permissions.response';
 import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { Uuid } from '../../../common/domain/value-object/uuid';
+import { RoleResponse } from '../../../roles/application/response/role.response';
 
 export class RoleSeeder {
   constructor(
@@ -36,8 +38,7 @@ export class RoleSeeder {
         permissions.view,
       ],
     });
-    console.log({ roleClient });
-
+    await this.isInitProject();
     await Promise.all([
       this.roleRepository.save(roleAdmin),
       this.roleRepository.save(roleClient),
@@ -49,7 +50,7 @@ export class RoleSeeder {
     };
   }
 
-  async isInitProject(): Promise<boolean> {
+  async isInitProject(): Promise<void> {
     const criteria = CriteriaFactory.fromData({
       start: 0,
       sorting: [],
@@ -59,7 +60,9 @@ export class RoleSeeder {
       size: 10,
       selectProperties: [],
     });
-    const response = await this.roleRepository.search(criteria);
-    return response.count > 0;
+    const response = await this.roleRepository.search<RoleResponse>(criteria);
+    await Promise.all(
+      response.rows.map((r) => this.roleRepository.remove(new Uuid(r.id))),
+    );
   }
 }

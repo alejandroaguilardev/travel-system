@@ -8,6 +8,7 @@ import { ContractPets } from './value-object/contract-pets';
 import { ContractServices } from './value-object/contract-services';
 import { ContractStartDate } from './value-object/contract-start-date';
 import { ContractStatus } from './value-object/contract-status';
+import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid-argument';
 
 export class Contract {
   constructor(
@@ -34,5 +35,35 @@ export class Contract {
       guideNumber: this.guideNumber.value,
       pets: this.pets.toJson(),
     };
+  }
+
+  static statusError(status: StatusDefinition) {
+    if (
+      status === 'canceled' ||
+      status === 'none' ||
+      status === 'suspended' ||
+      status === 'completed'
+    ) {
+      throw new ErrorInvalidadArgument('El contrato se encuentra ' + status);
+    }
+  }
+
+  static establishedStatus(contract: ContractDefinition) {
+    let count = 0;
+    Object.keys(contract.services).forEach((key) => {
+      if (contract.services[key].status === 'completed') {
+        ++count;
+      }
+    });
+
+    if (count === 3) {
+      contract.status = 'completed';
+    } else if (count > 0) {
+      contract.status = 'in-process';
+    } else {
+      contract.status = 'pending';
+    }
+
+    return contract;
   }
 }

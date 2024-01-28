@@ -13,64 +13,9 @@ import { ContractCageFactory } from './cage.factory';
 import { ContractTravelFactory } from './travel.factory';
 import { ContractDefinition } from '../interfaces/contract';
 import { ContractUpdaterRequest } from '../../application/update/contract-updater-request';
+import { ServicesDefinition } from '../interfaces/services';
 
 export class ContractFactory {
-  static create(data: ContractCreateRequest): Contract {
-    return new Contract(
-      new Uuid(data.id),
-      new ContractNumber(data.number),
-      new Uuid(data.client),
-      new ContractStatus(ContractStatus.status.pending),
-      new ContractStartDate(data.startDate),
-      new ContractEndDate(null),
-      new ContractServices(
-        ContractDocumentationFactory.create(
-          data.documentation.hasServiceIncluded,
-        ),
-        ContractCageFactory.create(data.cage.hasServiceIncluded),
-        ContractTravelFactory.create(
-          data.travel.hasServiceIncluded,
-          data.travel.travelingWithPet,
-        ),
-      ),
-      new ContractGuideNumber(''),
-      new ContractPets(data.pets),
-    );
-  }
-
-  static update(data: ContractUpdaterRequest, oldContract: Contract): Contract {
-    const contract = new Contract(
-      oldContract.id,
-      data?.number ? new ContractNumber(data.number) : oldContract.number,
-      data?.client ? new Uuid(data.client) : oldContract.client,
-      oldContract.status,
-      data?.startDate
-        ? new ContractStartDate(data.startDate)
-        : oldContract.startDate,
-      oldContract.endDate,
-      oldContract.services,
-      oldContract.guideNumber,
-      data?.pets ? new ContractPets(data.pets) : oldContract.pets,
-    );
-
-    if (data?.documentation?.hasServiceIncluded) {
-      contract.services.documentation.setHasServiceIncluded(true);
-    }
-
-    if (data?.cage?.hasServiceIncluded) {
-      contract.services.cage.setHasServiceIncluded(true);
-    }
-
-    if (data?.travel?.hasServiceIncluded) {
-      contract.services.travel.setHasServiceIncluded(true);
-    }
-    if (data?.travel?.travelingWithPet) {
-      contract.services.travel.setTravelingWithPet(true);
-    }
-
-    return contract;
-  }
-
   static converter(data: ContractDefinition): Contract {
     return new Contract(
       new Uuid(data.id),
@@ -80,12 +25,139 @@ export class ContractFactory {
       new ContractStartDate(data.startDate),
       new ContractEndDate(data.endDate),
       new ContractServices(
-        ContractDocumentationFactory.converter(data.services.documentation),
-        ContractCageFactory.converter(data.services.cage),
+        ContractDocumentationFactory.create(data.services.documentation),
+        ContractCageFactory.create(data.services.cage),
         ContractTravelFactory.converter(data.services.travel),
       ),
       new ContractGuideNumber(data.guideNumber),
       new ContractPets(data.pets),
     );
+  }
+
+  static create(data: ContractCreateRequest): Contract {
+    return new Contract(
+      new Uuid(data.id),
+      new ContractNumber(data.number),
+      new Uuid(data.client),
+      new ContractStatus('pending'),
+      new ContractStartDate(data.startDate),
+      new ContractEndDate(null),
+      new ContractServices(
+        ContractDocumentationFactory.create(data.documentation),
+        ContractCageFactory.create(data.cage),
+        ContractTravelFactory.create(
+          data.travel.hasServiceIncluded,
+          data.travel.typeTraveling,
+        ),
+      ),
+      new ContractGuideNumber(''),
+      new ContractPets(data.pets),
+    );
+  }
+
+  static update(
+    data: ContractUpdaterRequest,
+    contract: ContractDefinition,
+  ): Contract {
+    const services = ContractFactory.servicesUpdate(data, contract);
+    return new Contract(
+      new Uuid(contract.id),
+      new ContractNumber(data?.number ?? contract.number),
+      new Uuid(data?.client ?? contract.client),
+      new ContractStatus(contract.status),
+      new ContractStartDate(data?.startDate ?? contract.startDate),
+      new ContractEndDate(contract.endDate),
+      new ContractServices(
+        ContractDocumentationFactory.create(services.documentation),
+        ContractCageFactory.create(services.cage),
+        ContractTravelFactory.converter(services.travel),
+      ),
+      new ContractGuideNumber(contract.guideNumber),
+      new ContractPets(data?.pets ?? contract.pets),
+    );
+  }
+
+  private static servicesUpdate(
+    data: ContractUpdaterRequest,
+    contract: ContractDefinition,
+  ): ServicesDefinition {
+    const { cage, documentation, travel } = data;
+    const { services } = contract;
+    return {
+      cage: {
+        status: services.cage.status,
+        hasServiceIncluded:
+          cage?.hasServiceIncluded ?? services.cage.hasServiceIncluded,
+        swornDeclaration: services.cage.swornDeclaration,
+        chosen: {
+          modelCage:
+            cage?.chosen?.modelCage ?? services.cage.chosen?.modelCage ?? '',
+          dimensionsCage:
+            cage?.chosen?.dimensionsCage ??
+            services.cage.chosen?.dimensionsCage ??
+            '',
+          typeCage:
+            cage?.chosen?.typeCage ?? services.cage.chosen?.typeCage ?? '',
+        },
+        recommendation: services.cage.recommendation,
+      },
+      documentation: {
+        status: services.documentation.status,
+        vaccinationCertificate: {
+          hasServiceIncluded:
+            documentation?.vaccinationCertificate?.hasServiceIncluded ??
+            services.documentation.vaccinationCertificate.hasServiceIncluded,
+          isApplied: services.documentation.vaccinationCertificate.isApplied,
+        },
+        healthCertificate: {
+          hasServiceIncluded:
+            documentation?.healthCertificate?.hasServiceIncluded ??
+            services.documentation.healthCertificate.hasServiceIncluded,
+          isApplied: services.documentation.healthCertificate.isApplied,
+        },
+        chipCertificate: {
+          hasServiceIncluded:
+            documentation?.chipCertificate?.hasServiceIncluded ??
+            services.documentation.chipCertificate.hasServiceIncluded,
+          isApplied: services.documentation.chipCertificate.isApplied,
+        },
+        senasaDocuments: {
+          hasServiceIncluded:
+            documentation?.senasaDocuments?.hasServiceIncluded ??
+            services.documentation.senasaDocuments.hasServiceIncluded,
+          isApplied: services.documentation.senasaDocuments.isApplied,
+        },
+        rabiesSeroLogicalTest: {
+          hasServiceIncluded:
+            documentation?.rabiesSeroLogicalTest?.hasServiceIncluded ??
+            services.documentation.rabiesSeroLogicalTest.hasServiceIncluded,
+          isApplied: services.documentation.rabiesSeroLogicalTest.isApplied,
+        },
+        importLicense: {
+          hasServiceIncluded:
+            documentation?.importLicense?.hasServiceIncluded ??
+            services.documentation.importLicense.hasServiceIncluded,
+          isApplied: services.documentation.importLicense.isApplied,
+        },
+        emotionalSupportCertificate: {
+          hasServiceIncluded:
+            documentation?.emotionalSupportCertificate?.hasServiceIncluded ??
+            services.documentation.emotionalSupportCertificate
+              .hasServiceIncluded,
+          isApplied:
+            services.documentation.emotionalSupportCertificate.isApplied,
+        },
+      },
+      travel: {
+        hasServiceIncluded:
+          travel?.hasServiceIncluded ??
+          contract.services.travel.hasServiceIncluded,
+        typeTraveling:
+          travel?.typeTraveling ?? contract.services.travel.typeTraveling,
+        airlineReservation: services.travel.airlineReservation,
+        petPerCharge: services.travel.petPerCharge,
+        status: services.travel.status,
+      },
+    };
   }
 }

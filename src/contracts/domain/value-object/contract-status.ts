@@ -1,22 +1,23 @@
-import { StringValueObject } from '../../../common/domain/value-object/string-value-object';
 import { StatusDefinition } from '../interfaces/status';
 import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
 
-export class ContractStatus extends StringValueObject {
-  static status: Record<'pending' | 'process' | 'finish', StatusDefinition> = {
-    pending: 'pendiente',
-    process: 'en proceso',
-    finish: 'finalizado',
-  };
+export class ContractStatus {
+  static values: StatusDefinition[] = [
+    'none',
+    'pending',
+    'in-process',
+    'completed',
+    'canceled',
+    'suspended',
+  ];
 
-  constructor(status: StatusDefinition) {
-    super(status);
-    this.validSecured(status);
+  constructor(readonly value: StatusDefinition) {
+    this.validSecured(value);
   }
 
-  private validSecured(status: StatusDefinition): void {
-    if (!Object.values(ContractStatus.status).includes(status)) {
-      throw new ErrorInvalidadArgument('El estado del contrato no es válido');
+  private validSecured(value: StatusDefinition): void {
+    if (!ContractStatus.values.includes(value)) {
+      throw new ErrorInvalidadArgument('No es un tipo de viaje válido');
     }
   }
 }

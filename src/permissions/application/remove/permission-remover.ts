@@ -11,7 +11,7 @@ export class PermissionRemover {
 
   async remove(id: string): Promise<ResponseSuccess> {
     const uuid = new Uuid(id);
-    this.permissionRepository.remove(uuid);
+    await this.permissionRepository.remove(uuid);
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_DELETED,
     );

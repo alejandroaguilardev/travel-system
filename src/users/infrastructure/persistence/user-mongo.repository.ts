@@ -12,6 +12,7 @@ import { UserModel } from '../schema/user.schema';
 import { UserMongoPipeline } from './user-mongo.pipeline';
 import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
 import { FilterOperator } from '../../../common/domain/criteria/filter-operator';
+import { Uuid } from '../../../common/domain/value-object/uuid';
 
 @Injectable()
 export class UserMongoRepository
@@ -48,5 +49,16 @@ export class UserMongoRepository
 
     const user = rows.length > 0 ? rows[0] : null;
     return { ...user, password };
+  }
+
+  async searchByIdWithRole(uuid: Uuid): Promise<UserResponse | null> {
+    const rows: UserResponse[] = await this.userModel
+      .aggregate(UserMongoPipeline.executeById(uuid.value))
+      .exec();
+
+    const user = rows.length > 0 ? rows[0] : null;
+    if (!user) return null;
+
+    return user;
   }
 }

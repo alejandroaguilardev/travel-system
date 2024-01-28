@@ -3,8 +3,8 @@ import { Model as ModelMongoose } from 'mongoose';
 import { Criteria } from '../../domain/criteria/criteria';
 import { MongoCriteriaConverter } from './mongo-criteria-converter';
 import { ResponseSearch } from '../../domain/response/response-search';
-import { Uuid } from 'src/common/domain/value-object/uuid';
 import { Repository } from '../../domain/repository';
+import { Uuid } from '../../domain/value-object/uuid';
 
 interface ToJsonFunction {
   (): Record<string, any>;
@@ -16,9 +16,9 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
 {
   constructor(private readonly model: ModelMongoose<Model>) {}
 
-  async save(permission: T): Promise<void> {
-    const newPermission = permission.toJson();
-    await this.model.create(newPermission);
+  async save(data: T): Promise<void> {
+    const newData = data.toJson();
+    await this.model.create(newData);
   }
 
   async search<R>(criteria: Criteria): Promise<ResponseSearch<R>> {
@@ -27,7 +27,7 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
 
     const rows: R[] = await this.model
       .find(query)
-      .select([...selectProperties, '-_id', '-__v'])
+      .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
       .skip(start)
       .limit(size)
       .sort(sortQuery)
@@ -37,19 +37,20 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
     return { rows, count };
   }
 
-  searchById<R>(permissionId: Uuid): Promise<R> {
+  searchById<R>(id: Uuid): Promise<R> {
     return this.model
-      .findOne({ id: permissionId.value })
-      .select(['-_id', '-__v'])
+      .findOne({ id: id.value })
+      .select(['-_id', '-__v', '-createdAt', '-updatedAt'])
       .lean();
   }
 
-  update(permissionId: Uuid): Promise<void> {
-    return this.model.findOneAndDelete({ id: permissionId.value });
+  update(id: Uuid, data: T): Promise<void> {
+    const updateData = data.toJson();
+    return this.model.findOneAndUpdate({ id: id.value }, updateData);
   }
 
-  remove(permissionId: Uuid): Promise<void> {
-    return this.model.findOneAndDelete({ id: permissionId.value });
+  remove(id: Uuid): Promise<void> {
+    return this.model.findOneAndDelete({ id: id.value });
   }
 
   protected async count(): Promise<number> {

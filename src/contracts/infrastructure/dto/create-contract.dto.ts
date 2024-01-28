@@ -8,22 +8,15 @@ import {
 } from 'class-validator';
 import { ContractCreateRequest } from '../../application/create/contract-create-request';
 import { Type } from 'class-transformer';
-
-class DocumentationDto {
-  @IsBoolean()
-  hasServiceIncluded: boolean;
-}
-
-class CageDto {
-  @IsBoolean()
-  hasServiceIncluded: boolean;
-}
+import { DocumentationDto } from './documentation.dto';
+import { CageDto } from './cage.dto';
+import { TypeTraveling } from '../../domain/interfaces/travel';
 
 class TravelDto {
   @IsBoolean()
   hasServiceIncluded: boolean;
-  @IsBoolean()
-  travelingWithPet: boolean;
+  @IsString()
+  typeTraveling: TypeTraveling;
 }
 
 export class CreateContractDto implements ContractCreateRequest {

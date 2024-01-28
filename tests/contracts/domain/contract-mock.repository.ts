@@ -4,4 +4,5 @@ export const contractRepositoryMock = {
   remove: jest.fn(),
   searchById: jest.fn(),
   search: jest.fn(),
+  searchContractByClient: jest.fn(),
 };

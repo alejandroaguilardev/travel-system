@@ -1,11 +1,11 @@
 import { RoleUpdater } from '../../../src/roles/application/update/role-updater';
 import { RoleMother } from '../domain/role-mother';
 import { roleRepositoryMock } from '../domain/role.repository.mock';
-import { StringMother } from '../../common/domain/string.mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { RoleFactory } from '../../../src/roles/domain/role.factory';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
+import { RoleNameMother } from '../domain/role-name.mother';
 
 describe('RoleUpdater', () => {
   const updateMock = jest.fn();
@@ -23,7 +23,7 @@ describe('RoleUpdater', () => {
 
   it('should_successfully_role_updater', async () => {
     const dto = RoleMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = RoleNameMother.create();
     searchMockById.mockResolvedValueOnce(dto);
     const response = await roleUpdater.update(dto.id, { name });
     expect(response.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
@@ -31,7 +31,7 @@ describe('RoleUpdater', () => {
 
   it('should_successfully_role_updater_called_with', async () => {
     const dto = RoleMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = RoleNameMother.create();
     searchMockById.mockResolvedValueOnce(dto);
     await roleUpdater.update(dto.id, { name });
     const uuid = new Uuid(dto.id);
@@ -41,7 +41,7 @@ describe('RoleUpdater', () => {
 
   it('should_failed_role_updater', async () => {
     const dto = RoleMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = RoleNameMother.create();
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     searchMockById.mockRejectedValueOnce(error);
     try {

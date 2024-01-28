@@ -7,6 +7,12 @@ export class SeederController {
 
   @Get()
   seeder() {
-    return this.seederService.seeder();
+    if (process.env.NODE_ENV === 'development') {
+      return this.seederService.seeder();
+    } else {
+      return {
+        message: 'Esta ruta solo está disponible en entorno de desarrollo.',
+      };
+    }
   }
 }

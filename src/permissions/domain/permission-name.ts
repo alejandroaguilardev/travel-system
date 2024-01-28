@@ -3,7 +3,7 @@ import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid
 
 export class PermissionName extends StringValueObject {
   constructor(value: string) {
-    super(value);
+    super(value.toLowerCase());
     this.isValidName();
   }
 

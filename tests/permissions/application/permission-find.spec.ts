@@ -1,5 +1,5 @@
 import { PermissionFind } from '../../../src/permissions/application/find/permission-find';
-import { PermissionMother } from '../domain/PermissionMother';
+import { PermissionMother } from '../domain/permission.mother';
 import { permissionRepositoryMethodsMock } from '../domain/permission-repository-methods.mock';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 

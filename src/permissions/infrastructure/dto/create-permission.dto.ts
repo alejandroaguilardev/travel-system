@@ -9,4 +9,6 @@ export class CreatePermissionDto implements CreatePermission {
   @IsOptional()
   @IsString({ message: 'Debe enviar una descripción válido' })
   description: string = '';
+  @IsString({ message: 'Debe enviar un grupo válido' })
+  group: string;
 }

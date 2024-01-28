@@ -1,5 +1,5 @@
 import { PermissionFindAll } from '../../../src/permissions/application/find-all/permission-find-all';
-import { PermissionMother } from '../domain/PermissionMother';
+import { PermissionMother } from '../domain/permission.mother';
 import { permissionRepositoryMethodsMock } from '../domain/permission-repository-methods.mock';
 import { CriteriaMother } from '../../common/domain/criteria-mother';
 

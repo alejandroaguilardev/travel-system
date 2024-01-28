@@ -6,9 +6,9 @@ import * as request from 'supertest';
 import { globalPipes } from '../../../config/global-pipes';
 import { AppModule } from '../../../src/app.module';
 import { GlobalExceptionFilter } from '../../../config/global-filter';
-import { PermissionMother } from '../domain/PermissionMother';
-import { StringMother } from '../../common/domain/string.mother';
+import { PermissionMother } from '../domain/permission.mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
+import { PermissionNameMother } from '../domain/permission-name.mother';
 
 describe('PermissionsController', () => {
   let app: INestApplication;
@@ -58,7 +58,7 @@ describe('PermissionsController', () => {
 
   it('/permissions:id (PATCH)', async () => {
     const dto = PermissionMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = PermissionNameMother.create();
 
     await request(app.getHttpServer())
       .post('/permissions')
@@ -75,7 +75,7 @@ describe('PermissionsController', () => {
 
   it('/permissions:id (DELETE)', async () => {
     const dto = PermissionMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = PermissionNameMother.create();
     const response = await request(app.getHttpServer())
       .delete(`/permissions/${dto.id}`)
       .send({ name })

@@ -7,25 +7,18 @@ import { CageChosenModel } from '../value-object/services/cage/cage-selected-mod
 import { CageChosenType } from '../value-object/services/cage/cage-selected-type';
 import { CageRecommendation } from '../value-object/services/cage/cage-recommendation';
 import { CageDefinition } from '../interfaces/cage';
+import { CageChosenDimensions } from '../value-object/services/cage/cage-selected-dimensions';
 
 export class ContractCageFactory {
-  static create(hasServiceIncluded: boolean): ContractCage {
+  static create(cage: CageDefinition): ContractCage {
     return new ContractCage(
-      new ContractStatus(ContractStatus.status.pending),
-      new ContractHasServiceIncluded(hasServiceIncluded),
-      new CageSwornDeclaration(false),
-      new CageChosen(new CageChosenModel(''), new CageChosenType('')),
-      new CageRecommendation(''),
-    );
-  }
-  static converter(cage: CageDefinition): ContractCage {
-    return new ContractCage(
-      new ContractStatus(cage.status),
+      new ContractStatus(cage.status === 'none' ? 'pending' : cage.status),
       new ContractHasServiceIncluded(cage.hasServiceIncluded),
       new CageSwornDeclaration(cage.swornDeclaration),
       new CageChosen(
-        new CageChosenModel(cage.chosen.modelCage),
-        new CageChosenType(cage.chosen.typeCage),
+        new CageChosenModel(cage?.chosen?.modelCage ?? ''),
+        new CageChosenType(cage?.chosen?.typeCage ?? ''),
+        new CageChosenDimensions(cage?.chosen?.dimensionsCage ?? ''),
       ),
       new CageRecommendation(cage.recommendation),
     );

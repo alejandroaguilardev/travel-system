@@ -12,11 +12,12 @@ export class PermissionModel {
     index: true,
     unique: true,
     required: true,
-    _id: true,
   })
   id: string;
   @Prop({ type: String, unique: true, required: true })
   name: string;
+  @Prop({ type: String, required: true })
+  group: string;
   @Prop({ type: String, required: false })
   description: string;
 }

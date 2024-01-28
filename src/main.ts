@@ -5,7 +5,9 @@ import { globalPipes } from 'config/global-pipes';
 import { GlobalExceptionFilter } from 'config/global-filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
+
+  app.enableCors();
 
   app.setGlobalPrefix('api');
 

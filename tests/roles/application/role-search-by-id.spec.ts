@@ -11,7 +11,7 @@ describe('RoleFind', () => {
   beforeEach(() => {
     const repositoryMock = {
       ...roleRepositoryMock,
-      searchById: searchByIdMock,
+      searchByIdResponse: searchByIdMock,
     };
     roleSearchById = new RoleSearchById(repositoryMock);
   });

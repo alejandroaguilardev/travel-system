@@ -1,5 +1,5 @@
 import { PermissionCreator } from '../../../src/permissions/application/create/permission-creator';
-import { PermissionMother } from '../domain/PermissionMother';
+import { PermissionMother } from '../domain/permission.mother';
 import { permissionRepositoryMethodsMock } from '../domain/permission-repository-methods.mock';
 import { PermissionFactory } from '../../../src/permissions/domain/permission.factory';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';

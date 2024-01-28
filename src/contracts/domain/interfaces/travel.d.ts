@@ -1,9 +1,11 @@
 import { StatusDefinition } from './status';
 
+export type TypeTraveling = 'accompanied' | 'charge' | 'none';
+
 export interface TravelDefinition {
   status: StatusDefinition;
   hasServiceIncluded: boolean;
-  travelingWithPet: boolean;
+  typeTraveling: TypeTraveling;
   airlineReservation: {
     code: string;
     flightNumber: string;

@@ -8,7 +8,7 @@ import { AppModule } from '../../../src/app.module';
 import { RoleMother } from '../domain/role-mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { getModelToken } from '@nestjs/mongoose';
-import { StringMother } from '../../common/domain/string.mother';
+import { RoleNameMother } from '../domain/role-name.mother';
 
 describe('RolesController', () => {
   let app: INestApplication;
@@ -55,7 +55,7 @@ describe('RolesController', () => {
 
   it('/roles (PATCH)', async () => {
     const dto = RoleMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = RoleNameMother.create();
 
     await request(app.getHttpServer()).post('/roles').send(dto).expect(201);
 
@@ -68,7 +68,7 @@ describe('RolesController', () => {
 
   it('/roles (DELETE)', async () => {
     const dto = RoleMother.create();
-    const name = StringMother.create({ count: { min: 1, max: 1 } });
+    const name = RoleNameMother.create();
     const response = await request(app.getHttpServer())
       .delete(`/permissions/${dto.id}`)
       .send({ name })

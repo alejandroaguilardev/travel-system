@@ -28,7 +28,10 @@ describe('ContractUpdater', () => {
     contractRepositoryMock.searchById.mockResolvedValueOnce(response.toJson());
     await contractUpdater.execute(dto.id, { number });
     const uuid = new Uuid(dto.id);
-    const contractUpdate = ContractFactory.update({ number }, response);
+    const contractUpdate = ContractFactory.update(
+      { number },
+      response.toJson(),
+    );
     expect(contractRepositoryMock.update).toHaveBeenCalledWith(
       uuid,
       contractUpdate,

@@ -30,24 +30,31 @@ export class ContractModel implements ContractDefinition {
         status: String,
         hasServiceIncluded: Boolean,
         vaccinationCertificate: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
         healthCertificate: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
         chipCertificate: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
         senasaDocuments: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
         rabiesSeroLogicalTest: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
         importLicense: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
         emotionalSupportCertificate: {
+          hasServiceIncluded: Boolean,
           isApplied: Boolean,
         },
       },
@@ -58,13 +65,14 @@ export class ContractModel implements ContractDefinition {
         chosen: {
           modelCage: String,
           typeCage: String,
+          dimensionsCage: String,
         },
         recommendation: String,
       },
       travel: {
         status: String,
         hasServiceIncluded: Boolean,
-        travelingWithPet: Boolean,
+        typeTraveling: String,
         airlineReservation: {
           code: String,
           flightNumber: String,

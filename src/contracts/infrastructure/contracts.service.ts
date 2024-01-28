@@ -11,6 +11,9 @@ import { ContractUpdater } from '../application/update/contract-updater';
 import { ContractRemover } from '../application/remove/contract-remover';
 import { ResponseSearch } from '../../common/domain/response/response-search';
 import { ContractResponse } from '../application/response/contract.response';
+import { ContractSearchByIdClient } from '../application/search-contract-by-client/search-contract-by-client';
+import { DocumentationDto } from './dto/documentation.dto';
+import { ContractDocumentationUpdater } from '../application/update/documentation-updater';
 
 @Injectable()
 export class ContractsService {
@@ -35,12 +38,29 @@ export class ContractsService {
     return contractSearchById.execute(id);
   }
 
+  findContractByClient(id: string): Promise<ContractResponse[]> {
+    const contractSearchById = new ContractSearchByIdClient(
+      this.mongoContractRepository,
+    );
+    return contractSearchById.execute(id);
+  }
+
   update(
     id: string,
     updateContractDto: UpdateContractDto,
   ): Promise<ResponseSuccess> {
     const contractUpdater = new ContractUpdater(this.mongoContractRepository);
     return contractUpdater.execute(id, updateContractDto);
+  }
+
+  updateDocumentation(
+    id: string,
+    documentationDto: DocumentationDto,
+  ): Promise<ContractResponse> {
+    const contractDocumentationUpdater = new ContractDocumentationUpdater(
+      this.mongoContractRepository,
+    );
+    return contractDocumentationUpdater.execute(id, documentationDto);
   }
 
   remove(id: string): Promise<ResponseSuccess> {

@@ -4,7 +4,7 @@ import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found
 import { ContractSearchById } from '../../../src/contracts/application/search-by-id/contract-search-by-id';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 
-describe('RoleFind', () => {
+describe('ContractFind', () => {
   const contractSearchById = new ContractSearchById(contractRepositoryMock);
 
   it('should_successfully_contract_find_id', async () => {

@@ -1,7 +1,6 @@
 import { ContractStatus } from '../value-object/contract-status';
 import { ContractHasServiceIncluded } from '../value-object/contract-has-service.included';
 import { ContractTravel } from '../value-object/services/service-travel';
-import { TravelingWithPet } from '../value-object/services/travel/traveling-with-pet';
 import { TravelAirlineReservation } from '../value-object/services/travel/travel-airline-reservation';
 import { TravelPetPerCharge } from '../value-object/services/travel/travel-pet-per-charge';
 import { TravelCode } from '../value-object/services/travel/travel-code';
@@ -16,16 +15,18 @@ import { TravelPickupLocation } from '../value-object/services/travel/travel-pic
 import { TravelSpecialRequests } from '../value-object/services/travel/travel-special-requests';
 import { TravelReceptor } from '../value-object/services/travel/travel-receptor';
 import { TravelDefinition } from '../interfaces/travel';
+import { TypeTraveling } from '../value-object/services/travel/type-traveling';
+import { TypeTraveling as TypeTravelingType } from '../interfaces/travel';
 
 export class ContractTravelFactory {
   static create(
     hasServiceIncluded: boolean,
-    travelingWithPet: boolean,
+    typeTraveling: string,
   ): ContractTravel {
     return new ContractTravel(
-      new ContractStatus(ContractStatus.status.pending),
+      new ContractStatus(hasServiceIncluded ? 'pending' : 'none'),
       new ContractHasServiceIncluded(hasServiceIncluded),
-      new TravelingWithPet(travelingWithPet),
+      new TypeTraveling(typeTraveling as TypeTravelingType),
       new TravelAirlineReservation(
         new TravelCode(''),
         new TravelFlightNumber(''),
@@ -46,9 +47,9 @@ export class ContractTravelFactory {
 
   static converter(travel: TravelDefinition): ContractTravel {
     return new ContractTravel(
-      new ContractStatus(travel.status),
+      new ContractStatus(travel.status === 'none' ? 'pending' : travel.status),
       new ContractHasServiceIncluded(travel.hasServiceIncluded),
-      new TravelingWithPet(travel.travelingWithPet),
+      new TypeTraveling(travel.typeTraveling),
       new TravelAirlineReservation(
         new TravelCode(travel.airlineReservation.code),
         new TravelFlightNumber(travel.airlineReservation.flightNumber),

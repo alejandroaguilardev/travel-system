@@ -12,6 +12,7 @@ import { ContractsService } from './contracts.service';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UpdateContractDto } from './dto/update-contract.dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import { DocumentationDto } from './dto/documentation.dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -27,9 +28,22 @@ export class ContractsController {
     return this.contractsService.findAll(criteriaDto);
   }
 
+  @Get('client/:id')
+  findContractByClient(@Param('id') id: string) {
+    return this.contractsService.findContractByClient(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.contractsService.findOne(id);
+  }
+
+  @Patch(':id/documentation/client')
+  updateDocumentation(
+    @Param('id') id: string,
+    @Body() documentationDto: DocumentationDto,
+  ) {
+    return this.contractsService.updateDocumentation(id, documentationDto);
   }
 
   @Patch(':id')

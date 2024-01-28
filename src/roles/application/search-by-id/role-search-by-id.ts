@@ -8,7 +8,7 @@ export class RoleSearchById {
 
   async execute(id: string): Promise<RoleResponse> {
     const uuid = new Uuid(id);
-    const response = await this.roleRepository.searchById<RoleResponse>(uuid);
+    const response = await this.roleRepository.searchByIdResponse(uuid);
 
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('rol'));

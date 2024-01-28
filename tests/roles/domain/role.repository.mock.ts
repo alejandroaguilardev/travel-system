@@ -4,4 +4,5 @@ export const roleRepositoryMock = {
   remove: jest.fn(),
   search: jest.fn(),
   searchById: jest.fn(),
+  searchByIdResponse: jest.fn(),
 };
