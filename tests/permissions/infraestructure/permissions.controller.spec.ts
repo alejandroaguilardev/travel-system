@@ -3,9 +3,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as request from 'supertest';
-import { globalPipes } from '../../../config/global-pipes';
+import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
 import { AppModule } from '../../../src/app.module';
-import { GlobalExceptionFilter } from '../../../config/global-filter';
+import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
 import { PermissionMother } from '../domain/permission.mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { PermissionNameMother } from '../domain/permission-name.mother';
@@ -20,7 +20,7 @@ describe('PermissionsController', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(globalPipes());
+    app.useGlobalPipes(GlobalPipes.getGlobal());
     app.useGlobalFilters(new GlobalExceptionFilter());
     await app.init();
 

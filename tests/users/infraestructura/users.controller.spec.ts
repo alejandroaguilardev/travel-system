@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../../src/app.module';
 import { Model } from 'mongoose';
 import { INestApplication } from '@nestjs/common';
-import { globalPipes } from '../../../config/global-pipes';
-import { GlobalExceptionFilter } from '../../../config/global-filter';
+import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
+import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
 import { getModelToken } from '@nestjs/mongoose';
 import * as request from 'supertest';
 import { UserCreatorMother } from '../domain/create-user-mother';
@@ -20,7 +20,7 @@ describe('UsersController', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(globalPipes());
+    app.useGlobalPipes(GlobalPipes.getGlobal());
     app.useGlobalFilters(new GlobalExceptionFilter());
 
     await app.init();
