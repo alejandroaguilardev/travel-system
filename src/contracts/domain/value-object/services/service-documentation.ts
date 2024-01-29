@@ -47,10 +47,10 @@ export class ContractDocumentation {
         typeof contract.services.documentation[key]?.hasServiceIncluded ==
         'boolean'
       ) {
-        if (!contract.services.documentation[key]?.hasServiceIncluded) {
-          contract.services.documentation[key].isApplied =
-            documentationRequest[key].isApplied;
-        }
+        // if (!contract.services.documentation[key]?.hasServiceIncluded) {
+        contract.services.documentation[key].isApplied =
+          documentationRequest[key].isApplied;
+        // }
         if (contract.services.documentation[key]?.isApplied) {
           ++count;
         }
