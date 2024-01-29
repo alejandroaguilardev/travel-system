@@ -25,6 +25,7 @@ The project follows industry best practices and design patterns, including:
 - **Hexagonal Architecture**: Structuring the application with a hexagonal architecture for better separation of concerns.
 - **Repository Pattern**: Implementing the repository pattern for a clean and organized data access layer.
 - **SOLID Principles**: Adhering to SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion) for better maintainability and extensibility.
+- **Criteria Pattern**: Applying the Criteria pattern for flexible filtering and querying of data.
 
 ## Testing
 
@@ -46,7 +47,7 @@ Before starting the system, make sure to have **Node.js** and **MongoDB** instal
 Before running the application, you need to configure some environment variables. Create a `.env` file at the root of the project and set the following variables:
 
 ```env
-production=false
+PRODUCTION=false
 PORT=5000
 DATABASE_URL="mongodb://localhost:27017/database_name"
 JWT_SECRET_KEY="JWT_SECRET_KEY"
