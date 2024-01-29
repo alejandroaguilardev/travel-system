@@ -46,7 +46,7 @@ Before starting the system, make sure to have **Node.js** and **MongoDB** instal
 Before running the application, you need to configure some environment variables. Create a `.env` file at the root of the project and set the following variables:
 
 ```env
-production=false
+PRODUCTION=false
 PORT=5000
 DATABASE_URL="mongodb://localhost:27017/database_name"
 JWT_SECRET_KEY="JWT_SECRET_KEY"

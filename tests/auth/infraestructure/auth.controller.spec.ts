@@ -3,8 +3,8 @@ import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as request from 'supertest';
-import { GlobalExceptionFilter } from '../../../config/global-filter';
-import { globalPipes } from '../../../config/global-pipes';
+import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
+import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
 import { AppModule } from '../../../src/app.module';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 
@@ -18,7 +18,7 @@ describe('AuthController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(globalPipes());
+    app.useGlobalPipes(GlobalPipes.getGlobal());
     app.useGlobalFilters(new GlobalExceptionFilter());
 
     await app.init();

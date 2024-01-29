@@ -5,7 +5,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ErrorDomain } from '../src/common/domain/errors/error-domain';
+import { ErrorDomain } from '../../domain/errors/error-domain';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {

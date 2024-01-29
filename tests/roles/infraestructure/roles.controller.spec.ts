@@ -2,8 +2,8 @@ import { INestApplication } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
-import { GlobalExceptionFilter } from '../../../config/global-filter';
-import { globalPipes } from '../../../config/global-pipes';
+import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
+import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
 import { AppModule } from '../../../src/app.module';
 import { RoleMother } from '../domain/role-mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
@@ -20,7 +20,7 @@ describe('RolesController', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(globalPipes());
+    app.useGlobalPipes(GlobalPipes.getGlobal());
     app.useGlobalFilters(new GlobalExceptionFilter());
     await app.init();
     roleModel = moduleFixture.get<Model<any>>(getModelToken('RoleModel'));
