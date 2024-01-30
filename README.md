@@ -34,6 +34,7 @@ The project follows industry best practices and design patterns, including:
 - **Hexagonal Architecture**: Structuring the application with a hexagonal architecture for better separation of concerns.
 - **Repository Pattern**: Implementing the repository pattern for a clean and organized data access layer.
 - **SOLID Principles**: Adhering to SOLID principles (Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, Dependency Inversion) for better maintainability and extensibility.
+- **Criteria Pattern**: Applying the Criteria pattern for flexible filtering and querying of data.
 
 ## Testing
 
