@@ -3,7 +3,7 @@ import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid
 
 export class UserEmail extends EmailValueObject {
   constructor(value: string) {
-    super(value);
+    super(value?.toLocaleLowerCase());
     if (!value.trim()) {
       this.isNotEmpty();
     }
