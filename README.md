@@ -14,8 +14,17 @@ At *Pet Travel Perú*, we are a team of professionals and veterinarians committe
 This project represents an API system built with the following technologies:
 
 - **NestJS**: A progressive Node.js framework for building efficient, reliable, and scalable server-side applications.
-- **TypeScript**: A superset of JavaScript that adds static types to the language, providing improved developer experience and code quality.
-- **MongoDB**: A NoSQL database, used for storing and managing data in a flexible, scalable, and JSON-like format.
+
+- **TypeScript**: A superset of JavaScript that adds static types to the language, providing an improved developer experience and code quality.
+
+- **MongoDB**: A NoSQL database used for storing and managing data in a flexible, scalable, and JSON-like format.
+
+- **Mongoose**: Mongoose is a MongoDB object modeling library for Node.js. It provides a straightforward schema-based solution to model your application data and includes built-in type casting, validation, query building, and more.
+
+- **JWT (JSON Web Tokens)**: JWT is a compact, URL-safe means of representing claims to be transferred between two parties. It is commonly used for authentication and information exchange. In the context of this API, JWT might be utilized for secure user authentication.
+
+- **UUID (Universally Unique Identifier)**: UUIDs are standardized 128-bit unique identifiers. They can be used as a unique identifier for records in the database or for generating tokens.
+
 
 ## Best Practices and Patterns
 
