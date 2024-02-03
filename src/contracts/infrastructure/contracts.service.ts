@@ -1,24 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { CreateContractDto } from './dto/create-contract.dto';
-import { UpdateContractDto } from './dto/update-contract.dto';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
-import { ResponseSuccess } from '../../common/domain/response/response-success';
-import { ContractCreator } from '../application/create/contract-creator';
+import { ResponseSuccess, ResponseSearch } from '../../common/domain/response';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import { UserWithoutWithRoleResponse } from '../../users/application/response/user-without.response';
+import { ContractCreator } from '../application/create/contract-creator';
 import { ContractSearch } from '../application/search/contract-search';
 import { ContractSearchById } from '../application/search-by-id/contract-search-by-id';
-import { ContractUpdater } from '../application/update/contract-updater';
 import { ContractRemover } from '../application/remove/contract-remover';
-import { ResponseSearch } from '../../common/domain/response/response-search';
 import { ContractResponse } from '../application/response/contract.response';
 import { ContractSearchByIdClient } from '../application/search-contract-by-client/search-contract-by-client';
-import { DocumentationDto } from './dto/documentation.dto';
-import { ContractDocumentationUpdater } from '../application/update/documentation-updater';
-import { CageDto } from './dto/cage.dto';
-import { ContractCageUpdater } from '../application/update/cage-updater';
-import { TravelDto } from './dto/travel.dto';
-import { ContractTravelUpdater } from '../application/update/travel-updater';
+import { CommandContractCreator } from '../application/create';
 import { ContractFinish } from '../application/finish/contract-finish';
+import {
+  CommandContractCage,
+  CommandContractDocumentation,
+  CommandContractTravel,
+  ContractCageUpdater,
+  ContractDocumentationUpdater,
+  ContractTravelUpdater,
+  ContractUpdater,
+} from '../application/update';
+import {
+  CreateContractDto,
+  UpdateContractDto,
+  DocumentationDto,
+  CageDto,
+  TravelDto,
+} from './dto/';
 
 @Injectable()
 export class ContractsService {
@@ -26,9 +34,13 @@ export class ContractsService {
     private readonly mongoContractRepository: MongoContractRepository,
   ) {}
 
-  create(createContractDto: CreateContractDto): Promise<ResponseSuccess> {
+  create(
+    createContractDto: CreateContractDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
-    return contractsCreator.execute(createContractDto);
+    const contract = CommandContractCreator.execute(createContractDto, user.id);
+    return contractsCreator.execute(contract, user);
   }
 
   finish(id: string): Promise<ResponseSuccess> {
@@ -58,33 +70,49 @@ export class ContractsService {
   update(
     id: string,
     updateContractDto: UpdateContractDto,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const contractUpdater = new ContractUpdater(this.mongoContractRepository);
-    return contractUpdater.execute(id, updateContractDto);
+    const contract = CommandContractCreator.execute(updateContractDto, user.id);
+    return contractUpdater.execute(id, contract, user);
   }
 
   updateDocumentation(
     id: string,
     documentationDto: DocumentationDto,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ContractResponse> {
     const contractDocumentationUpdater = new ContractDocumentationUpdater(
       this.mongoContractRepository,
     );
-    return contractDocumentationUpdater.execute(id, documentationDto);
+
+    const documentation =
+      CommandContractDocumentation.execute(documentationDto);
+    return contractDocumentationUpdater.execute(id, documentation, user);
   }
 
-  updateCage(id: string, cageDto: CageDto): Promise<ContractResponse> {
+  updateCage(
+    id: string,
+    cageDto: CageDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ContractResponse> {
     const contractDocumentationUpdater = new ContractCageUpdater(
       this.mongoContractRepository,
     );
-    return contractDocumentationUpdater.execute(id, cageDto);
+    const cage = CommandContractCage.execute(cageDto);
+    return contractDocumentationUpdater.execute(id, cage, user);
   }
 
-  updateTravel(id: string, travelDto: TravelDto): Promise<ContractResponse> {
+  updateTravel(
+    id: string,
+    travelDto: TravelDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ContractResponse> {
     const contractTravelUpdater = new ContractTravelUpdater(
       this.mongoContractRepository,
     );
-    return contractTravelUpdater.execute(id, travelDto);
+    const travel = CommandContractTravel.execute(travelDto);
+    return contractTravelUpdater.execute(id, travel, user);
   }
 
   remove(id: string): Promise<ResponseSuccess> {

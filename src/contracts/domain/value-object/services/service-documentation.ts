@@ -1,15 +1,14 @@
-import { DocumentationChipCertificate } from './documentation/documentation-chip-certificate';
-import { DocumentationEmocionalSupportCertificate } from './documentation/documentation-emotional-support-certificate';
-import { DocumentationHealthCertificate } from './documentation/documentation-health-certificate';
-import { DocumentationImportLicense } from './documentation/documentation-import-license';
-import { DocumentationRabiesSerologicalTest } from './documentation/documentation-rabies-serological-test';
-import { DocumentationSenasaDocuments } from './documentation/documentation-senasa-documents';
-import { DocumentationVaccinationCertificate } from './documentation/documentation-vaccination-certificate';
+import { DocumentationInterface, StatusInterface } from '../../interfaces';
 import { ContractStatus } from '../contract-status';
-import { DocumentationDefinition } from '../../interfaces/documentation';
-import { StatusDefinition } from '../../interfaces/status';
-import { ContractResponse } from '../../../../contracts/application/response/contract.response';
-import { ContractDefinition } from '../../interfaces/contract';
+import {
+  DocumentationVaccinationCertificate,
+  DocumentationHealthCertificate,
+  DocumentationChipCertificate,
+  DocumentationSenasaDocuments,
+  DocumentationRabiesSerologicalTest,
+  DocumentationImportLicense,
+  DocumentationEmocionalSupportCertificate,
+} from './documentation';
 
 export class ContractDocumentation {
   constructor(
@@ -23,9 +22,9 @@ export class ContractDocumentation {
     readonly emotionalSupportCertificate: DocumentationEmocionalSupportCertificate,
   ) {}
 
-  toJson(): DocumentationDefinition {
+  toJson(): DocumentationInterface {
     return {
-      status: this.status.value as StatusDefinition,
+      status: this.status.value as StatusInterface,
       vaccinationCertificate: this.vaccinationCertificate.toJson(),
       healthCertificate: this.healthCertificate.toJson(),
       chipCertificate: this.chipCertificate.toJson(),
@@ -36,34 +35,24 @@ export class ContractDocumentation {
     };
   }
 
-  static documentationIsApplied(
-    contract: ContractResponse,
-    documentationRequest: DocumentationDefinition,
-  ): ContractDefinition {
+  documentationIsApplied(): void {
     let count = 0;
 
-    Object.keys(contract.services.documentation).forEach((key) => {
-      if (
-        typeof contract.services.documentation[key]?.hasServiceIncluded ==
-        'boolean'
-      ) {
-        // if (!contract.services.documentation[key]?.hasServiceIncluded) {
-        contract.services.documentation[key].isApplied =
-          documentationRequest[key].isApplied;
-        // }
-        if (contract.services.documentation[key]?.isApplied) {
+    Object.keys(this).forEach((key) => {
+      if (typeof this[key]?.hasServiceIncluded?.value == 'boolean') {
+        this[key].isApplied.value = this[key].isApplied.value;
+        if (this[key]?.isApplied.value) {
           ++count;
         }
       }
     });
 
     if (count === 7) {
-      contract.services.documentation.status = 'completed';
+      this.status.value = 'completed';
     } else if (count > 0) {
-      contract.services.documentation.status = 'in-process';
+      this.status.value = 'in-process';
     } else {
-      contract.services.documentation.status = 'pending';
+      this.status.value = 'pending';
     }
-    return contract;
   }
 }

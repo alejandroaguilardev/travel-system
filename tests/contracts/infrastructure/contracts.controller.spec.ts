@@ -9,12 +9,16 @@ import { AppModule } from '../../../src/app.module';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UuidMother } from '../../common/domain/uuid-mother';
-import { NumberMother } from '../domain/number.mother';
 import { ContractFinish } from '../../../src/contracts/application/finish/contract-finish';
+import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { ContractDocumentationMother } from '../domain/contract-documentation.mother';
+import { CageMother } from '../domain/cage-mother';
+import { ContractTravelMother } from '../domain/contract-travel.mother';
 
 describe('ContractsController', () => {
   let app: INestApplication;
   let contractModel: Model<any>;
+  let access_token: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -29,6 +33,21 @@ describe('ContractsController', () => {
     contractModel = moduleFixture.get<Model<any>>(
       getModelToken('ContractModel'),
     );
+
+    const createAuthDto = UserCreatorMother.create();
+
+    await request(app.getHttpServer())
+      .post('/users')
+      .send(createAuthDto)
+      .expect(201);
+    const { email, password } = createAuthDto;
+
+    const response = await request(app.getHttpServer())
+      .post('/auth')
+      .send({ email, password })
+      .expect(200);
+
+    access_token = response.body.token;
   });
 
   afterAll(async () => {
@@ -38,9 +57,9 @@ describe('ContractsController', () => {
 
   it('/contracts (POST)', async () => {
     const contractDto = ContractCreatorMother.create();
-
     const response = await request(app.getHttpServer())
       .post('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
       .send(contractDto)
       .expect(201);
 
@@ -52,11 +71,13 @@ describe('ContractsController', () => {
 
     await request(app.getHttpServer())
       .post('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
       .send(contractDto)
       .expect(201);
 
     const response = await request(app.getHttpServer())
       .post(`/contracts/${contractDto.id}/finish`)
+      .set('Authorization', `Bearer ${access_token}`)
       .send()
       .expect(400);
 
@@ -66,6 +87,7 @@ describe('ContractsController', () => {
   it('/contracts (GET)', async () => {
     const response = await request(app.getHttpServer())
       .get('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
       .expect(200);
 
     expect(Array.isArray(response.body.rows)).toBe(true);
@@ -74,82 +96,113 @@ describe('ContractsController', () => {
 
   it('/contracts/:id (GET)', async () => {
     const id = UuidMother.create();
-    request(app.getHttpServer()).get(`/contracts/${id}`).expect(400);
+    request(app.getHttpServer())
+      .get(`/contracts/${id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(400);
   });
 
   it('/contracts/client/:id (GET)', async () => {
     const id = UuidMother.create();
-    request(app.getHttpServer()).get(`/contracts/client/${id}`).expect(400);
+    request(app.getHttpServer())
+      .get(`/contracts/client/${id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(400);
   });
 
   it('/contracts (PATCH)', async () => {
-    const userDto = ContractCreatorMother.create();
-    const { id } = userDto;
+    const contractDto = ContractCreatorMother.create();
+
+    const updateContractDto = ContractCreatorMother.create();
 
     await request(app.getHttpServer())
       .post('/contracts')
-      .send(userDto)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(contractDto)
       .expect(201);
 
     const response = await request(app.getHttpServer())
-      .patch(`/contracts/${id}`)
-      .send({ number: NumberMother.create() })
+      .patch(`/contracts/${contractDto.id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(updateContractDto)
       .expect(200);
-
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
-  it(':id/documentation/client (PATCH)', async () => {
+  it(':id/documentation (PATCH)', async () => {
     const dto = ContractCreatorMother.create();
+    const documentation = ContractDocumentationMother.create();
 
-    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
+    await request(app.getHttpServer())
+      .post('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(dto)
+      .expect(201);
 
     const response = await request(app.getHttpServer())
-      .patch(`/contracts/${dto.id}/documentation/client`)
-      .send(dto.documentation)
+      .patch(`/contracts/${dto.id}/documentation`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(documentation)
       .expect(200);
 
-    expect(response.body.services.documentation.chipCertificate).toEqual(
-      dto.documentation.chipCertificate,
+    expect(
+      response.body.services.documentation.importLicense.isApplied,
+    ).toEqual(documentation.importLicense.isApplied);
+  });
+
+  it(':id/cage (PATCH)', async () => {
+    const dto = ContractCreatorMother.create();
+    const cage = CageMother.create();
+
+    await request(app.getHttpServer())
+      .post('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(dto)
+      .expect(201);
+
+    const response = await request(app.getHttpServer())
+      .patch(`/contracts/${dto.id}/cage`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(cage)
+      .expect(200);
+
+    expect(response.body.services.cage.chosen.modelCage).toEqual(
+      cage.chosen.modelCage,
     );
   });
 
-  it(':id/cage/client (PATCH)', async () => {
+  it(':id/travel (PATCH)', async () => {
     const dto = ContractCreatorMother.create();
+    const travel = ContractTravelMother.create();
 
-    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
+    await request(app.getHttpServer())
+      .post('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(dto)
+      .expect(201);
 
     const response = await request(app.getHttpServer())
-      .patch(`/contracts/${dto.id}/cage/client`)
-      .send(dto.cage)
-      .expect(200);
-
-    expect(response.body.services.cage.chosen).toEqual(dto.cage.chosen);
-  });
-
-  it(':id/travel/client (PATCH)', async () => {
-    const dto = ContractCreatorMother.create();
-    const dtoTwo = ContractCreatorMother.createWithTravel();
-
-    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
-
-    const response = await request(app.getHttpServer())
-      .patch(`/contracts/${dto.id}/travel/client`)
-      .send(dtoTwo.services.travel)
+      .patch(`/contracts/${dto.id}/travel`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(travel)
       .expect(200);
 
     expect(response.body.services.travel.airlineReservation.code).toEqual(
-      dtoTwo.services.travel.airlineReservation.code,
+      travel.airlineReservation.code,
     );
   });
 
   it('/contracts (DELETE)', async () => {
-    const dto = ContractCreatorMother.create();
-    const { id } = dto;
-    await request(app.getHttpServer()).post('/contracts').send(dto).expect(201);
+    const contractDto = ContractCreatorMother.create();
+    await request(app.getHttpServer())
+      .post('/contracts')
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(contractDto)
+      .expect(201);
 
     const response = await request(app.getHttpServer())
-      .delete(`/contracts/${id}`)
+      .delete(`/contracts/${contractDto.id}`)
+      .set('Authorization', `Bearer ${access_token}`)
       .expect(200);
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
   });

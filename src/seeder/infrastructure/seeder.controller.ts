@@ -7,7 +7,7 @@ export class SeederController {
 
   @Get()
   seeder() {
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.PRODUCTION === 'false') {
       return this.seederService.seeder();
     } else {
       return {

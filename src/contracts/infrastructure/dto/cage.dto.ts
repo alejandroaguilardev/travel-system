@@ -1,27 +1,38 @@
-import { IsBoolean, IsString, ValidateNested } from 'class-validator';
-import { StatusDefinition } from '../../domain/interfaces/status';
+import {
+  IsBoolean,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
-import { CageDefinition, CageChosen } from '../../domain/interfaces/cage';
+import { StatusInterface } from '../../domain/interfaces/status.interface';
+import {
+  CageInterface,
+  CageChosenInterface,
+} from '../../domain/interfaces/cage.interface';
 
-class CageChosenDto implements Partial<CageChosen> {
+class CageChosenDto implements Partial<CageChosenInterface> {
   @IsString()
   modelCage?: string;
   @IsString()
   dimensionsCage?: string;
   @IsString()
   typeCage?: string;
+  @IsOptional()
+  @IsString()
+  user?: string;
 }
 
-export class CageDto implements CageDefinition {
+export class CageDto implements CageInterface {
   @IsString()
-  status: StatusDefinition;
+  status: StatusInterface;
   @IsBoolean()
   hasServiceIncluded: boolean;
   @IsBoolean()
   swornDeclaration: boolean;
   @Type(() => CageChosenDto)
   @ValidateNested()
-  chosen: CageChosen;
+  chosen: CageChosenInterface;
   @IsString()
   recommendation: string;
 }

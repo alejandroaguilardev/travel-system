@@ -1,15 +1,15 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
-import { ServicesDefinition } from '../../domain/interfaces/services';
-import { ContractDefinition } from '../../domain/interfaces/contract';
-import { StatusDefinition } from '../../domain/interfaces/status';
+import { ContractInterface } from '../../domain/interfaces/contract.interface';
+import { ServicesInterface } from '../../domain/interfaces/services.interface';
+import { StatusInterface } from '../../domain/interfaces/status.interface';
 
 @Schema({
   collection: 'contracts',
   ...SCHEMA_OPTIONS,
 })
-export class ContractModel implements ContractDefinition {
+export class ContractModel implements ContractInterface {
   @Prop({ type: String, index: true, unique: true, required: true })
   id: string;
   @Prop({ type: String, required: true, unique: true })
@@ -19,7 +19,7 @@ export class ContractModel implements ContractDefinition {
   @Prop({ type: [String], required: true, index: true })
   pets: string[];
   @Prop({ type: String, required: true })
-  status: StatusDefinition;
+  status: StatusInterface;
   @Prop({ type: Date, required: true })
   startDate: Date;
   @Prop({ type: Date, required: false })
@@ -28,34 +28,54 @@ export class ContractModel implements ContractDefinition {
     type: {
       documentation: {
         status: String,
-        hasServiceIncluded: Boolean,
         vaccinationCertificate: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
         healthCertificate: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
         chipCertificate: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
         senasaDocuments: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
         rabiesSeroLogicalTest: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
         importLicense: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
         emotionalSupportCertificate: {
           hasServiceIncluded: Boolean,
           isApplied: Boolean,
+          expectedDate: Date,
+          executionDate: Date,
+          user: String,
         },
       },
       cage: {
@@ -66,12 +86,14 @@ export class ContractModel implements ContractDefinition {
           modelCage: String,
           typeCage: String,
           dimensionsCage: String,
+          user: String,
         },
         recommendation: String,
       },
       travel: {
         status: String,
         hasServiceIncluded: Boolean,
+        hasServiceAccompanied: Boolean,
         typeTraveling: String,
         airlineReservation: {
           code: String,
@@ -80,6 +102,7 @@ export class ContractModel implements ContractDefinition {
           destinationAirport: String,
           departureDate: Date,
           arrivalDate: Date,
+          user: String,
         },
         petPerCharge: {
           receptor: String,
@@ -88,14 +111,17 @@ export class ContractModel implements ContractDefinition {
           pickupDateTime: Date,
           pickupLocation: String,
           specialRequests: String,
+          user: String,
         },
       },
     },
     required: false,
   })
-  services: ServicesDefinition;
+  services: ServicesInterface;
   @Prop({ type: String, required: false })
   guideNumber: string;
+  @Prop({ type: String, required: false })
+  user: string;
 }
 
 export type ContractDocument = HydratedDocument<ContractModel>;

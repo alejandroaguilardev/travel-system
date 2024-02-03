@@ -1,7 +1,7 @@
-import { TypeTraveling as TypeTravelingType } from '../../../interfaces/travel';
+import { TypeTravelingType } from '../../../interfaces/travel.interface';
 import { ErrorInvalidadArgument } from '../../../../../common/domain/errors/error-invalid-argument';
 
-export class TypeTraveling {
+export class ContractTypeTraveling {
   static values: TypeTravelingType[] = ['accompanied', 'charge', 'none'];
 
   constructor(readonly value: TypeTravelingType) {
@@ -9,7 +9,7 @@ export class TypeTraveling {
   }
 
   private validSecured(value: TypeTravelingType) {
-    if (!TypeTraveling.values.includes(value)) {
+    if (!ContractTypeTraveling.values.includes(value)) {
       throw new ErrorInvalidadArgument('No es un tipo de viaje válido');
     }
   }

@@ -1,8 +1,8 @@
 import { ContractStatus } from '../../../src/contracts/domain/value-object/contract-status';
-import { StatusDefinition } from '../../../src/contracts/domain/interfaces/status';
+import { StatusInterface } from '../../../src/contracts/domain/interfaces/status.interface';
 
 export class StatusMother {
-  static create(): StatusDefinition {
+  static create(): StatusInterface {
     const randomIndex = Math.floor(
       Math.random() * ContractStatus.values.length,
     );

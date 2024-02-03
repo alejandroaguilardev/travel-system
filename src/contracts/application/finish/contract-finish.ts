@@ -3,7 +3,6 @@ import { ResponseSuccess } from '../../../common/domain/response/response-succes
 import { ContractRepository } from '../../domain/contract.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractResponse } from '../response/contract.response';
-import { ContractFactory } from '../../domain/factory/contract.factory';
 import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
 import { ContractEndDate } from '../../domain/value-object/contract-end-date';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
@@ -20,15 +19,12 @@ export class ContractFinish {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
 
-    const contract = ContractFactory.converter(response);
-
-    if (contract.status.value !== 'completed') {
+    if (response.status !== 'completed') {
       throw new ErrorInvalidadArgument(ContractFinish.messageNotCompleted());
     }
     const endDate = new ContractEndDate(new Date());
-    contract.setEndDate(endDate);
 
-    await this.contractRepository.update(uuid, contract);
+    await this.contractRepository.finish(uuid, endDate);
 
     return ResponseMessage.createSuccessResponse(
       ContractFinish.messageSuccess(),

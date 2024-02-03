@@ -1,10 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../../src/app.module';
-import { Model } from 'mongoose';
 import { INestApplication } from '@nestjs/common';
 import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
 import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
-import { getModelToken } from '@nestjs/mongoose';
 import * as request from 'supertest';
 import { UserCreatorMother } from '../domain/create-user-mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
@@ -12,7 +10,6 @@ import { StringMother } from '../../common/domain/string.mother';
 
 describe('UsersController', () => {
   let app: INestApplication;
-  let userModel: Model<any>;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -24,13 +21,6 @@ describe('UsersController', () => {
     app.useGlobalFilters(new GlobalExceptionFilter());
 
     await app.init();
-
-    userModel = moduleFixture.get<Model<any>>(getModelToken('UserModel'));
-  });
-
-  afterAll(async () => {
-    await userModel.deleteMany({});
-    await app.close();
   });
 
   it('/users (POST)', async () => {

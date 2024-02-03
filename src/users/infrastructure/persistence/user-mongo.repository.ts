@@ -7,7 +7,10 @@ import { MongoRepository } from '../../../common/infrastructure/mongo/mongo.repo
 import { User } from '../../domain/user';
 import { UserEmail } from '../../domain/user-email';
 import { UserRepository } from '../../domain/user.repository';
-import { UserResponse } from '../../application/response/user.response';
+import {
+  UserResponse,
+  UserResponseWithRole,
+} from '../../application/response/user.response';
 import { UserModel } from '../schema/user.schema';
 import { UserMongoPipeline } from './user-mongo.pipeline';
 import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
@@ -51,8 +54,8 @@ export class UserMongoRepository
     return { ...user, password };
   }
 
-  async searchByIdWithRole(uuid: Uuid): Promise<UserResponse | null> {
-    const rows: UserResponse[] = await this.userModel
+  async searchByIdWithRole(uuid: Uuid): Promise<UserResponseWithRole | null> {
+    const rows: UserResponseWithRole[] = await this.userModel
       .aggregate(UserMongoPipeline.executeById(uuid.value))
       .exec();
 

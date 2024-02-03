@@ -1,35 +1,43 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { ContractRepository } from '../../domain/contract.repository';
-import { CageDefinition } from '../../domain/interfaces/cage';
-import { ContractFactory } from '../../domain/factory/contract.factory';
 import { ContractResponse } from '../response/contract.response';
-import { Contract } from '../../domain/contract';
 import { ContractCage } from '../../domain/value-object/services/service-cage';
+import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { ContractStatus } from '../../domain/value-object/contract-status';
 
 export class ContractCageUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
-    cageRequest: CageDefinition,
+    cage: ContractCage,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ContractResponse> {
+    if (!user) {
+      console.log(user);
+    }
+
     const uuid = new Uuid(contractId);
 
-    let contract =
+    const contract =
       await this.contractRepository.searchById<ContractResponse>(uuid);
 
     if (!contract) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
 
-    Contract.statusError(contract.status);
+    const status = new ContractStatus(contract.status);
+    status.statusError();
 
-    contract = ContractCage.selectedChosen(contract, cageRequest);
-    contract = Contract.establishedStatus(contract);
-
-    const contractUpdated = ContractFactory.converter(contract);
-    await this.contractRepository.update(uuid, contractUpdated);
-    return contractUpdated.toJson();
+    await this.contractRepository.updateCage(uuid, status, cage);
+    return {
+      ...contract,
+      services: {
+        ...contract.services,
+        cage: cage.toJson(),
+      },
+      status: status.value,
+    };
   }
 }

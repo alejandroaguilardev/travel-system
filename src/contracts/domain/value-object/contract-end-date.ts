@@ -1,7 +1,7 @@
 import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
 
 export class ContractEndDate {
-  constructor(readonly value: Date | null) {
+  constructor(public value: Date | null) {
     if (this.value) {
       this.ensureValueIsDate(this.value);
     }

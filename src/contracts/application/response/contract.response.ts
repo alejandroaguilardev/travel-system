@@ -1,3 +1,3 @@
-import { ContractDefinition } from '../../domain/interfaces/contract';
+import { ContractInterface } from '../../domain/interfaces/contract.interface';
 
-export interface ContractResponse extends ContractDefinition {}
+export interface ContractResponse extends ContractInterface {}

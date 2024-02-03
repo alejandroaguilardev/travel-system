@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { CageChosen } from '../../../src/contracts/domain/interfaces/cage';
+import { CageChosenInterface } from '../../../src/contracts/domain/interfaces/cage.interface';
 
 export class ChosenMother {
-  static create(): CageChosen {
+  static create(): CageChosenInterface {
     return {
       dimensionsCage: faker.person.jobType(),
       modelCage: faker.person.jobType(),

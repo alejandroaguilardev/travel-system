@@ -1,0 +1,9 @@
+export { EmailValueObject } from './email-value-object';
+export { DateValueObject } from './date-value-object';
+export { NumberValueObject } from './number-value-object';
+export { PhoneValueObject } from './phone-value-object';
+export { StringValueObject } from './string-value-object';
+export { Uuid } from './uuid';
+export { ValueObject } from './value-object';
+export { ValueObjectArray } from './value-object-array';
+export { UuidOptional } from './uuid-optional-value-object';

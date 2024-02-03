@@ -10,7 +10,10 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { UserFind } from '../application/find/user-find';
 import { UserUpdater } from '../application/update/user-updater';
 import { UserRemover } from '../application/remove/user-remover';
-import { UserWithoutResponse } from '../application/response/user-without.response';
+import {
+  UserWithoutResponse,
+  UserWithoutWithRoleResponse,
+} from '../application/response/user-without.response';
 import { UserCreatorDto } from './dto/create-user.dto';
 
 @Injectable()
@@ -35,7 +38,7 @@ export class UsersService {
     return fillAllUser.find(criteriaDto);
   }
 
-  findOne(userId: string): Promise<UserWithoutResponse> {
+  findOne(userId: string): Promise<UserWithoutWithRoleResponse> {
     const findUser = new UserFind(this.userMongoRepository);
     return findUser.find(userId);
   }

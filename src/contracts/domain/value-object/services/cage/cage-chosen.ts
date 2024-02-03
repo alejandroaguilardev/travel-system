@@ -1,6 +1,7 @@
+import { UuidOptional } from '../../../../../common/domain/value-object';
 import { CageChosenModel } from './cage-selected-model';
 import { CageChosenType } from './cage-selected-type';
-import { CageChosen as ICageChosen } from '../../../interfaces/cage';
+import { CageChosenInterface } from '../../../interfaces/cage.interface';
 import { CageChosenDimensions } from './cage-selected-dimensions';
 
 export class CageChosen {
@@ -8,13 +9,15 @@ export class CageChosen {
     readonly modelCage: CageChosenModel,
     readonly typeCage: CageChosenType,
     readonly dimensionsCage: CageChosenDimensions,
+    readonly user: UuidOptional,
   ) {}
 
-  toJson(): ICageChosen {
+  toJson(): CageChosenInterface {
     return {
       modelCage: this.modelCage.value,
       typeCage: this.typeCage.value,
       dimensionsCage: this.dimensionsCage.value,
+      user: this.user.value,
     };
   }
 }

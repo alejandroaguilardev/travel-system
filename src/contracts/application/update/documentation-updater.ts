@@ -1,38 +1,48 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { ContractRepository } from '../../domain/contract.repository';
-import { DocumentationDefinition } from '../../domain/interfaces/documentation';
-import { ContractFactory } from '../../domain/factory/contract.factory';
 import { ContractResponse } from '../response/contract.response';
-import { Contract } from '../../domain/contract';
 import { ContractDocumentation } from '../../domain/value-object/services/service-documentation';
+import { ContractStatus } from '../../domain/value-object/contract-status';
+import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
 
 export class ContractDocumentationUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
-    documentationRequest: DocumentationDefinition,
+    documentation: ContractDocumentation,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ContractResponse> {
-    const uuid = new Uuid(contractId);
+    if (!user) {
+      console.log(user);
+    }
 
-    let contract =
+    const uuid = new Uuid(contractId);
+    const contract =
       await this.contractRepository.searchById<ContractResponse>(uuid);
 
     if (!contract) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
 
-    Contract.statusError(contract.status);
+    const status = new ContractStatus(contract.status);
+    status.statusError();
 
-    contract = ContractDocumentation.documentationIsApplied(
-      contract,
-      documentationRequest,
+    documentation.documentationIsApplied();
+
+    await this.contractRepository.updateDocumentation(
+      uuid,
+      status,
+      documentation,
     );
-    contract = Contract.establishedStatus(contract);
-
-    const contractUpdated = ContractFactory.converter(contract);
-    await this.contractRepository.update(uuid, contractUpdated);
-    return contractUpdated.toJson();
+    return {
+      ...contract,
+      services: {
+        ...contract.services,
+        documentation: documentation.toJson(),
+      },
+      status: status.value,
+    };
   }
 }

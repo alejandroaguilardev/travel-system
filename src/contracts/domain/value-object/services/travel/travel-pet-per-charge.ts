@@ -1,3 +1,4 @@
+import { UuidOptional } from '../../../../../common/domain/value-object';
 import { TravelEmail } from './travel-email';
 import { TravelPhone } from './travel-phone';
 import { TravelPickupDataTime } from './travel-pickup-date-time';
@@ -13,6 +14,7 @@ export class TravelPetPerCharge {
     readonly pickupDateTime: TravelPickupDataTime,
     readonly pickupLocation: TravelPickupLocation,
     readonly specialRequests: TravelSpecialRequests,
+    readonly user: UuidOptional,
   ) {}
 
   toJson() {
@@ -23,6 +25,7 @@ export class TravelPetPerCharge {
       pickupDateTime: this.pickupDateTime.value,
       pickupLocation: this.pickupLocation.value,
       specialRequests: this.specialRequests.value,
+      user: this.user.value,
     };
   }
 }

@@ -2,6 +2,7 @@ import {
   IsArray,
   IsBoolean,
   IsDate,
+  IsOptional,
   IsString,
   IsUUID,
   ValidateNested,
@@ -10,13 +11,15 @@ import { ContractCreateRequest } from '../../application/create/contract-create-
 import { Type } from 'class-transformer';
 import { DocumentationDto } from './documentation.dto';
 import { CageDto } from './cage.dto';
-import { TypeTraveling } from '../../domain/interfaces/travel';
+import { TypeTravelingType } from '../../domain/interfaces/travel.interface';
 
 class TravelDto {
   @IsBoolean()
   hasServiceIncluded: boolean;
+  @IsBoolean()
+  hasServiceAccompanied: boolean;
   @IsString()
-  typeTraveling: TypeTraveling;
+  typeTraveling: TypeTravelingType;
 }
 
 export class CreateContractDto implements ContractCreateRequest {
@@ -40,4 +43,7 @@ export class CreateContractDto implements ContractCreateRequest {
   @Type(() => TravelDto)
   @ValidateNested()
   travel: TravelDto;
+  @IsOptional()
+  @IsUUID()
+  user: string;
 }

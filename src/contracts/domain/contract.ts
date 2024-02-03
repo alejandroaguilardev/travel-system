@@ -1,14 +1,14 @@
-import { Uuid } from '../../common/domain/value-object/uuid';
-import { ContractDefinition } from './interfaces/contract';
-import { StatusDefinition } from './interfaces/status';
-import { ContractEndDate } from './value-object/contract-end-date';
-import { ContractGuideNumber } from './value-object/contract-guide-number';
-import { ContractNumber } from './value-object/contract-number';
-import { ContractPets } from './value-object/contract-pets';
-import { ContractServices } from './value-object/contract-services';
-import { ContractStartDate } from './value-object/contract-start-date';
-import { ContractStatus } from './value-object/contract-status';
-import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid-argument';
+import { Uuid, UuidOptional } from '../../common/domain/value-object';
+import { ContractInterface, StatusInterface } from './interfaces';
+import {
+  ContractNumber,
+  ContractStatus,
+  ContractStartDate,
+  ContractEndDate,
+  ContractServices,
+  ContractGuideNumber,
+  ContractPets,
+} from './value-object';
 
 export class Contract {
   constructor(
@@ -21,34 +21,25 @@ export class Contract {
     readonly services: ContractServices,
     readonly guideNumber: ContractGuideNumber,
     readonly pets: ContractPets,
+    readonly user: UuidOptional,
   ) {}
 
-  toJson(): ContractDefinition {
+  toJson(): ContractInterface {
     return {
       id: this.id.value,
       number: this.number.value,
       client: this.client.value,
-      status: this.status.value as StatusDefinition,
+      status: this.status.value as StatusInterface,
       startDate: this.startDate.value,
       endDate: this.endDate.value,
       services: this.services.toJson(),
       guideNumber: this.guideNumber.value,
       pets: this.pets.toJson(),
+      user: this.user.value,
     };
   }
 
-  static statusError(status: StatusDefinition) {
-    if (
-      status === 'canceled' ||
-      status === 'none' ||
-      status === 'suspended' ||
-      status === 'completed'
-    ) {
-      throw new ErrorInvalidadArgument('El contrato se encuentra ' + status);
-    }
-  }
-
-  static establishedStatus(contract: ContractDefinition) {
+  static establishedStatus(contract: ContractInterface): StatusInterface {
     let count = 0;
     Object.keys(contract.services).forEach((key) => {
       if (contract.services[key].status === 'completed') {
@@ -64,10 +55,6 @@ export class Contract {
       contract.status = 'pending';
     }
 
-    return contract;
-  }
-
-  setEndDate(date: ContractEndDate) {
-    this.endDate = date;
+    return contract.status;
   }
 }

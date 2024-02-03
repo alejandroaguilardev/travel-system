@@ -1,12 +1,18 @@
-import { ContractRepository } from '../../domain/contract.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { ContractRepository } from '../../domain/contract.repository';
 import { MongoRepository } from '../../../common/infrastructure/mongo/mongo.repository';
 import { ContractModel } from '../schema/contract.schema';
 import { Contract } from '../../domain/contract';
-import { ContractResponse } from 'src/contracts/application/response/contract.response';
+import { ContractResponse } from '../../application/response/contract.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
+import { ContractEndDate, ContractStatus } from '../../domain/value-object';
+import {
+  ContractTravel,
+  ContractCage,
+  ContractDocumentation,
+} from '../../domain/value-object/services';
 
 @Injectable()
 export class MongoContractRepository
@@ -28,5 +34,62 @@ export class MongoContractRepository
       .lean();
 
     return rows;
+  }
+
+  async updateDocumentation(
+    contractId: Uuid,
+    status: ContractStatus,
+    documentation: ContractDocumentation,
+  ): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        status: status.value,
+        services: {
+          documentation: documentation.toJson(),
+        },
+      },
+    );
+  }
+
+  async updateCage(
+    contractId: Uuid,
+    status: ContractStatus,
+    cage: ContractCage,
+  ): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        status: status.value,
+        services: {
+          cage: cage.toJson(),
+        },
+      },
+    );
+  }
+
+  async updateTravel(
+    contractId: Uuid,
+    status: ContractStatus,
+    travel: ContractTravel,
+  ): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        status: status.value,
+        services: {
+          travel: travel.toJson(),
+        },
+      },
+    );
+  }
+
+  async finish(contractId: Uuid, endDate: ContractEndDate): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        endDate: endDate.value,
+      },
+    );
   }
 }

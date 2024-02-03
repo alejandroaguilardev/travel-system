@@ -2,19 +2,22 @@ import {
   MessageDefault,
   ResponseMessage,
 } from '../../../common/domain/response/response-message';
+import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { ContractRepository } from '../../domain/contract.repository';
-import { ContractFactory } from '../../domain/factory/contract.factory';
-import { ContractCreateRequest } from './contract-create-request';
+import { Contract } from '../../domain/contract';
 
 export class ContractCreator {
   constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
-    contractRequest: ContractCreateRequest,
+    contract: Contract,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    const newContract = ContractFactory.create(contractRequest);
-    await this.contractRepository.save(newContract);
+    if (!user) {
+      console.log(user);
+    }
+    await this.contractRepository.save(contract);
 
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_CREATED,

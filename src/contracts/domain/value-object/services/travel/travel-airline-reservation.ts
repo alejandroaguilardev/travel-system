@@ -1,3 +1,4 @@
+import { UuidOptional } from '../../../../../common/domain/value-object';
 import { TravelDepartureAirport } from './travel-departure-airport';
 import { TravelCode } from './travel-code';
 import { TravelFlightNumber } from './travel-flight-number';
@@ -13,6 +14,7 @@ export class TravelAirlineReservation {
     readonly destinationAirport: TravelDestinationAirport,
     readonly departureDate: TravelDepartureDate,
     readonly arrivalDate: TravelArrivalDate,
+    readonly user: UuidOptional,
   ) {}
 
   toJson() {
@@ -23,6 +25,7 @@ export class TravelAirlineReservation {
       destinationAirport: this.destinationAirport.value,
       departureDate: this.departureDate.value,
       arrivalDate: this.arrivalDate.value,
+      user: this.user.value,
     };
   }
 }

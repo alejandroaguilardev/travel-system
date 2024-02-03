@@ -1,26 +1,28 @@
-import { ContractStatus } from '../contract-status';
+import { TravelInterface, StatusInterface } from '../../interfaces';
 import { ContractHasServiceIncluded } from '../contract-has-service.included';
-import { TravelAirlineReservation } from './travel/travel-airline-reservation';
-import { TravelPetPerCharge } from './travel/travel-pet-per-charge';
-import { TypeTraveling } from './travel/type-traveling';
-import { TravelDefinition } from '../../interfaces/travel';
-import { StatusDefinition } from '../../interfaces/status';
-import { ContractResponse } from '../../../application/response/contract.response';
-import { ContractDefinition } from '../../interfaces/contract';
+import { ContractStatus } from '../contract-status';
+import {
+  ContractHasServiceAccompanied,
+  ContractTypeTraveling,
+  TravelAirlineReservation,
+  TravelPetPerCharge,
+} from './travel';
 
 export class ContractTravel {
   constructor(
     readonly status: ContractStatus,
     public hasServiceIncluded: ContractHasServiceIncluded,
-    public typeTraveling: TypeTraveling,
+    readonly hasServiceAccompanied: ContractHasServiceAccompanied,
+    public typeTraveling: ContractTypeTraveling,
     readonly airlineReservation: TravelAirlineReservation,
     readonly petPerCharge: TravelPetPerCharge,
   ) {}
 
-  toJson(): TravelDefinition {
+  toJson(): TravelInterface {
     return {
-      status: this.status.value as StatusDefinition,
+      status: this.status.value as StatusInterface,
       hasServiceIncluded: this.hasServiceIncluded.value,
+      hasServiceAccompanied: this.hasServiceAccompanied.value,
       typeTraveling: this.typeTraveling.value,
       airlineReservation: this.airlineReservation.toJson(),
       petPerCharge: this.petPerCharge.toJson(),
@@ -33,41 +35,29 @@ export class ContractTravel {
     ));
   }
 
-  static setAirlineReservation(
-    contract: ContractResponse,
-    travel: TravelDefinition,
-  ): ContractDefinition {
-    contract.services.travel.airlineReservation = travel.airlineReservation;
-    if (contract.services.travel.typeTraveling === 'charge') {
-      contract.services.travel.petPerCharge = travel.petPerCharge;
-    }
-    const { services } = contract;
-    const { travel: tvl } = services;
-    const { typeTraveling, airlineReservation, petPerCharge } = tvl;
-
+  setAirlineReservation() {
     const hasRequiredAirlineReservationFields =
-      airlineReservation.arrivalDate &&
-      airlineReservation.code &&
-      airlineReservation.departureAirport &&
-      airlineReservation.departureDate &&
-      airlineReservation.destinationAirport &&
-      airlineReservation.flightNumber;
+      this.airlineReservation.arrivalDate.value &&
+      this.airlineReservation.code.value &&
+      this.airlineReservation.departureAirport.value &&
+      this.airlineReservation.departureDate.value &&
+      this.airlineReservation.destinationAirport.value &&
+      this.airlineReservation.flightNumber.value;
 
     if (hasRequiredAirlineReservationFields) {
-      if (typeTraveling === 'charge') {
+      if (this.typeTraveling.value === 'charge') {
         const hasRequiredPetChargeFields =
-          petPerCharge.receptor &&
-          petPerCharge.phone &&
-          petPerCharge.pickupDateTime &&
-          petPerCharge.pickupLocation;
+          this.petPerCharge.receptor &&
+          this.petPerCharge.phone &&
+          this.petPerCharge.pickupDateTime &&
+          this.petPerCharge.pickupLocation;
 
-        contract.services.travel.status = hasRequiredPetChargeFields
+        this.status.value = hasRequiredPetChargeFields
           ? 'completed'
           : 'in-process';
       } else {
-        contract.services.travel.status = 'completed';
+        this.status.value = 'completed';
       }
     }
-    return contract;
   }
 }

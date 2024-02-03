@@ -1,65 +1,28 @@
-import { ContractCreateRequest } from '../../application/create/contract-create-request';
-import { Contract } from '../contract';
-import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractNumber } from '../value-object/contract-number';
-import { ContractPets } from '../value-object/contract-pets';
-import { ContractStartDate } from '../value-object/contract-start-date';
-import { ContractStatus } from '../value-object/contract-status';
-import { ContractEndDate } from '../value-object/contract-end-date';
-import { ContractServices } from '../value-object/contract-services';
-import { ContractGuideNumber } from '../value-object/contract-guide-number';
-import { ContractDocumentationFactory } from './contract-documentation.factory';
-import { ContractCageFactory } from './cage.factory';
-import { ContractTravelFactory } from './travel.factory';
-import { ContractDefinition } from '../interfaces/contract';
-import { ContractUpdaterRequest } from '../../application/update/contract-updater-request';
-import { ServicesDefinition } from '../interfaces/services';
+import { Uuid, UuidOptional } from '../../../../common/domain/value-object';
+import {
+  ContractInterface,
+  ServicesInterface,
+} from '../../../domain/interfaces';
+import { Contract } from '../../../domain/contract';
+import {
+  ContractNumber,
+  ContractStatus,
+  ContractStartDate,
+  ContractEndDate,
+  ContractServices,
+  ContractGuideNumber,
+  ContractPets,
+} from '../../../domain/value-object';
+import { CommandContractTravel } from './command-travel';
+import { CommandContractCage } from './command-cage';
+import { CommandContractDocumentation } from './command-documentation';
 
-export class ContractFactory {
-  static converter(data: ContractDefinition): Contract {
-    return new Contract(
-      new Uuid(data.id),
-      new ContractNumber(data.number),
-      new Uuid(data.client),
-      new ContractStatus(data.status),
-      new ContractStartDate(data.startDate),
-      new ContractEndDate(data.endDate),
-      new ContractServices(
-        ContractDocumentationFactory.create(data.services.documentation),
-        ContractCageFactory.create(data.services.cage),
-        ContractTravelFactory.converter(data.services.travel),
-      ),
-      new ContractGuideNumber(data.guideNumber),
-      new ContractPets(data.pets),
-    );
-  }
-
-  static create(data: ContractCreateRequest): Contract {
-    return new Contract(
-      new Uuid(data.id),
-      new ContractNumber(data.number),
-      new Uuid(data.client),
-      new ContractStatus('pending'),
-      new ContractStartDate(data.startDate),
-      new ContractEndDate(null),
-      new ContractServices(
-        ContractDocumentationFactory.create(data.documentation),
-        ContractCageFactory.create(data.cage),
-        ContractTravelFactory.create(
-          data.travel.hasServiceIncluded,
-          data.travel.typeTraveling,
-        ),
-      ),
-      new ContractGuideNumber(''),
-      new ContractPets(data.pets),
-    );
-  }
-
-  static update(
-    data: ContractUpdaterRequest,
-    contract: ContractDefinition,
+export class CommandUpdater {
+  static execute(
+    data: ContractInterface,
+    contract: ContractInterface,
   ): Contract {
-    const services = ContractFactory.servicesUpdate(data, contract);
+    const services = CommandUpdater.services(data, contract);
     return new Contract(
       new Uuid(contract.id),
       new ContractNumber(data?.number ?? contract.number),
@@ -68,21 +31,23 @@ export class ContractFactory {
       new ContractStartDate(data?.startDate ?? contract.startDate),
       new ContractEndDate(contract.endDate),
       new ContractServices(
-        ContractDocumentationFactory.create(services.documentation),
-        ContractCageFactory.create(services.cage),
-        ContractTravelFactory.converter(services.travel),
+        CommandContractDocumentation.execute(services.documentation),
+        CommandContractCage.execute(services.cage),
+        CommandContractTravel.execute(services.travel),
       ),
       new ContractGuideNumber(contract.guideNumber),
       new ContractPets(data?.pets ?? contract.pets),
+      new UuidOptional(data.user),
     );
   }
 
-  private static servicesUpdate(
-    data: ContractUpdaterRequest,
-    contract: ContractDefinition,
-  ): ServicesDefinition {
-    const { cage, documentation, travel } = data;
+  private static services(
+    data: ContractInterface,
+    contract: ContractInterface,
+  ): ServicesInterface {
+    const { cage, documentation, travel } = data.services;
     const { services } = contract;
+
     return {
       cage: {
         status: services.cage.status,
@@ -98,6 +63,7 @@ export class ContractFactory {
             '',
           typeCage:
             cage?.chosen?.typeCage ?? services.cage.chosen?.typeCage ?? '',
+          user: services.cage.chosen.user,
         },
         recommendation: services.cage.recommendation,
       },
@@ -108,36 +74,58 @@ export class ContractFactory {
             documentation?.vaccinationCertificate?.hasServiceIncluded ??
             services.documentation.vaccinationCertificate.hasServiceIncluded,
           isApplied: services.documentation.vaccinationCertificate.isApplied,
+          expectedDate:
+            services.documentation.vaccinationCertificate.expectedDate,
+          executionDate:
+            services.documentation.vaccinationCertificate.executionDate,
+          user: services.documentation.vaccinationCertificate.user,
         },
         healthCertificate: {
           hasServiceIncluded:
             documentation?.healthCertificate?.hasServiceIncluded ??
             services.documentation.healthCertificate.hasServiceIncluded,
           isApplied: services.documentation.healthCertificate.isApplied,
+          expectedDate: services.documentation.healthCertificate.expectedDate,
+          executionDate: services.documentation.healthCertificate.executionDate,
+          user: services.documentation.healthCertificate.user,
         },
         chipCertificate: {
           hasServiceIncluded:
             documentation?.chipCertificate?.hasServiceIncluded ??
             services.documentation.chipCertificate.hasServiceIncluded,
           isApplied: services.documentation.chipCertificate.isApplied,
+          expectedDate: services.documentation.chipCertificate.expectedDate,
+          executionDate: services.documentation.chipCertificate.executionDate,
+          user: services.documentation.chipCertificate.user,
         },
         senasaDocuments: {
           hasServiceIncluded:
             documentation?.senasaDocuments?.hasServiceIncluded ??
             services.documentation.senasaDocuments.hasServiceIncluded,
           isApplied: services.documentation.senasaDocuments.isApplied,
+          expectedDate: services.documentation.senasaDocuments.expectedDate,
+          executionDate: services.documentation.senasaDocuments.executionDate,
+          user: services.documentation.senasaDocuments.user,
         },
         rabiesSeroLogicalTest: {
           hasServiceIncluded:
             documentation?.rabiesSeroLogicalTest?.hasServiceIncluded ??
             services.documentation.rabiesSeroLogicalTest.hasServiceIncluded,
           isApplied: services.documentation.rabiesSeroLogicalTest.isApplied,
+          expectedDate:
+            services.documentation.rabiesSeroLogicalTest.expectedDate,
+          executionDate:
+            services.documentation.rabiesSeroLogicalTest.executionDate,
+          user: services.documentation.rabiesSeroLogicalTest.user,
         },
         importLicense: {
           hasServiceIncluded:
             documentation?.importLicense?.hasServiceIncluded ??
             services.documentation.importLicense.hasServiceIncluded,
           isApplied: services.documentation.importLicense.isApplied,
+          expectedDate: services.documentation.importLicense.expectedDate,
+          executionDate: services.documentation.importLicense.executionDate,
+          user: services.documentation.importLicense.user,
         },
         emotionalSupportCertificate: {
           hasServiceIncluded:
@@ -146,12 +134,20 @@ export class ContractFactory {
               .hasServiceIncluded,
           isApplied:
             services.documentation.emotionalSupportCertificate.isApplied,
+          expectedDate:
+            services.documentation.emotionalSupportCertificate.expectedDate,
+          executionDate:
+            services.documentation.emotionalSupportCertificate.executionDate,
+          user: services.documentation.emotionalSupportCertificate.user,
         },
       },
       travel: {
         hasServiceIncluded:
           travel?.hasServiceIncluded ??
           contract.services.travel.hasServiceIncluded,
+        hasServiceAccompanied:
+          travel?.hasServiceAccompanied ??
+          contract.services.travel.hasServiceAccompanied,
         typeTraveling:
           travel?.typeTraveling ?? contract.services.travel.typeTraveling,
         airlineReservation: services.travel.airlineReservation,

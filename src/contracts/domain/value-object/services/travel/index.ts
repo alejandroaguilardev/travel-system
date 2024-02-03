@@ -1,0 +1,16 @@
+export { TravelAirlineReservation } from './travel-airline-reservation';
+export { TravelArrivalDate } from './travel-arrival-date';
+export { TravelCode } from './travel-code';
+export { TravelDepartureAirport } from './travel-departure-airport';
+export { TravelDepartureDate } from './travel-departure-date';
+export { TravelDestinationAirport } from './travel-destination-airport';
+export { TravelEmail } from './travel-email';
+export { TravelFlightNumber } from './travel-flight-number';
+export { ContractHasServiceAccompanied } from './travel-has-service-accompanied';
+export { TravelPetPerCharge } from './travel-pet-per-charge';
+export { TravelPhone } from './travel-phone';
+export { TravelPickupDataTime } from './travel-pickup-date-time';
+export { TravelPickupLocation } from './travel-pickup-location';
+export { TravelReceptor } from './travel-receptor';
+export { TravelSpecialRequests } from './travel-special-requests';
+export { ContractTypeTraveling } from './type-traveling';

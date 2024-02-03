@@ -1,42 +1,55 @@
-import { IsBoolean, IsString, ValidateNested } from 'class-validator';
-import { DocumentationDefinition } from '../../domain/interfaces/documentation';
-import { StatusDefinition } from '../../domain/interfaces/status';
+import {
+  IsBoolean,
+  IsDate,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { Type } from 'class-transformer';
+import {
+  DocumentationInterface,
+  DocumentationCertificateInterface,
+} from '../../domain/interfaces/documentation.interface';
+import { StatusInterface } from '../../domain/interfaces/status.interface';
 
-class CertificateDto {
+class CertificateDto implements DocumentationCertificateInterface {
   @IsBoolean()
   hasServiceIncluded: boolean;
   @IsBoolean()
   isApplied: boolean;
-}
-
-interface Certificate {
-  hasServiceIncluded: boolean;
-  isApplied: boolean;
-}
-
-export class DocumentationDto implements DocumentationDefinition {
+  @IsDate()
+  expectedDate: Date;
+  @IsOptional()
+  @IsDate()
+  executionDate: Date | null;
+  @IsOptional()
   @IsString()
-  status: StatusDefinition;
+  user?: string;
+}
+
+export class DocumentationDto implements DocumentationInterface {
+  @IsString()
+  status: StatusInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
-  vaccinationCertificate: Certificate;
+  vaccinationCertificate: DocumentationCertificateInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
-  healthCertificate: Certificate;
+  healthCertificate: DocumentationCertificateInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
-  chipCertificate: Certificate;
+  chipCertificate: DocumentationCertificateInterface;
+  @ValidateNested()
   @Type(() => CertificateDto)
   @ValidateNested()
-  senasaDocuments: Certificate;
+  senasaDocuments: DocumentationCertificateInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
-  rabiesSeroLogicalTest: Certificate;
+  rabiesSeroLogicalTest: DocumentationCertificateInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
-  importLicense: Certificate;
+  importLicense: DocumentationCertificateInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
-  emotionalSupportCertificate: Certificate;
+  emotionalSupportCertificate: DocumentationCertificateInterface;
 }

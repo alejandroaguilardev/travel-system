@@ -1,4 +1,4 @@
-export type StatusDefinition =
+export type StatusInterface =
   | 'none'
   | 'pending'
   | 'in-process'

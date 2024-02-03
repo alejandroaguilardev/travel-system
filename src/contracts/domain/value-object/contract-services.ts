@@ -1,4 +1,4 @@
-import { ServicesDefinition } from '../interfaces/services';
+import { ServicesInterface } from '../interfaces/services.interface';
 import { ContractCage } from './services/service-cage';
 import { ContractDocumentation } from './services/service-documentation';
 import { ContractTravel } from './services/service-travel';
@@ -10,7 +10,7 @@ export class ContractServices {
     readonly travel: ContractTravel,
   ) {}
 
-  toJson(): ServicesDefinition {
+  toJson(): ServicesInterface {
     return {
       documentation: this.documentation.toJson(),
       cage: this.cage.toJson(),

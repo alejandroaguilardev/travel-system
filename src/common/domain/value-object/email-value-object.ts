@@ -5,9 +5,10 @@ export class EmailValueObject extends StringValueObject {
   private emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   constructor(value: string) {
-    super(value);
-    if (value.trim()) {
-      this.ensureEmailIsDefined(value);
+    const email = value?.trim()?.toLowerCase();
+    super(email);
+    if (email) {
+      this.ensureEmailIsDefined(email);
     }
   }
 

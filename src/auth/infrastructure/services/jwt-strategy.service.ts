@@ -4,8 +4,9 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from '../../application/services/jwt';
 import { UserMongoRepository } from '../../../users/infrastructure/persistence/user-mongo.repository';
-import { JwtStrategy } from '../../application/services/jwt-strategy';
-import { UserWithoutResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { Uuid } from '../../../common/domain/value-object/uuid';
+import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 
 @Injectable()
 export class JwtStrategyService extends PassportStrategy(Strategy) {
@@ -18,8 +19,12 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     });
   }
-  async validate(payload: JwtPayload): Promise<UserWithoutResponse> {
-    const jwtStrategy = new JwtStrategy(this.userRepository);
-    return await jwtStrategy.validate(payload);
+  async validate(payload: JwtPayload): Promise<UserWithoutWithRoleResponse> {
+    const { id } = payload;
+    const uuid = new Uuid(id);
+    const user = await this.userRepository.searchByIdWithRole(uuid);
+    if (!user) throw new ErrorBadRequest('Token no Válido');
+    delete user.password;
+    return user;
   }
 }
