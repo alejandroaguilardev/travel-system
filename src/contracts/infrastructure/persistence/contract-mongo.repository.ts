@@ -41,11 +41,14 @@ export class MongoContractRepository
     status: ContractStatus,
     documentation: ContractDocumentation,
   ): Promise<void> {
+    const row = await this.searchById<ContractResponse>(contractId);
+
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
         status: status.value,
         services: {
+          ...row.services,
           documentation: documentation.toJson(),
         },
       },
@@ -57,11 +60,13 @@ export class MongoContractRepository
     status: ContractStatus,
     cage: ContractCage,
   ): Promise<void> {
+    const row = await this.searchById<ContractResponse>(contractId);
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
         status: status.value,
         services: {
+          ...row.services,
           cage: cage.toJson(),
         },
       },
@@ -73,11 +78,13 @@ export class MongoContractRepository
     status: ContractStatus,
     travel: ContractTravel,
   ): Promise<void> {
+    const row = await this.searchById<ContractResponse>(contractId);
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
         status: status.value,
         services: {
+          ...row.services,
           travel: travel.toJson(),
         },
       },

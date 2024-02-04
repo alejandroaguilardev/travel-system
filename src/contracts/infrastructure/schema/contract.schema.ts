@@ -81,7 +81,6 @@ export class ContractModel implements ContractInterface {
       cage: {
         status: String,
         hasServiceIncluded: Boolean,
-        swornDeclaration: Boolean,
         chosen: {
           modelCage: String,
           typeCage: String,

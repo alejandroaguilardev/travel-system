@@ -1,6 +1,10 @@
 import { Uuid, UuidOptional } from '../../../common/domain/value-object';
-import { Contract } from '../../../contracts/domain/contract';
-import { TypeTravelingType } from '../../../contracts/domain/interfaces';
+import { Contract } from '../../domain/contract';
+import {
+  CageInterface,
+  StatusInterface,
+  TypeTravelingType,
+} from '../../domain/interfaces';
 import {
   ContractNumber,
   ContractStatus,
@@ -10,19 +14,18 @@ import {
   ContractHasServiceIncluded,
   ContractGuideNumber,
   ContractPets,
-} from '../../../contracts/domain/value-object';
+} from '../../domain/value-object';
 import {
   ContractCage,
   ContractTravel,
-} from '../../../contracts/domain/value-object/services';
+} from '../../domain/value-object/services';
 import {
-  CageSwornDeclaration,
   CageChosen,
   CageChosenModel,
   CageChosenType,
   CageChosenDimensions,
   CageRecommendation,
-} from '../../../contracts/domain/value-object/services/cage';
+} from '../../domain/value-object/services/cage';
 import {
   ContractHasServiceAccompanied,
   ContractTypeTraveling,
@@ -40,8 +43,8 @@ import {
   TravelPickupDataTime,
   TravelPickupLocation,
   TravelSpecialRequests,
-} from '../../../contracts/domain/value-object/services/travel';
-import { CommandContractDocumentation } from '../update/command/command-documentation';
+} from '../../domain/value-object/services/travel';
+import { CommandContractDocumentation } from '../update';
 import { ContractCreateRequest } from './contract-create-request';
 
 export class CommandContractCreator {
@@ -56,16 +59,13 @@ export class CommandContractCreator {
       new ContractServices(
         CommandContractDocumentation.execute(data.documentation),
         new ContractCage(
-          new ContractStatus(
-            data.cage.status === 'none' ? 'pending' : data.cage.status,
-          ),
+          new ContractStatus(CommandContractCreator.statusCage(data.cage)),
           new ContractHasServiceIncluded(data.cage.hasServiceIncluded),
-          new CageSwornDeclaration(data.cage.swornDeclaration),
           new CageChosen(
             new CageChosenModel(data.cage?.chosen?.modelCage ?? ''),
             new CageChosenType(data.cage?.chosen?.typeCage ?? ''),
             new CageChosenDimensions(data.cage?.chosen?.dimensionsCage ?? ''),
-            new UuidOptional(''),
+            new UuidOptional(data.cage?.chosen?.user),
           ),
           new CageRecommendation(data.cage.recommendation),
         ),
@@ -100,5 +100,16 @@ export class CommandContractCreator {
       new ContractPets(data.pets),
       new UuidOptional(userId),
     );
+  }
+
+  private static statusCage(cage: CageInterface): StatusInterface {
+    if (
+      cage?.chosen?.modelCage &&
+      cage?.chosen?.typeCage &&
+      cage?.chosen?.dimensionsCage
+    ) {
+      return 'completed';
+    }
+    return 'pending';
   }
 }

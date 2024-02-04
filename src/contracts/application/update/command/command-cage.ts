@@ -6,7 +6,6 @@ import {
 } from '../../../domain/value-object';
 import { ContractCage } from '../../../domain/value-object/services';
 import {
-  CageSwornDeclaration,
   CageChosen,
   CageChosenModel,
   CageChosenType,
@@ -19,7 +18,6 @@ export class CommandContractCage {
     return new ContractCage(
       new ContractStatus(cage.status),
       new ContractHasServiceIncluded(cage.hasServiceIncluded),
-      new CageSwornDeclaration(cage.swornDeclaration),
       new CageChosen(
         new CageChosenModel(cage?.chosen?.modelCage ?? ''),
         new CageChosenType(cage?.chosen?.typeCage ?? ''),

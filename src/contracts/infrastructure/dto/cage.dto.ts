@@ -28,8 +28,6 @@ export class CageDto implements CageInterface {
   status: StatusInterface;
   @IsBoolean()
   hasServiceIncluded: boolean;
-  @IsBoolean()
-  swornDeclaration: boolean;
   @Type(() => CageChosenDto)
   @ValidateNested()
   chosen: CageChosenInterface;

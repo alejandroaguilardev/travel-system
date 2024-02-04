@@ -1,9 +1,9 @@
+import { CommandContractDocumentation } from '../../../src/contracts/application/update/command/command-documentation';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { ContractDocumentationUpdater } from '../../../src/contracts/application/update/documentation-updater';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { ContractDocumentationMother } from '../domain/contract-documentation.mother';
-import { CommandContractDocumentation } from '../../../src/contracts/application/update/command/command-documentation';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 
 describe('ContractDocumentation', () => {

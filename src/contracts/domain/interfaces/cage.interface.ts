@@ -9,7 +9,6 @@ export interface CageChosenInterface {
 export interface CageInterface {
   status: StatusInterface;
   hasServiceIncluded: boolean;
-  swornDeclaration: boolean;
   chosen: CageChosenInterface;
   recommendation: string;
 }

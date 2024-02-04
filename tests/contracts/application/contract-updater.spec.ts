@@ -5,7 +5,7 @@ import { MessageDefault } from '../../../src/common/domain/response/response-mes
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
-import { CommandContractCreator } from '../../../src/contracts/application/create/command.creator';
+import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
 import { CommandUpdater } from '../../../src/contracts/application/update/command/command-updater';
 
 describe('ContractUpdater', () => {

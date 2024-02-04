@@ -10,7 +10,6 @@ export class CageMother {
       hasServiceIncluded: faker.datatype.boolean(),
       chosen: ChosenMother.create(),
       status: StatusMother.create(),
-      swornDeclaration: true,
       recommendation: StringMother.create({ count: { min: 1, max: 1 } }),
     };
   }

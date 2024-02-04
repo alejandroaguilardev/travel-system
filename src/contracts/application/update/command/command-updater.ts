@@ -47,13 +47,12 @@ export class CommandUpdater {
   ): ServicesInterface {
     const { cage, documentation, travel } = data.services;
     const { services } = contract;
-
+    console.log(services.cage.chosen.user);
     return {
       cage: {
         status: services.cage.status,
         hasServiceIncluded:
           cage?.hasServiceIncluded ?? services.cage.hasServiceIncluded,
-        swornDeclaration: services.cage.swornDeclaration,
         chosen: {
           modelCage:
             cage?.chosen?.modelCage ?? services.cage.chosen?.modelCage ?? '',

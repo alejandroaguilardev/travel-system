@@ -1,10 +1,10 @@
+import { CommandContractCage } from '../../../src/contracts/application/update/command/command-cage';
 import { ContractCageUpdater } from '../../../src/contracts/application/update/cage-updater';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { CageMother } from '../domain/cage-mother';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
-import { CommandContractCage } from '../../../src/contracts/application/update/command/command-cage';
 
 describe('CageUpdater', () => {
   const contractCageUpdater = new ContractCageUpdater(contractRepositoryMock);

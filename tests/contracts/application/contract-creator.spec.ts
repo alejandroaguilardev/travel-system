@@ -3,7 +3,7 @@ import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
-import { CommandContractCreator } from '../../../src/contracts/application/create/command.creator';
+import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
 
 describe('ContractCreator', () => {
   const contractCreator = new ContractCreator(contractRepositoryMock);

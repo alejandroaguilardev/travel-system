@@ -1,8 +1,8 @@
 import { ContractTravelUpdater } from '../../../src/contracts/application/update/travel-updater';
+import { CommandContractTravel } from '../../../src/contracts/application/update/command/command-travel';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
-import { CommandContractTravel } from '../../../src/contracts/application/update/command/command-travel';
 import { ContractTravelMother } from '../domain/contract-travel.mother';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 
