@@ -13,7 +13,7 @@ import {
 } from '../../application/response/user.response';
 import { UserModel } from '../schema/user.schema';
 import { UserMongoPipeline } from './user-mongo.pipeline';
-import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { FilterOperator } from '../../../common/domain/criteria/filter-operator';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 
@@ -43,7 +43,7 @@ export class UserMongoRepository
     if (!response) return null;
 
     const { id, password } = response;
-    const criteria = CriteriaFactory.fromData({
+    const criteria = CommandCriteria.fromData({
       filters: [{ field: 'id', value: id, operator: FilterOperator.EQUAL }],
     });
     const rows: UserResponse[] = await this.userModel

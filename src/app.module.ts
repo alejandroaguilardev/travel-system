@@ -8,6 +8,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { BcryptService } from './common/infrastructure/services/bcrypt.service';
 import { SeederModule } from './seeder/infrastructure/seeder.module';
 import { ContractsModule } from './contracts/infrastructure/contracts.module';
+import { CagesModule } from './cages/infrastructure/cages.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ContractsModule } from './contracts/infrastructure/contracts.module';
     PermissionsModule,
     SeederModule,
     ContractsModule,
+    CagesModule,
   ],
   controllers: [],
   providers: [BcryptService],

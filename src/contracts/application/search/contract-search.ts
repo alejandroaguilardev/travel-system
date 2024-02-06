@@ -1,6 +1,6 @@
 import { ContractRepository } from '../../domain/contract.repository';
 import { CriteriaRequest } from '../../../common/application/criteria/criteria';
-import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { ResponseSearch } from '../../../common/domain/response/response-search';
 
 export class ContractSearch {
@@ -9,7 +9,7 @@ export class ContractSearch {
   execute(
     criteriaRequest: CriteriaRequest,
   ): Promise<ResponseSearch<ContractSearch>> {
-    const criteria = CriteriaFactory.fromData(criteriaRequest);
+    const criteria = CommandCriteria.fromData(criteriaRequest);
     return this.contractRepository.search(criteria);
   }
 }

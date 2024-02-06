@@ -13,7 +13,7 @@ import { GlobalFilter } from '../../domain/criteria/global-filter';
 import { GlobalFilterProperties } from '../../domain/criteria/global-filter-properties';
 import { Criteria } from '../../domain/criteria/criteria';
 
-export class CriteriaFactory {
+export class CommandCriteria {
   static fromData(criteriaRequest: Partial<CriteriaRequest>): Criteria {
     const {
       start,

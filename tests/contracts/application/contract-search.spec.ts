@@ -2,7 +2,7 @@ import { ContractSearch } from '../../../src/contracts/application/search/contra
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
 import { CriteriaMother } from '../../common/domain/criteria-mother';
-import { CriteriaFactory } from '../../../src/common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../src/common/application/criteria/command-criteria';
 
 describe('ContractSearch', () => {
   const contractSearch = new ContractSearch(contractRepositoryMock);
@@ -39,7 +39,7 @@ describe('ContractSearch', () => {
 
     contractRepositoryMock.search.mockResolvedValueOnce(response);
     await contractSearch.execute(criteriaRequest);
-    const criteria = CriteriaFactory.fromData(criteriaRequest);
+    const criteria = CommandCriteria.fromData(criteriaRequest);
     expect(contractRepositoryMock.search).toHaveBeenCalledWith(criteria);
   });
 });

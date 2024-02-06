@@ -2,7 +2,7 @@ import { RoleSearch } from '../../../src/roles/application/search/role-search';
 import { roleRepositoryMock } from '../domain/role.repository.mock';
 import { CriteriaMother } from '../../common/domain/criteria-mother';
 import { RoleMother } from '../domain/role-mother';
-import { CriteriaFactory } from '../../../src/common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../src/common/application/criteria/command-criteria';
 
 describe('RoleSearch', () => {
   const roleSearch: RoleSearch = new RoleSearch(roleRepositoryMock);
@@ -34,7 +34,7 @@ describe('RoleSearch', () => {
 
     roleRepositoryMock.search.mockResolvedValueOnce(response);
     await roleSearch.execute(criteriaRequest);
-    const criteria = CriteriaFactory.fromData(criteriaRequest);
+    const criteria = CommandCriteria.fromData(criteriaRequest);
     expect(roleRepositoryMock.search).toHaveBeenCalledWith(criteria);
   });
 });

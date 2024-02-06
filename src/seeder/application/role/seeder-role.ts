@@ -3,7 +3,7 @@ import { RoleRepository } from '../../../roles/domain/role.repository';
 import { RoleFactory } from '../../../roles/domain/role.factory';
 import { SeederRoleResponse } from '../response/seeder-role.response';
 import { SeederPermissionsResponse } from '../response/seeder-permissions.response';
-import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { RoleResponse } from '../../../roles/application/response/role.response';
 
@@ -27,31 +27,17 @@ export class RoleSeeder {
         permissions.view,
       ],
     });
-    const roleClient = RoleFactory.create({
-      id: this.uuid.generate(),
-      name: 'cliente',
-      description: 'Panel del cliente',
-      permissions: [
-        permissions.create,
-        permissions.edit,
-        permissions.delete,
-        permissions.view,
-      ],
-    });
+
     await this.isInitProject();
-    await Promise.all([
-      this.roleRepository.save(roleAdmin),
-      this.roleRepository.save(roleClient),
-    ]);
+    await Promise.all([this.roleRepository.save(roleAdmin)]);
 
     return {
       admin: roleAdmin.id.value,
-      client: roleClient.id.value,
     };
   }
 
   async isInitProject(): Promise<void> {
-    const criteria = CriteriaFactory.fromData({
+    const criteria = CommandCriteria.fromData({
       start: 0,
       sorting: [],
       filters: [],

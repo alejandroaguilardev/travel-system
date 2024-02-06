@@ -2,7 +2,7 @@ import { UUID } from '../../../common/application/services/uuid';
 import { UserRepository } from '../../../users/domain/user.repository';
 import { UserFactory } from '../../../users/domain/user-factory';
 import { SeederRoleResponse } from '../response/seeder-role.response';
-import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserResponse } from '../../../users/application/response/user.response';
 import { Hashing } from '../../../common/application/services/hashing';
@@ -54,7 +54,7 @@ export class UserSeeder {
   }
 
   async isInitProject(): Promise<void> {
-    const criteria = CriteriaFactory.fromData({
+    const criteria = CommandCriteria.fromData({
       start: 0,
       sorting: [],
       filters: [],

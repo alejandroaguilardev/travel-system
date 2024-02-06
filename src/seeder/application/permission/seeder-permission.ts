@@ -2,7 +2,7 @@ import { UUID } from '../../../common/application/services/uuid';
 import { PermissionRepository } from '../../../permissions/domain/permission.repository';
 import { PermissionFactory } from '../../../permissions/domain/permission.factory';
 import { SeederPermissionsResponse } from '../response/seeder-permissions.response';
-import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { PermissionResponse } from '../../../permissions/application/response/permission.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 
@@ -55,7 +55,7 @@ export class PermissionSeeder {
   }
 
   async isInitProject(): Promise<void> {
-    const criteria = CriteriaFactory.fromData({
+    const criteria = CommandCriteria.fromData({
       start: 0,
       sorting: [],
       filters: [],

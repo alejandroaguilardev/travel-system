@@ -1,8 +1,8 @@
 import { UuidOptional } from '../../../../../common/domain/value-object';
-import { CageChosenModel } from './cage-selected-model';
-import { CageChosenType } from './cage-selected-type';
+import { CageChosenModel } from '../../../../../cages/domain/value-object/cage-selected-model';
+import { CageChosenType } from '../../../../../cages/domain/value-object/cage-selected-type';
 import { CageChosenInterface } from '../../../interfaces/cage.interface';
-import { CageChosenDimensions } from './cage-selected-dimensions';
+import { CageChosenDimensions } from '../../../../../cages/domain/value-object/cage-selected-dimensions';
 
 export class CageChosen {
   constructor(

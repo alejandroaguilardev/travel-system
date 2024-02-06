@@ -1,6 +1,6 @@
 import { ResponseSearch } from '../../../common/domain/response/response-search';
 import { CriteriaRequest } from '../../../common/application/criteria/criteria';
-import { CriteriaFactory } from '../../../common/application/criteria/criteria.factory';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { RoleRepository } from '../../domain/role.repository';
 import { RoleResponse } from '../response/role.response';
 
@@ -10,7 +10,7 @@ export class RoleSearch {
   async execute(
     criteriaRequest: CriteriaRequest,
   ): Promise<ResponseSearch<RoleResponse>> {
-    const criteria = CriteriaFactory.fromData(criteriaRequest);
+    const criteria = CommandCriteria.fromData(criteriaRequest);
     return this.roleRepository.search<RoleResponse>(criteria);
   }
 }
