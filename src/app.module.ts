@@ -9,6 +9,7 @@ import { BcryptService } from './common/infrastructure/services/bcrypt.service';
 import { SeederModule } from './seeder/infrastructure/seeder.module';
 import { ContractsModule } from './contracts/infrastructure/contracts.module';
 import { CagesModule } from './cages/infrastructure/cages.module';
+import { PetsModule } from './pets/infrastructure/pets.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CagesModule } from './cages/infrastructure/cages.module';
     SeederModule,
     ContractsModule,
     CagesModule,
+    PetsModule,
   ],
   controllers: [],
   providers: [BcryptService],

@@ -16,7 +16,7 @@ export class UserFirstName extends StringValueObject {
 
     if (this.value.length > 45) {
       throw new ErrorInvalidadArgument(
-        'El nombre debe ser menor a 20 caracteres',
+        'El nombre debe ser menor a 45 caracteres',
       );
     }
   }
