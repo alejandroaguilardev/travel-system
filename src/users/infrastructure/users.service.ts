@@ -15,6 +15,7 @@ import {
   UserWithoutWithRoleResponse,
 } from '../application/response/user-without.response';
 import { UserCreatorDto } from './dto/create-user.dto';
+import { CommandCreatorUser } from '../application/create/command-create-user';
 
 @Injectable()
 export class UsersService {
@@ -23,12 +24,16 @@ export class UsersService {
     private readonly bcryptService: BcryptService,
   ) {}
 
-  async create(createAuthDto: UserCreatorDto): Promise<ResponseSuccess> {
+  async create(
+    createAuthDto: UserCreatorDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
     const userCreator = new UserCreator(
       this.userMongoRepository,
       this.bcryptService,
     );
-    return userCreator.create(createAuthDto);
+    const userCommand = CommandCreatorUser.execute(createAuthDto, user.id);
+    return userCreator.create(userCommand, user);
   }
 
   async findAll(
@@ -46,9 +51,11 @@ export class UsersService {
   update(
     userId: string,
     updateAuthDto: UpdateUserDto,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const userUpdater = new UserUpdater(this.userMongoRepository);
-    return userUpdater.update(userId, updateAuthDto);
+    const userCommand = CommandCreatorUser.execute(updateAuthDto, user.id);
+    return userUpdater.update(userId, userCommand, user);
   }
 
   remove(userId: string): Promise<ResponseSuccess> {

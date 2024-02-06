@@ -1,72 +1,60 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppModule } from '../../../src/app.module';
 import { INestApplication } from '@nestjs/common';
-import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
-import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
-import * as request from 'supertest';
 import { UserCreatorMother } from '../domain/create-user-mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
-import { StringMother } from '../../common/domain/string.mother';
+import { InitTest, AuthTest, CrudTest } from '../../common/infrastructure';
+
+const route = '/users';
 
 describe('UsersController', () => {
   let app: INestApplication;
+  let access_token: string;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(GlobalPipes.getGlobal());
-    app.useGlobalFilters(new GlobalExceptionFilter());
-
+    app = await InitTest.execute();
     await app.init();
+    access_token = await AuthTest.execute(app);
   });
 
   it('/users (POST)', async () => {
     const userDto = UserCreatorMother.create();
-
-    const response = await request(app.getHttpServer())
-      .post('/users')
-      .send(userDto)
-      .expect(201);
+    const response = await CrudTest.create(app, access_token, route, userDto);
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
   });
 
   it('/users (GET)', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/users')
-      .expect(200);
+    const response = await CrudTest.search(app, access_token, route);
+
     expect(Array.isArray(response.body.rows)).toBe(true);
     expect(typeof response.body.count).toBe('number');
   });
 
-  it('/users (GET)', async () => {
-    request(app.getHttpServer()).get('/users/1').expect(200);
+  it('/users:id (GET)', async () => {
+    const userDto = UserCreatorMother.create();
+    const response = await CrudTest.searchById(
+      app,
+      access_token,
+      route,
+      userDto,
+    );
+    expect(response.body.email).toBe(userDto.email.toLowerCase());
   });
 
-  it('/users (PATCH)', async () => {
+  it('/users:id (PUT)', async () => {
     const userDto = UserCreatorMother.create();
-    const { id } = userDto;
-
-    await request(app.getHttpServer()).post('/users').send(userDto).expect(201);
-
-    const response = await request(app.getHttpServer())
-      .patch(`/users/${id}`)
-      .send({ name: StringMother.create({ count: { min: 1, max: 1 } }) })
-      .expect(200);
-
+    const userDtoUpdate = UserCreatorMother.create();
+    const response = await CrudTest.update(
+      app,
+      access_token,
+      route,
+      userDto,
+      userDtoUpdate,
+    );
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
   it('/users (DELETE)', async () => {
     const userDto = UserCreatorMother.create();
-    const { id } = userDto;
-    await request(app.getHttpServer()).post('/users').send(userDto).expect(201);
-
-    const response = await request(app.getHttpServer())
-      .delete(`/users/${id}`)
-      .expect(200);
+    const response = await CrudTest.remove(app, access_token, route, userDto);
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
   });
 });

@@ -1,78 +1,62 @@
 import { INestApplication } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { Test, TestingModule } from '@nestjs/testing';
-import * as request from 'supertest';
-import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
-import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
-import { AppModule } from '../../../src/app.module';
 import { RoleMother } from '../domain/role-mother';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
-import { getModelToken } from '@nestjs/mongoose';
-import { RoleNameMother } from '../domain/role-name.mother';
+import { InitTest } from '../../common/infrastructure/init-test';
+import { AuthTest } from '../../common/infrastructure/auth-test';
+import { CrudTest } from '../../common/infrastructure/crud-test';
+
+const route = '/roles';
 
 describe('RolesController', () => {
   let app: INestApplication;
-  let roleModel: Model<any>;
+  let access_token: string;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(GlobalPipes.getGlobal());
-    app.useGlobalFilters(new GlobalExceptionFilter());
+    app = await InitTest.execute();
     await app.init();
-    roleModel = moduleFixture.get<Model<any>>(getModelToken('RoleModel'));
-  });
-
-  afterAll(async () => {
-    await roleModel.deleteMany({});
-    await app.close();
+    access_token = await AuthTest.execute(app);
   });
 
   it('/roles (POST)', async () => {
-    const dto = RoleMother.create();
-    const response = await request(app.getHttpServer())
-      .post('/roles')
-      .send(dto)
-      .expect(201);
+    const roleDto = RoleMother.create();
+    const response = await CrudTest.create(app, access_token, route, roleDto);
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
   });
 
-  it('/roles/:id (GET)', async () => {
-    const dto = RoleMother.create();
-    request(app.getHttpServer()).get(`/permissions/${dto.id}`).expect(400);
-  });
-
   it('/roles (GET)', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/roles')
-      .expect(200);
+    const response = await CrudTest.search(app, access_token, route);
+
     expect(Array.isArray(response.body.rows)).toBe(true);
     expect(typeof response.body.count).toBe('number');
   });
 
-  it('/roles (PATCH)', async () => {
-    const dto = RoleMother.create();
-    const name = RoleNameMother.create();
+  it('/roles:id (GET)', async () => {
+    const roleDto = RoleMother.create();
+    const response = await CrudTest.searchById(
+      app,
+      access_token,
+      route,
+      roleDto,
+    );
+    expect(response.body.name).toBe(roleDto.name);
+  });
 
-    await request(app.getHttpServer()).post('/roles').send(dto).expect(201);
-
-    const response = await request(app.getHttpServer())
-      .patch(`/roles/${dto.id}`)
-      .send({ name })
-      .expect(200);
+  it('/roles:id (PUT)', async () => {
+    const roleDto = RoleMother.create();
+    const roleDtoUpdate = RoleMother.create();
+    const response = await CrudTest.update(
+      app,
+      access_token,
+      route,
+      roleDto,
+      roleDtoUpdate,
+    );
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
   it('/roles (DELETE)', async () => {
-    const dto = RoleMother.create();
-    const name = RoleNameMother.create();
-    const response = await request(app.getHttpServer())
-      .delete(`/permissions/${dto.id}`)
-      .send({ name })
-      .expect(200);
+    const roleDto = RoleMother.create();
+    const response = await CrudTest.remove(app, access_token, route, roleDto);
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
   });
 });

@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
   Query,
@@ -40,7 +40,7 @@ export class CagesController {
     return this.cagesService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @Auth()
   update(
     @Param('id') id: string,

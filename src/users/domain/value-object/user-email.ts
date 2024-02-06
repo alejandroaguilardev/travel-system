@@ -1,5 +1,5 @@
-import { EmailValueObject } from '../../common/domain/value-object/email-value-object';
-import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid-argument';
+import { EmailValueObject } from '../../../common/domain/value-object/email-value-object';
+import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
 
 export class UserEmail extends EmailValueObject {
   constructor(value: string) {

@@ -1,53 +1,30 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as request from 'supertest';
-import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
-import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
-import { AppModule } from '../../../src/app.module';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UuidMother } from '../../common/domain/uuid-mother';
 import { ContractFinish } from '../../../src/contracts/application/finish/contract-finish';
-import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { ContractDocumentationMother } from '../domain/contract-documentation.mother';
 import { CageMother } from '../domain/cage-mother';
 import { ContractTravelMother } from '../domain/contract-travel.mother';
+import { InitTest } from '../../common/infrastructure/init-test';
+import { AuthTest } from '../../common/infrastructure/auth-test';
+import { CrudTest } from '../../common/infrastructure/crud-test';
+
+const route = '/contracts';
 
 describe('ContractsController', () => {
   let app: INestApplication;
-  let contractModel: Model<any>;
   let access_token: string;
+  let contractModel: Model<any>;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(GlobalPipes.getGlobal());
-    app.useGlobalFilters(new GlobalExceptionFilter());
-
+    app = await InitTest.execute();
+    contractModel = app.get<Model<any>>(getModelToken('ContractModel'));
     await app.init();
-    contractModel = moduleFixture.get<Model<any>>(
-      getModelToken('ContractModel'),
-    );
-
-    const createAuthDto = UserCreatorMother.create();
-
-    await request(app.getHttpServer())
-      .post('/users')
-      .send(createAuthDto)
-      .expect(201);
-    const { email, password } = createAuthDto;
-
-    const response = await request(app.getHttpServer())
-      .post('/auth')
-      .send({ email, password })
-      .expect(200);
-
-    access_token = response.body.token;
+    access_token = await AuthTest.execute(app);
   });
 
   afterAll(async () => {
@@ -57,23 +34,18 @@ describe('ContractsController', () => {
 
   it('/contracts (POST)', async () => {
     const contractDto = ContractCreatorMother.create();
-    const response = await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(contractDto)
-      .expect(201);
-
+    const response = await CrudTest.create(
+      app,
+      access_token,
+      route,
+      contractDto,
+    );
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
   });
 
   it('/contracts/:id/finish (POST)', async () => {
     const contractDto = ContractCreatorMother.create();
-
-    await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(contractDto)
-      .expect(201);
+    await CrudTest.create(app, access_token, route, contractDto);
 
     const response = await request(app.getHttpServer())
       .post(`/contracts/${contractDto.id}/finish`)
@@ -85,21 +57,21 @@ describe('ContractsController', () => {
   });
 
   it('/contracts (GET)', async () => {
-    const response = await request(app.getHttpServer())
-      .get('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .expect(200);
+    const response = await CrudTest.search(app, access_token, route);
 
     expect(Array.isArray(response.body.rows)).toBe(true);
     expect(typeof response.body.count).toBe('number');
   });
 
-  it('/contracts/:id (GET)', async () => {
-    const id = UuidMother.create();
-    request(app.getHttpServer())
-      .get(`/contracts/${id}`)
-      .set('Authorization', `Bearer ${access_token}`)
-      .expect(400);
+  it('/contracts:id (GET)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    const response = await CrudTest.searchById(
+      app,
+      access_token,
+      route,
+      contractDto,
+    );
+    expect(response.body.number).toBe(contractDto.number);
   });
 
   it('/contracts/client/:id (GET)', async () => {
@@ -110,34 +82,23 @@ describe('ContractsController', () => {
       .expect(400);
   });
 
-  it('/contracts (PATCH)', async () => {
+  it('/contracts:id (PUT)', async () => {
     const contractDto = ContractCreatorMother.create();
-
-    const updateContractDto = ContractCreatorMother.create();
-
-    await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(contractDto)
-      .expect(201);
-
-    const response = await request(app.getHttpServer())
-      .patch(`/contracts/${contractDto.id}`)
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(updateContractDto)
-      .expect(200);
+    const contractDtoUpdate = ContractCreatorMother.create();
+    const response = await CrudTest.update(
+      app,
+      access_token,
+      route,
+      contractDto,
+      contractDtoUpdate,
+    );
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
   it(':id/documentation (PATCH)', async () => {
     const dto = ContractCreatorMother.create();
     const documentation = ContractDocumentationMother.create();
-
-    await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(dto)
-      .expect(201);
+    await CrudTest.create(app, access_token, route, dto);
 
     const response = await request(app.getHttpServer())
       .patch(`/contracts/${dto.id}/documentation`)
@@ -153,12 +114,7 @@ describe('ContractsController', () => {
   it(':id/cage (PATCH)', async () => {
     const dto = ContractCreatorMother.create();
     const cage = CageMother.create();
-
-    await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(dto)
-      .expect(201);
+    await CrudTest.create(app, access_token, route, dto);
 
     const response = await request(app.getHttpServer())
       .patch(`/contracts/${dto.id}/cage`)
@@ -174,12 +130,7 @@ describe('ContractsController', () => {
   it(':id/travel (PATCH)', async () => {
     const dto = ContractCreatorMother.create();
     const travel = ContractTravelMother.create();
-
-    await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(dto)
-      .expect(201);
+    await CrudTest.create(app, access_token, route, dto);
 
     const response = await request(app.getHttpServer())
       .patch(`/contracts/${dto.id}/travel`)
@@ -194,16 +145,12 @@ describe('ContractsController', () => {
 
   it('/contracts (DELETE)', async () => {
     const contractDto = ContractCreatorMother.create();
-    await request(app.getHttpServer())
-      .post('/contracts')
-      .set('Authorization', `Bearer ${access_token}`)
-      .send(contractDto)
-      .expect(201);
-
-    const response = await request(app.getHttpServer())
-      .delete(`/contracts/${contractDto.id}`)
-      .set('Authorization', `Bearer ${access_token}`)
-      .expect(200);
+    const response = await CrudTest.remove(
+      app,
+      access_token,
+      route,
+      contractDto,
+    );
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
   });
 });

@@ -1,6 +1,6 @@
 import { Repository } from '../../common/domain/repository';
 import { User } from './user';
-import { UserEmail } from './user-email';
+import { UserEmail } from './value-object/user-email';
 import {
   UserResponse,
   UserResponseWithRole,

@@ -1,33 +1,24 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { GlobalExceptionFilter } from '../../../src/common/infrastructure/config/global-filter';
-import { GlobalPipes } from '../../../src/common/infrastructure/config/global-pipes';
-import { AppModule } from '../../../src/app.module';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { InitTest } from '../../common/infrastructure/init-test';
+import { AuthTest } from '../../common/infrastructure/auth-test';
+import { CrudTest } from '../../common/infrastructure/crud-test';
 
 describe('AuthController (e2e)', () => {
   let app: INestApplication;
+  let access_token: string;
 
   beforeAll(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(GlobalPipes.getGlobal());
-    app.useGlobalFilters(new GlobalExceptionFilter());
-
+    app = await InitTest.execute();
     await app.init();
+    access_token = await AuthTest.execute(app);
   });
 
   it('/auth (POST)', async () => {
     const createAuthDto = UserCreatorMother.create();
+    await CrudTest.create(app, access_token, '/users', createAuthDto);
 
-    await request(app.getHttpServer())
-      .post('/users')
-      .send(createAuthDto)
-      .expect(201);
     const { email, password } = createAuthDto;
 
     const response = await request(app.getHttpServer())

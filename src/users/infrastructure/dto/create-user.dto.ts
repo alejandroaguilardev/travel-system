@@ -4,22 +4,19 @@ import {
   IsOptional,
   IsString,
   IsUUID,
+  ValidateNested,
 } from 'class-validator';
-import { UserCreatorRequest } from '../../application/create/create-user-request';
+import { CreateUserRequest } from '../../application/create/create-user-request';
+import { Type } from 'class-transformer';
+import { ProfileDto } from './profile.dto';
+import { ProfileInterface } from '../../domain/interfaces/profile.interface';
 
-export class UserCreatorDto implements UserCreatorRequest {
+export class UserCreatorDto implements CreateUserRequest {
   @IsUUID()
   id: string;
-  @IsString({ message: 'No es un nombre válido' })
-  name: string;
-  @IsOptional()
-  @IsString()
-  secondName: string = '';
-  @IsString()
-  lastName: string;
-  @IsOptional()
-  @IsString()
-  secondLastName: string = '';
+  @Type(() => ProfileDto)
+  @ValidateNested()
+  profile: ProfileInterface;
   @IsEmail({}, { message: 'No es un email válido' })
   email: string;
   @IsOptional()
@@ -29,4 +26,8 @@ export class UserCreatorDto implements UserCreatorRequest {
   @IsArray()
   @IsUUID(undefined, { each: true })
   roles: string[] = [];
+  @IsOptional()
+  status?: string;
+  @IsOptional()
+  user?: string;
 }

@@ -1,10 +1,10 @@
 import { UserUpdater } from '../../../src/users/application/update/user-updater';
 import { UserCreatorMother } from '../domain/create-user-mother';
 import { userRepositoryMockMethods } from '../domain/user-repository-mock-methods';
-import { UserFactory } from '../../../src/users/domain/user-factory';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
+import { CommandCreatorUser } from '../../../src/users/application/create/command-create-user';
 
 describe('updateUser', () => {
   const updateMock = jest.fn();
@@ -22,49 +22,52 @@ describe('updateUser', () => {
 
   it('should_successfully_updated_user', async () => {
     const userMother = UserCreatorMother.create();
-    const { id, ...rest } = userMother;
+    const userAuth = UserCreatorMother.createWithPassword();
+    const userUpdate = CommandCreatorUser.execute(
+      UserCreatorMother.create(),
+      userAuth.id,
+    );
 
     searchByIdMock.mockResolvedValue(userMother);
-    const userResolve = UserFactory.create(userMother);
+    updateMock.mockResolvedValue(userMother);
 
-    const userUpdateResolve = UserFactory.update(
-      { ...rest, name: 'pedro' },
-      userResolve,
+    const resolved = await updateUser.update(
+      userMother.id,
+      userUpdate,
+      userAuth,
     );
-    updateMock.mockResolvedValue(userUpdateResolve);
-
-    const resolved = await updateUser.update(id, { name: 'pedro' });
     expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
   it('should_call_ update_method_of_UserRepository', async () => {
     const userMother = UserCreatorMother.create();
-    const { id, ...rest } = userMother;
+    const userAuth = UserCreatorMother.createWithPassword();
+    const userUpdate = CommandCreatorUser.execute(
+      UserCreatorMother.create(),
+      userAuth.id,
+    );
 
     searchByIdMock.mockResolvedValue(userMother);
-    const userResolve = UserFactory.create(userMother);
+    await updateUser.update(userMother.id, userUpdate, userAuth);
 
-    const userUpdateResolve = UserFactory.update(
-      { ...rest, name: 'pedro' },
-      userResolve,
-    );
-    updateMock.mockResolvedValue(userUpdateResolve);
-
-    await updateUser.update(id, { name: 'pedro' });
     expect(updateMock).toHaveBeenCalledWith(
-      new Uuid(id),
-      UserFactory.update({ ...rest, name: 'pedro' }, userResolve),
+      new Uuid(userMother.id),
+      userUpdate,
     );
   });
 
   it('should_hable_error_during_user_creation', async () => {
     const userMother = UserCreatorMother.create();
-    const { id } = userMother;
+    const userAuth = UserCreatorMother.createWithPassword();
+    const userUpdate = CommandCreatorUser.execute(
+      UserCreatorMother.create(),
+      userAuth.id,
+    );
 
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     updateMock.mockRejectedValue(error);
     try {
-      await updateUser.update(id, { name: 'pedro' });
+      await updateUser.update(userMother.id, userUpdate, userAuth);
       fail('should hable error during user creation');
     } catch (thrownError) {
       expect(thrownError.message).toBe(error.message);

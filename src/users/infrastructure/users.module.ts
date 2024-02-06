@@ -5,6 +5,7 @@ import { UsersController } from './users.controller';
 import { UserModel, UserSchema } from './schema/user.schema';
 import { UserMongoRepository } from './persistence/user-mongo.repository';
 import { BcryptService } from '../../common/infrastructure/services/bcrypt.service';
+import { AuthModule } from '../../auth/infrastructure/auth.module';
 import {
   RoleModel,
   RoleSchema,
@@ -21,6 +22,7 @@ import {
     ]),
     MongooseModule.forFeature([{ name: RoleModel.name, schema: RoleSchema }]),
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
+    AuthModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UserMongoRepository, BcryptService],

@@ -4,7 +4,7 @@ import { AuthModule } from './auth/infrastructure/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/infrastructure/users.module';
 import { RolesModule } from './roles/infrastructure/roles.module';
-import { PermissionsModule } from './permissions/permissions.module';
+import { PermissionsModule } from './permissions/infrastructure/permissions.module';
 import { BcryptService } from './common/infrastructure/services/bcrypt.service';
 import { SeederModule } from './seeder/infrastructure/seeder.module';
 import { ContractsModule } from './contracts/infrastructure/contracts.module';

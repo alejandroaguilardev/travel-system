@@ -36,7 +36,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     }
 
     if (status === 500) {
-      console.log({ exception });
+      console.log(exception);
     }
 
     response.status(status).json({

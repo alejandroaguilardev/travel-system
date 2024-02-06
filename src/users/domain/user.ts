@@ -1,34 +1,32 @@
-import { UserPassword } from './user-password';
+import { UserPassword } from './value-object/user-password';
 import { Uuid } from '../../common/domain/value-object/uuid';
-import { UserRole } from './user-role';
-import { UserEmail } from './user-email';
-import { UserFirstName } from './user-first-name';
-import { UserSecondName } from './user-second-name';
-import { UserLastName } from './user-last-name';
-import { UserSecondLastName } from './user-second-last-name';
+import { UserEmail } from './value-object/user-email';
+import { UserRole } from './value-object/user-role';
+import { UserProfile } from './value-object/user-profile';
+import { UuidOptional } from '../../common/domain/value-object/uuid-optional-value-object';
+import { StatusValueObject } from '../../common/domain/value-object/status-value-object';
+import { UserInterface } from './interfaces/user.interface';
 
 export class User {
   constructor(
     readonly id: Uuid,
-    readonly name: UserFirstName,
-    readonly secondName: UserSecondName,
-    readonly lastName: UserLastName,
-    readonly secondLastName: UserSecondLastName,
     readonly email: UserEmail,
     public password: UserPassword,
     readonly roles: UserRole,
+    readonly profile: UserProfile,
+    readonly status: StatusValueObject,
+    readonly user: UuidOptional,
   ) {}
 
-  toJson() {
+  toJson(): UserInterface {
     return {
       id: this.id.value,
-      name: this.name.value,
-      secondName: this.secondName.value,
-      lastName: this.lastName.value,
-      secondLastName: this.secondLastName.value,
       email: this.email.value,
       password: this.password.value,
       roles: this.roles.toPrimitive(),
+      profile: this.profile.toJson(),
+      status: this.status.value,
+      user: this.user.value,
     };
   }
 

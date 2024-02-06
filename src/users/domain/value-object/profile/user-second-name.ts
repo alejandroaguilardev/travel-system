@@ -1,7 +1,7 @@
-import { StringValueObject } from '../../common/domain/value-object/string-value-object';
-import { ErrorInvalidadArgument } from '../../common/domain/errors/error-invalid-argument';
+import { StringValueObject } from '../../../../common/domain/value-object/string-value-object';
+import { ErrorInvalidadArgument } from '../../../../common/domain/errors/error-invalid-argument';
 
-export class UserSecondLastName extends StringValueObject {
+export class UserSecondName extends StringValueObject {
   constructor(value: string) {
     super(value);
     this.isValidName();

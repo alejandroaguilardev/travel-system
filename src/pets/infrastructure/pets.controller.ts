@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
   Query,
@@ -41,7 +41,7 @@ export class PetsController {
     return this.petsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @Auth()
   update(
     @Param('id') id: string,

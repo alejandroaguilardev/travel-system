@@ -4,6 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { GlobalPipes } from './common/infrastructure/config/global-pipes';
 import { GlobalExceptionFilter } from './common/infrastructure/config/global-filter';
 
+// TODO Decorator capturar exeption
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

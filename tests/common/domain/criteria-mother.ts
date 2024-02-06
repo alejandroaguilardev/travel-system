@@ -1,8 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { CriteriaRequest } from '../../../src/common/application/criteria/criteria';
 
-// TODO crear los mother de Criteria
-
 export class CriteriaMother {
   static create(criteriaDefault?: Partial<CriteriaRequest>): CriteriaRequest {
     return {

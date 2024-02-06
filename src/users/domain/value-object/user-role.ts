@@ -1,4 +1,4 @@
-import { Uuid } from '../../common/domain/value-object/uuid';
+import { Uuid } from '../../../common/domain/value-object/uuid';
 
 export class UserRole {
   value: Uuid[];

@@ -1,13 +1,13 @@
 import { Hashing } from '../../../common/application/services/hashing';
 import { UserRepository } from '../../domain/user.repository';
-import { UserCreatorRequest } from './create-user-request';
-import { UserPassword } from '../../domain/user-password';
-import { UserFactory } from '../../domain/user-factory';
+import { UserPassword } from '../../domain/value-object/user-password';
 import {
   MessageDefault,
   ResponseMessage,
 } from '../../../common/domain/response/response-message';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
+import { User } from '../../domain/user';
+import { UserWithoutWithRoleResponse } from '../response/user-without.response';
 
 export class UserCreator {
   constructor(
@@ -16,12 +16,16 @@ export class UserCreator {
   ) {}
 
   async create(
-    userCreatorRequest: UserCreatorRequest,
+    newUser: User,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    const user = UserFactory.create(userCreatorRequest);
-    const password = this.hashing.hashPassword(user.password.value);
-    user.setPassword(new UserPassword(password));
-    await this.userRepository.save(user);
+    if (!user.id) {
+      console.log(user.id);
+    }
+
+    const password = this.hashing.hashPassword(newUser.password.value);
+    newUser.setPassword(new UserPassword(password));
+    await this.userRepository.save(newUser);
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_CREATED,
     );

@@ -1,12 +1,12 @@
 import { UUID } from '../../../common/application/services/uuid';
 import { UserRepository } from '../../../users/domain/user.repository';
-import { UserFactory } from '../../../users/domain/user-factory';
 import { SeederRoleResponse } from '../response/seeder-role.response';
 import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserResponse } from '../../../users/application/response/user.response';
 import { Hashing } from '../../../common/application/services/hashing';
-import { UserPassword } from '../../../users/domain/user-password';
+import { UserPassword } from '../../../users/domain/value-object/user-password';
+import { CommandCreatorUser } from '../../../users/application/create/command-create-user';
 
 export class UserSeeder {
   constructor(
@@ -16,27 +16,52 @@ export class UserSeeder {
   ) {}
 
   async execute(roles: SeederRoleResponse): Promise<void> {
-    const admin = UserFactory.create({
-      id: this.uuid.generate(),
-      name: 'Alejandro',
-      secondName: '',
-      lastName: 'Aguilar',
-      secondLastName: '',
-      email: 'alex@gmail.com',
-      password: '12345678',
-      roles: [roles.admin],
-    });
-
-    const client = UserFactory.create({
-      id: this.uuid.generate(),
-      name: 'Pedro',
-      secondName: '',
-      lastName: 'Jimenez',
-      secondLastName: '',
-      email: 'pedro@gmail.com',
-      password: '12345678',
-      roles: [],
-    });
+    const admin = CommandCreatorUser.execute(
+      {
+        id: this.uuid.generate(),
+        email: 'alex@gmail.com',
+        password: '12345678',
+        roles: [roles.admin],
+        profile: {
+          name: 'Alejandro',
+          secondName: '',
+          lastName: 'Aguilar',
+          secondLastName: '',
+          birthDate: new Date(),
+          province: '',
+          department: '',
+          direction: '',
+          district: '',
+          gender: 'male',
+          phone: '',
+        },
+        status: '',
+      },
+      '',
+    );
+    const client = CommandCreatorUser.execute(
+      {
+        id: this.uuid.generate(),
+        email: 'pedro@gmail.com',
+        password: '12345678',
+        roles: [],
+        profile: {
+          name: 'Pedro',
+          secondName: '',
+          lastName: 'Jimenez',
+          secondLastName: '',
+          birthDate: new Date(),
+          province: '',
+          department: '',
+          direction: '',
+          district: '',
+          gender: 'male',
+          phone: '',
+        },
+        status: '',
+      },
+      '',
+    );
 
     admin.setPassword(
       new UserPassword(this.hashing.hashPassword(admin.password.value)),

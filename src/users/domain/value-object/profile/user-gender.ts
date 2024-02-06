@@ -1,6 +1,6 @@
-import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
+import { ErrorInvalidadArgument } from '../../../../common/domain/errors/error-invalid-argument';
 
-export class PetGender {
+export class UserGender {
   private values = ['female', 'male'];
   constructor(readonly value: string) {
     this.validSecured(value);

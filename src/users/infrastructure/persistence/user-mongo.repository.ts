@@ -5,7 +5,7 @@ import { Criteria } from '../../../common/domain/criteria/criteria';
 import { ResponseSearch } from '../../../common/domain/response/response-search';
 import { MongoRepository } from '../../../common/infrastructure/mongo/mongo.repository';
 import { User } from '../../domain/user';
-import { UserEmail } from '../../domain/user-email';
+import { UserEmail } from '../../domain/value-object/user-email';
 import { UserRepository } from '../../domain/user.repository';
 import {
   UserResponse,

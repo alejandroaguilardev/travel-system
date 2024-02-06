@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   Patch,
+  Put,
   Param,
   Delete,
   Query,
@@ -89,7 +90,7 @@ export class ContractsController {
     return this.contractsService.updateTravel(id, travelDto, user);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @Auth()
   update(
     @Param('id') id: string,

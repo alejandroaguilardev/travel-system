@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePermissionDto } from './infrastructure/dto/create-permission.dto';
-import { UpdatePermissionDto } from './infrastructure/dto/update-permission.dto';
-import { PermissionCreator } from './application/create/permission-creator';
-import { CriteriaDto } from '../common/infrastructure/dto/criteria.dto';
-import { PermissionResponse } from './application/response/permission.response';
-import { PermissionFindAll } from './application/find-all/permission-find-all';
-import { ResponseSearch } from '../common/domain/response/response-search';
-import { PermissionFind } from './application/find/permission-find';
-import { PermissionUpdater } from './application/updated/permission-updater';
-import { PermissionRemover } from './application/remove/permission-remover';
-import { ResponseSuccess } from '../common/domain/response/response-success';
-import { MongoPermissionRepository } from './infrastructure/persistence/mongo-permission.repository';
+import { CreatePermissionDto } from './dto/create-permission.dto';
+import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { PermissionCreator } from '../application/create/permission-creator';
+import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import { PermissionResponse } from '../application/response/permission.response';
+import { PermissionFindAll } from '../application/find-all/permission-find-all';
+import { ResponseSearch } from '../../common/domain/response/response-search';
+import { PermissionFind } from '../application/find/permission-find';
+import { PermissionUpdater } from '../application/updated/permission-updater';
+import { PermissionRemover } from '../application/remove/permission-remover';
+import { ResponseSuccess } from '../../common/domain/response/response-success';
+import { MongoPermissionRepository } from './persistence/mongo-permission.repository';
 
 @Injectable()
 export class PermissionsService {

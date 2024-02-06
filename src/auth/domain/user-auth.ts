@@ -1,5 +1,5 @@
-import { UserEmail } from '../../users/domain/user-email';
-import { UserPassword } from '../../users/domain/user-password';
+import { UserEmail } from '../../users/domain/value-object/user-email';
+import { UserPassword } from '../../users/domain/value-object/user-password';
 import { Hashing } from '../../common/application/services/hashing';
 
 export class UserAuth {
