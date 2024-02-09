@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserWithoutWithRoleResponse } from '../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { MongoPetRepository } from './persistence/mongo-pet.repository';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
@@ -27,15 +27,18 @@ export class PetsService {
     return cageCreator.create(cage, user);
   }
 
-  findAll(criteriaDto: CriteriaDto): Promise<ResponseSearch<PetResponse>> {
+  findAll(
+    criteriaDto: CriteriaDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSearch<PetResponse>> {
     const cageSearch = new PetSearch(this.mongoPetRepository);
     const criteria = CommandCriteria.fromData(criteriaDto);
-    return cageSearch.execute(criteria);
+    return cageSearch.execute(criteria, user);
   }
 
-  findOne(id: string): Promise<PetResponse> {
+  findOne(id: string, user: UserWithoutWithRoleResponse): Promise<PetResponse> {
     const cageSearchById = new PetSearchById(this.mongoPetRepository);
-    return cageSearchById.execute(id);
+    return cageSearchById.execute(id, user);
   }
 
   update(
@@ -48,8 +51,11 @@ export class PetsService {
     return cageUpdater.execute(id, cage, user);
   }
 
-  remove(id: string): Promise<ResponseSuccess> {
+  remove(
+    id: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
     const cageRemover = new PetRemover(this.mongoPetRepository);
-    return cageRemover.execute(id);
+    return cageRemover.execute(id, user);
   }
 }

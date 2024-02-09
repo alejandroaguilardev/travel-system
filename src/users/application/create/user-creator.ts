@@ -7,7 +7,12 @@ import {
 } from '../../../common/domain/response/response-message';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { User } from '../../domain/user';
-import { UserWithoutWithRoleResponse } from '../response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 
 export class UserCreator {
   constructor(
@@ -19,9 +24,7 @@ export class UserCreator {
     newUser: User,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    if (!user.id) {
-      console.log(user.id);
-    }
+    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.CREATE);
 
     const password = this.hashing.hashPassword(newUser.password.value);
     newUser.setPassword(new UserPassword(password));

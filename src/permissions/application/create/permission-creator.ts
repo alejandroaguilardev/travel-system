@@ -1,8 +1,13 @@
 import { PermissionRepository } from '../../domain/permission.repository';
-import { CreatePermission } from './create-permission';
-import { PermissionFactory } from '../../domain/permission.factory';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { ErrorDuplicateElement } from '../../../common/domain/errors/error-duplicate-element';
+import { Permission } from '../../domain/permission';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 import {
   MessageDefault,
   ResponseMessage,
@@ -11,17 +16,23 @@ import {
 export class PermissionCreator {
   constructor(private readonly permissionRepository: PermissionRepository) {}
 
-  async create(createPermission: CreatePermission): Promise<ResponseSuccess> {
-    const newPermission = PermissionFactory.create(createPermission);
-    const response = await this.permissionRepository.searchById(
-      newPermission.id,
+  async execute(
+    permission: Permission,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    PermissionValidator.execute(
+      user,
+      AuthGroup.PERMISSIONS,
+      AuthPermission.CREATE,
     );
+
+    const response = await this.permissionRepository.searchById(permission.id);
 
     if (response) {
       throw new ErrorDuplicateElement('permiso');
     }
 
-    await this.permissionRepository.save(newPermission);
+    await this.permissionRepository.save(permission);
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_CREATED,
     );

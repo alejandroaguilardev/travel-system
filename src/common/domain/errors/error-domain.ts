@@ -4,6 +4,7 @@ export class ErrorDomain extends Error {
     INVALID_ARGUMENT: 'invalid_argument',
     DUPLICATE: 'duplicate',
     BAD_REQUEST: 'bad_request',
+    NOT_AUTHORIZATION: 'not_authorization',
   };
 
   constructor(

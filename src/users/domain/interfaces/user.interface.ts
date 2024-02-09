@@ -1,4 +1,5 @@
 import { ProfileInterface } from './profile.interface';
+import { UserAuthInterface } from './user-auth.interface';
 
 export interface UserInterface {
   id: string;
@@ -8,4 +9,5 @@ export interface UserInterface {
   profile: ProfileInterface;
   user?: string;
   status?: string;
+  auth?: UserAuthInterface;
 }

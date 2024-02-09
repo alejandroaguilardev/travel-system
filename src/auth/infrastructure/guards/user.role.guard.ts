@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { UserWithoutResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutResponse } from '../../../users/domain/interfaces/user-without.response';
 import { META_ROLES } from '../decorator/role-protected.decorator';
 
 @Injectable()
@@ -35,7 +35,7 @@ export class UserRoleGuard implements CanActivate {
     }
 
     throw new ForbiddenException(
-      `${user.name} need a valid role ${validRoles.join(',')}`,
+      `${user.profile.name} need a valid role ${validRoles.join(',')}`,
     );
   }
 }

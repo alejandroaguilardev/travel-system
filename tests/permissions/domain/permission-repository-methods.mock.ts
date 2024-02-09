@@ -1,7 +1,5 @@
-export const permissionRepositoryMethodsMock = {
-  save: jest.fn(),
-  search: jest.fn(),
-  searchById: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
+import { repositoryMock } from '../../common/domain/repository.mock';
+
+export const permissionRepositoryMock = {
+  ...repositoryMock,
 };

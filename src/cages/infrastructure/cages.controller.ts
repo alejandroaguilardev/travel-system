@@ -8,7 +8,7 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { UserWithoutWithRoleResponse } from '../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { Auth, GetUser } from '../../auth/infrastructure/decorator';
 import { CagesService } from './cages.service';
 import { CreateCageDto } from './dto/create-cage.dto';
@@ -30,14 +30,20 @@ export class CagesController {
 
   @Get()
   @Auth()
-  findAll(@Query() criteriaDto: CriteriaDto) {
-    return this.cagesService.findAll(criteriaDto);
+  findAll(
+    @Query() criteriaDto: CriteriaDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.cagesService.findAll(criteriaDto, user);
   }
 
   @Get(':id')
   @Auth()
-  findOne(@Param('id') id: string) {
-    return this.cagesService.findOne(id);
+  findOne(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.cagesService.findOne(id, user);
   }
 
   @Put(':id')
@@ -52,7 +58,10 @@ export class CagesController {
 
   @Delete(':id')
   @Auth()
-  remove(@Param('id') id: string) {
-    return this.cagesService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.cagesService.remove(id, user);
   }
 }

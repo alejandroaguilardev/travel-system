@@ -1,7 +1,7 @@
 import { IsOptional, IsString, IsUUID } from 'class-validator';
-import { CreatePermission } from '../../application/create/create-permission';
+import { CreatePermissionRequest } from '../../application/create/create-permission';
 
-export class CreatePermissionDto implements CreatePermission {
+export class CreatePermissionDto implements CreatePermissionRequest {
   @IsUUID(null, { message: 'Debe enviar un identificador válido' })
   id: string;
   @IsString({ message: 'Debe enviar un nombre válido' })

@@ -3,40 +3,35 @@ import { RoleSearchById } from '../../../src/roles/application/search-by-id/role
 import { RoleMother } from '../domain/role-mother';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
+import { UserCreatorMother } from '../../users/domain/create-user-mother';
 
 describe('RoleFind', () => {
-  const searchByIdMock = jest.fn();
-  let roleSearchById: RoleSearchById;
-
-  beforeEach(() => {
-    const repositoryMock = {
-      ...roleRepositoryMock,
-      searchByIdResponse: searchByIdMock,
-    };
-    roleSearchById = new RoleSearchById(repositoryMock);
-  });
+  const roleSearchById = new RoleSearchById(roleRepositoryMock);
 
   it('should_successfully_role_find_id', async () => {
     const dto = RoleMother.create();
-    searchByIdMock.mockResolvedValueOnce(dto);
-    const expected = await roleSearchById.execute(dto.id);
+    const user = UserCreatorMother.createWithPassword();
+    roleRepositoryMock.searchByIdResponse.mockResolvedValueOnce(dto);
+    const expected = await roleSearchById.execute(dto.id, user);
     expect(expected).toEqual(dto);
   });
 
   it('should_successfully_role_find_id_to_have_call', async () => {
     const dto = RoleMother.create();
-    searchByIdMock.mockResolvedValueOnce(dto);
-    await roleSearchById.execute(dto.id);
+    const user = UserCreatorMother.createWithPassword();
+    roleRepositoryMock.searchByIdResponse.mockResolvedValueOnce(dto);
+    await roleSearchById.execute(dto.id, user);
     const uuid = new Uuid(dto.id);
-    expect(searchByIdMock).toHaveBeenCalledWith(uuid);
+    expect(roleRepositoryMock.searchByIdResponse).toHaveBeenCalledWith(uuid);
   });
 
   it('should_failed_role_find_id', async () => {
     const dto = RoleMother.create();
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
-    searchByIdMock.mockRejectedValueOnce(error);
+    const user = UserCreatorMother.createWithPassword();
+    roleRepositoryMock.searchByIdResponse.mockRejectedValueOnce(error);
     try {
-      await roleSearchById.execute(dto.id);
+      await roleSearchById.execute(dto.id, user);
       fail('should_failed_role_find_id');
     } catch (throwError) {
       expect(throwError.message).toBe(error.message);

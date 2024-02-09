@@ -1,4 +1,4 @@
-import { UserWithoutResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutResponse } from '../../../users/domain/interfaces/user-without.response';
 import {
   ExecutionContext,
   InternalServerErrorException,

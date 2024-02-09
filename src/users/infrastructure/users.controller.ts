@@ -14,7 +14,7 @@ import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
-import { UserWithoutWithRoleResponse } from '../application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../domain/interfaces/user-without.response';
 
 @Controller('users')
 export class UsersController {
@@ -31,14 +31,20 @@ export class UsersController {
 
   @Get()
   @Auth()
-  findAll(@Query() criteriaDto: CriteriaDto) {
-    return this.usersService.findAll(criteriaDto);
+  findAll(
+    @Query() criteriaDto: CriteriaDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.usersService.findAll(criteriaDto, user);
   }
 
   @Get(':id')
   @Auth()
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  findOne(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.usersService.findOne(id, user);
   }
 
   @Put(':id')
@@ -53,7 +59,10 @@ export class UsersController {
 
   @Delete(':id')
   @Auth()
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.usersService.remove(id, user);
   }
 }

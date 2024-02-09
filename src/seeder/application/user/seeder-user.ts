@@ -1,12 +1,12 @@
 import { UUID } from '../../../common/application/services/uuid';
 import { UserRepository } from '../../../users/domain/user.repository';
-import { SeederRoleResponse } from '../response/seeder-role.response';
 import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { UserResponse } from '../../../users/application/response/user.response';
+import { UserResponse } from '../../../users/domain/interfaces/user.response';
 import { Hashing } from '../../../common/application/services/hashing';
 import { UserPassword } from '../../../users/domain/value-object/user-password';
 import { CommandCreatorUser } from '../../../users/application/create/command-create-user';
+import { UserAuthAdmin } from '../../../users/domain/value-object/auth/user-auth-admin';
 
 export class UserSeeder {
   constructor(
@@ -15,13 +15,13 @@ export class UserSeeder {
     private readonly uuid: UUID,
   ) {}
 
-  async execute(roles: SeederRoleResponse): Promise<void> {
+  async execute(): Promise<void> {
     const admin = CommandCreatorUser.execute(
       {
         id: this.uuid.generate(),
         email: 'alex@gmail.com',
         password: '12345678',
-        roles: [roles.admin],
+        roles: [],
         profile: {
           name: 'Alejandro',
           secondName: '',
@@ -36,6 +36,11 @@ export class UserSeeder {
           phone: '',
         },
         status: '',
+        auth: {
+          admin: true,
+          rememberToken: '',
+          lastLogin: null,
+        },
       },
       '',
     );
@@ -63,9 +68,12 @@ export class UserSeeder {
       '',
     );
 
+    admin.auth.setAdmin(new UserAuthAdmin(true));
+
     admin.setPassword(
       new UserPassword(this.hashing.hashPassword(admin.password.value)),
     );
+
     client.setPassword(
       new UserPassword(this.hashing.hashPassword(client.password.value)),
     );
@@ -85,7 +93,7 @@ export class UserSeeder {
       filters: [],
       globalFilter: '',
       globalFilterProperties: [],
-      size: 10,
+      size: 100,
       selectProperties: [],
     });
     const response = await this.userRepository.search<UserResponse>(criteria);

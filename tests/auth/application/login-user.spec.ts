@@ -1,5 +1,4 @@
-import { UserRepository } from '../../../src/users/domain/user.repository';
-import { userRepositoryMockMethods } from '../../users/domain/user-repository-mock-methods';
+import { userRepositoryMock } from '../../users/domain/user-repository-mock-methods';
 import { LoginUser } from '../../../src/auth/application/login/login-user';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { BcryptService } from '../../../src/common/infrastructure/services/bcrypt.service';
@@ -9,37 +8,27 @@ import { PasswordMother } from '../../users/domain/password-mother';
 
 describe('loginUser', () => {
   const hashing = new BcryptService();
-  const searchEmailMock = jest.fn();
-  let generateTokenMock: jest.Mock;
-  let loginUser: LoginUser;
-  let jwtAdapterServiceMock: jest.Mocked<JWTAdapterService>;
+  const generateTokenMock = jest.fn();
+  const jwtAdapterServiceMock = {
+    generateToken: generateTokenMock,
+    verifyToken: jest.fn(),
+  } as unknown as jest.Mocked<JWTAdapterService>;
 
-  beforeEach(() => {
-    generateTokenMock = jest.fn();
-
-    jwtAdapterServiceMock = {
-      generateToken: generateTokenMock,
-      verifyToken: jest.fn(),
-    } as unknown as jest.Mocked<JWTAdapterService>;
-
-    const userRepositoryMock = {
-      ...userRepositoryMockMethods,
-      searchEmail: searchEmailMock,
-    } as unknown as jest.Mocked<UserRepository>;
-
-    loginUser = new LoginUser(
-      userRepositoryMock,
-      hashing,
-      jwtAdapterServiceMock,
-    );
-  });
+  const loginUser = new LoginUser(
+    userRepositoryMock,
+    hashing,
+    jwtAdapterServiceMock,
+  );
 
   it('should successfully log in a user with valid credentials', async () => {
     const dto = UserCreatorMother.create();
     const { password, ...user } = dto;
     const passwordHash = hashing.hashPassword(password);
     generateTokenMock.mockReturnValueOnce('123');
-    searchEmailMock.mockResolvedValueOnce({ ...dto, password: passwordHash });
+    userRepositoryMock.searchEmail.mockResolvedValueOnce({
+      ...dto,
+      password: passwordHash,
+    });
     const resolve = await loginUser.login({ email: user.email, password });
     expect(resolve).toEqual({ user, token: '123' });
   });
@@ -50,7 +39,10 @@ describe('loginUser', () => {
     const passwordHash = hashing.hashPassword(password);
 
     generateTokenMock.mockReturnValueOnce('123');
-    searchEmailMock.mockResolvedValueOnce({ ...dto, password: passwordHash });
+    userRepositoryMock.searchEmail.mockResolvedValueOnce({
+      ...dto,
+      password: passwordHash,
+    });
     const resolve = await loginUser.login({ email: user.email, password });
     expect(resolve).toEqual({ user, token: '123' });
   });
@@ -59,7 +51,7 @@ describe('loginUser', () => {
     const dto = UserCreatorMother.create();
     const { email, password } = dto;
     generateTokenMock.mockReturnValueOnce('123');
-    searchEmailMock.mockResolvedValue(null);
+    userRepositoryMock.searchEmail.mockResolvedValue(null);
 
     const error = new ErrorBadRequest('El email es incorrecto');
     try {
@@ -71,17 +63,20 @@ describe('loginUser', () => {
   });
 
   it('should failed log password credentials', async () => {
-    const dto = UserCreatorMother.create();
-    const { password } = dto;
-    const passwordHash = hashing.hashPassword(password);
-
-    const passwordIncorrect = PasswordMother.create();
-
-    generateTokenMock.mockReturnValueOnce('123');
-    searchEmailMock.mockResolvedValueOnce({ ...dto, password: passwordHash });
-
     const error = new ErrorBadRequest('El password es incorrecto');
     try {
+      const dto = UserCreatorMother.create();
+      const { password } = dto;
+      const passwordHash = hashing.hashPassword(password);
+
+      const passwordIncorrect = PasswordMother.create();
+
+      generateTokenMock.mockReturnValueOnce('123');
+      userRepositoryMock.searchEmail.mockResolvedValueOnce({
+        ...dto,
+        password: passwordHash,
+      });
+
       await loginUser.login({ email: dto.email, password: passwordIncorrect });
       fail('Fallo la prueba should failed log password credentials');
     } catch (thrownError) {

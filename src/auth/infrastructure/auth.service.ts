@@ -5,7 +5,7 @@ import { LoginResponse } from '../application/response/login.response';
 import { LoginUser } from '../application/login/login-user';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JWTAdapterService } from './services/jwt.service';
-import { UserWithoutResponse } from '../../users/application/response/user-without.response';
+import { UserWithoutResponse } from '../../users/domain/interfaces/user-without.response';
 import { GenerateToken } from '../application/token/generate';
 
 @Injectable()

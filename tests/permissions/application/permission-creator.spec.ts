@@ -1,36 +1,28 @@
 import { PermissionCreator } from '../../../src/permissions/application/create/permission-creator';
 import { PermissionMother } from '../domain/permission.mother';
-import { permissionRepositoryMethodsMock } from '../domain/permission-repository-methods.mock';
-import { PermissionFactory } from '../../../src/permissions/domain/permission.factory';
+import { permissionRepositoryMock } from '../domain/permission-repository-methods.mock';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
+import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { CommandPermissionCreate } from '../../../src/permissions/application/create/command-create-permission';
 
 describe('PermissionCreator', () => {
-  const saveMock = jest.fn();
-  let permissionCreator: PermissionCreator;
-
-  beforeEach(() => {
-    const mockRepository = {
-      ...permissionRepositoryMethodsMock,
-      save: saveMock,
-    };
-    permissionCreator = new PermissionCreator(mockRepository);
-  });
+  const permissionCreator = new PermissionCreator(permissionRepositoryMock);
 
   it('should_successfully_permission_created', async () => {
     const dto = PermissionMother.create();
-    const permission = PermissionFactory.create(dto);
-    saveMock.mockResolvedValueOnce(permission);
-
-    const resolved = await permissionCreator.create(dto);
+    const user = UserCreatorMother.createWithPassword();
+    const permission = CommandPermissionCreate.execute(dto);
+    const resolved = await permissionCreator.execute(permission, user);
     expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
   });
 
   it('should_call_creator_method_of_PermissionRepository', async () => {
     const dto = PermissionMother.create();
-    const permission = PermissionFactory.create(dto);
-    saveMock.mockResolvedValueOnce(permission);
+    const permission = CommandPermissionCreate.execute(dto);
+    const user = UserCreatorMother.createWithPassword();
+    permissionRepositoryMock.save.mockResolvedValueOnce(permission);
 
-    await permissionCreator.create(dto);
-    expect(saveMock).toHaveBeenCalledWith(permission);
+    await permissionCreator.execute(permission, user);
+    expect(permissionRepositoryMock.save).toHaveBeenCalledWith(permission);
   });
 });

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
 import { ResponseSuccess, ResponseSearch } from '../../common/domain/response';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
-import { UserWithoutWithRoleResponse } from '../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { ContractCreator } from '../application/create/contract-creator';
 import { ContractSearch } from '../application/search/contract-search';
 import { ContractSearchById } from '../application/search-by-id/contract-search-by-id';
@@ -43,28 +43,40 @@ export class ContractsService {
     return contractsCreator.execute(contract, user);
   }
 
-  finish(id: string): Promise<ResponseSuccess> {
+  finish(
+    id: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
     const contractFinish = new ContractFinish(this.mongoContractRepository);
-    return contractFinish.execute(id);
+    return contractFinish.execute(id, user);
   }
 
-  findAll(criteriaDto: CriteriaDto): Promise<ResponseSearch<ContractSearch>> {
+  findAll(
+    criteriaDto: CriteriaDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSearch<ContractSearch>> {
     const contractSearch = new ContractSearch(this.mongoContractRepository);
-    return contractSearch.execute(criteriaDto);
+    return contractSearch.execute(criteriaDto, user);
   }
 
-  findOne(id: string): Promise<ContractResponse> {
+  findOne(
+    id: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ContractResponse> {
     const contractSearchById = new ContractSearchById(
       this.mongoContractRepository,
     );
-    return contractSearchById.execute(id);
+    return contractSearchById.execute(id, user);
   }
 
-  findContractByClient(id: string): Promise<ContractResponse[]> {
+  findContractByClient(
+    id: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ContractResponse[]> {
     const contractSearchById = new ContractSearchByIdClient(
       this.mongoContractRepository,
     );
-    return contractSearchById.execute(id);
+    return contractSearchById.execute(id, user);
   }
 
   update(
@@ -115,8 +127,11 @@ export class ContractsService {
     return contractTravelUpdater.execute(id, travel, user);
   }
 
-  remove(id: string): Promise<ResponseSuccess> {
+  remove(
+    id: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
     const contractRemover = new ContractRemover(this.mongoContractRepository);
-    return contractRemover.execute(id);
+    return contractRemover.execute(id, user);
   }
 }

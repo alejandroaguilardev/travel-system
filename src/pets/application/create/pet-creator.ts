@@ -5,7 +5,12 @@ import {
 } from '../../../common/domain/response/response-message';
 import { PetRepository } from '../../domain/pet.repository';
 import { Pet } from '../../domain/pet';
-import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 
 export class PetCreator {
   constructor(private readonly petRepository: PetRepository) {}
@@ -14,9 +19,8 @@ export class PetCreator {
     pet: Pet,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    if (!user) {
-      console.log(user);
-    }
+    PermissionValidator.execute(user, AuthGroup.PETS, AuthPermission.CREATE);
+
     await this.petRepository.save(pet);
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_CREATED,

@@ -3,6 +3,7 @@ import { PetMother } from '../domain/pet.mother';
 import { petRepositoryMock } from '../domain/pet.repository.mock';
 import { CriteriaMother } from '../../common/domain/criteria-mother';
 import { CommandCriteria } from '../../../src/common/application/criteria/command-criteria';
+import { UserCreatorMother } from '../../users/domain/create-user-mother';
 
 describe('PetSearch', () => {
   const petSearch = new PetSearch(petRepositoryMock);
@@ -10,6 +11,7 @@ describe('PetSearch', () => {
   it('should_successfully_pet_search', async () => {
     const criteriaRequest = CriteriaMother.create();
     const criteria = CommandCriteria.fromData(criteriaRequest);
+    const user = UserCreatorMother.createWithPassword();
     const response = [
       PetMother.create(),
       PetMother.create(),
@@ -21,7 +23,7 @@ describe('PetSearch', () => {
       response,
     });
 
-    const expected = await petSearch.execute(criteria);
+    const expected = await petSearch.execute(criteria, user);
 
     expect(expected).toEqual({ count: response.length, response });
     expect(expected.count).toEqual(response.length);
@@ -29,6 +31,8 @@ describe('PetSearch', () => {
 
   it('should_successfully_role_search_to_have_call', async () => {
     const criteriaRequest = CriteriaMother.create();
+    const user = UserCreatorMother.createWithPassword();
+
     const data = [
       PetMother.create(),
       PetMother.create(),
@@ -40,7 +44,7 @@ describe('PetSearch', () => {
     const response = { count: data.length, rows: data };
 
     petRepositoryMock.search.mockResolvedValueOnce(response);
-    await petSearch.execute(criteria);
+    await petSearch.execute(criteria, user);
     const expected = CommandCriteria.fromData(criteriaRequest);
     expect(petRepositoryMock.search).toHaveBeenCalledWith(expected);
   });

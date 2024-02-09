@@ -13,11 +13,15 @@ import { UserProvince } from '../../domain/value-object/profile/user-province';
 import { UserDistrict } from '../../domain/value-object/profile/user-district';
 import { UserDirection } from '../../domain/value-object/profile/user-direction';
 import { UserSecondName } from '../../domain/value-object/profile/user-second-name';
+import { UserAuth } from '../../domain/value-object/user-auth';
 import { User } from '../../domain/user';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserEmail } from '../../domain/value-object/user-email';
 import { UserPassword } from '../../domain/value-object/user-password';
 import { UserRole } from '../../domain/value-object/user-role';
+import { UserAuthAdmin } from '../../domain/value-object/auth/user-auth-admin';
+import { UserAuthRemember } from '../../domain/value-object/auth/user-remember-token';
+import { UserLastLogin } from '../../domain/value-object/auth/user-last-login';
 
 export class CommandCreatorUser {
   static execute(data: CreateUserRequest, userId: string): User {
@@ -41,6 +45,11 @@ export class CommandCreatorUser {
       ),
       new StatusValueObject('active'),
       new UuidOptional(userId),
+      new UserAuth(
+        new UserAuthAdmin(false),
+        new UserAuthRemember(''),
+        new UserLastLogin(null),
+      ),
     );
   }
 }

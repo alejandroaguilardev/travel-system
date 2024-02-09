@@ -5,10 +5,15 @@ import {
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
-import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { CageRepository } from '../../domain/cage.repository';
 import { Cage } from '../../domain/cage';
 import { CageResponse } from '../../domain/interfaces/cage.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 
 export class CageUpdater {
   constructor(private readonly cageRepository: CageRepository) {}
@@ -18,9 +23,8 @@ export class CageUpdater {
     cage: Cage,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    if (!user) {
-      console.log('role');
-    }
+    PermissionValidator.execute(user, AuthGroup.CAGES, AuthPermission.EDIT);
+
     const uuid = new Uuid(id);
 
     const response = await this.cageRepository.searchById<CageResponse>(uuid);

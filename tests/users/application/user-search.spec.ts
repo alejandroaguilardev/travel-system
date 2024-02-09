@@ -1,20 +1,10 @@
-import { UserFinAll } from '../../../src/users/application/find-all/user-find-all';
-import { userRepositoryMockMethods } from '../domain/user-repository-mock-methods';
+import { UserSearch } from '../../../src/users/application/search/user-search';
+import { userRepositoryMock } from '../domain/user-repository-mock-methods';
 import { CriteriaMother } from '../../common/domain/criteria-mother';
 import { UserCreatorMother } from '../domain/create-user-mother';
 
 describe('findAllUser', () => {
-  const searchMock = jest.fn();
-  let findAllUser: UserFinAll;
-
-  beforeEach(() => {
-    const userRepositoryMock = {
-      ...userRepositoryMockMethods,
-      search: searchMock,
-    };
-
-    findAllUser = new UserFinAll(userRepositoryMock);
-  });
+  const findAllUser = new UserSearch(userRepositoryMock);
 
   it('Should Retrieve All Users', async () => {
     const criteria = CriteriaMother.create({ start: 0, size: 5 });
@@ -25,8 +15,12 @@ describe('findAllUser', () => {
       UserCreatorMother.create(),
       UserCreatorMother.create(),
     ];
-    searchMock.mockResolvedValue({ count: response.length, response });
-    const expected = await findAllUser.find(criteria);
+    const user = UserCreatorMother.createWithPassword();
+    userRepositoryMock.search.mockResolvedValueOnce({
+      count: response.length,
+      response,
+    });
+    const expected = await findAllUser.execute(criteria, user);
 
     expect(expected).toEqual({ count: response.length, response });
     expect(expected.count).toEqual(response.length);
@@ -36,8 +30,9 @@ describe('findAllUser', () => {
     const criteria = CriteriaMother.create({ start: 0, size: 5 });
 
     const response = [];
-    searchMock.mockResolvedValue(response);
-    const expected = await findAllUser.find(criteria);
+    userRepositoryMock.search.mockResolvedValueOnce(response);
+    const user = UserCreatorMother.createWithPassword();
+    const expected = await findAllUser.execute(criteria, user);
 
     expect(expected).toEqual(response);
   });

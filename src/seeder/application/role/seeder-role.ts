@@ -1,11 +1,11 @@
 import { UUID } from '../../../common/application/services/uuid';
 import { RoleRepository } from '../../../roles/domain/role.repository';
-import { RoleFactory } from '../../../roles/domain/role.factory';
 import { SeederRoleResponse } from '../response/seeder-role.response';
 import { SeederPermissionsResponse } from '../response/seeder-permissions.response';
 import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { RoleResponse } from '../../../roles/application/response/role.response';
+import { RoleResponse } from '../../../roles/domain/interfaces/role.response';
+import { CommandRole } from '../../../roles/application/create/command-role';
 
 export class RoleSeeder {
   constructor(
@@ -16,7 +16,7 @@ export class RoleSeeder {
   async execute(
     permissions: SeederPermissionsResponse,
   ): Promise<SeederRoleResponse> {
-    const roleAdmin = RoleFactory.create({
+    const roleAdmin = CommandRole.execute({
       id: this.uuid.generate(),
       name: 'administrador',
       description: 'Todos los permisos del sistema',

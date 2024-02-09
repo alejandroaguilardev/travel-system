@@ -3,8 +3,13 @@ import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { ContractRepository } from '../../domain/contract.repository';
 import { ContractResponse } from '../response/contract.response';
 import { ContractCage } from '../../domain/value-object/services/service-cage';
-import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { ContractStatus } from '../../domain/value-object/contract-status';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 
 export class ContractCageUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -14,10 +19,6 @@ export class ContractCageUpdater {
     cage: ContractCage,
     user: UserWithoutWithRoleResponse,
   ): Promise<ContractResponse> {
-    if (!user) {
-      console.log(user);
-    }
-
     const uuid = new Uuid(contractId);
 
     const contract =
@@ -26,6 +27,8 @@ export class ContractCageUpdater {
     if (!contract) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
+
+    this.hasPermission(user, contract);
 
     const status = new ContractStatus(contract.status);
     status.statusError();
@@ -39,5 +42,20 @@ export class ContractCageUpdater {
       },
       status: status.value,
     };
+  }
+
+  private hasPermission(
+    user: UserWithoutWithRoleResponse,
+    contract: ContractResponse,
+  ) {
+    if (user.id === contract.client) {
+      return;
+    }
+
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.DOCUMENTATION,
+    );
   }
 }

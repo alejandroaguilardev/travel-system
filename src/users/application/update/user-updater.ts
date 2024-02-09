@@ -1,14 +1,19 @@
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserRepository } from '../../domain/user.repository';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
-import { UserResponse } from '../response/user.response';
+import { UserResponse } from '../../domain/interfaces/user.response';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { User } from '../../domain/user';
 import {
   MessageDefault,
   ResponseMessage,
 } from '../../../common/domain/response/response-message';
-import { UserWithoutWithRoleResponse } from '../response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 
 export class UserUpdater {
   constructor(private readonly userRepository: UserRepository) {}
@@ -18,9 +23,7 @@ export class UserUpdater {
     userUpdate: User,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    if (!user) {
-      console.log(user);
-    }
+    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.EDIT);
 
     const uuid = new Uuid(id);
     const response = await this.userRepository.searchById<UserResponse>(uuid);

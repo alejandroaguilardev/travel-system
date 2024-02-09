@@ -10,7 +10,7 @@ import { UserRepository } from '../../domain/user.repository';
 import {
   UserResponse,
   UserResponseWithRole,
-} from '../../application/response/user.response';
+} from '../../domain/interfaces/user.response';
 import { UserModel } from '../schema/user.schema';
 import { UserMongoPipeline } from './user-mongo.pipeline';
 import { CommandCriteria } from '../../../common/application/criteria/command-criteria';

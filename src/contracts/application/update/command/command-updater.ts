@@ -47,7 +47,6 @@ export class CommandUpdater {
   ): ServicesInterface {
     const { cage, documentation, travel } = data.services;
     const { services } = contract;
-    console.log(services.cage.chosen.user);
     return {
       cage: {
         status: services.cage.status,

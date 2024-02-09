@@ -1,6 +1,6 @@
 import { Controller, Post, Body, HttpCode, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserWithoutResponse } from '../../users/application/response/user-without.response';
+import { UserWithoutResponse } from '../../users/domain/interfaces/user-without.response';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { GetUser } from './decorator/get-user.decorator';
 import { Auth } from './decorator/auth.decorator';

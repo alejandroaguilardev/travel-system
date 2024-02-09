@@ -1,24 +1,13 @@
 import { UserUpdater } from '../../../src/users/application/update/user-updater';
 import { UserCreatorMother } from '../domain/create-user-mother';
-import { userRepositoryMockMethods } from '../domain/user-repository-mock-methods';
+import { userRepositoryMock } from '../domain/user-repository-mock-methods';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { CommandCreatorUser } from '../../../src/users/application/create/command-create-user';
 
 describe('updateUser', () => {
-  const updateMock = jest.fn();
-  const searchByIdMock = jest.fn();
-  let updateUser: UserUpdater;
-
-  beforeEach(() => {
-    const userRepositoryMock = {
-      ...userRepositoryMockMethods,
-      update: updateMock,
-      searchById: searchByIdMock,
-    };
-    updateUser = new UserUpdater(userRepositoryMock);
-  });
+  const updateUser = new UserUpdater(userRepositoryMock);
 
   it('should_successfully_updated_user', async () => {
     const userMother = UserCreatorMother.create();
@@ -28,8 +17,8 @@ describe('updateUser', () => {
       userAuth.id,
     );
 
-    searchByIdMock.mockResolvedValue(userMother);
-    updateMock.mockResolvedValue(userMother);
+    userRepositoryMock.searchById.mockResolvedValueOnce(userMother);
+    userRepositoryMock.update.mockResolvedValueOnce(userMother);
 
     const resolved = await updateUser.update(
       userMother.id,
@@ -47,10 +36,10 @@ describe('updateUser', () => {
       userAuth.id,
     );
 
-    searchByIdMock.mockResolvedValue(userMother);
+    userRepositoryMock.searchById.mockResolvedValueOnce(userMother);
     await updateUser.update(userMother.id, userUpdate, userAuth);
 
-    expect(updateMock).toHaveBeenCalledWith(
+    expect(userRepositoryMock.update).toHaveBeenCalledWith(
       new Uuid(userMother.id),
       userUpdate,
     );
@@ -65,7 +54,7 @@ describe('updateUser', () => {
     );
 
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
-    updateMock.mockRejectedValue(error);
+    userRepositoryMock.update.mockRejectedValue(error);
     try {
       await updateUser.update(userMother.id, userUpdate, userAuth);
       fail('should hable error during user creation');

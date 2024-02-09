@@ -5,11 +5,16 @@ import {
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
-import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { ContractRepository } from '../../domain/contract.repository';
 import { ContractResponse } from '../response/contract.response';
 import { Contract } from '../../domain/contract';
 import { CommandUpdater } from './command/command-updater';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 
 export class ContractUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -19,9 +24,8 @@ export class ContractUpdater {
     contract: Contract,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    if (!user) {
-      console.log('role');
-    }
+    PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.EDIT);
+
     const uuid = new Uuid(id);
 
     const response =

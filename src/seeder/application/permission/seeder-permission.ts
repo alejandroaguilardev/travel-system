@@ -1,10 +1,10 @@
 import { UUID } from '../../../common/application/services/uuid';
 import { PermissionRepository } from '../../../permissions/domain/permission.repository';
-import { PermissionFactory } from '../../../permissions/domain/permission.factory';
 import { SeederPermissionsResponse } from '../response/seeder-permissions.response';
 import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { PermissionResponse } from '../../../permissions/application/response/permission.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
+import { CommandPermissionCreate } from '../../../permissions/application/create/command-create-permission';
 
 export class PermissionSeeder {
   constructor(
@@ -13,25 +13,25 @@ export class PermissionSeeder {
   ) {}
 
   async execute(): Promise<SeederPermissionsResponse> {
-    const permissionCreate = PermissionFactory.create({
+    const permissionCreate = CommandPermissionCreate.execute({
       id: this.uuid.generate(),
       name: 'crear',
       description: 'Crear nuevos elementos',
       group: 'contratos',
     });
-    const permissionEdit = PermissionFactory.create({
+    const permissionEdit = CommandPermissionCreate.execute({
       id: this.uuid.generate(),
       name: 'editar',
       description: 'Crear nuevos elementos',
       group: 'contratos',
     });
-    const permissionDelete = PermissionFactory.create({
+    const permissionDelete = CommandPermissionCreate.execute({
       id: this.uuid.generate(),
       name: 'Eliminar',
       description: 'Crear nuevos elementos',
       group: 'contratos',
     });
-    const permissionView = PermissionFactory.create({
+    const permissionView = CommandPermissionCreate.execute({
       id: this.uuid.generate(),
       name: 'Visualizar',
       description: 'Crear nuevos elementos',

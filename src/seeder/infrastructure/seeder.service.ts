@@ -33,8 +33,8 @@ export class SeederService {
     );
 
     const permissions = await permissionSeeder.execute();
-    const roles = await roleSeeder.execute(permissions);
-    await userSeeder.execute(roles);
+    await roleSeeder.execute(permissions);
+    await userSeeder.execute();
     return ResponseMessage.createSuccessResponse('seeder ejecutado');
   }
 }

@@ -1,4 +1,4 @@
-export interface CreatePermission {
+export interface CreatePermissionRequest {
   id: string;
   name: string;
   description: string;

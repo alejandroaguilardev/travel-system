@@ -1,16 +1,23 @@
 import { ResponseSearch } from '../../../common/domain/response/response-search';
-import { CriteriaRequest } from '../../../common/application/criteria/criteria';
-import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { RoleRepository } from '../../domain/role.repository';
-import { RoleResponse } from '../response/role.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
+import { Criteria } from '../../../common/domain/criteria/criteria';
+import { RoleResponse } from '../../domain/interfaces/role.response';
 
 export class RoleSearch {
   constructor(private readonly roleRepository: RoleRepository) {}
 
   async execute(
-    criteriaRequest: CriteriaRequest,
+    criteria: Criteria,
+    user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSearch<RoleResponse>> {
-    const criteria = CommandCriteria.fromData(criteriaRequest);
+    PermissionValidator.execute(user, AuthGroup.ROLES, AuthPermission.LIST);
+
     return this.roleRepository.search<RoleResponse>(criteria);
   }
 }

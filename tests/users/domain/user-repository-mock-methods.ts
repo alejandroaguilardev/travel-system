@@ -1,10 +1,7 @@
-import { UserRepository } from '../../../src/users/domain/user.repository';
+import { repositoryMock } from '../../common/domain/repository.mock';
 
-export const userRepositoryMockMethods = {
-  search: jest.fn(),
+export const userRepositoryMock = {
+  ...repositoryMock,
   searchEmail: jest.fn(),
   searchByIdWithRole: jest.fn(),
-  searchById: jest.fn(),
-  update: jest.fn(),
-  remove: jest.fn(),
-} as unknown as jest.Mocked<UserRepository>;
+};

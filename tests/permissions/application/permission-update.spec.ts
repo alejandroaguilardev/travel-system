@@ -1,56 +1,51 @@
 import { PermissionUpdater } from '../../../src/permissions/application/updated/permission-updater';
-import { permissionRepositoryMethodsMock } from '../domain/permission-repository-methods.mock';
+import { permissionRepositoryMock } from '../domain/permission-repository-methods.mock';
 import { PermissionMother } from '../domain/permission.mother';
-import { PermissionFactory } from '../../../src/permissions/domain/permission.factory';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
-import { PermissionNameMother } from '../domain/permission-name.mother';
+import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { CommandPermissionCreate } from '../../../src/permissions/application/create/command-create-permission';
 
 describe('PermissionUpdate', () => {
-  const updateMock = jest.fn();
-  const searchByIdMock = jest.fn();
-  let permissionUpdater: PermissionUpdater;
-
-  beforeEach(() => {
-    const permissionRepositoryMock = {
-      ...permissionRepositoryMethodsMock,
-      update: updateMock,
-      searchById: searchByIdMock,
-    };
-    permissionUpdater = new PermissionUpdater(permissionRepositoryMock);
-  });
+  const permissionUpdater = new PermissionUpdater(permissionRepositoryMock);
 
   it('should_successfully_permission_updater', async () => {
-    const name = PermissionNameMother.create();
     const dto = PermissionMother.create();
-    searchByIdMock.mockResolvedValueOnce(dto);
-    const resolved = await permissionUpdater.update(dto.id, { name });
+    const dtoUpdate = PermissionMother.create();
+    const user = UserCreatorMother.createWithPassword();
+    const permission = CommandPermissionCreate.execute(dtoUpdate);
+    permissionRepositoryMock.searchById.mockResolvedValueOnce(dto);
+
+    const resolved = await permissionUpdater.execute(dto.id, permission, user);
     expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
   it('should_call_updater_method_of_PermissionRepository', async () => {
-    const name = PermissionNameMother.create();
     const dto = PermissionMother.create();
+    const dtoUpdate = PermissionMother.create();
+    const user = UserCreatorMother.createWithPassword();
+    const permission = CommandPermissionCreate.execute(dtoUpdate);
+    permissionRepositoryMock.searchById.mockResolvedValueOnce(dto);
+
+    await permissionUpdater.execute(dto.id, permission, user);
+
     const uuid = new Uuid(dto.id);
-    searchByIdMock.mockResolvedValueOnce(dto);
-
-    await permissionUpdater.update(dto.id, { name });
-
-    const permission = PermissionFactory.update(
-      { name },
-      PermissionFactory.create(dto),
+    expect(permissionRepositoryMock.update).toHaveBeenCalledWith(
+      uuid,
+      permission,
     );
-    expect(updateMock).toHaveBeenCalledWith(uuid, permission);
   });
 
   it('should_failed_permission_updater', async () => {
-    const name = PermissionNameMother.create();
     const dto = PermissionMother.create();
+    const dtoUpdate = PermissionMother.create();
+    const user = UserCreatorMother.createWithPassword();
+    const permission = CommandPermissionCreate.execute(dtoUpdate);
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
-    searchByIdMock.mockRejectedValueOnce(error);
+    permissionRepositoryMock.searchById.mockRejectedValueOnce(error);
     try {
-      await permissionUpdater.update(dto.id, { name });
+      await permissionUpdater.execute(dto.id, permission, user);
       fail('should_failed_permission_updater');
     } catch (throwError) {
       expect(throwError.message).toBe(error.message);

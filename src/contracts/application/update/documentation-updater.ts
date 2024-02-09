@@ -4,7 +4,12 @@ import { ContractRepository } from '../../domain/contract.repository';
 import { ContractResponse } from '../response/contract.response';
 import { ContractDocumentation } from '../../domain/value-object/services/service-documentation';
 import { ContractStatus } from '../../domain/value-object/contract-status';
-import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
+import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../../common/domain/auth-permissions';
 
 export class ContractDocumentationUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -14,10 +19,6 @@ export class ContractDocumentationUpdater {
     documentation: ContractDocumentation,
     user: UserWithoutWithRoleResponse,
   ): Promise<ContractResponse> {
-    if (!user) {
-      console.log(user);
-    }
-
     const uuid = new Uuid(contractId);
     const contract =
       await this.contractRepository.searchById<ContractResponse>(uuid);
@@ -30,6 +31,8 @@ export class ContractDocumentationUpdater {
     status.statusError();
 
     documentation.documentationIsApplied();
+
+    this.hasPermission(user, contract);
 
     await this.contractRepository.updateDocumentation(
       uuid,
@@ -44,5 +47,20 @@ export class ContractDocumentationUpdater {
       },
       status: status.value,
     };
+  }
+
+  private hasPermission(
+    user: UserWithoutWithRoleResponse,
+    contract: ContractResponse,
+  ) {
+    if (user.id === contract.client) {
+      return;
+    }
+
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.DOCUMENTATION,
+    );
   }
 }

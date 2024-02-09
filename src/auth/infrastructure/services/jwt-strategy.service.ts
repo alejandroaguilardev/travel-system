@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { JwtPayload } from '../../application/services/jwt';
 import { UserMongoRepository } from '../../../users/infrastructure/persistence/user-mongo.repository';
-import { UserWithoutWithRoleResponse } from '../../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 

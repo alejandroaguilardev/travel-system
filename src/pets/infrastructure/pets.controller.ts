@@ -12,7 +12,7 @@ import { PetsService } from './pets.service';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
-import { UserWithoutWithRoleResponse } from '../../users/application/response/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 
@@ -31,14 +31,20 @@ export class PetsController {
 
   @Get()
   @Auth()
-  findAll(@Query() criteriaDto: CriteriaDto) {
-    return this.petsService.findAll(criteriaDto);
+  findAll(
+    @Query() criteriaDto: CriteriaDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.petsService.findAll(criteriaDto, user);
   }
 
   @Get(':id')
   @Auth()
-  findOne(@Param('id') id: string) {
-    return this.petsService.findOne(id);
+  findOne(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.petsService.findOne(id, user);
   }
 
   @Put(':id')
@@ -53,7 +59,10 @@ export class PetsController {
 
   @Delete(':id')
   @Auth()
-  remove(@Param('id') id: string) {
-    return this.petsService.remove(id);
+  remove(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.petsService.remove(id, user);
   }
 }
