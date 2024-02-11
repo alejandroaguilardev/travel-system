@@ -14,6 +14,7 @@ import {
   PermissionModel,
   PermissionSchema,
 } from '../../permissions/infrastructure/schema/permission.schema';
+import { MailModule } from '../../mail/infrastructure/mail.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import {
     MongooseModule.forFeature([{ name: RoleModel.name, schema: RoleSchema }]),
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
     AuthModule,
+    MailModule,
   ],
   controllers: [UsersController],
   providers: [UsersService, UserMongoRepository, BcryptService],

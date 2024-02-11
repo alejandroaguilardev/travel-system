@@ -11,6 +11,7 @@ import { ContractResponse } from '../application/response/contract.response';
 import { ContractSearchByIdClient } from '../application/search-contract-by-client/search-contract-by-client';
 import { CommandContractCreator } from '../application/create';
 import { ContractFinish } from '../application/finish/contract-finish';
+import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 import {
   CommandContractCage,
   CommandContractDocumentation,
@@ -32,15 +33,18 @@ import {
 export class ContractsService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
+    private readonly mailerService: MailContractService,
   ) {}
 
-  create(
+  async create(
     createContractDto: CreateContractDto,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(createContractDto, user.id);
-    return contractsCreator.execute(contract, user);
+    const response = await contractsCreator.execute(contract, user);
+    this.mailerService.new(user.email, contract.toJson());
+    return response;
   }
 
   finish(

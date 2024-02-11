@@ -3,7 +3,7 @@ import { HydratedDocument } from 'mongoose';
 import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
 import { UserInterface } from '../../domain/interfaces/user.interface';
 import { ProfileInterface } from '../../domain/interfaces/profile.interface';
-import { UserAuthInterface } from 'src/users/domain/interfaces/user-auth.interface';
+import { UserAuthInterface } from '../../domain/interfaces/user-auth.interface';
 
 @Schema({
   collection: 'users',

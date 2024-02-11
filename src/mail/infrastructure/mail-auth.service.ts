@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { SendEmail } from '../application/send-email';
+import { SendMailRegister } from '../application/auth/send-mail-register';
+import { UserEmail } from '../../users/domain/value-object/user-email';
+import { UserPassword } from '../../users/domain/value-object/user-password';
 
 @Injectable()
-export class MailService {
+export class MailAuthService {
   private mailerService: nodemailer.Transporter<SMTPTransport.SentMessageInfo>;
 
   constructor() {
     this.mailerService = nodemailer.createTransport({
+      host: process.env.MAIL_HOST,
       auth: {
         user: process.env.MAIL_TO,
         pass: process.env.MAIL_PASSWORD,
@@ -18,14 +21,8 @@ export class MailService {
     });
   }
 
-  async sendEmail(
-    to: string,
-    subject: string,
-    text: string,
-    html: string,
-    attachments?: { filename: string; path: string }[],
-  ): Promise<void> {
-    const sendEmail = new SendEmail(this.mailerService);
-    await sendEmail.execute(to, subject, text, html, attachments);
+  async register(email: UserEmail, password: UserPassword): Promise<void> {
+    const sendEmail = new SendMailRegister(this.mailerService);
+    await sendEmail.execute(email, password);
   }
 }

@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContractModel, ContractSchema } from './schema/contract.schema';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
+import { MailModule } from '../../mail/infrastructure/mail.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AuthModule } from '../../auth/infrastructure/auth.module';
       { name: ContractModel.name, schema: ContractSchema },
     ]),
     AuthModule,
+    MailModule,
   ],
   controllers: [ContractsController],
   providers: [ContractsService, MongoContractRepository],

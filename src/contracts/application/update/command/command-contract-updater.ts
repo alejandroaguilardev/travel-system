@@ -17,12 +17,12 @@ import { CommandContractTravel } from './command-travel';
 import { CommandContractCage } from './command-cage';
 import { CommandContractDocumentation } from './command-documentation';
 
-export class CommandUpdater {
+export class CommandContractUpdater {
   static execute(
-    data: ContractInterface,
     contract: ContractInterface,
+    data?: ContractInterface,
   ): Contract {
-    const services = CommandUpdater.services(data, contract);
+    const services = CommandContractUpdater.services(contract, data);
     return new Contract(
       new Uuid(contract.id),
       new ContractNumber(data?.number ?? contract.number),
@@ -37,15 +37,15 @@ export class CommandUpdater {
       ),
       new ContractGuideNumber(contract.guideNumber),
       new ContractPets(data?.pets ?? contract.pets),
-      new UuidOptional(data.user),
+      new UuidOptional(data?.user ?? contract.user),
     );
   }
 
   private static services(
-    data: ContractInterface,
     contract: ContractInterface,
+    data: ContractInterface,
   ): ServicesInterface {
-    const { cage, documentation, travel } = data.services;
+    const { cage, documentation, travel } = data?.services ?? {};
     const { services } = contract;
     return {
       cage: {

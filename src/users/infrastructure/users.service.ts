@@ -16,12 +16,14 @@ import {
 } from '../domain/interfaces/user-without.response';
 import { UserCreatorDto } from './dto/create-user.dto';
 import { CommandCreatorUser } from '../application/create/command-create-user';
+import { MailAuthService } from '../../mail/infrastructure/mail-auth.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
+    private readonly mailService: MailAuthService,
   ) {}
 
   async create(
@@ -33,7 +35,9 @@ export class UsersService {
       this.bcryptService,
     );
     const userCommand = CommandCreatorUser.execute(createAuthDto, user.id);
-    return userCreator.create(userCommand, user);
+    const response = await userCreator.create(userCommand, user);
+    this.mailService.register(userCommand.email, userCommand.password);
+    return response;
   }
 
   async findAll(

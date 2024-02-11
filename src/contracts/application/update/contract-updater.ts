@@ -9,7 +9,7 @@ import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/us
 import { ContractRepository } from '../../domain/contract.repository';
 import { ContractResponse } from '../response/contract.response';
 import { Contract } from '../../domain/contract';
-import { CommandUpdater } from './command/command-updater';
+import { CommandContractUpdater } from './command/command-contract-updater';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import {
   AuthGroup,
@@ -34,7 +34,10 @@ export class ContractUpdater {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));
     }
 
-    const updateContract = CommandUpdater.execute(contract.toJson(), response);
+    const updateContract = CommandContractUpdater.execute(
+      response,
+      contract.toJson(),
+    );
 
     await this.contractRepository.update(uuid, updateContract);
 

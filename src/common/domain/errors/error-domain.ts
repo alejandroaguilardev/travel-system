@@ -5,6 +5,7 @@ export class ErrorDomain extends Error {
     DUPLICATE: 'duplicate',
     BAD_REQUEST: 'bad_request',
     NOT_AUTHORIZATION: 'not_authorization',
+    MAIL: 'mail_error',
   };
 
   constructor(
