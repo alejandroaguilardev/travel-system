@@ -4,7 +4,7 @@ import { ContractRepository } from '../../domain/contract.repository';
 import { ContractResponse } from '../response/contract.response';
 import { ContractCage } from '../../domain/value-object/services/service-cage';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
-import { ContractStatus } from '../../domain/value-object/contract-status';
+import { ContractStatus } from '../../../common/domain/value-object/contract-status';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import {
   AuthGroup,

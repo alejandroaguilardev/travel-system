@@ -8,6 +8,7 @@ import { UserPassword } from '../../users/domain/value-object/user-password';
 @Injectable()
 export class MailAuthService {
   private mailerService: nodemailer.Transporter<SMTPTransport.SentMessageInfo>;
+  private isProductionMode: string;
 
   constructor() {
     this.mailerService = nodemailer.createTransport({
@@ -19,9 +20,12 @@ export class MailAuthService {
       secure: true,
       port: Number(process.env.MAIL_PORT),
     });
+    this.isProductionMode = process.env.PRODUCTION;
   }
 
   async register(email: UserEmail, password: UserPassword): Promise<void> {
+    if (this.isProductionMode === 'false') return;
+
     const sendEmail = new SendMailRegister(this.mailerService);
     await sendEmail.execute(email, password);
   }

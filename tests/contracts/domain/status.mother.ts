@@ -1,4 +1,4 @@
-import { ContractStatus } from '../../../src/contracts/domain/value-object/contract-status';
+import { ContractStatus } from '../../../src/common/domain/value-object/contract-status';
 import { StatusInterface } from '../../../src/contracts/domain/interfaces/status.interface';
 
 export class StatusMother {

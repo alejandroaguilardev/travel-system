@@ -58,7 +58,7 @@ export class ContractsService {
   findAll(
     criteriaDto: CriteriaDto,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSearch<ContractSearch>> {
+  ): Promise<ResponseSearch<ContractResponse>> {
     const contractSearch = new ContractSearch(this.mongoContractRepository);
     return contractSearch.execute(criteriaDto, user);
   }

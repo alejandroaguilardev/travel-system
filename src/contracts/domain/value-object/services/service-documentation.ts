@@ -1,5 +1,5 @@
 import { DocumentationInterface, StatusInterface } from '../../interfaces';
-import { ContractStatus } from '../contract-status';
+import { ContractStatus } from '../../../../common/domain/value-object/contract-status';
 import {
   DocumentationVaccinationCertificate,
   DocumentationHealthCertificate,

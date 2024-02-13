@@ -3,7 +3,7 @@ import { ProfileInterface } from '../../../src/users/domain/interfaces/profile.i
 import { FirstNameMother } from './first-name-mother';
 import { LastNameMother } from './last-name-mother';
 import { PhoneMother } from '../../common/domain/phone.mother';
-import { DateMother } from '../../contracts/domain/date.mother';
+import { DateMother } from '../../common/domain/date.mother';
 
 export class ProfileMother {
   static create(profile?: Partial<ProfileInterface>): ProfileInterface {

@@ -8,6 +8,7 @@ import {
   AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
+import { ContractResponse } from '../response/contract.response';
 
 export class ContractSearch {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -15,7 +16,7 @@ export class ContractSearch {
   execute(
     criteriaRequest: CriteriaRequest,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSearch<ContractSearch>> {
+  ): Promise<ResponseSearch<ContractResponse>> {
     PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.LIST);
 
     const criteria = CommandCriteria.fromData(criteriaRequest);

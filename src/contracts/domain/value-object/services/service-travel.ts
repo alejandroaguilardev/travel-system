@@ -1,6 +1,6 @@
 import { TravelInterface, StatusInterface } from '../../interfaces';
 import { ContractHasServiceIncluded } from '../contract-has-service.included';
-import { ContractStatus } from '../contract-status';
+import { ContractStatus } from '../../../../common/domain/value-object/contract-status';
 import {
   ContractHasServiceAccompanied,
   ContractTypeTraveling,

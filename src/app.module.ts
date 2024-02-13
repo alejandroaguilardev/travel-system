@@ -11,6 +11,7 @@ import { ContractsModule } from './contracts/infrastructure/contracts.module';
 import { CagesModule } from './cages/infrastructure/cages.module';
 import { PetsModule } from './pets/infrastructure/pets.module';
 import { MailModule } from './mail/infrastructure/mail.module';
+import { ContractDetailModule } from './contract-detail/infrastructure/contract-detail.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { MailModule } from './mail/infrastructure/mail.module';
     CagesModule,
     PetsModule,
     MailModule,
+    ContractDetailModule,
   ],
   controllers: [],
   providers: [BcryptService],

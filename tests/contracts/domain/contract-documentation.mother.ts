@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { DocumentationInterface } from '../../../src/contracts/domain/interfaces/documentation.interface';
 import { StatusMother } from './status.mother';
-import { DateMother } from './date.mother';
+import { DateMother } from '../../common/domain/date.mother';
 
 export class ContractDocumentationMother {
   static create(): DocumentationInterface {

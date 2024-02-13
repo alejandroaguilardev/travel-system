@@ -3,7 +3,7 @@ import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { ContractRepository } from '../../domain/contract.repository';
 import { ContractTravel } from '../../domain/value-object/services/service-travel';
 import { ContractResponse } from '../response/contract.response';
-import { ContractStatus } from '../../domain/value-object/contract-status';
+import { ContractStatus } from '../../../common/domain/value-object/contract-status';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import {
   AuthGroup,

@@ -7,3 +7,4 @@ export { Uuid } from './uuid';
 export { ValueObject } from './value-object';
 export { ValueObjectArray } from './value-object-array';
 export { UuidOptional } from './uuid-optional-value-object';
+export { ContractStatus } from './contract-status';

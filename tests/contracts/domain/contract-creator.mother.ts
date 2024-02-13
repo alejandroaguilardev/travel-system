@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { ContractCreateRequest } from '../../../src/contracts/application/create/contract-create-request';
 import { UuidMother } from '../../common/domain/uuid-mother';
-import { DateMother } from './date.mother';
-import { NumberMother } from './number.mother';
+import { DateMother } from '../../common/domain/date.mother';
+import { NumberMother } from '../../common/domain/number.mother';
 import { TypeTravelingMother } from './type-traveling-mother';
 import { ContractDocumentationMother } from './contract-documentation.mother';
 import { CageMother } from './cage-mother';

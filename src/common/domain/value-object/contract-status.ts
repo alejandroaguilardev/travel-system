@@ -1,5 +1,5 @@
-import { StatusInterface } from '../interfaces/status.interface';
-import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
+import { StatusInterface } from '../../../contracts/domain/interfaces/status.interface';
+import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 
 export class ContractStatus {
   static values: StatusInterface[] = [
@@ -17,7 +17,7 @@ export class ContractStatus {
 
   private validSecured(value: StatusInterface): void {
     if (!ContractStatus.values.includes(value)) {
-      throw new ErrorInvalidadArgument('No es un tipo de viaje válido');
+      throw new ErrorInvalidadArgument('No es un estado válido');
     }
   }
 

@@ -9,6 +9,7 @@ import { CommandContractUpdater } from '../../contracts/application/update/comma
 @Injectable()
 export class MailContractService {
   private mailerService: nodemailer.Transporter<SMTPTransport.SentMessageInfo>;
+  private isProductionMode: string;
 
   constructor() {
     this.mailerService = nodemailer.createTransport({
@@ -20,9 +21,12 @@ export class MailContractService {
       secure: true,
       port: Number(process.env.MAIL_PORT),
     });
+    this.isProductionMode = process.env.PRODUCTION;
   }
 
   async new(email: string, contractJson: ContractInterface): Promise<void> {
+    if (this.isProductionMode === 'false') return;
+
     const sendEmail = new SendMailNewContract(this.mailerService);
     const contract = CommandContractUpdater.execute(contractJson);
     await sendEmail.execute(new UserEmail(email), contract);

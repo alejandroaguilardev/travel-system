@@ -63,6 +63,7 @@ export class CrudTest {
       .set('Authorization', `Bearer ${access_token}`)
       .expect(200);
   }
+
   static async searchById(
     app: INestApplication,
     access_token: string,
