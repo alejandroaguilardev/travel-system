@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { DocumentationInterface } from '../../../src/contracts/domain/interfaces/documentation.interface';
+import { DocumentationInterface } from '../../../src/contract-detail/domain/interfaces/documentation.interface';
 import { DateMother } from '../../common/domain/date.mother';
 import { StatusMother } from '../../contracts/domain/status.mother';
 

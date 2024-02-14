@@ -4,7 +4,7 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SendMailNewContract } from '../application/contracts/send-mail-new-contract';
 import { ContractInterface } from '../../contracts/domain/interfaces/contract.interface';
 import { UserEmail } from '../../users/domain/value-object/user-email';
-import { CommandContractUpdater } from '../../contracts/application/update/command/command-contract-updater';
+import { CommandContractUpdater } from '../../contracts/application/update/command-contract-updater';
 
 @Injectable()
 export class MailContractService {

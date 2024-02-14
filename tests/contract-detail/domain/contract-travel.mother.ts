@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { TravelInterface } from '../../../src/contracts/domain/interfaces/travel.interface';
+import { TravelInterface } from '../../../src/contract-detail/domain/interfaces/travel.interface';
 import { UuidMother } from '../../common/domain/uuid-mother';
 import { EmailMother } from '../../common/domain/email-mother';
 import { FirstNameMother } from '../../users/domain/first-name-mother';

@@ -7,12 +7,7 @@ import { ContractModel } from '../schema/contract.schema';
 import { Contract } from '../../domain/contract';
 import { ContractResponse } from '../../application/response/contract.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractEndDate, ContractStatus } from '../../domain/value-object';
-import {
-  ContractTravel,
-  ContractCage,
-  ContractDocumentation,
-} from '../../domain/value-object/services';
+import { ContractEndDate } from '../../domain/value-object';
 
 @Injectable()
 export class MongoContractRepository
@@ -34,61 +29,6 @@ export class MongoContractRepository
       .lean();
 
     return rows;
-  }
-
-  async updateDocumentation(
-    contractId: Uuid,
-    status: ContractStatus,
-    documentation: ContractDocumentation,
-  ): Promise<void> {
-    const row = await this.searchById<ContractResponse>(contractId);
-
-    return this.contractModel.findOneAndUpdate(
-      { id: contractId.value },
-      {
-        status: status.value,
-        services: {
-          ...row.services,
-          documentation: documentation.toJson(),
-        },
-      },
-    );
-  }
-
-  async updateCage(
-    contractId: Uuid,
-    status: ContractStatus,
-    cage: ContractCage,
-  ): Promise<void> {
-    const row = await this.searchById<ContractResponse>(contractId);
-    return this.contractModel.findOneAndUpdate(
-      { id: contractId.value },
-      {
-        status: status.value,
-        services: {
-          ...row.services,
-          cage: cage.toJson(),
-        },
-      },
-    );
-  }
-
-  async updateTravel(
-    contractId: Uuid,
-    status: ContractStatus,
-    travel: ContractTravel,
-  ): Promise<void> {
-    const row = await this.searchById<ContractResponse>(contractId);
-    return this.contractModel.findOneAndUpdate(
-      { id: contractId.value },
-      {
-        status: status.value,
-        services: {
-          ...row.services,
-          travel: travel.toJson(),
-        },
-      },
-    );
   }
 
   async finish(contractId: Uuid, endDate: ContractEndDate): Promise<void> {

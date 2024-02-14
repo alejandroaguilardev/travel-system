@@ -11,7 +11,7 @@ import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { ContractDetailResponse } from '../application/response/contract-detail.response';
 import { ContractDetailSearch } from '../application/search/contract-detail-search';
 import { ContractDetailSearchById } from '../application/search-by-id/contract-detail-search-by-id';
-import { TravelDto } from '../../contracts/infrastructure/dto';
+import { TravelDto } from '../../contract-detail/infrastructure/dto';
 import {
   CommandContractCage,
   CommandContractDocumentation,

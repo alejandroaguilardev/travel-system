@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { CageChosenInterface } from '../../../src/contracts/domain/interfaces/cage.interface';
 import { UuidMother } from '../../common/domain/uuid-mother';
+import { CageChosenInterface } from '../../../src/contract-detail/domain/interfaces';
 
 export class ChosenMother {
   static create(): CageChosenInterface {

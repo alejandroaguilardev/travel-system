@@ -3,7 +3,7 @@ import { UserEmail } from '../../../../src/users/domain/value-object/user-email'
 import { transportMock } from '../../domain/transporter.mock';
 import { SendMailNewContract } from '../../../../src/mail/application/contracts/send-mail-new-contract';
 import { ContractCreatorMother } from '../../../contracts/domain/contract-creator.mother';
-import { CommandContractUpdater } from '../../../../src/contracts/application/update/command/command-contract-updater';
+import { CommandContractUpdater } from '../../../../src/contracts/application/update/command-contract-updater';
 
 describe('sendMailNewContract', () => {
   const sendMail = new SendMailNewContract(transportMock);

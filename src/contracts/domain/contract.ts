@@ -5,9 +5,7 @@ import {
   ContractStatus,
   ContractStartDate,
   ContractEndDate,
-  ContractServices,
-  ContractGuideNumber,
-  ContractPets,
+  ContractDetails,
 } from './value-object';
 
 export class Contract {
@@ -18,9 +16,7 @@ export class Contract {
     readonly status: ContractStatus,
     readonly startDate: ContractStartDate,
     public endDate: ContractEndDate,
-    readonly services: ContractServices,
-    readonly guideNumber: ContractGuideNumber,
-    readonly pets: ContractPets,
+    readonly details: ContractDetails,
     readonly user: UuidOptional,
   ) {}
 
@@ -31,30 +27,28 @@ export class Contract {
       client: this.client.value,
       status: this.status.value as StatusInterface,
       startDate: this.startDate.value,
+      details: this.details.toJson(),
       endDate: this.endDate.value,
-      services: this.services.toJson(),
-      guideNumber: this.guideNumber.value,
-      pets: this.pets.toJson(),
       user: this.user.value,
     };
   }
 
-  static establishedStatus(contract: ContractInterface): StatusInterface {
-    let count = 0;
-    Object.keys(contract.services).forEach((key) => {
-      if (contract.services[key].status === 'completed') {
-        ++count;
-      }
-    });
+  // static establishedStatus(contract: ContractInterface): StatusInterface {
+  //   let count = 0;
+  //   Object.keys(contract.services).forEach((key) => {
+  //     if (contract.services[key].status === 'completed') {
+  //       ++count;
+  //     }
+  //   });
 
-    if (count === 3) {
-      contract.status = 'completed';
-    } else if (count > 0) {
-      contract.status = 'in-process';
-    } else {
-      contract.status = 'pending';
-    }
+  //   if (count === 3) {
+  //     contract.status = 'completed';
+  //   } else if (count > 0) {
+  //     contract.status = 'in-process';
+  //   } else {
+  //     contract.status = 'pending';
+  //   }
 
-    return contract.status;
-  }
+  //   return contract.status;
+  // }
 }

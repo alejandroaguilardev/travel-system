@@ -12,22 +12,8 @@ import { ContractSearchByIdClient } from '../application/search-contract-by-clie
 import { CommandContractCreator } from '../application/create';
 import { ContractFinish } from '../application/finish/contract-finish';
 import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
-import {
-  CommandContractCage,
-  CommandContractDocumentation,
-  CommandContractTravel,
-  ContractCageUpdater,
-  ContractDocumentationUpdater,
-  ContractTravelUpdater,
-  ContractUpdater,
-} from '../application/update';
-import {
-  CreateContractDto,
-  UpdateContractDto,
-  DocumentationDto,
-  CageDto,
-  TravelDto,
-} from './dto/';
+import { ContractUpdater } from '../application/update';
+import { CreateContractDto, UpdateContractDto } from './dto/';
 
 @Injectable()
 export class ContractsService {
@@ -91,44 +77,6 @@ export class ContractsService {
     const contractUpdater = new ContractUpdater(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(updateContractDto, user.id);
     return contractUpdater.execute(id, contract, user);
-  }
-
-  updateDocumentation(
-    id: string,
-    documentationDto: DocumentationDto,
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ContractResponse> {
-    const contractDocumentationUpdater = new ContractDocumentationUpdater(
-      this.mongoContractRepository,
-    );
-
-    const documentation =
-      CommandContractDocumentation.execute(documentationDto);
-    return contractDocumentationUpdater.execute(id, documentation, user);
-  }
-
-  updateCage(
-    id: string,
-    cageDto: CageDto,
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ContractResponse> {
-    const contractDocumentationUpdater = new ContractCageUpdater(
-      this.mongoContractRepository,
-    );
-    const cage = CommandContractCage.execute(cageDto);
-    return contractDocumentationUpdater.execute(id, cage, user);
-  }
-
-  updateTravel(
-    id: string,
-    travelDto: TravelDto,
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ContractResponse> {
-    const contractTravelUpdater = new ContractTravelUpdater(
-      this.mongoContractRepository,
-    );
-    const travel = CommandContractTravel.execute(travelDto);
-    return contractTravelUpdater.execute(id, travel, user);
   }
 
   remove(

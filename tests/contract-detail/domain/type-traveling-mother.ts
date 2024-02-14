@@ -1,5 +1,5 @@
-import { ContractTypeTraveling } from '../../../src/contracts/domain/value-object/services/travel/type-traveling';
-import { TypeTravelingType } from '../../../src/contracts/domain/interfaces/travel.interface';
+import { ContractTypeTraveling } from '../../../src/contract-detail/domain/value-object/travel/type-traveling';
+import { TypeTravelingType } from '../../../src/contract-detail/domain/interfaces/travel.interface';
 
 export class TypeTravelingMother {
   static create(): TypeTravelingType {

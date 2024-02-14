@@ -1,4 +1,3 @@
-import { ServicesInterface } from './services.interface';
 import { StatusInterface } from './status.interface';
 
 export interface ContractInterface {
@@ -8,8 +7,6 @@ export interface ContractInterface {
   status: StatusInterface;
   startDate: Date;
   endDate: Date;
-  services: ServicesInterface;
-  guideNumber: string;
-  pets: string[];
+  details: string[];
   user: string;
 }

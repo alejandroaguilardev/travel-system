@@ -6,7 +6,7 @@ import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
-import { CommandContractUpdater } from '../../../src/contracts/application/update/command/command-contract-updater';
+import { CommandContractUpdater } from '../../../src/contracts/application/update/command-contract-updater';
 
 describe('ContractUpdater', () => {
   const contractUpdater: ContractUpdater = new ContractUpdater(

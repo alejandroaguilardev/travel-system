@@ -4,7 +4,7 @@ import { CommandContractCage } from './command-cage';
 import { CommandContractDocumentation } from './command-documentation';
 import { ContractDetailInterface } from '../../../domain/interfaces/contract-detail.interface';
 import { ContractDetail } from '../../../domain/contract-detail';
-import { ContractGuideNumber } from '../../../../contracts/domain/value-object';
+import { ContractGuideNumber } from '../../../domain/value-object/contract-guide-number';
 
 export class CommandContractUpdater {
   static execute(

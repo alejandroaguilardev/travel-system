@@ -1,10 +1,10 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 
-export class ContractPets {
+export class ContractDetails {
   public value: Uuid[];
 
-  constructor(pets: string[]) {
-    this.value = pets.map((v) => new Uuid(v));
+  constructor(details: string[]) {
+    this.value = details.map((v) => new Uuid(v));
   }
 
   toJson(): string[] {
