@@ -28,7 +28,7 @@ export class CommandCreatorUser {
     return new User(
       new Uuid(data.id),
       new UserEmail(data.email),
-      new UserPassword(data.password),
+      new UserPassword(''),
       new UserRole(data.roles),
       new UserProfile(
         new UserFirstName(data.profile.name),

@@ -8,17 +8,27 @@ import { PetImage } from './value-object/pet-image';
 import { PetName } from './value-object/pet-name';
 import { PetRace } from './value-object/pet-race';
 import { UuidOptional } from '../../common/domain/value-object/uuid-optional-value-object';
+import { PetChipDate } from './value-object/pet-chip-date';
+import { PetType } from './value-object/pet-type';
+import { StatusValueObject } from '../../common/domain/value-object/status-value-object';
+import { PetSterilized } from './value-object/pet-sterilized';
+import { PetCountry } from './value-object/pet-country';
 
 export class Pet {
   constructor(
     readonly id: Uuid,
     readonly name: PetName,
+    readonly type: PetType,
     readonly race: PetRace,
     readonly gender: PetGender,
     readonly birthDate: PetDate,
     readonly chip: PetChip,
+    readonly chipDate: PetChipDate,
     readonly color: PetColor,
     readonly image: PetImage,
+    readonly country: PetCountry,
+    readonly sterilized: PetSterilized,
+    readonly status: StatusValueObject,
     readonly user: UuidOptional,
   ) {}
 
@@ -26,12 +36,17 @@ export class Pet {
     return {
       id: this.id.value,
       name: this.name.value,
+      type: this.type.value,
       race: this.race.value,
       gender: this.gender.value,
       birthDate: this.birthDate.value,
       chip: this.chip.value,
+      chipDate: this.chipDate.value,
       color: this.color.value,
       image: this.image.value,
+      country: this.country.value,
+      sterilized: this.sterilized.value,
+      status: this.status.value,
       user: this.user.value,
     };
   }

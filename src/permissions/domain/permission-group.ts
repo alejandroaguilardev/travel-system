@@ -14,9 +14,9 @@ export class PermissionGroup extends StringValueObject {
       );
     }
 
-    if (this.value.length > 20) {
+    if (this.value.length > 30) {
       throw new ErrorInvalidadArgument(
-        'El nombre debe ser menor a 20 caracteres',
+        'El nombre debe ser menor a 30 caracteres',
       );
     }
   }

@@ -5,6 +5,7 @@ import { BcryptService } from '../../../src/common/infrastructure/services/bcryp
 import { JWTAdapterService } from '../../../src/auth/infrastructure/services/jwt.service';
 import { ErrorBadRequest } from '../../../src/common/domain/errors/error-bad-request';
 import { PasswordMother } from '../../users/domain/password-mother';
+import { UserPassword } from '../../../src/users/domain/value-object/user-password';
 
 describe('loginUser', () => {
   const hashing = new BcryptService();
@@ -21,36 +22,24 @@ describe('loginUser', () => {
   );
 
   it('should successfully log in a user with valid credentials', async () => {
-    const dto = UserCreatorMother.create();
-    const { password, ...user } = dto;
+    const user = UserCreatorMother.createWithPassword();
+    const password = UserPassword.generatePassword();
     const passwordHash = hashing.hashPassword(password);
-    generateTokenMock.mockReturnValueOnce('123');
+
+    generateTokenMock.mockReturnValueOnce('token');
     userRepositoryMock.searchEmail.mockResolvedValueOnce({
-      ...dto,
+      ...user,
       password: passwordHash,
     });
     const resolve = await loginUser.login({ email: user.email, password });
-    expect(resolve).toEqual({ user, token: '123' });
-  });
-
-  it('should successfully  jwt is valid ', async () => {
-    const dto = UserCreatorMother.create();
-    const { password, ...user } = dto;
-    const passwordHash = hashing.hashPassword(password);
-
-    generateTokenMock.mockReturnValueOnce('123');
-    userRepositoryMock.searchEmail.mockResolvedValueOnce({
-      ...dto,
-      password: passwordHash,
-    });
-    const resolve = await loginUser.login({ email: user.email, password });
-    expect(resolve).toEqual({ user, token: '123' });
+    expect(resolve).toEqual({ user, token: 'token' });
   });
 
   it('should failed log email credentials', async () => {
     const dto = UserCreatorMother.create();
-    const { email, password } = dto;
-    generateTokenMock.mockReturnValueOnce('123');
+    const { email } = dto;
+    const password = UserPassword.generatePassword();
+    generateTokenMock.mockReturnValueOnce('token');
     userRepositoryMock.searchEmail.mockResolvedValue(null);
 
     const error = new ErrorBadRequest('El email es incorrecto');
@@ -66,12 +55,13 @@ describe('loginUser', () => {
     const error = new ErrorBadRequest('El password es incorrecto');
     try {
       const dto = UserCreatorMother.create();
-      const { password } = dto;
+      const password = UserPassword.generatePassword();
+
       const passwordHash = hashing.hashPassword(password);
 
       const passwordIncorrect = PasswordMother.create();
 
-      generateTokenMock.mockReturnValueOnce('123');
+      generateTokenMock.mockReturnValueOnce('token');
       userRepositoryMock.searchEmail.mockResolvedValueOnce({
         ...dto,
         password: passwordHash,

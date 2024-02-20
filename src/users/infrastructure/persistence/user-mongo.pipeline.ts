@@ -67,6 +67,8 @@ export class UserMongoPipeline {
           'roles.permissions.__v': 0,
           'roles.permissions.createdAt': 0,
           'roles.permissions.updatedAt': 0,
+          'auth._id': 0,
+          'profile._id': 0,
         },
       },
       {
@@ -133,6 +135,8 @@ export class UserMongoPipeline {
           'roles.permissions.__v': 0,
           'roles.permissions.createdAt': 0,
           'roles.permissions.updatedAt': 0,
+          'auth._id': 0,
+          'profile._id': 0,
         },
       },
     ];

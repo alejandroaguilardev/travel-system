@@ -1,5 +1,5 @@
 export interface UserAuthInterface {
   admin: boolean;
-  rememberToken: string;
+  rememberToken?: string;
   lastLogin?: Date;
 }

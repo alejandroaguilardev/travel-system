@@ -22,12 +22,14 @@ export class UserCreator {
 
   async create(
     newUser: User,
+    password: UserPassword,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.CREATE);
 
-    const password = this.hashing.hashPassword(newUser.password.value);
-    newUser.setPassword(new UserPassword(password));
+    newUser.setPassword(
+      new UserPassword(this.hashing.hashPassword(password.value)),
+    );
     await this.userRepository.save(newUser);
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_CREATED,

@@ -1,8 +1,10 @@
 import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
 
+export type PetGenderType = 'male' | 'female';
+
 export class PetGender {
   private values = ['female', 'male'];
-  constructor(readonly value: string) {
+  constructor(readonly value: PetGenderType) {
     this.validSecured(value);
   }
 

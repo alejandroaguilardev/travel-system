@@ -12,9 +12,7 @@ export abstract class ValueObject<T extends Primitives> {
 
   private ensureValueIsDefined(value: T): void {
     if (value === null || value === undefined) {
-      throw new ErrorInvalidadArgument(
-        `Valor de tipo ${typeof value} no definido`,
-      );
+      throw new ErrorInvalidadArgument(`Error no se ha definido el valor`);
     }
   }
 

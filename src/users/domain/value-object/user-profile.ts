@@ -19,14 +19,14 @@ export class UserProfile {
     readonly secondLastName: UserSecondLastName,
 
     readonly phone: UserPhone,
-    readonly gender: UserGender, // quitar
+    readonly gender: UserGender,
 
-    readonly birthDate: UserBirthDate, // quitar
+    readonly birthDate: UserBirthDate,
 
-    readonly department: UserDepartment, // quitar
-    readonly province: UserProvince, // quitar
-    readonly district: UserDistrict, // quitar
-    readonly direction: UserDirection, // quitar
+    readonly department: UserDepartment,
+    readonly province: UserProvince,
+    readonly district: UserDistrict,
+    readonly direction: UserDirection,
   ) {}
 
   toJson(): ProfileInterface {

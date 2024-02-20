@@ -17,9 +17,10 @@ describe('AuthController (e2e)', () => {
 
   it('/auth (POST)', async () => {
     const createAuthDto = UserCreatorMother.create();
-    await CrudTest.create(app, access_token, '/users', createAuthDto);
+    const { email } = createAuthDto;
+    const password = '12345678';
 
-    const { email, password } = createAuthDto;
+    await CrudTest.create(app, access_token, '/users', createAuthDto);
 
     const response = await request(app.getHttpServer())
       .post('/auth')

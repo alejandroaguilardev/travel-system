@@ -10,7 +10,7 @@ describe('sendMailRegister', () => {
   it('should_successfully_mail_auth_register', async () => {
     const user = UserCreatorMother.create();
     const email = new UserEmail(user.email);
-    const password = new UserPassword(user.password);
+    const password = new UserPassword(UserPassword.generatePassword());
     const resolved = await sendMailRegister.execute(email, password);
     expect(resolved).toBe(undefined);
   });
@@ -18,7 +18,7 @@ describe('sendMailRegister', () => {
   it('should_successfully_mail_auth_register_to_have_been_called_with', async () => {
     const user = UserCreatorMother.create();
     const email = new UserEmail(user.email);
-    const password = new UserPassword(user.password);
+    const password = new UserPassword(UserPassword.generatePassword());
     await sendMailRegister.execute(email, password);
     const haveCalled = sendMailRegister.options(
       email,

@@ -2,6 +2,8 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
 import { PetInterface } from '../../domain/interfaces/pet.interface';
+import { PetGenderType } from '../../domain/value-object/pet-gender';
+import { Status } from '../../../common/domain/value-object/status-value-object';
 
 @Schema({
   collection: 'pets',
@@ -20,15 +22,25 @@ export class PetModel implements PetInterface {
   @Prop({ type: String, required: true })
   race: string;
   @Prop({ type: String, required: true })
-  gender: string;
+  gender: PetGenderType;
   @Prop({ type: Date, required: true })
   birthDate: Date;
   @Prop({ type: String, required: false })
-  chip?: string;
+  chip: string;
+  @Prop({ type: String, required: false })
+  chipDate: Date | null;
   @Prop({ type: String, required: false })
   color: string;
   @Prop({ type: String, required: false })
   image: string;
+  @Prop({ type: String, required: false })
+  country: string;
+  @Prop({ type: String, required: false })
+  type: string;
+  @Prop({ type: String, required: false })
+  sterilized: string;
+  @Prop({ type: String, required: false })
+  status: Status;
 }
 
 export type PetDocument = HydratedDocument<PetModel>;

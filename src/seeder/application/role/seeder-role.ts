@@ -1,54 +1,13 @@
-import { UUID } from '../../../common/application/services/uuid';
 import { RoleRepository } from '../../../roles/domain/role.repository';
-import { SeederRoleResponse } from '../response/seeder-role.response';
-import { SeederPermissionsResponse } from '../response/seeder-permissions.response';
-import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
-import { Uuid } from '../../../common/domain/value-object/uuid';
-import { RoleResponse } from '../../../roles/domain/interfaces/role.response';
 import { CommandRole } from '../../../roles/application/create/command-role';
+import { RoleCreatorRequest } from '../../../roles/application/create/role-creator-request';
 
 export class RoleSeeder {
-  constructor(
-    private readonly roleRepository: RoleRepository,
-    private readonly uuid: UUID,
-  ) {}
+  constructor(private readonly roleRepository: RoleRepository) {}
 
-  async execute(
-    permissions: SeederPermissionsResponse,
-  ): Promise<SeederRoleResponse> {
-    const roleAdmin = CommandRole.execute({
-      id: this.uuid.generate(),
-      name: 'administrador',
-      description: 'Todos los permisos del sistema',
-      permissions: [
-        permissions.create,
-        permissions.edit,
-        permissions.delete,
-        permissions.view,
-      ],
-    });
-
-    await this.isInitProject();
-    await Promise.all([this.roleRepository.save(roleAdmin)]);
-
-    return {
-      admin: roleAdmin.id.value,
-    };
-  }
-
-  async isInitProject(): Promise<void> {
-    const criteria = CommandCriteria.fromData({
-      start: 0,
-      sorting: [],
-      filters: [],
-      globalFilter: '',
-      globalFilterProperties: [],
-      size: 10,
-      selectProperties: [],
-    });
-    const response = await this.roleRepository.search<RoleResponse>(criteria);
+  async execute(roles: RoleCreatorRequest[]): Promise<void> {
     await Promise.all(
-      response.rows.map((r) => this.roleRepository.remove(new Uuid(r.id))),
+      roles.map((_) => this.roleRepository.save(CommandRole.execute(_))),
     );
   }
 }

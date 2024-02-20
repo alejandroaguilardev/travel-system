@@ -6,6 +6,7 @@ export enum AuthGroup {
   PETS = 'mascotas',
   ROLES = 'roles',
   USERS = 'usuarios',
+  CLIENT = 'clientes',
 }
 
 export enum AuthPermission {

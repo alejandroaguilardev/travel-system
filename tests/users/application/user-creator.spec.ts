@@ -5,6 +5,7 @@ import { userRepositoryMock } from '../domain/user-repository-mock-methods';
 import { BcryptService } from '../../../src/common/infrastructure/services/bcrypt.service';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { CommandCreatorUser } from '../../../src/users/application/create/command-create-user';
+import { UserPassword } from '../../../src/users/domain/value-object/user-password';
 
 describe('userCreator', () => {
   const hashPasswordMock = jest.fn();
@@ -22,20 +23,23 @@ describe('userCreator', () => {
     const dto = UserCreatorMother.create();
     const userAuth = UserCreatorMother.createWithPassword();
     const user = CommandCreatorUser.execute(dto, userAuth.id);
-    hashPasswordMock.mockReturnValueOnce(dto.password);
+    const userPassword = new UserPassword(UserPassword.generatePassword());
+    hashPasswordMock.mockReturnValueOnce(userPassword.value);
     userRepositoryMock.save.mockResolvedValueOnce(user);
-    const resolved = await userCreator.create(user, userAuth);
+    const resolved = await userCreator.create(user, userPassword, userAuth);
     expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
   });
 
-  it('should_call_ creator_method_of_UserRepository', async () => {
+  it('should_call_creator_method_of_UserRepository', async () => {
     const dto = UserCreatorMother.create();
     const userAuth = UserCreatorMother.createWithPassword();
     const user = CommandCreatorUser.execute(dto, userAuth.id);
-    hashPasswordMock.mockReturnValueOnce(dto.password);
+    const userPassword = new UserPassword(UserPassword.generatePassword());
+
+    hashPasswordMock.mockReturnValueOnce(userPassword.value);
     userRepositoryMock.save.mockResolvedValueOnce(user);
 
-    await userCreator.create(user, userAuth);
+    await userCreator.create(user, userPassword, userAuth);
     expect(userRepositoryMock.save).toHaveBeenCalledWith(user);
   });
 
@@ -46,9 +50,11 @@ describe('userCreator', () => {
       'No es un email válido de dominio',
     );
     userRepositoryMock.save.mockRejectedValue(error);
+    const userPassword = new UserPassword(UserPassword.generatePassword());
+
     try {
       const user = CommandCreatorUser.execute(dto, userAuth.id);
-      await userCreator.create(user, userAuth);
+      await userCreator.create(user, userPassword, userAuth);
       fail('Fallo la prueba should handle error during user creation');
     } catch (thrownError) {
       expect(thrownError.message).toBe(error.message);

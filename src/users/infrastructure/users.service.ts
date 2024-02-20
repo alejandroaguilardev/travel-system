@@ -17,14 +17,18 @@ import {
 import { UserCreatorDto } from './dto/create-user.dto';
 import { CommandCreatorUser } from '../application/create/command-create-user';
 import { MailAuthService } from '../../mail/infrastructure/mail-auth.service';
+import { UserPassword } from '../domain/value-object/user-password';
 
 @Injectable()
 export class UsersService {
+  private isProductionMode: string;
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
     private readonly mailService: MailAuthService,
-  ) {}
+  ) {
+    this.isProductionMode = process.env.PRODUCTION;
+  }
 
   async create(
     createAuthDto: UserCreatorDto,
@@ -35,7 +39,14 @@ export class UsersService {
       this.bcryptService,
     );
     const userCommand = CommandCreatorUser.execute(createAuthDto, user.id);
-    const response = await userCreator.create(userCommand, user);
+
+    const password = new UserPassword(
+      this.isProductionMode === 'false'
+        ? '12345678'
+        : UserPassword.generatePassword(),
+    );
+
+    const response = await userCreator.create(userCommand, password, user);
     this.mailService.register(userCommand.email, userCommand.password);
     return response;
   }

@@ -1,11 +1,19 @@
+import { Status } from '../../../common/domain/value-object/status-value-object';
+import { PetGenderType } from '../value-object/pet-gender';
+
 export interface PetInterface {
   id: string;
   name: string;
   race: string;
-  gender: string;
+  gender: PetGenderType;
   birthDate: Date;
-  chip?: string;
+  chip: string;
+  chipDate: Date | null;
   color: string;
-  image: string;
+  image?: string;
+  country: string;
+  type: string;
+  sterilized: string;
+  status: Status;
   user?: string;
 }

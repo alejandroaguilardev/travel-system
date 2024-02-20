@@ -1,12 +1,10 @@
 import { UUID } from '../../../common/application/services/uuid';
 import { UserRepository } from '../../../users/domain/user.repository';
-import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
-import { Uuid } from '../../../common/domain/value-object/uuid';
-import { UserResponse } from '../../../users/domain/interfaces/user.response';
 import { Hashing } from '../../../common/application/services/hashing';
 import { UserPassword } from '../../../users/domain/value-object/user-password';
 import { CommandCreatorUser } from '../../../users/application/create/command-create-user';
 import { UserAuthAdmin } from '../../../users/domain/value-object/auth/user-auth-admin';
+import { getUserData } from '../../domain/users-data';
 
 export class UserSeeder {
   constructor(
@@ -16,89 +14,20 @@ export class UserSeeder {
   ) {}
 
   async execute(): Promise<void> {
-    const admin = CommandCreatorUser.execute(
-      {
-        id: this.uuid.generate(),
-        email: 'alex@gmail.com',
-        password: '12345678',
-        roles: [],
-        profile: {
-          name: 'Alejandro',
-          secondName: '',
-          lastName: 'Aguilar',
-          secondLastName: '',
-          birthDate: new Date(),
-          province: '',
-          department: '',
-          direction: '',
-          district: '',
-          gender: 'male',
-          phone: '',
-        },
-        status: '',
-        auth: {
-          admin: true,
-          rememberToken: '',
-          lastLogin: null,
-        },
-      },
-      '',
-    );
-    const client = CommandCreatorUser.execute(
-      {
-        id: this.uuid.generate(),
-        email: 'pedro@gmail.com',
-        password: '12345678',
-        roles: [],
-        profile: {
-          name: 'Pedro',
-          secondName: '',
-          lastName: 'Jimenez',
-          secondLastName: '',
-          birthDate: new Date(),
-          province: '',
-          department: '',
-          direction: '',
-          district: '',
-          gender: 'male',
-          phone: '',
-        },
-        status: '',
-      },
-      '',
-    );
+    const users = getUserData(this.uuid);
+    const password = new UserPassword(this.hashing.hashPassword('12345678'));
 
-    admin.auth.setAdmin(new UserAuthAdmin(true));
-
-    admin.setPassword(
-      new UserPassword(this.hashing.hashPassword(admin.password.value)),
-    );
-
-    client.setPassword(
-      new UserPassword(this.hashing.hashPassword(client.password.value)),
-    );
-
-    await this.isInitProject();
-
-    await Promise.all([
-      this.userRepository.save(admin),
-      this.userRepository.save(client),
-    ]);
-  }
-
-  async isInitProject(): Promise<void> {
-    const criteria = CommandCriteria.fromData({
-      start: 0,
-      sorting: [],
-      filters: [],
-      globalFilter: '',
-      globalFilterProperties: [],
-      size: 100,
-      selectProperties: [],
-    });
-    const response = await this.userRepository.search<UserResponse>(criteria);
     await Promise.all(
-      response.rows.map((r) => this.userRepository.remove(new Uuid(r.id))),
+      users.map((_) => {
+        const user = CommandCreatorUser.execute(_, '');
+        if (_?.auth?.admin) {
+          user.auth.setAdmin(new UserAuthAdmin(true));
+        }
+
+        user.setPassword(password);
+
+        return this.userRepository.save(user);
+      }),
     );
   }
 }

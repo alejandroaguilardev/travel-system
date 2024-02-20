@@ -12,7 +12,7 @@ import { ContractDetailService } from './contract-detail.service';
 import { CreateContractDetailDto } from './dto/create-contract-detail.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
-import { UserWithoutWithRoleResponse } from '../../../dist/src/users/domain/interfaces/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { CageDto, DocumentationDto, TravelDto } from './dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 

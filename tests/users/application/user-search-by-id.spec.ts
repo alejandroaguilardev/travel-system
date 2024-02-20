@@ -10,7 +10,6 @@ describe('UserFind', () => {
   it('should successfully find user', async () => {
     const userMother = UserCreatorMother.create();
     const user = UserCreatorMother.createWithPassword();
-    delete userMother.password;
     userRepositoryMock.searchByIdWithRole.mockResolvedValueOnce(userMother);
     const expected = await findUser.execute(userMother.id, user);
     expect(expected).toEqual(userMother);
@@ -20,7 +19,6 @@ describe('UserFind', () => {
     const error = new ErrorNotFound(ErrorNotFound.messageDefault('usuario'));
     const userMother = UserCreatorMother.create();
     const user = UserCreatorMother.createWithPassword();
-    delete userMother.password;
     userRepositoryMock.searchByIdWithRole.mockRejectedValue(error);
     try {
       await findUser.execute(userMother.id, user);
