@@ -5,7 +5,7 @@ import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mon
 export class UserMongoPipeline {
   static execute(criteria: Criteria): PipelineStage[] {
     const { query, start, size, sortQuery } =
-      MongoCriteriaConverter.Converter(criteria);
+      MongoCriteriaConverter.converter(criteria);
 
     const sort = [];
     if (Object.keys(sortQuery).length > 0) {

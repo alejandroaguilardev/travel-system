@@ -1,21 +1,20 @@
 import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-// import * as request from 'supertest';
+import * as request from 'supertest';
 import { MessageDefault } from '../../../src/common/domain/response/response-message';
-import { ContractDetailCreatorMother } from '../domain/contract-creator.mother';
-// import { UuidMother } from '../../common/domain/uuid-mother';
-// import { ContractDocumentationMother } from '../domain/contract-documentation.mother';
-// import { CageMother } from '../domain/cage-mother';
-// import { ContractTravelMother } from '../domain/contract-travel.mother';
+import { ContractDocumentationMother } from '../domain/contract-documentation.mother';
+import { CageMother } from '../domain/cage-mother';
+import { ContractTravelMother } from '../domain/contract-travel.mother';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
-// import { ContractCreatorMother } from '../../contracts/domain/contract-creator.mother';
+import { ContractCreatorMother } from '../../contracts/domain/contract-creator.mother';
 
 const route = '/contract-detail';
+const routeContract = '/contracts';
 
-describe('ContractsController', () => {
+describe('ContractDetailController', () => {
   let app: INestApplication;
   let access_token: string;
   let contractDetailModel: Model<any>;
@@ -34,115 +33,91 @@ describe('ContractsController', () => {
     await app.close();
   });
 
-  it('/contract-detail (POST)', async () => {
-    const contractDto = ContractDetailCreatorMother.create();
-    const response = await CrudTest.create(
+  it('/contract-detail (GET)', async () => {
+    const response = await CrudTest.search(app, access_token, routeContract);
+
+    expect(Array.isArray(response.body.rows)).toBe(true);
+    expect(typeof response.body.count).toBe('number');
+  });
+
+  it('/contract-detail:id (GET)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    await CrudTest.create(app, access_token, routeContract, contractDto);
+    const response = await CrudTest.searchByIdOnly(
       app,
       access_token,
       route,
-      contractDto,
+      contractDto.details[0],
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(response.body.id).toBe(contractDto.details[0].id);
   });
 
-  // it('/contract-detail (GET)', async () => {
-  //   const response = await CrudTest.search(app, access_token, route);
+  it(':contractId/:contractDetailId/documentation (PATCH)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    await CrudTest.create(app, access_token, routeContract, contractDto);
 
-  //   expect(Array.isArray(response.body.rows)).toBe(true);
-  //   expect(typeof response.body.count).toBe('number');
-  // });
+    const documentation = ContractDocumentationMother.create();
 
-  // it('/contract-detail:id (GET)', async () => {
-  //   const contractDto = ContractDetailCreatorMother.create();
-  //   const response = await CrudTest.searchById(
-  //     app,
-  //     access_token,
-  //     route,
-  //     contractDto,
-  //   );
-  //   expect(response.body.pet).toBe(contractDto.pet);
-  // });
+    const response = await request(app.getHttpServer())
+      .patch(
+        `/contract-detail/${contractDto.id}/${contractDto.details[0].id}/documentation`,
+      )
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(documentation)
+      .expect(200);
 
-  // it('/contract-detail/client/:id (GET)', async () => {
-  //   const id = UuidMother.create();
-  //   request(app.getHttpServer())
-  //     .get(`/contract-detail/client/${id}`)
-  //     .set('Authorization', `Bearer ${access_token}`)
-  //     .expect(400);
-  // });
+    expect(
+      response.body.contractDetail.documentation.importLicense.isApplied,
+    ).toEqual(documentation.importLicense.isApplied);
+  });
 
-  // it('/contract-detail:id (PUT)', async () => {
-  //   const contractDetail = ContractDetailCreatorMother.create();
-  //   const contractDtoUpdate = ContractDetailCreatorMother.create();
-  //   const response = await CrudTest.update(
-  //     app,
-  //     access_token,
-  //     route,
-  //     contractDetail,
-  //     contractDtoUpdate,
-  //   );
-  //   expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
-  // });
+  it(':contractId/:contractDetailId/cage (PATCH)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    await CrudTest.create(app, access_token, routeContract, contractDto);
 
-  // it(':contractId/:contractDetailId/documentation (PATCH)', async () => {
-  //   const contract = ContractCreatorMother.create();
-  //   const contractDetail = ContractDetailCreatorMother.create();
-  //   const documentation = ContractDocumentationMother.create();
-  //   await CrudTest.create(app, access_token, route, contractDetail);
+    const cage = CageMother.create();
 
-  //   const response = await request(app.getHttpServer())
-  //     .patch(`/contract-detail/${contract.id}/${contractDetail.id}/documentation`)
-  //     .set('Authorization', `Bearer ${access_token}`)
-  //     .send(documentation)
-  //     .expect(200);
+    const response = await request(app.getHttpServer())
+      .patch(
+        `/contract-detail/${contractDto.id}/${contractDto.details[0].id}/cage`,
+      )
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(cage)
+      .expect(200);
 
-  //   expect(
-  //     response.body.services.documentation.importLicense.isApplied,
-  //   ).toEqual(documentation.importLicense.isApplied);
-  // });
+    expect(response.body.contractDetail.cage.chosen.modelCage).toEqual(
+      cage.chosen.modelCage,
+    );
+  });
 
-  // it(':contractId/:contractDetailId/cage (PATCH)', async () => {
-  //   const contract = ContractCreatorMother.create();
-  //   const contractDetail = ContractDetailCreatorMother.create();
-  //   const cage = CageMother.create();
-  //   await CrudTest.create(app, access_token, route, contractDetail);
+  it(':id/:detail/travel (PATCH)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    await CrudTest.create(app, access_token, routeContract, contractDto);
 
-  //   const response = await request(app.getHttpServer())
-  //     .patch(`/contract-detail/${contract.id}/${contractDetail.id}/cage`)
-  //     .set('Authorization', `Bearer ${access_token}`)
-  //     .send(cage)
-  //     .expect(200);
+    const travel = ContractTravelMother.create();
 
-  //   expect(response.body.contractDetail.cage.chosen.modelCage).toEqual(
-  //     cage.chosen.modelCage,
-  //   );
-  // });
+    const response = await request(app.getHttpServer())
+      .patch(
+        `/contract-detail/${contractDto.id}/${contractDto.details[0].id}/travel`,
+      )
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(travel)
+      .expect(200);
 
-  // it(':contractId/:contractDetailId/travel (PATCH)', async () => {
-  //   const contract = ContractCreatorMother.create();
-  //   const contractDetail = ContractDetailCreatorMother.create();
-  //   const travel = ContractTravelMother.create();
-  //   await CrudTest.create(app, access_token, route, contract);
+    expect(response.body.contractDetail.travel.airlineReservation.code).toEqual(
+      travel.airlineReservation.code,
+    );
+  });
 
-  //   const response = await request(app.getHttpServer())
-  //     .patch(`/contract-detail/${contract.id}/${contractDetail.id}/travel`)
-  //     .set('Authorization', `Bearer ${access_token}`)
-  //     .send(travel)
-  //     .expect(200);
-
-  //   expect(response.body.contractDetail.travel.airlineReservation.code).toEqual(
-  //     travel.airlineReservation.code,
-  //   );
-  // });
-
-  // it('/contract-detail (DELETE)', async () => {
-  //   const contractDto = ContractDetailCreatorMother.create();
-  //   const response = await CrudTest.remove(
-  //     app,
-  //     access_token,
-  //     route,
-  //     contractDto,
-  //   );
-  //   expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
-  // });
+  it('/contract-detail (DELETE)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    await CrudTest.create(app, access_token, routeContract, contractDto);
+    const response = await CrudTest.removeOnly(
+      app,
+      access_token,
+      route,
+      contractDto.details[0],
+    );
+    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+  });
 });

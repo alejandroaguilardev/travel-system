@@ -31,6 +31,7 @@ export class CommandPetCreator {
       new PetCountry(data.country),
       new PetSterilized(data.sterilized),
       new StatusValueObject('active'),
+      new Uuid(data.adopter),
       new UuidOptional(userId),
     );
   }

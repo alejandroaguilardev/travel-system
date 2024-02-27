@@ -1,4 +1,6 @@
 export interface ProfileInterface {
+  document: string;
+  documentNumber: string;
   name: string;
   secondName: string;
   lastName: string;

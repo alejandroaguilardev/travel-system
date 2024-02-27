@@ -1,5 +1,6 @@
 import { Uuid, UuidOptional } from '../../common/domain/value-object';
 import { ContractInterface, StatusInterface } from './interfaces';
+import { ContractDetailResponse } from '../../contract-detail/application/response/contract-detail.response';
 import {
   ContractNumber,
   ContractStatus,
@@ -13,10 +14,10 @@ export class Contract {
     readonly id: Uuid,
     readonly number: ContractNumber,
     readonly client: Uuid,
-    readonly status: ContractStatus,
+    public status: ContractStatus,
     readonly startDate: ContractStartDate,
     public endDate: ContractEndDate,
-    readonly details: ContractDetails,
+    public details: ContractDetails,
     readonly user: UuidOptional,
   ) {}
 
@@ -33,22 +34,28 @@ export class Contract {
     };
   }
 
-  // static establishedStatus(contract: ContractInterface): StatusInterface {
-  //   let count = 0;
-  //   Object.keys(contract.services).forEach((key) => {
-  //     if (contract.services[key].status === 'completed') {
-  //       ++count;
-  //     }
-  //   });
+  setDetails(details: ContractDetails) {
+    this.details = details;
+  }
 
-  //   if (count === 3) {
-  //     contract.status = 'completed';
-  //   } else if (count > 0) {
-  //     contract.status = 'in-process';
-  //   } else {
-  //     contract.status = 'pending';
-  //   }
+  establishedStatus(contractDetail: ContractDetailResponse[]) {
+    let count = 0;
+    let countHasCompleted = 0;
+    contractDetail.forEach((detail) => {
+      const hasCompleted =
+        detail.documentation.status === 'completed' &&
+        detail.cage.status === 'completed' &&
+        detail.travel.status === 'completed';
+      count += 1;
+      countHasCompleted += hasCompleted ? 1 : 0;
+    });
 
-  //   return contract.status;
-  // }
+    if (count === countHasCompleted) {
+      this.status.value = 'completed';
+    } else if (countHasCompleted > 0) {
+      this.status.value = 'in-process';
+    } else {
+      this.status.value = 'pending';
+    }
+  }
 }

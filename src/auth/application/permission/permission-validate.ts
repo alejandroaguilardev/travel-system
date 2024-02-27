@@ -16,7 +16,9 @@ export class PermissionValidator {
     const hasPermission = this.hasPermission(user, group, permission);
     const isAdmin = this.isAdmin(user);
     if (!hasPermission && !isAdmin) {
-      throw new ErrorNotAuthorization(PermissionMessage.create(group));
+      throw new ErrorNotAuthorization(
+        PermissionMessage.create(group, permission),
+      );
     }
   }
 

@@ -41,6 +41,10 @@ export class PetModel implements PetInterface {
   sterilized: string;
   @Prop({ type: String, required: false })
   status: Status;
+  @Prop({ type: String, required: false })
+  adopter: string;
+  @Prop({ type: String, required: false })
+  user: string;
 }
 
 export type PetDocument = HydratedDocument<PetModel>;

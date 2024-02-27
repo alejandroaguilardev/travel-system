@@ -8,7 +8,7 @@ import {
   ContractDetailModel,
   ContractDetailSchema,
 } from './schema/contract-detail.schema';
-import { MongoContractDetailRepository } from './persistence/contract-mongo.repository';
+import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
 import { ContractsModule } from '../../contracts/infrastructure/contracts.module';
 
 @Module({
@@ -22,6 +22,6 @@ import { ContractsModule } from '../../contracts/infrastructure/contracts.module
   ],
   controllers: [ContractDetailController],
   providers: [ContractDetailService, MongoContractDetailRepository],
-  exports: [MongoContractDetailRepository],
+  exports: [MongoContractDetailRepository, ContractDetailService],
 })
 export class ContractDetailModule {}

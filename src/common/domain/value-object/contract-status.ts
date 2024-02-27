@@ -21,12 +21,13 @@ export class ContractStatus {
     }
   }
 
-  statusError() {
+  statusError(endDate: Date | null) {
     if (
-      this.value === 'canceled' ||
-      this.value === 'none' ||
-      this.value === 'suspended' ||
-      this.value === 'completed'
+      (this.value === 'canceled' ||
+        this.value === 'none' ||
+        this.value === 'suspended' ||
+        this.value === 'completed') &&
+      endDate
     ) {
       throw new ErrorInvalidadArgument(
         'El contrato se encuentra ' + this.value,

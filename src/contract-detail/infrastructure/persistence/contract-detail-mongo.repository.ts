@@ -11,6 +11,8 @@ import {
   ContractCage,
   ContractDocumentation,
 } from '../../domain/value-object';
+import { ContractDetailMongoPipeline } from './contract-detail-mongo-pipeline';
+import { ContractDetailResponse } from '../../application/response/contract-detail.response';
 
 @Injectable()
 export class MongoContractDetailRepository
@@ -24,6 +26,17 @@ export class MongoContractDetailRepository
   ) {
     super(model);
     this.contractDetailModel = model;
+  }
+
+  async searchByIdWithPet(uuid: Uuid): Promise<ContractDetailResponse | null> {
+    const rows: ContractDetailResponse[] = await this.contractDetailModel
+      .aggregate(ContractDetailMongoPipeline.executeById(uuid.value))
+      .exec();
+
+    const detail = rows.length > 0 ? rows[0] : null;
+    if (!detail) return null;
+    const pet = detail?.pet[0][0];
+    return { ...detail, pet };
   }
 
   async updateDocumentation(

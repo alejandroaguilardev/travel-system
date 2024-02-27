@@ -17,6 +17,7 @@ describe('ContractDetailTravelUpdater', () => {
   it('should_successfully_contract_travel', async () => {
     const contract = ContractCreatorMother.createWithTravel();
     const contractDetail = ContractDetailCreatorMother.createWithTravel();
+
     const travelRequest = ContractTravelMother.create();
     const user = UserCreatorMother.createWithPassword();
     const travel = CommandContractTravel.execute(travelRequest);
@@ -24,6 +25,10 @@ describe('ContractDetailTravelUpdater', () => {
     contractDetailRepositoryMock.searchById.mockResolvedValueOnce(
       contractDetail,
     );
+    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractDetail,
+    );
+
     const expected = await contractTravelUpdater.execute(
       contract.id,
       contractDetail.id,

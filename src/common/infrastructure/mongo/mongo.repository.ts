@@ -23,7 +23,7 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
 
   async search<R>(criteria: Criteria): Promise<ResponseSearch<R>> {
     const { query, selectProperties, start, size, sortQuery } =
-      MongoCriteriaConverter.Converter(criteria);
+      MongoCriteriaConverter.converter(criteria);
 
     const rows: R[] = await this.model
       .find(query)
@@ -33,7 +33,7 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
       .sort(sortQuery)
       .lean();
 
-    const count: number = await this.count();
+    const count: number = await this.count(criteria);
     return { rows, count };
   }
 
@@ -53,8 +53,10 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
     return this.model.findOneAndDelete({ id: id.value });
   }
 
-  protected async count(): Promise<number> {
-    const count: number = await this.model.find().countDocuments();
+  protected async count(criteria: Criteria): Promise<number> {
+    const { query } = MongoCriteriaConverter.converter(criteria);
+
+    const count: number = await this.model.find(query).countDocuments();
     return count;
   }
 }

@@ -22,6 +22,8 @@ import { UserRole } from '../../domain/value-object/user-role';
 import { UserAuthAdmin } from '../../domain/value-object/auth/user-auth-admin';
 import { UserAuthRemember } from '../../domain/value-object/auth/user-remember-token';
 import { UserLastLogin } from '../../domain/value-object/auth/user-last-login';
+import { UserDocument } from '../../domain/value-object/profile/user-document';
+import { UserDocumentNumber } from '../../domain/value-object/profile/user-document-number';
 
 export class CommandCreatorUser {
   static execute(data: CreateUserRequest, userId: string): User {
@@ -31,6 +33,8 @@ export class CommandCreatorUser {
       new UserPassword(''),
       new UserRole(data.roles),
       new UserProfile(
+        new UserDocument(data.profile.document),
+        new UserDocumentNumber(data.profile.documentNumber),
         new UserFirstName(data.profile.name),
         new UserSecondName(data.profile.secondName),
         new UserLastName(data.profile.lastName),

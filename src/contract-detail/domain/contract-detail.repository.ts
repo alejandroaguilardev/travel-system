@@ -1,6 +1,7 @@
 import { Repository } from '../../common/domain/repository';
 import { ContractDetail } from './contract-detail';
 import { Uuid } from '../../common/domain/value-object/uuid';
+import { ContractDetailResponse } from '../application/response/contract-detail.response';
 import {
   ContractTravel,
   ContractCage,
@@ -8,6 +9,7 @@ import {
 } from './value-object';
 
 export interface ContractDetailRepository extends Repository<ContractDetail> {
+  searchByIdWithPet(id: Uuid): Promise<ContractDetailResponse>;
   updateDocumentation(
     contractDetailId: Uuid,
     documentation: ContractDocumentation,

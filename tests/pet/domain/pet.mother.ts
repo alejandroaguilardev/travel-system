@@ -20,6 +20,7 @@ export class PetMother {
       country: pet?.country ?? faker.location.country(),
       type: pet?.type ?? faker.animal.type(),
       sterilized: pet?.sterilized ?? faker.datatype.boolean() ? 'Si' : 'No',
+      adopter: pet?.adopter ?? UuidMother.create(),
     };
   }
 }

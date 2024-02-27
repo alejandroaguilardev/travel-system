@@ -41,4 +41,6 @@ export class CreatePetDto implements CreatePetRequest {
 
   @IsString()
   sterilized: string;
+  @IsString()
+  adopter: string;
 }

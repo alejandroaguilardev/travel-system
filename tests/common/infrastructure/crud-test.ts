@@ -81,4 +81,28 @@ export class CrudTest {
       .set('Authorization', `Bearer ${access_token}`)
       .expect(200);
   }
+
+  static async searchByIdOnly(
+    app: INestApplication,
+    access_token: string,
+    route: string,
+    dto: any,
+  ): Promise<request.Response> {
+    return await request(app.getHttpServer())
+      .get(`${route}/${dto.id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+  }
+
+  static async removeOnly(
+    app: INestApplication,
+    access_token: string,
+    route: string,
+    dto: any,
+  ): Promise<request.Response> {
+    return await request(app.getHttpServer())
+      .delete(`${route}/${dto.id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+  }
 }

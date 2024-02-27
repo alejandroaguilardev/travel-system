@@ -19,4 +19,17 @@ export class ContractCage {
       recommendation: this.recommendation.value,
     };
   }
+
+  changeStatus(): void {
+    const chosen =
+      this.chosen.typeCage.value &&
+      this.chosen.dimensionsCage.value &&
+      this.chosen.modelCage.value;
+
+    if (chosen) {
+      this.status.value = 'completed';
+    } else {
+      this.status.value = 'pending';
+    }
+  }
 }

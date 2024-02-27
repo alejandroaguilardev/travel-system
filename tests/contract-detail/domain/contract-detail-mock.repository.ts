@@ -7,4 +7,5 @@ export const contractDetailRepositoryMock = {
   updateCage: jest.fn(),
   updateDocumentation: jest.fn(),
   updateTravel: jest.fn(),
+  searchByIdWithPet: jest.fn(),
 };

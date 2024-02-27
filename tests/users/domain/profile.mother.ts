@@ -4,10 +4,17 @@ import { FirstNameMother } from './first-name-mother';
 import { LastNameMother } from './last-name-mother';
 import { PhoneMother } from '../../common/domain/phone.mother';
 import { DateMother } from '../../common/domain/date.mother';
+import { UserDocument } from '../../../src/users/domain/value-object/profile/user-document';
 
 export class ProfileMother {
   static create(profile?: Partial<ProfileInterface>): ProfileInterface {
     return {
+      document:
+        profile?.document ??
+        UserDocument.types[faker.number.int({ min: 0, max: 3 })],
+      documentNumber:
+        profile?.documentNumber ??
+        faker.number.int({ min: 100000000, max: 1000000000 }).toString(),
       name: profile?.name ?? FirstNameMother.create(),
       secondName: profile?.secondName ?? FirstNameMother.create(),
       lastName: profile?.lastName ?? LastNameMother.create(),

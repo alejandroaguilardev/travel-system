@@ -15,6 +15,8 @@ import { ContractResponse } from '../response/contract.response';
 import { Contract } from '../../domain/contract';
 import { CommandContractUpdater } from './command-contract-updater';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
+import { ContractDetails } from '../../domain/value-object/contract-details';
 
 export class ContractUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -22,6 +24,7 @@ export class ContractUpdater {
   async execute(
     id: string,
     contract: Contract,
+    contractDetails: ContractDetail[],
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.EDIT);
@@ -38,6 +41,10 @@ export class ContractUpdater {
       response,
       contract.toJson(),
     );
+
+    const details = contractDetails.map((detail) => detail.id.value);
+
+    updateContract.setDetails(new ContractDetails(details));
 
     await this.contractRepository.update(uuid, updateContract);
 

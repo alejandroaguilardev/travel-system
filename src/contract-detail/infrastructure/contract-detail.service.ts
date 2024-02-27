@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { MongoContractDetailRepository } from './persistence/contract-mongo.repository';
-import { CageDto, CreateContractDetailDto, DocumentationDto } from './dto';
+import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
+import { CageDto, DocumentationDto } from './dto';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { ResponseSearch, ResponseSuccess } from '../../common/domain/response';
-import {
-  CommandContractCreator,
-  ContractDetailCreator,
-} from '../application/create';
+import { ContractDetailCreator } from '../application/create';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { ContractDetailResponse } from '../application/response/contract-detail.response';
 import { ContractDetailSearch } from '../application/search/contract-detail-search';
@@ -19,10 +16,12 @@ import {
   ContractDetailCageUpdater,
   ContractDetailDocumentationUpdater,
   ContractDetailTravelUpdater,
+  ContractDetailUpdater,
 } from '../application/update';
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { ContractDetailRemover } from '../application/remove/contract-detail-remover';
+import { ContractDetail } from '../domain/contract-detail';
 
 @Injectable()
 export class ContractDetailService {
@@ -32,14 +31,23 @@ export class ContractDetailService {
   ) {}
 
   async create(
-    createContractDto: CreateContractDetailDto,
+    contractDetails: ContractDetail[],
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    const contractsCreator = new ContractDetailCreator(
+    const contractDetailCreator = new ContractDetailCreator(
       this.mongoContractDetailRepository,
     );
-    const contract = CommandContractCreator.execute(createContractDto, user.id);
-    return await contractsCreator.execute(contract, user);
+    return await contractDetailCreator.execute(contractDetails, user);
+  }
+
+  async update(
+    contractDetails: ContractDetail[],
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const contractDetailUpdater = new ContractDetailUpdater(
+      this.mongoContractDetailRepository,
+    );
+    return await contractDetailUpdater.execute(contractDetails, user);
   }
 
   findAll(

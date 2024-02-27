@@ -8,6 +8,9 @@ import {
   ContractEndDate,
   ContractDetails,
 } from '../../domain/value-object';
+import { ContractUpdaterRequest } from './contract-updater-request';
+import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
+import { CommandContractDetailCreator } from '../../../contract-detail/application/create/command-contract-detail-creator';
 
 export class CommandContractUpdater {
   static execute(
@@ -24,5 +27,12 @@ export class CommandContractUpdater {
       new ContractDetails(data?.details ?? contract.details),
       new UuidOptional(data?.user ?? contract.user),
     );
+  }
+
+  static details(
+    data: ContractUpdaterRequest,
+    userId: string,
+  ): ContractDetail[] {
+    return CommandContractDetailCreator.execute(data.details, userId);
   }
 }

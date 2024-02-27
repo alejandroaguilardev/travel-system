@@ -7,7 +7,7 @@ import { GlobalFilterProperties } from '../../domain/criteria/global-filter-prop
 import { Filter } from '../../domain/criteria/filters';
 
 export class MongoCriteriaConverter {
-  static Converter<T>(criteria: Criteria) {
+  static converter<T>(criteria: Criteria) {
     const {
       start,
       size,

@@ -15,14 +15,22 @@ export class UserSearchById {
     id: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<UserWithoutWithRoleResponse> {
-    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.READ);
-
     const uuid = new Uuid(id);
+    this.hasPermission(user, uuid);
+
     const newUser = await this.userRepository.searchByIdWithRole(uuid);
 
     if (!newUser) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('usuario'));
     }
     return newUser;
+  }
+
+  private hasPermission(user: UserWithoutWithRoleResponse, uuid: Uuid) {
+    if (user.id === uuid.value) {
+      return;
+    }
+
+    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.READ);
   }
 }

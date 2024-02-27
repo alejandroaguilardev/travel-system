@@ -6,12 +6,12 @@ import { ContractDetailInterface } from '../../../domain/interfaces/contract-det
 import { ContractDetail } from '../../../domain/contract-detail';
 import { ContractGuideNumber } from '../../../domain/value-object/contract-guide-number';
 
-export class CommandContractUpdater {
+export class CommandContractDetailsUpdater {
   static execute(
     contract: ContractDetailInterface,
     data?: ContractDetailInterface,
   ): ContractDetail {
-    const services = CommandContractUpdater.services(contract, data);
+    const services = CommandContractDetailsUpdater.services(contract, data);
     return new ContractDetail(
       new Uuid(contract.id),
       CommandContractDocumentation.execute(services.documentation),

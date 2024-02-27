@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -9,7 +8,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { ContractDetailService } from './contract-detail.service';
-import { CreateContractDetailDto } from './dto/create-contract-detail.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
@@ -19,15 +17,6 @@ import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 @Controller('contract-detail')
 export class ContractDetailController {
   constructor(private readonly contractDetailService: ContractDetailService) {}
-
-  @Post()
-  @Auth()
-  create(
-    @Body() createContractDto: CreateContractDetailDto,
-    @GetUser() user: UserWithoutWithRoleResponse,
-  ) {
-    return this.contractDetailService.create(createContractDto, user);
-  }
 
   @Get()
   @Auth()
@@ -63,7 +52,7 @@ export class ContractDetailController {
     );
   }
 
-  @Patch(':id/cage')
+  @Patch(':id/:detail/cage')
   @Auth()
   updateCage(
     @Param('id') id: string,
@@ -74,7 +63,7 @@ export class ContractDetailController {
     return this.contractDetailService.updateCage(id, detail, cageDto, user);
   }
 
-  @Patch(':id/travel')
+  @Patch(':id/:detail/travel')
   @Auth()
   updateTravel(
     @Param('id') id: string,

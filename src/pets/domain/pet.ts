@@ -29,6 +29,7 @@ export class Pet {
     readonly country: PetCountry,
     readonly sterilized: PetSterilized,
     readonly status: StatusValueObject,
+    readonly adopter: Uuid,
     readonly user: UuidOptional,
   ) {}
 
@@ -47,6 +48,7 @@ export class Pet {
       country: this.country.value,
       sterilized: this.sterilized.value,
       status: this.status.value,
+      adopter: this.adopter.value,
       user: this.user.value,
     };
   }

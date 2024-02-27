@@ -26,6 +26,11 @@ describe('ContractDetailDocumentation', () => {
     contractDetailRepositoryMock.searchById.mockResolvedValueOnce(
       contractDetail,
     );
+
+    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractDetail,
+    );
+
     const expected = await contractDocumentation.execute(
       contract.id,
       contractDetail.id,

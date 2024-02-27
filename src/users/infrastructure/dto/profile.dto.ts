@@ -3,6 +3,10 @@ import { ProfileInterface } from '../../domain/interfaces/profile.interface';
 
 export class ProfileDto implements ProfileInterface {
   @IsString()
+  document: string;
+  @IsString()
+  documentNumber: string;
+  @IsString()
   name: string;
   @IsString()
   secondName: string;

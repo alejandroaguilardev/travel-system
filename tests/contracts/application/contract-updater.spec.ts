@@ -7,6 +7,8 @@ import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
 import { CommandContractUpdater } from '../../../src/contracts/application/update/command-contract-updater';
+import { CommandContractDetailCreator } from '../../../src/contract-detail/application/create/command-contract-detail-creator';
+import { ContractDetails } from '../../../src/contracts/domain/value-object/contract-details';
 
 describe('ContractUpdater', () => {
   const contractUpdater: ContractUpdater = new ContractUpdater(
@@ -19,9 +21,18 @@ describe('ContractUpdater', () => {
     dto.id = response.id;
     const user = UserCreatorMother.createWithPassword();
     const contract = CommandContractCreator.execute(dto, user.id);
+    const contractDetail = CommandContractDetailCreator.execute(
+      dto.details,
+      user.id,
+    );
 
     contractRepositoryMock.searchById.mockResolvedValueOnce(response);
-    const expected = await contractUpdater.execute(dto.id, contract, user);
+    const expected = await contractUpdater.execute(
+      dto.id,
+      contract,
+      contractDetail,
+      user,
+    );
     expect(expected.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
   });
 
@@ -31,15 +42,24 @@ describe('ContractUpdater', () => {
     dto.id = response.id;
     const user = UserCreatorMother.createWithPassword();
     const contract = CommandContractCreator.execute(dto, user.id);
+    const contractDetail = CommandContractDetailCreator.execute(
+      dto.details,
+      user.id,
+    );
 
     contractRepositoryMock.searchById.mockResolvedValueOnce(response);
-    await contractUpdater.execute(dto.id, contract, user);
+    await contractUpdater.execute(dto.id, contract, contractDetail, user);
 
     const uuid = new Uuid(dto.id);
     const contractUpdate = CommandContractUpdater.execute(
       response,
       contract.toJson(),
     );
+
+    contractUpdate.setDetails(
+      new ContractDetails(dto.details.map((_) => _.id)),
+    );
+
     expect(contractRepositoryMock.update).toHaveBeenCalledWith(
       uuid,
       contractUpdate,
@@ -52,11 +72,15 @@ describe('ContractUpdater', () => {
     dto.id = response.id;
     const user = UserCreatorMother.createWithPassword();
     const contract = CommandContractCreator.execute(dto, user.id);
+    const contractDetail = CommandContractDetailCreator.execute(
+      dto.details,
+      user.id,
+    );
 
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
     contractRepositoryMock.searchById.mockRejectedValueOnce(error);
     try {
-      await contractUpdater.execute(dto.id, contract, user);
+      await contractUpdater.execute(dto.id, contract, contractDetail, user);
       fail('should_failed_contract_updater');
     } catch (throwError) {
       expect(throwError.message).toBe(error.message);

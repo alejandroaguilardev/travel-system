@@ -7,6 +7,8 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
     email: 'alex@gmail.com',
     roles: [],
     profile: {
+      document: 'C.E.',
+      documentNumber: '987654321',
       name: 'Alejandro',
       secondName: '',
       lastName: 'Aguilar',
@@ -31,6 +33,8 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
     email: 'pedro@gmail.com',
     roles: [],
     profile: {
+      document: 'D.N.I.',
+      documentNumber: '987654321',
       name: 'Pedro',
       secondName: '',
       lastName: 'Jimenez',

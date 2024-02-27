@@ -20,6 +20,8 @@ export class UserModel implements UserInterface {
   roles: string[];
   @Prop({
     type: {
+      document: String,
+      documentNumber: String,
       name: String,
       secondName: String,
       lastName: String,

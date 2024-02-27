@@ -82,6 +82,7 @@ describe('ContractsController', () => {
   it('/contracts:id (PUT)', async () => {
     const contractDto = ContractCreatorMother.create();
     const contractDtoUpdate = ContractCreatorMother.create();
+    contractDtoUpdate.id = contractDto.id;
     const response = await CrudTest.update(
       app,
       access_token,

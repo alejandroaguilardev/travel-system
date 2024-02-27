@@ -4,22 +4,39 @@ import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found
 import { ContractSearchById } from '../../../src/contracts/application/search-by-id/contract-search-by-id';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { contractDetailRepositoryMock } from '../../contract-detail/domain/contract-detail-mock.repository';
+import { ContractDetailCreatorMother } from '../../contract-detail/domain/contract-creator.mother';
 
 describe('ContractFind', () => {
-  const contractSearchById = new ContractSearchById(contractRepositoryMock);
+  const contractSearchById = new ContractSearchById(
+    contractRepositoryMock,
+    contractDetailRepositoryMock,
+  );
 
   it('should_successfully_contract_find_id', async () => {
-    const dto = ContractCreatorMother.create();
+    const dto = ContractCreatorMother.createWithTravel();
+    const contractDetail = ContractDetailCreatorMother.createWithTravel();
     const user = UserCreatorMother.createWithPassword();
+
     contractRepositoryMock.searchById.mockResolvedValueOnce(dto);
+    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractDetail,
+    );
+
     const expected = await contractSearchById.execute(dto.id, user);
-    expect(expected).toEqual(dto);
+    expect(expected).toEqual({ ...dto, details: [contractDetail] });
   });
 
   it('should_successfully_contract_find_id_to_have_call', async () => {
-    const dto = ContractCreatorMother.create();
+    const dto = ContractCreatorMother.createWithTravel();
+    const contractDetail = ContractDetailCreatorMother.createWithTravel();
     const user = UserCreatorMother.createWithPassword();
+
     contractRepositoryMock.searchById.mockResolvedValueOnce(dto);
+    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractDetail,
+    );
+
     await contractSearchById.execute(dto.id, user);
     const uuid = new Uuid(dto.id);
     expect(contractRepositoryMock.searchById).toHaveBeenCalledWith(uuid);

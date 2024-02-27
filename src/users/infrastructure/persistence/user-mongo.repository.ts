@@ -34,7 +34,7 @@ export class UserMongoRepository
       .aggregate(UserMongoPipeline.execute(criteria))
       .exec();
 
-    const count: number = await this.count();
+    const count: number = await this.count(criteria);
     return { rows, count };
   }
 

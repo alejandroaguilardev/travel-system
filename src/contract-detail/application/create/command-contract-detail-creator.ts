@@ -39,8 +39,17 @@ import { CageChosenType } from '../../../cages/domain/value-object/cage-selected
 import { CageChosenDimensions } from '../../../cages/domain/value-object/cage-selected-dimensions';
 import { CommandContractDocumentation } from '../update';
 
-export class CommandContractCreator {
+export class CommandContractDetailCreator {
   static execute(
+    data: ContractDetailCreateRequest[],
+    userId: string,
+  ): ContractDetail[] {
+    return data.map((detail) =>
+      CommandContractDetailCreator.detail(detail, userId),
+    );
+  }
+
+  static detail(
     data: ContractDetailCreateRequest,
     userId: string,
   ): ContractDetail {
@@ -48,7 +57,7 @@ export class CommandContractCreator {
       new Uuid(data.id),
       CommandContractDocumentation.execute(data.documentation),
       new ContractCage(
-        new ContractStatus(CommandContractCreator.statusCage(data.cage)),
+        new ContractStatus(CommandContractDetailCreator.statusCage(data.cage)),
         new ContractHasServiceIncluded(data.cage.hasServiceIncluded),
         new CageChosen(
           new CageChosenModel(data.cage?.chosen?.modelCage ?? ''),

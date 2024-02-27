@@ -9,6 +9,8 @@ import {
 } from '../../domain/value-object';
 
 import { ContractCreateRequest } from './contract-create-request';
+import { CommandContractDetailCreator } from '../../../contract-detail/application/create/command-contract-detail-creator';
+import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
 
 export class CommandContractCreator {
   static execute(data: ContractCreateRequest, userId: string): Contract {
@@ -22,5 +24,12 @@ export class CommandContractCreator {
       new ContractDetails([]),
       new UuidOptional(userId),
     );
+  }
+
+  static details(
+    data: ContractCreateRequest,
+    userId: string,
+  ): ContractDetail[] {
+    return CommandContractDetailCreator.execute(data.details, userId);
   }
 }

@@ -18,7 +18,7 @@ export class ContractDetailCreator {
   ) {}
 
   async execute(
-    contract: ContractDetail,
+    contractDetail: ContractDetail[],
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(
@@ -27,8 +27,9 @@ export class ContractDetailCreator {
       AuthPermission.CREATE,
     );
 
-    await this.contractDetailRepository.save(contract);
-
+    await Promise.all(
+      contractDetail.map((_) => this.contractDetailRepository.save(_)),
+    );
     return ResponseMessage.createDefaultMessage(
       MessageDefault.SUCCESSFULLY_CREATED,
     );

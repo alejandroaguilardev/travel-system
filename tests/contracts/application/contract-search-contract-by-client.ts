@@ -4,6 +4,7 @@ import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found
 import { ContractSearchById } from '../../../src/contracts/application/search-by-id/contract-search-by-id';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { contractDetailRepositoryMock } from '../../contract-detail/domain/contract-detail-mock.repository';
 
 const response = [
   ContractCreatorMother.create(),
@@ -13,7 +14,10 @@ const response = [
 ];
 
 describe('C', () => {
-  const contractSearchById = new ContractSearchById(contractRepositoryMock);
+  const contractSearchById = new ContractSearchById(
+    contractRepositoryMock,
+    contractDetailRepositoryMock,
+  );
 
   it('should_successfully_contract_client_id', async () => {
     const dto = ContractCreatorMother.create();

@@ -8,6 +8,9 @@ import { Contract } from '../../domain/contract';
 import { ContractResponse } from '../../application/response/contract.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractEndDate } from '../../domain/value-object';
+import { Criteria } from '../../../common/domain/criteria/criteria';
+import { ResponseSearch } from '../../../common/domain/response/response-search';
+import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
 
 @Injectable()
 export class MongoContractRepository
@@ -29,6 +32,25 @@ export class MongoContractRepository
       .lean();
 
     return rows;
+  }
+
+  async searchClient(
+    criteria: Criteria,
+  ): Promise<ResponseSearch<ContractResponse>> {
+    const { query, selectProperties, start, size, sortQuery } =
+      MongoCriteriaConverter.converter(criteria);
+
+    const rows: ContractResponse[] = await this.contractModel
+      .find(query)
+      .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
+      .skip(start)
+      .limit(size)
+      .sort(sortQuery)
+      .lean();
+
+    const count = await this.count(criteria);
+
+    return { rows, count };
   }
 
   async finish(contractId: Uuid, endDate: ContractEndDate): Promise<void> {

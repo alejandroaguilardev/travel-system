@@ -35,7 +35,7 @@ export class ContractTravel {
     ));
   }
 
-  setAirlineReservation() {
+  statusCompleted() {
     const hasRequiredAirlineReservationFields =
       this.airlineReservation.arrivalDate.value &&
       this.airlineReservation.code.value &&

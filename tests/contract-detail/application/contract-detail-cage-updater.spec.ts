@@ -25,6 +25,11 @@ describe('ContractDetailCageUpdater', () => {
     contractDetailRepositoryMock.searchById.mockResolvedValueOnce(
       contractDetail,
     );
+
+    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractDetail,
+    );
+
     const expected = await contractCageUpdater.execute(
       contract.id,
       contractDetail.id,

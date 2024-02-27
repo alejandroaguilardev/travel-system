@@ -55,6 +55,15 @@ export class ContractsController {
     return this.contractsService.findContractByClient(id, user);
   }
 
+  @Get('client')
+  @Auth()
+  findAllByClient(
+    @Query() criteriaDto: CriteriaDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractsService.findAllClient(criteriaDto, user);
+  }
+
   @Get(':id')
   @Auth()
   findOne(

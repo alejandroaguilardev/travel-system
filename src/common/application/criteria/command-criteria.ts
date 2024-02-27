@@ -54,7 +54,7 @@ export class CommandCriteria {
         (f) =>
           new Filter(
             new FilterField(f.field),
-            new FilterOperator(f.operator),
+            new FilterOperator(f?.operator ?? 'CONTAINS'),
             new FilterValue(f.value),
           ),
       ),
