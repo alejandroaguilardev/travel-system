@@ -1,7 +1,7 @@
 import { UUID } from '../../common/application/services/uuid';
-import { CreatePermissionRequest } from 'src/permissions/application/create/create-permission';
+import { CreatePermissionRequest } from '../../permissions/application/create/create-permission';
 import { AuthGroup } from '../../common/domain/auth-permissions';
-import { RoleCreatorRequest } from 'src/roles/application/create/role-creator-request';
+import { RoleCreatorRequest } from '../../roles/application/create/role-creator-request';
 
 export const getRolesData = (
   uuid: UUID,
@@ -12,9 +12,6 @@ export const getRolesData = (
     name: 'Gestión de usuarios',
     description: 'Gestionar los usuarios del sistemas ',
     permissions: [
-      ...permissions
-        .filter((_) => _.group === AuthGroup.PERMISSIONS)
-        .map((_) => _.id),
       ...permissions
         .filter((_) => _.group === AuthGroup.ROLES)
         .map((_) => _.id),
@@ -40,9 +37,6 @@ export const getRolesData = (
     permissions: [
       ...permissions
         .filter((_) => _.group === AuthGroup.CONTRACTS)
-        .map((_) => _.id),
-      ...permissions
-        .filter((_) => _.group === AuthGroup.CONTRACTS_DETAIL)
         .map((_) => _.id),
     ],
   },

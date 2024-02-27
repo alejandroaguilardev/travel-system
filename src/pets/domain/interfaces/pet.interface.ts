@@ -1,5 +1,6 @@
 import { Status } from '../../../common/domain/value-object/status-value-object';
 import { PetGenderType } from '../value-object/pet-gender';
+import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
 
 export interface PetInterface {
   id: string;
@@ -16,5 +17,6 @@ export interface PetInterface {
   sterilized: string;
   status: Status;
   adopter: string;
+  cageRecommendation: CageChosenInterface;
   user?: string;
 }

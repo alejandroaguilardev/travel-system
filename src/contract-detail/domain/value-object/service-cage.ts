@@ -1,6 +1,6 @@
 import { CageInterface, StatusInterface } from '../interfaces';
 import { ContractHasServiceIncluded } from './contract-has-service.included';
-import { CageChosen, CageRecommendation } from './cage';
+import { CageChosen } from './cage';
 import { ContractStatus } from '../../../common/domain/value-object/contract-status';
 
 export class ContractCage {
@@ -8,7 +8,7 @@ export class ContractCage {
     readonly status: ContractStatus,
     public hasServiceIncluded: ContractHasServiceIncluded,
     readonly chosen: CageChosen,
-    readonly recommendation: CageRecommendation,
+    readonly recommendation: CageChosen,
   ) {}
 
   toJson(): CageInterface {
@@ -16,7 +16,7 @@ export class ContractCage {
       status: this.status.value as StatusInterface,
       hasServiceIncluded: this.hasServiceIncluded.value,
       chosen: this.chosen.toJson(),
-      recommendation: this.recommendation.value,
+      recommendation: this.recommendation.toJson(),
     };
   }
 

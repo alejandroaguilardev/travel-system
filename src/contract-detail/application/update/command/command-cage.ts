@@ -8,10 +8,7 @@ import { ContractCage } from '../../../domain/value-object';
 import { CageChosenModel } from '../../../../cages/domain/value-object/cage-selected-model';
 import { CageChosenType } from '../../../../cages/domain/value-object/cage-selected-type';
 import { CageChosenDimensions } from '../../../../cages/domain/value-object/cage-selected-dimensions';
-import {
-  CageChosen,
-  CageRecommendation,
-} from '../../../domain/value-object/cage';
+import { CageChosen } from '../../../domain/value-object/cage';
 
 export class CommandContractCage {
   static execute(cage: CageInterface): ContractCage {
@@ -24,7 +21,12 @@ export class CommandContractCage {
         new CageChosenDimensions(cage?.chosen?.dimensionsCage ?? ''),
         new UuidOptional(cage.chosen?.user ?? ''),
       ),
-      new CageRecommendation(cage.recommendation),
+      new CageChosen(
+        new CageChosenModel(cage?.recommendation?.modelCage ?? ''),
+        new CageChosenType(cage?.recommendation?.typeCage ?? ''),
+        new CageChosenDimensions(cage?.recommendation?.dimensionsCage ?? ''),
+        new UuidOptional(''),
+      ),
     );
   }
 }

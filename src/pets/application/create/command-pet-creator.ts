@@ -14,6 +14,10 @@ import { PetChipDate } from '../../domain/value-object/pet-chip-date';
 import { PetCountry } from '../../domain/value-object/pet-country';
 import { StatusValueObject } from '../../../common/domain/value-object/status-value-object';
 import { PetSterilized } from '../../domain/value-object/pet-sterilized';
+import { CageChosen } from '../../../contract-detail/domain/value-object/cage/cage-chosen';
+import { CageChosenModel } from '../../../cages/domain/value-object/cage-selected-model';
+import { CageChosenType } from '../../../cages/domain/value-object/cage-selected-type';
+import { CageChosenDimensions } from '../../../cages/domain/value-object/cage-selected-dimensions';
 
 export class CommandPetCreator {
   static execute(data: CreatePetRequest, userId: string): Pet {
@@ -33,6 +37,12 @@ export class CommandPetCreator {
       new StatusValueObject('active'),
       new Uuid(data.adopter),
       new UuidOptional(userId),
+      new CageChosen(
+        new CageChosenModel(data.cageRecommendation?.modelCage ?? ''),
+        new CageChosenType(data.cageRecommendation?.typeCage ?? ''),
+        new CageChosenDimensions(data.cageRecommendation?.dimensionsCage ?? ''),
+        new UuidOptional(''),
+      ),
     );
   }
 }

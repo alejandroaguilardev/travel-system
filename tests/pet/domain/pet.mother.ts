@@ -3,6 +3,7 @@ import { CreatePetRequest } from '../../../src/pets/application/create/create-pe
 import { UuidMother } from '../../common/domain/uuid-mother';
 import { PetChipMother } from './pet-chip.mother';
 import { PetGenderType } from '../../../src/pets/domain/value-object/pet-gender';
+import { ChosenMother } from '../../contract-detail/domain/chosen.mother';
 
 export class PetMother {
   static create(pet?: Partial<CreatePetRequest>): CreatePetRequest {
@@ -21,6 +22,7 @@ export class PetMother {
       type: pet?.type ?? faker.animal.type(),
       sterilized: pet?.sterilized ?? faker.datatype.boolean() ? 'Si' : 'No',
       adopter: pet?.adopter ?? UuidMother.create(),
+      cageRecommendation: pet?.cageRecommendation ?? ChosenMother.create(),
     };
   }
 }

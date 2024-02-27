@@ -19,11 +19,7 @@ export class ContractDetailSearch {
     criteriaRequest: CriteriaRequest,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSearch<ContractDetailResponse>> {
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS_DETAIL,
-      AuthPermission.LIST,
-    );
+    PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.LIST);
 
     const criteria = CommandCriteria.fromData(criteriaRequest);
     return this.contractDetailRepository.search(criteria);

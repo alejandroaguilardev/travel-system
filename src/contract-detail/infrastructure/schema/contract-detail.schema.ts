@@ -81,7 +81,11 @@ export class ContractDetailModel implements ContractDetailInterface {
         dimensionsCage: String,
         user: String,
       },
-      recommendation: String,
+      recommendation: {
+        modelCage: String,
+        typeCage: String,
+        dimensionsCage: String,
+      },
     },
     required: false,
   })

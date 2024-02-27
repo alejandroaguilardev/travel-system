@@ -4,6 +4,7 @@ import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-opti
 import { PetInterface } from '../../domain/interfaces/pet.interface';
 import { PetGenderType } from '../../domain/value-object/pet-gender';
 import { Status } from '../../../common/domain/value-object/status-value-object';
+import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
 
 @Schema({
   collection: 'pets',
@@ -45,6 +46,15 @@ export class PetModel implements PetInterface {
   adopter: string;
   @Prop({ type: String, required: false })
   user: string;
+  @Prop({
+    type: {
+      modelCage: String,
+      typeCage: String,
+      dimensionsCage: String,
+    },
+    required: false,
+  })
+  cageRecommendation: CageChosenInterface;
 }
 
 export type PetDocument = HydratedDocument<PetModel>;

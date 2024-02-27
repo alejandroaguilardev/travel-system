@@ -11,7 +11,7 @@ import {
   CageChosenInterface,
 } from '../../domain/interfaces/cage.interface';
 
-class CageChosenDto implements Partial<CageChosenInterface> {
+export class CageChosenDto implements Partial<CageChosenInterface> {
   @IsString()
   modelCage?: string;
   @IsString()
@@ -31,6 +31,7 @@ export class CageDto implements CageInterface {
   @Type(() => CageChosenDto)
   @ValidateNested()
   chosen: CageChosenInterface;
-  @IsString()
-  recommendation: string;
+  @Type(() => CageChosenDto)
+  @ValidateNested()
+  recommendation: CageChosenInterface;
 }

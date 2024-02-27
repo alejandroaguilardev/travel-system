@@ -14,7 +14,7 @@ import {
   ContractGuideNumber,
 } from '../../domain/value-object';
 import { ContractCage, ContractTravel } from '../../domain/value-object';
-import { CageChosen, CageRecommendation } from '../../domain/value-object/cage';
+import { CageChosen } from '../../domain/value-object/cage';
 import {
   ContractHasServiceAccompanied,
   ContractTypeTraveling,
@@ -65,7 +65,14 @@ export class CommandContractDetailCreator {
           new CageChosenDimensions(data.cage?.chosen?.dimensionsCage ?? ''),
           new UuidOptional(data.cage?.chosen?.user),
         ),
-        new CageRecommendation(data.cage.recommendation),
+        new CageChosen(
+          new CageChosenModel(data.cage?.recommendation?.modelCage ?? ''),
+          new CageChosenType(data.cage?.recommendation?.typeCage ?? ''),
+          new CageChosenDimensions(
+            data.cage?.recommendation?.dimensionsCage ?? '',
+          ),
+          new UuidOptional(''),
+        ),
       ),
       new ContractTravel(
         new ContractStatus('pending'),

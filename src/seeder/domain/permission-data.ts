@@ -3,7 +3,7 @@ import {
   AuthPermission,
   AuthGroup,
 } from '../../common/domain/auth-permissions';
-import { CreatePermissionRequest } from 'src/permissions/application/create/create-permission';
+import { CreatePermissionRequest } from '../../permissions/application/create/create-permission';
 
 export const getPermissionsData = (uuid: UUID): CreatePermissionRequest[] => [
   // CAGES
@@ -69,69 +69,23 @@ export const getPermissionsData = (uuid: UUID): CreatePermissionRequest[] => [
     description: 'Listar elementos',
     group: AuthGroup.CONTRACTS,
   },
-
-  // CONTRACTS_DETAIL
   {
     id: uuid.generate(),
-    name: AuthPermission.CREATE,
-    description: 'Crear nuevos elementos',
-    group: AuthGroup.CONTRACTS_DETAIL,
+    name: AuthPermission.TRAVEL,
+    description: 'Editar Requisitos de Viajes',
+    group: AuthGroup.CONTRACTS,
   },
   {
     id: uuid.generate(),
-    name: AuthPermission.EDIT,
-    description: 'Editar elementos existentes',
-    group: AuthGroup.CONTRACTS_DETAIL,
+    name: AuthPermission.CAGE,
+    description: 'Editar Jaula de la mascota',
+    group: AuthGroup.CONTRACTS,
   },
   {
     id: uuid.generate(),
-    name: AuthPermission.DELETE,
-    description: 'Eliminar elementos existentes',
-    group: AuthGroup.CONTRACTS_DETAIL,
-  },
-  {
-    id: uuid.generate(),
-    name: AuthPermission.READ,
-    description: 'Leer detalles de elementos',
-    group: AuthGroup.CONTRACTS_DETAIL,
-  },
-  {
-    id: uuid.generate(),
-    name: AuthPermission.LIST,
-    description: 'Listar elementos',
-    group: AuthGroup.CONTRACTS_DETAIL,
-  },
-
-  // PERMISSIONS
-  {
-    id: uuid.generate(),
-    name: AuthPermission.CREATE,
-    description: 'Crear nuevos elementos',
-    group: AuthGroup.PERMISSIONS,
-  },
-  {
-    id: uuid.generate(),
-    name: AuthPermission.EDIT,
-    description: 'Editar elementos existentes',
-    group: AuthGroup.PERMISSIONS,
-  },
-  {
-    id: uuid.generate(),
-    name: AuthPermission.DELETE,
-    description: 'Eliminar elementos existentes',
-    group: AuthGroup.PERMISSIONS,
-  },
-  {
-    id: uuid.generate(),
-    name: AuthPermission.READ,
-    description: 'Leer detalles de elementos',
-    group: AuthGroup.PERMISSIONS,
-  },
-  {
-    id: uuid.generate(),
-    name: AuthPermission.LIST,
-    description: 'Listar elementos',
-    group: AuthGroup.PERMISSIONS,
+    name: AuthPermission.DOCUMENTATION,
+    description: 'Editar documentación de la mascota',
+    group: AuthGroup.CONTRACTS,
   },
 
   // PETS

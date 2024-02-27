@@ -13,6 +13,7 @@ import { PetType } from './value-object/pet-type';
 import { StatusValueObject } from '../../common/domain/value-object/status-value-object';
 import { PetSterilized } from './value-object/pet-sterilized';
 import { PetCountry } from './value-object/pet-country';
+import { CageChosen } from '../../contract-detail/domain/value-object/cage/cage-chosen';
 
 export class Pet {
   constructor(
@@ -31,6 +32,7 @@ export class Pet {
     readonly status: StatusValueObject,
     readonly adopter: Uuid,
     readonly user: UuidOptional,
+    readonly cageRecommendation: CageChosen,
   ) {}
 
   toJson(): PetInterface {
@@ -50,6 +52,7 @@ export class Pet {
       status: this.status.value,
       adopter: this.adopter.value,
       user: this.user.value,
+      cageRecommendation: this.cageRecommendation.toJson(),
     };
   }
 }

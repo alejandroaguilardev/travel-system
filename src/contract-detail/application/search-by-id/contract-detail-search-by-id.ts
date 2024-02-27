@@ -35,10 +35,6 @@ export class ContractDetailSearchById {
   }
 
   private hasPermission(user: UserWithoutWithRoleResponse) {
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS_DETAIL,
-      AuthPermission.READ,
-    );
+    PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.READ);
   }
 }

@@ -35,11 +35,11 @@ export class ContractDetailUpdater {
           response,
           contractDetail.toJson(),
         );
+        await this.contractRepository.update(updateContract.id, updateContract);
       } else {
         updateContract = contractDetail;
+        await this.contractRepository.save(updateContract);
       }
-
-      await this.contractRepository.update(updateContract.id, updateContract);
     });
 
     return ResponseMessage.createDefaultMessage(
