@@ -16,6 +16,7 @@ import { UserMongoPipeline } from './user-mongo.pipeline';
 import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 import { FilterOperator } from '../../../common/domain/criteria/filter-operator';
 import { Uuid } from '../../../common/domain/value-object/uuid';
+import { UserPassword } from '../../domain/value-object/user-password';
 
 @Injectable()
 export class UserMongoRepository
@@ -63,5 +64,15 @@ export class UserMongoRepository
     if (!user) return null;
 
     return user;
+  }
+
+  async updatePassword(
+    id: Uuid,
+    password: UserPassword,
+  ): Promise<UserResponse | null> {
+    return this.userModel.findOneAndUpdate(
+      { id: id.value },
+      { password: password.value },
+    );
   }
 }

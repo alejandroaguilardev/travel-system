@@ -4,4 +4,5 @@ export const userRepositoryMock = {
   ...repositoryMock,
   searchEmail: jest.fn(),
   searchByIdWithRole: jest.fn(),
+  updatePassword: jest.fn(),
 };

@@ -4,6 +4,7 @@ import SMTPTransport from 'nodemailer/lib/smtp-transport';
 import { SendMailRegister } from '../application/auth/send-mail-register';
 import { UserEmail } from '../../users/domain/value-object/user-email';
 import { UserPassword } from '../../users/domain/value-object/user-password';
+import { SendMailResetPassword } from '../application/auth/send-mail-reset-password';
 
 @Injectable()
 export class MailAuthService {
@@ -21,6 +22,7 @@ export class MailAuthService {
       port: Number(process.env.MAIL_PORT),
     });
     this.isProductionMode = process.env.PRODUCTION;
+    this.isProductionMode = 'true';
   }
 
   async register(email: UserEmail, password: UserPassword): Promise<void> {
@@ -28,5 +30,12 @@ export class MailAuthService {
 
     const sendEmail = new SendMailRegister(this.mailerService);
     await sendEmail.execute(email, password);
+  }
+
+  async recover(email: UserEmail, token: string): Promise<void> {
+    if (this.isProductionMode === 'false') return;
+
+    const sendEmail = new SendMailResetPassword(this.mailerService);
+    await sendEmail.execute(email, token);
   }
 }

@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JWTAdapterService } from './services/jwt.service';
 import { JwtStrategyService } from './services/jwt-strategy.service';
+import { MailModule } from '../../mail/infrastructure/mail.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { JwtStrategyService } from './services/jwt-strategy.service';
         },
       }),
     }),
+    MailModule,
   ],
   controllers: [AuthController],
   providers: [
