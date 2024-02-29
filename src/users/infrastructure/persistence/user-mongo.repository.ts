@@ -17,6 +17,7 @@ import { CommandCriteria } from '../../../common/application/criteria/command-cr
 import { FilterOperator } from '../../../common/domain/criteria/filter-operator';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserPassword } from '../../domain/value-object/user-password';
+import { UserProfile } from '../../domain/value-object/user-profile';
 
 @Injectable()
 export class UserMongoRepository
@@ -73,6 +74,15 @@ export class UserMongoRepository
     return this.userModel.findOneAndUpdate(
       { id: id.value },
       { password: password.value },
+    );
+  }
+  async updateProfile(
+    id: Uuid,
+    userProfile: UserProfile,
+  ): Promise<UserResponse | null> {
+    return this.userModel.findOneAndUpdate(
+      { id: id.value },
+      { profile: userProfile.toJson() },
     );
   }
 }

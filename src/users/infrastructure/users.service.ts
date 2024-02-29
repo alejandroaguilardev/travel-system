@@ -18,6 +18,11 @@ import { UserCreatorDto } from './dto/create-user.dto';
 import { CommandCreatorUser } from '../application/create/command-create-user';
 import { MailAuthService } from '../../mail/infrastructure/mail-auth.service';
 import { UserPassword } from '../domain/value-object/user-password';
+import { ProfileDto } from './dto/profile.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
+import { UserProfileUpdater } from '../application/update/user-profile-updater';
+import { CommandProfileUser } from '../application/update/command/command-user-profile';
+import { UserChangePasswordUpdater } from '../application/update/user-change-password';
 
 @Injectable()
 export class UsersService {
@@ -75,6 +80,28 @@ export class UsersService {
     const userUpdater = new UserUpdater(this.userMongoRepository);
     const userCommand = CommandCreatorUser.execute(updateAuthDto, user.id);
     return userUpdater.update(userId, userCommand, user);
+  }
+
+  updateProfile(
+    profileDto: ProfileDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const userUpdater = new UserProfileUpdater(this.userMongoRepository);
+    const userProfile = CommandProfileUser.execute(profileDto);
+    return userUpdater.execute(userProfile, user);
+  }
+
+  updatePassword(
+    changePasswordDto: ChangePasswordDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const userChangePasswordUpdater = new UserChangePasswordUpdater(
+      this.userMongoRepository,
+      this.bcryptService,
+    );
+    const password = new UserPassword(changePasswordDto.password);
+    const newPassword = new UserPassword(changePasswordDto.newPassword);
+    return userChangePasswordUpdater.execute(password, newPassword, user);
   }
 
   remove(

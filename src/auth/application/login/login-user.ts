@@ -26,7 +26,7 @@ export class LoginUser {
     const user = await this.userRepository.searchEmail(credentials.email);
 
     if (!user) {
-      throw new ErrorBadRequest('El email es incorrecto');
+      throw new ErrorBadRequest('El correo electrónico es incorrecto');
     }
 
     if (
@@ -35,7 +35,7 @@ export class LoginUser {
         this.hashing,
       )
     ) {
-      throw new ErrorBadRequest('El password es incorrecto');
+      throw new ErrorBadRequest('La contraseña es incorrecta');
     }
 
     delete user.password;

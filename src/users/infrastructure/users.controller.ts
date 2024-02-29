@@ -7,6 +7,7 @@ import {
   Put,
   Post,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserCreatorDto } from './dto/create-user.dto';
@@ -15,6 +16,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { UserWithoutWithRoleResponse } from '../domain/interfaces/user-without.response';
+import { ProfileDto } from './dto/profile.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Controller('users')
 export class UsersController {
@@ -55,6 +58,24 @@ export class UsersController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.usersService.update(id, updateAuthDto, user);
+  }
+
+  @Patch('profile')
+  @Auth()
+  updateProfile(
+    @Body() profileDto: ProfileDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.usersService.updateProfile(profileDto, user);
+  }
+
+  @Patch('change-password')
+  @Auth()
+  updatePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.usersService.updatePassword(changePasswordDto, user);
   }
 
   @Delete(':id')

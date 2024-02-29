@@ -42,7 +42,7 @@ describe('loginUser', () => {
     generateTokenMock.mockReturnValueOnce('token');
     userRepositoryMock.searchEmail.mockResolvedValue(null);
 
-    const error = new ErrorBadRequest('El email es incorrecto');
+    const error = new ErrorBadRequest('El correo electrónico es incorrecto');
     try {
       await loginUser.login({ email, password });
       fail('Fallo la prueba should failed log email credentials');
@@ -52,7 +52,7 @@ describe('loginUser', () => {
   });
 
   it('should failed log password credentials', async () => {
-    const error = new ErrorBadRequest('El password es incorrecto');
+    const error = new ErrorBadRequest('La contraseña es incorrecta');
     try {
       const dto = UserCreatorMother.create();
       const password = UserPassword.generatePassword();

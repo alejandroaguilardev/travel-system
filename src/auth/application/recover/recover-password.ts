@@ -12,7 +12,7 @@ export class RecoverPassword {
     const user = await this.userRepository.searchEmail(email);
 
     if (!user) {
-      throw new ErrorBadRequest('El email es incorrecto');
+      throw new ErrorBadRequest('El correo electrónico es incorrecto');
     }
     delete user.password;
     return user;
