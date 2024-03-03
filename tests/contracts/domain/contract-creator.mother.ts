@@ -13,6 +13,7 @@ export class ContractCreatorMother {
       number: dto?.number ?? NumberMother.create(),
       startDate: dto?.startDate ?? DateMother.recent(),
       details: dto?.details ?? [ContractDetailCreatorMother.create()],
+      adviser: dto?.adviser ?? UuidMother.create(),
     };
   }
 
@@ -25,6 +26,7 @@ export class ContractCreatorMother {
       startDate: DateMother.recent(),
       endDate: dto?.endDate ?? null,
       status: dto?.status ?? 'in-process',
+      adviser: dto?.adviser ?? UuidMother.create(),
       user: dto?.user ?? UuidMother.create(),
     };
   }

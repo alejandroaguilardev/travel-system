@@ -34,6 +34,9 @@ export class ContractModel implements ContractInterface {
   guideNumber: string;
 
   @Prop({ type: String, required: false })
+  adviser: string;
+
+  @Prop({ type: String, required: false })
   user: string;
 }
 

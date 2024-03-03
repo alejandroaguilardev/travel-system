@@ -24,6 +24,7 @@ import { UserAuthRemember } from '../../domain/value-object/auth/user-remember-t
 import { UserLastLogin } from '../../domain/value-object/auth/user-last-login';
 import { UserDocument } from '../../domain/value-object/profile/user-document';
 import { UserDocumentNumber } from '../../domain/value-object/profile/user-document-number';
+import { UserIsAdvisor } from '../../domain/value-object/user-advisor';
 
 export class CommandCreatorUser {
   static execute(data: CreateUserRequest, userId: string): User {
@@ -50,10 +51,15 @@ export class CommandCreatorUser {
       new StatusValueObject('active'),
       new UuidOptional(userId),
       new UserAuth(
-        new UserAuthAdmin(false),
+        new UserAuthAdmin(
+          data?.auth?.admin && data.auth.admin === true
+            ? data.auth.admin
+            : false,
+        ),
         new UserAuthRemember(''),
         new UserLastLogin(null),
       ),
+      new UserIsAdvisor(data?.isAdvisor ?? false),
     );
   }
 }

@@ -23,6 +23,9 @@ class CertificateDto implements DocumentationCertificateInterface {
   @IsDate()
   executionDate: Date | null;
   @IsOptional()
+  @IsDate()
+  resultDate: Date | null;
+  @IsOptional()
   @IsString()
   user?: string;
 }
@@ -39,6 +42,9 @@ export class DocumentationDto implements DocumentationInterface {
   @Type(() => CertificateDto)
   @ValidateNested()
   chipCertificate: DocumentationCertificateInterface;
+  @Type(() => CertificateDto)
+  @ValidateNested()
+  chipReview: DocumentationCertificateInterface;
   @ValidateNested()
   @Type(() => CertificateDto)
   @ValidateNested()

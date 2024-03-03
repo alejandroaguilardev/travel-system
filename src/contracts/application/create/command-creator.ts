@@ -22,6 +22,7 @@ export class CommandContractCreator {
       new ContractStartDate(data.startDate),
       new ContractEndDate(null),
       new ContractDetails([]),
+      new Uuid(data.adviser),
       new UuidOptional(userId),
     );
   }

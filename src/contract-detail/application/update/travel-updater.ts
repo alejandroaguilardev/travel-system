@@ -5,7 +5,6 @@ import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/us
 import { AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
-import { ContractDetailResponse } from '../response/contract-detail.response';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
 import { EnsureContractDetail } from './ensure-contract-detail';
 
@@ -44,12 +43,15 @@ export class ContractDetailTravelUpdater {
     const contractDetail = {
       ...contractDetailResponse,
       travel: travel.toJson(),
-    } as ContractDetailResponse;
+    };
 
     contract.establishedStatus(
-      detailsResponse.map((_) =>
-        _.id === contractDetail.id ? contractDetail : _,
-      ),
+      detailsResponse.map((_) => {
+        if (_.id === contractDetail.id) {
+          return contractDetail as any;
+        }
+        return _;
+      }),
     );
 
     await Promise.all([
@@ -61,6 +63,7 @@ export class ContractDetailTravelUpdater {
       contract: contract.toJson(),
       contractDetail: {
         ...contractDetail,
+        pet: detailsResponse.find((d) => d.pet.id === contractDetail.pet).pet,
       },
     };
   }

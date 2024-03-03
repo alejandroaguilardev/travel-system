@@ -8,5 +8,6 @@ export interface ContractInterface {
   startDate: Date;
   endDate: Date;
   details: string[];
+  adviser: string;
   user: string;
 }

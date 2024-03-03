@@ -5,6 +5,7 @@ export interface DocumentationCertificateInterface {
   isApplied: boolean;
   expectedDate: Date;
   executionDate: Date | null;
+  resultDate: Date | null;
   user?: string;
 }
 export interface DocumentationInterface {
@@ -12,6 +13,7 @@ export interface DocumentationInterface {
   vaccinationCertificate: DocumentationCertificateInterface;
   healthCertificate: DocumentationCertificateInterface;
   chipCertificate: DocumentationCertificateInterface;
+  chipReview: DocumentationCertificateInterface;
   senasaDocuments: DocumentationCertificateInterface;
   rabiesSeroLogicalTest: DocumentationCertificateInterface;
   importLicense: DocumentationCertificateInterface;

@@ -22,6 +22,8 @@ export class CreateContractDto implements ContractCreateRequest {
   @Type(() => CreateContractDetailDto)
   @ValidateNested({ each: true })
   details: ContractDetailCreateRequest[];
+  @IsUUID()
+  adviser: string;
   @IsOptional()
   @IsUUID()
   user: string;

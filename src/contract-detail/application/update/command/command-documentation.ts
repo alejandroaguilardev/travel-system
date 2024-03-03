@@ -4,6 +4,7 @@ import {
 } from '../../../../common/domain/value-object';
 import { DocumentationInterface } from '../../../domain/interfaces';
 import { ContractDocumentation } from '../../../domain/value-object';
+import { DocumentationResultDate } from '../../../domain/value-object/documentation/documentation-result-date';
 import {
   DocumentationVaccinationCertificate,
   DocumentationIsApplied,
@@ -36,6 +37,9 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.vaccinationCertificate.executionDate,
         ),
+        new DocumentationResultDate(
+          documentation.vaccinationCertificate.resultDate,
+        ),
         new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
       ),
       new DocumentationHealthCertificate(
@@ -49,7 +53,8 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.healthCertificate.executionDate,
         ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+        new DocumentationResultDate(documentation.healthCertificate.resultDate),
+        new UuidOptional(documentation.healthCertificate?.user ?? ''),
       ),
       new DocumentationChipCertificate(
         new DocumentationIsApplied(documentation.chipCertificate.isApplied),
@@ -62,7 +67,18 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.chipCertificate.executionDate,
         ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+        new DocumentationResultDate(documentation.chipCertificate.resultDate),
+        new UuidOptional(documentation.chipCertificate?.user ?? ''),
+      ),
+      new DocumentationChipCertificate(
+        new DocumentationIsApplied(documentation.chipReview.isApplied),
+        new DocumentationIsApplied(
+          documentation.chipCertificate.hasServiceIncluded,
+        ),
+        new DocumentationExpectedDate(documentation.chipReview.expectedDate),
+        new DocumentationExecutionDate(documentation.chipReview.executionDate),
+        new DocumentationResultDate(documentation.chipReview.resultDate),
+        new UuidOptional(documentation.chipReview?.user ?? ''),
       ),
       new DocumentationSenasaDocuments(
         new DocumentationIsApplied(documentation.senasaDocuments.isApplied),
@@ -75,7 +91,8 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.senasaDocuments.executionDate,
         ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+        new DocumentationResultDate(documentation.senasaDocuments.resultDate),
+        new UuidOptional(documentation.senasaDocuments?.user ?? ''),
       ),
       new DocumentationRabiesSerologicalTest(
         new DocumentationIsApplied(
@@ -90,7 +107,10 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.rabiesSeroLogicalTest.executionDate,
         ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+        new DocumentationResultDate(
+          documentation.rabiesSeroLogicalTest.resultDate,
+        ),
+        new UuidOptional(documentation.rabiesSeroLogicalTest?.user ?? ''),
       ),
       new DocumentationImportLicense(
         new DocumentationIsApplied(documentation.importLicense.isApplied),
@@ -101,7 +121,8 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.importLicense.executionDate,
         ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+        new DocumentationResultDate(documentation.importLicense.resultDate),
+        new UuidOptional(documentation.importLicense?.user ?? ''),
       ),
       new DocumentationEmocionalSupportCertificate(
         new DocumentationIsApplied(
@@ -116,7 +137,10 @@ export class CommandContractDocumentation {
         new DocumentationExecutionDate(
           documentation.emotionalSupportCertificate.executionDate,
         ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+        new DocumentationResultDate(
+          documentation.emotionalSupportCertificate.resultDate,
+        ),
+        new UuidOptional(documentation.emotionalSupportCertificate?.user ?? ''),
       ),
     );
   }

@@ -25,6 +25,7 @@ export class CommandContractUpdater {
       new ContractStartDate(data?.startDate ?? contract.startDate),
       new ContractEndDate(contract.endDate),
       new ContractDetails(data?.details ?? contract.details),
+      new Uuid(data?.adviser ?? contract.adviser),
       new UuidOptional(data?.user ?? contract.user),
     );
   }

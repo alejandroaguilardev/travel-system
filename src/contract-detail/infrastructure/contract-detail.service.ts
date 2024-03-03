@@ -22,12 +22,14 @@ import { ContractDetailUpdaterResponse } from '../application/response/contract-
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { ContractDetailRemover } from '../application/remove/contract-detail-remover';
 import { ContractDetail } from '../domain/contract-detail';
+import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 
 @Injectable()
 export class ContractDetailService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly mongoContractDetailRepository: MongoContractDetailRepository,
+    private readonly mailerService: MailContractService,
   ) {}
 
   async create(
@@ -70,7 +72,7 @@ export class ContractDetailService {
     return contractSearchById.execute(id, user);
   }
 
-  updateDocumentation(
+  async updateDocumentation(
     contractId: string,
     contractDetailId: string,
     documentationDto: DocumentationDto,
@@ -83,12 +85,17 @@ export class ContractDetailService {
 
     const documentation =
       CommandContractDocumentation.execute(documentationDto);
-    return contractDocumentationUpdater.execute(
+
+    const response = await contractDocumentationUpdater.execute(
       contractId,
       contractDetailId,
       documentation,
       user,
     );
+
+    this.mailerService.updateDocumentation(response);
+
+    return response;
   }
 
   updateCage(

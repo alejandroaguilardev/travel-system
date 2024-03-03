@@ -58,6 +58,7 @@ export class CommandContractDetailsUpdater {
             services.documentation.vaccinationCertificate.expectedDate,
           executionDate:
             services.documentation.vaccinationCertificate.executionDate,
+          resultDate: services.documentation.vaccinationCertificate.resultDate,
           user: services.documentation.vaccinationCertificate.user,
         },
         healthCertificate: {
@@ -67,6 +68,7 @@ export class CommandContractDetailsUpdater {
           isApplied: services.documentation.healthCertificate.isApplied,
           expectedDate: services.documentation.healthCertificate.expectedDate,
           executionDate: services.documentation.healthCertificate.executionDate,
+          resultDate: services.documentation.healthCertificate.resultDate,
           user: services.documentation.healthCertificate.user,
         },
         chipCertificate: {
@@ -76,7 +78,18 @@ export class CommandContractDetailsUpdater {
           isApplied: services.documentation.chipCertificate.isApplied,
           expectedDate: services.documentation.chipCertificate.expectedDate,
           executionDate: services.documentation.chipCertificate.executionDate,
+          resultDate: services.documentation.chipCertificate.resultDate,
           user: services.documentation.chipCertificate.user,
+        },
+        chipReview: {
+          hasServiceIncluded:
+            documentation?.chipReview?.hasServiceIncluded ??
+            services.documentation.chipReview.hasServiceIncluded,
+          isApplied: services.documentation.chipReview.isApplied,
+          expectedDate: services.documentation.chipReview.expectedDate,
+          executionDate: services.documentation.chipReview.executionDate,
+          resultDate: services.documentation.chipReview.resultDate,
+          user: services.documentation.chipReview.user,
         },
         senasaDocuments: {
           hasServiceIncluded:
@@ -85,6 +98,7 @@ export class CommandContractDetailsUpdater {
           isApplied: services.documentation.senasaDocuments.isApplied,
           expectedDate: services.documentation.senasaDocuments.expectedDate,
           executionDate: services.documentation.senasaDocuments.executionDate,
+          resultDate: services.documentation.senasaDocuments.resultDate,
           user: services.documentation.senasaDocuments.user,
         },
         rabiesSeroLogicalTest: {
@@ -96,6 +110,7 @@ export class CommandContractDetailsUpdater {
             services.documentation.rabiesSeroLogicalTest.expectedDate,
           executionDate:
             services.documentation.rabiesSeroLogicalTest.executionDate,
+          resultDate: services.documentation.rabiesSeroLogicalTest.resultDate,
           user: services.documentation.rabiesSeroLogicalTest.user,
         },
         importLicense: {
@@ -105,6 +120,7 @@ export class CommandContractDetailsUpdater {
           isApplied: services.documentation.importLicense.isApplied,
           expectedDate: services.documentation.importLicense.expectedDate,
           executionDate: services.documentation.importLicense.executionDate,
+          resultDate: services.documentation.importLicense.resultDate,
           user: services.documentation.importLicense.user,
         },
         emotionalSupportCertificate: {
@@ -118,6 +134,8 @@ export class CommandContractDetailsUpdater {
             services.documentation.emotionalSupportCertificate.expectedDate,
           executionDate:
             services.documentation.emotionalSupportCertificate.executionDate,
+          resultDate:
+            services.documentation.emotionalSupportCertificate.resultDate,
           user: services.documentation.emotionalSupportCertificate.user,
         },
       },

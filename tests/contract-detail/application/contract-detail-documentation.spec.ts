@@ -7,6 +7,7 @@ import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { contractRepositoryMock } from '../../contracts/domain/contract-mock.repository';
 import { ContractCreatorMother } from '../../contracts/domain/contract-creator.mother';
 import { ContractDetailCreatorMother } from '../domain/contract-creator.mother';
+import { PetMother } from '../../pet/domain/pet.mother';
 
 describe('ContractDetailDocumentation', () => {
   const contractDocumentation = new ContractDetailDocumentationUpdater(
@@ -15,8 +16,12 @@ describe('ContractDetailDocumentation', () => {
   );
 
   it('should_successfully_contract_documentation', async () => {
+    const pet = PetMother.createPetInterface();
     const contract = ContractCreatorMother.createWithTravel();
-    const contractDetail = ContractDetailCreatorMother.createWithTravel();
+    const contractDetail = ContractDetailCreatorMother.createWithTravel({
+      pet: pet.id,
+    });
+
     const documentationRequest = ContractDocumentationMother.create();
     const user = UserCreatorMother.createWithPassword();
     const documentation =
@@ -27,9 +32,10 @@ describe('ContractDetailDocumentation', () => {
       contractDetail,
     );
 
-    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
-      contractDetail,
-    );
+    contractDetailRepositoryMock.searchByIdWithPet.mockResolvedValueOnce({
+      ...contractDetail,
+      pet,
+    });
 
     const expected = await contractDocumentation.execute(
       contract.id,

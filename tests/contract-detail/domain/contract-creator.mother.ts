@@ -6,6 +6,8 @@ import { CageMother } from './cage-mother';
 import { ContractTravelMother } from './contract-travel.mother';
 import { ContractDetailCreateRequest } from '../../../src/contract-detail/application/create/contract-detail-create-request';
 import { ContractDetailInterface } from '../../../src/contract-detail/domain/interfaces/contract-detail.interface';
+import { ContractDetailResponse } from '../../../src/contract-detail/application/response/contract-detail.response';
+import { PetMother } from '../../pet/domain/pet.mother';
 
 export class ContractDetailCreatorMother {
   static create(
@@ -35,6 +37,14 @@ export class ContractDetailCreatorMother {
       cage: CageMother.create(),
       travel: ContractTravelMother.create(),
       user: dto?.user ?? UuidMother.create(),
+    };
+  }
+  static createWithPet(
+    dto?: Partial<ContractDetailInterface>,
+  ): ContractDetailResponse {
+    return {
+      ...this.createWithTravel(dto),
+      pet: PetMother.createPetInterface(),
     };
   }
 }

@@ -55,6 +55,8 @@ export class UserModel implements UserInterface {
     required: false,
   })
   auth?: UserAuthInterface;
+  @Prop({ type: Boolean, required: false })
+  isAdvisor?: boolean;
 }
 
 export type UserDocument = HydratedDocument<UserModel>;

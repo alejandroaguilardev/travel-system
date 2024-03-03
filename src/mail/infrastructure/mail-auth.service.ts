@@ -22,7 +22,6 @@ export class MailAuthService {
       port: Number(process.env.MAIL_PORT),
     });
     this.isProductionMode = process.env.PRODUCTION;
-    this.isProductionMode = 'true';
   }
 
   async register(email: UserEmail, password: UserPassword): Promise<void> {

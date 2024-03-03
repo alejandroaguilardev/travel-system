@@ -4,16 +4,17 @@ import { transportMock } from '../../domain/transporter.mock';
 import { SendMailNewContract } from '../../../../src/mail/application/contracts/send-mail-new-contract';
 import { ContractCreatorMother } from '../../../contracts/domain/contract-creator.mother';
 import { CommandContractUpdater } from '../../../../src/contracts/application/update/command-contract-updater';
+import { userRepositoryMock } from '../../../users/domain/user-repository-mock-methods';
 
 describe('sendMailNewContract', () => {
-  const sendMail = new SendMailNewContract(transportMock);
+  const sendMail = new SendMailNewContract(transportMock, userRepositoryMock);
 
   it('should_successfully_mail_new_contract', async () => {
     const user = UserCreatorMother.create();
     const contractPrimitives = ContractCreatorMother.createWithTravel();
-    const email = new UserEmail(user.email);
     const contract = CommandContractUpdater.execute(contractPrimitives);
-    const resolved = await sendMail.execute(email, contract);
+    userRepositoryMock.searchById.mockResolvedValue(user);
+    const resolved = await sendMail.execute(user.id, contract);
     expect(resolved).toBe(undefined);
   });
 
@@ -22,11 +23,12 @@ describe('sendMailNewContract', () => {
     const contractPrimitives = ContractCreatorMother.createWithTravel();
     const email = new UserEmail(user.email);
     const contract = CommandContractUpdater.execute(contractPrimitives);
-    await sendMail.execute(email, contract);
+    userRepositoryMock.searchById.mockResolvedValue(user);
+    await sendMail.execute(user.id, contract);
     const haveCalled = sendMail.options(
       email,
       contract,
-      sendMail.getHtml(contract),
+      sendMail.getHtml(contract, user.profile.phone),
     );
     expect(transportMock.sendMail).toHaveBeenCalledWith(haveCalled);
   });

@@ -2,17 +2,21 @@ import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as request from 'supertest';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { ContractDocumentationMother } from '../domain/contract-documentation.mother';
-import { CageMother } from '../domain/cage-mother';
-import { ContractTravelMother } from '../domain/contract-travel.mother';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
 import { ContractCreatorMother } from '../../contracts/domain/contract-creator.mother';
+import { PetMother } from '../../pet/domain/pet.mother';
+import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { CageMother } from '../domain/cage-mother';
+import { ContractTravelMother } from '../domain/contract-travel.mother';
+import { MessageDefault } from '../../../src/common/domain/response/response-message';
 
 const route = '/contract-detail';
 const routeContract = '/contracts';
+const routePet = '/pets';
+const routeUser = '/users';
 
 describe('ContractDetailController', () => {
   let app: INestApplication;
@@ -53,7 +57,15 @@ describe('ContractDetailController', () => {
   });
 
   it(':contractId/:contractDetailId/documentation (PATCH)', async () => {
+    const petDto = PetMother.create();
+    await CrudTest.create(app, access_token, routePet, petDto);
+    const userDto = UserCreatorMother.create();
+    await CrudTest.create(app, access_token, routeUser, userDto);
+
     const contractDto = ContractCreatorMother.create();
+    contractDto.details[0].pet = petDto.id;
+    contractDto.client = userDto.id;
+
     await CrudTest.create(app, access_token, routeContract, contractDto);
 
     const documentation = ContractDocumentationMother.create();
@@ -72,7 +84,15 @@ describe('ContractDetailController', () => {
   });
 
   it(':contractId/:contractDetailId/cage (PATCH)', async () => {
+    const petDto = PetMother.create();
+    await CrudTest.create(app, access_token, routePet, petDto);
+    const userDto = UserCreatorMother.create();
+    await CrudTest.create(app, access_token, routeUser, userDto);
+
     const contractDto = ContractCreatorMother.create();
+    contractDto.details[0].pet = petDto.id;
+    contractDto.client = userDto.id;
+
     await CrudTest.create(app, access_token, routeContract, contractDto);
 
     const cage = CageMother.create();
@@ -91,7 +111,15 @@ describe('ContractDetailController', () => {
   });
 
   it(':id/:detail/travel (PATCH)', async () => {
+    const petDto = PetMother.create();
+    await CrudTest.create(app, access_token, routePet, petDto);
+    const userDto = UserCreatorMother.create();
+    await CrudTest.create(app, access_token, routeUser, userDto);
+
     const contractDto = ContractCreatorMother.create();
+    contractDto.details[0].pet = petDto.id;
+    contractDto.client = userDto.id;
+
     await CrudTest.create(app, access_token, routeContract, contractDto);
 
     const travel = ContractTravelMother.create();

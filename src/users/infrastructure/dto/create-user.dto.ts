@@ -4,6 +4,7 @@ import {
   IsOptional,
   IsUUID,
   ValidateNested,
+  IsBoolean,
 } from 'class-validator';
 import { CreateUserRequest } from '../../application/create/create-user-request';
 import { Type } from 'class-transformer';
@@ -31,4 +32,7 @@ export class UserCreatorDto implements CreateUserRequest {
   @Type(() => UserAuthDto)
   @ValidateNested()
   auth: UserAuthInterface;
+  @IsOptional()
+  @IsBoolean()
+  isAdvisor?: boolean;
 }

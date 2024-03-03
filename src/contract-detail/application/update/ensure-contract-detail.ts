@@ -10,6 +10,7 @@ import { ContractDetailResponse } from '../response/contract-detail.response';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
+import { ContractDetailInterface } from 'src/contract-detail/domain/interfaces';
 
 export class EnsureContractDetail {
   constructor(
@@ -22,12 +23,12 @@ export class EnsureContractDetail {
     contractDetailUuid: Uuid,
   ): Promise<{
     contractResponse: ContractResponse;
-    contractDetailResponse: ContractDetailResponse;
+    contractDetailResponse: ContractDetailInterface;
     detailsResponse: ContractDetailResponse[];
   }> {
     const [contractResponse, contractDetailResponse] = await Promise.all([
       this.contractRepository.searchById<ContractResponse>(contractUuid),
-      this.contractDetailRepository.searchById<ContractDetailResponse>(
+      this.contractDetailRepository.searchById<ContractDetailInterface>(
         contractDetailUuid,
       ),
     ]);
@@ -43,7 +44,7 @@ export class EnsureContractDetail {
 
   private errors(
     contractResponse: ContractResponse,
-    contractDetailResponse: ContractDetailResponse,
+    contractDetailResponse: ContractDetailInterface,
   ) {
     if (!contractResponse) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));

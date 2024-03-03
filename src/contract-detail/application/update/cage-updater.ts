@@ -1,6 +1,5 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractDetailRepository } from '../../domain/contract-detail.repository';
-import { ContractDetailResponse } from '../response/contract-detail.response';
 import { ContractCage } from '../../domain/value-object/service-cage';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { AuthPermission } from '../../../common/domain/auth-permissions';
@@ -44,12 +43,15 @@ export class ContractDetailCageUpdater {
     const contractDetail = {
       ...contractDetailResponse,
       cage: cage.toJson(),
-    } as ContractDetailResponse;
+    };
 
     contract.establishedStatus(
-      detailsResponse.map((_) =>
-        _.id === contractDetail.id ? contractDetail : _,
-      ),
+      detailsResponse.map((_) => {
+        if (_.id === contractDetail.id) {
+          return contractDetail as any;
+        }
+        return _;
+      }),
     );
 
     await Promise.all([
@@ -61,6 +63,7 @@ export class ContractDetailCageUpdater {
       contract: contract.toJson(),
       contractDetail: {
         ...contractDetail,
+        pet: detailsResponse.find((d) => d.pet.id === contractDetail.pet).pet,
       },
     };
   }

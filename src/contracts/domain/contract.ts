@@ -18,6 +18,7 @@ export class Contract {
     readonly startDate: ContractStartDate,
     public endDate: ContractEndDate,
     public details: ContractDetails,
+    readonly adviser: Uuid,
     readonly user: UuidOptional,
   ) {}
 
@@ -30,6 +31,7 @@ export class Contract {
       startDate: this.startDate.value,
       details: this.details.toJson(),
       endDate: this.endDate.value,
+      adviser: this.adviser.value,
       user: this.user.value,
     };
   }

@@ -18,11 +18,10 @@ import { UserCreatorDto } from './dto/create-user.dto';
 import { CommandCreatorUser } from '../application/create/command-create-user';
 import { MailAuthService } from '../../mail/infrastructure/mail-auth.service';
 import { UserPassword } from '../domain/value-object/user-password';
-import { ProfileDto } from './dto/profile.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
-import { UserProfileUpdater } from '../application/update/user-profile-updater';
-import { CommandProfileUser } from '../application/update/command/command-user-profile';
+import { UserProfileUpdater } from '../application/update/profile-client/user-profile-updater';
 import { UserChangePasswordUpdater } from '../application/update/user-change-password';
+import { ClientProfileDto } from './dto/client-profile.dto';
 
 @Injectable()
 export class UsersService {
@@ -47,12 +46,12 @@ export class UsersService {
 
     const password = new UserPassword(
       this.isProductionMode === 'false'
-        ? '12345678'
+        ? UserPassword.generatePassword()
         : UserPassword.generatePassword(),
     );
 
     const response = await userCreator.create(userCommand, password, user);
-    this.mailService.register(userCommand.email, userCommand.password);
+    this.mailService.register(userCommand.email, password);
     return response;
   }
 
@@ -83,12 +82,11 @@ export class UsersService {
   }
 
   updateProfile(
-    profileDto: ProfileDto,
+    clientProfileDto: ClientProfileDto,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const userUpdater = new UserProfileUpdater(this.userMongoRepository);
-    const userProfile = CommandProfileUser.execute(profileDto);
-    return userUpdater.execute(userProfile, user);
+    return userUpdater.execute(clientProfileDto, user);
   }
 
   updatePassword(

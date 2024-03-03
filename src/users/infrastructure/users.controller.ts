@@ -16,8 +16,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { UserWithoutWithRoleResponse } from '../domain/interfaces/user-without.response';
-import { ProfileDto } from './dto/profile.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { ClientProfileDto } from './dto/client-profile.dto';
 
 @Controller('users')
 export class UsersController {
@@ -63,7 +63,7 @@ export class UsersController {
   @Patch('profile')
   @Auth()
   updateProfile(
-    @Body() profileDto: ProfileDto,
+    @Body() profileDto: ClientProfileDto,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.usersService.updateProfile(profileDto, user);

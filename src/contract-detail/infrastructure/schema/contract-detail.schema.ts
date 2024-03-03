@@ -18,32 +18,20 @@ export class ContractDetailModel implements ContractDetailInterface {
   @Prop({
     type: {
       status: String,
-      vaccinationCertificate: {
-        hasServiceIncluded: Boolean,
-        isApplied: Boolean,
-        expectedDate: Date,
-        executionDate: Date,
-        user: String,
-      },
-      healthCertificate: {
-        hasServiceIncluded: Boolean,
-        isApplied: Boolean,
-        expectedDate: Date,
-        executionDate: Date,
-        user: String,
-      },
       chipCertificate: {
         hasServiceIncluded: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
+        resultDate: Date,
         user: String,
       },
-      senasaDocuments: {
+      vaccinationCertificate: {
         hasServiceIncluded: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
+        resultDate: Date,
         user: String,
       },
       rabiesSeroLogicalTest: {
@@ -51,6 +39,15 @@ export class ContractDetailModel implements ContractDetailInterface {
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
+        resultDate: Date,
+        user: String,
+      },
+      chipReview: {
+        hasServiceIncluded: Boolean,
+        isApplied: Boolean,
+        expectedDate: Date,
+        executionDate: Date,
+        resultDate: Date,
         user: String,
       },
       importLicense: {
@@ -58,13 +55,33 @@ export class ContractDetailModel implements ContractDetailInterface {
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
+        resultDate: Date,
         user: String,
       },
+      healthCertificate: {
+        hasServiceIncluded: Boolean,
+        isApplied: Boolean,
+        expectedDate: Date,
+        executionDate: Date,
+        resultDate: Date,
+        user: String,
+      },
+
+      senasaDocuments: {
+        hasServiceIncluded: Boolean,
+        isApplied: Boolean,
+        expectedDate: Date,
+        executionDate: Date,
+        resultDate: Date,
+        user: String,
+      },
+
       emotionalSupportCertificate: {
         hasServiceIncluded: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
+        resultDate: Date,
         user: String,
       },
     },
