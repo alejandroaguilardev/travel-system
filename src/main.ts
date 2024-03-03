@@ -8,16 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors(
-    process.env.PRODUCTION === 'false'
-      ? { origin: '*' }
-      : {
-          origin: [
-            'https://www.app.pettravelperu.com',
-            'support@pettravelperu.com',
-          ],
-          methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-          credentials: true,
-        },
+    process.env.PRODUCTION === 'false' ? { origin: '*' } : { origin: '*' },
   );
 
   app.setGlobalPrefix('api');
