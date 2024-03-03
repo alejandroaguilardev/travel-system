@@ -11,7 +11,10 @@ async function bootstrap() {
     process.env.PRODUCTION === 'false'
       ? { origin: '*' }
       : {
-          origin: 'https://www.app.pettravelperu.com',
+          origin: [
+            'https://www.app.pettravelperu.com',
+            'support@pettravelperu.com',
+          ],
           methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
           credentials: true,
         },
