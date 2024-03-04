@@ -1,6 +1,5 @@
+import resetPasswordTemplate from '../../domain/auth/reset-password-template';
 import { UserEmail } from '../../../users/domain/value-object/user-email';
-import { MailTemplate } from '../../domain/mail-template';
-import { TemplateRoute } from '../../domain/template-routes';
 
 export class SendMailResetPassword {
   constructor(private readonly transporter: any) {}
@@ -19,9 +18,6 @@ export class SendMailResetPassword {
   }
 
   getHtml(token: string) {
-    return MailTemplate.loadTemplate(TemplateRoute.AUTH_RESET_PASSWORD).replace(
-      '{{token}}',
-      token,
-    );
+    return resetPasswordTemplate.replace('{{token}}', token);
   }
 }

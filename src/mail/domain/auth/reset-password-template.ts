@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+export default `<!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -69,4 +69,4 @@
     </table>
 </body>
 
-</html>
+</html>`;

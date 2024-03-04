@@ -1,6 +1,4 @@
 import { UserEmail } from '../../../users/domain/value-object/user-email';
-import { MailTemplate } from '../../domain/mail-template';
-import { TemplateRoute } from '../../domain/template-routes';
 import { UserRepository } from '../../../users/domain/user.repository';
 import { Uuid } from '../../../common/domain/value-object';
 import { UserResponse } from '../../../users/domain/interfaces/user.response';
@@ -8,6 +6,7 @@ import { ContractDetailUpdaterResponse } from '../../../contract-detail/applicat
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../../../contract-detail/application/response/contract-detail.response';
 import { DateService } from '../../../common/application/services/date-service';
+import updateDocumentationTemplate from '../../domain/contracts/update-documentation-template';
 
 export class SendMailUpdateDocumentation {
   constructor(
@@ -59,7 +58,7 @@ export class SendMailUpdateDocumentation {
     const { documentation } = contractDetail;
     const names = this.getDocumentation();
 
-    let template = MailTemplate.loadTemplate(TemplateRoute.UPDATE_DOCUMENTATION)
+    let template = updateDocumentationTemplate
       .replaceAll('{{number_contract}}', contract.number)
       .replaceAll('{{pet.name}}', contractDetail.pet.name)
       .replaceAll('{{phone}}', phone);

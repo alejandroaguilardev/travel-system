@@ -7,7 +7,18 @@ import { GlobalExceptionFilter } from './common/infrastructure/config/global-fil
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors({ origin: '*' });
+  app.enableCors(
+    process.env.PRODUCTION === 'false'
+      ? { origin: '*' }
+      : {
+          origin: [
+            'https://www.app.pettravelperu.com',
+            'support@pettravelperu.com',
+          ],
+          methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+          credentials: true,
+        },
+  );
 
   app.setGlobalPrefix('api');
 

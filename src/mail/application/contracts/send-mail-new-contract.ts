@@ -1,10 +1,9 @@
 import { UserEmail } from '../../../users/domain/value-object/user-email';
 import { Contract } from '../../../contracts/domain/contract';
-import { MailTemplate } from '../../domain/mail-template';
-import { TemplateRoute } from '../../domain/template-routes';
 import { UserRepository } from '../../../users/domain/user.repository';
 import { Uuid } from '../../../common/domain/value-object';
 import { UserResponse } from '../../../users/domain/interfaces/user.response';
+import newContractTemplate from '../../domain/contracts/new-contract-template';
 
 export class SendMailNewContract {
   constructor(
@@ -40,7 +39,7 @@ export class SendMailNewContract {
   }
 
   getHtml(contract: Contract, phone: string) {
-    return MailTemplate.loadTemplate(TemplateRoute.CONTRACT_NEW)
+    return newContractTemplate
       .replaceAll('{{number_contract}}', contract.number.value)
       .replaceAll('{{phone}}', phone);
   }

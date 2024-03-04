@@ -1,7 +1,6 @@
 import { UserPassword } from '../../../users/domain/value-object/user-password';
 import { UserEmail } from '../../../users/domain/value-object/user-email';
-import { MailTemplate } from '../../domain/mail-template';
-import { TemplateRoute } from '../../domain/template-routes';
+import register from '../../domain/auth/register-template';
 
 export class SendMailRegister {
   constructor(private readonly transporter: any) {}
@@ -22,7 +21,7 @@ export class SendMailRegister {
   }
 
   getHtml(email: UserEmail, password: UserPassword) {
-    return MailTemplate.loadTemplate(TemplateRoute.AUTH_REGISTER)
+    return register
       .replace('{{email}}', email.value)
       .replace('{{password}}', password.value);
   }
