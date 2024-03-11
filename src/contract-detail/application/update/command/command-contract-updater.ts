@@ -148,6 +148,8 @@ export class CommandContractDetailsUpdater {
         typeTraveling: travel?.typeTraveling ?? services.travel.typeTraveling,
         airlineReservation: services.travel.airlineReservation,
         petPerCharge: services.travel.petPerCharge,
+        accompaniedPet: services.travel.accompaniedPet,
+        destination: services.travel.destination,
         status: services.travel.status,
       },
     };

@@ -44,15 +44,15 @@ describe('ContractDetailController', () => {
     expect(typeof response.body.count).toBe('number');
   });
 
-  it('/contract-detail:id (GET)', async () => {
+  it(':contractId/:contractDetailId/ (GET)', async () => {
     const contractDto = ContractCreatorMother.create();
     await CrudTest.create(app, access_token, routeContract, contractDto);
-    const response = await CrudTest.searchByIdOnly(
-      app,
-      access_token,
-      route,
-      contractDto.details[0],
-    );
+
+    const response = await request(app.getHttpServer())
+      .get(`/contract-detail/${contractDto.id}/${contractDto.details[0].id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+
     expect(response.body.id).toBe(contractDto.details[0].id);
   });
 
@@ -140,12 +140,12 @@ describe('ContractDetailController', () => {
   it('/contract-detail (DELETE)', async () => {
     const contractDto = ContractCreatorMother.create();
     await CrudTest.create(app, access_token, routeContract, contractDto);
-    const response = await CrudTest.removeOnly(
-      app,
-      access_token,
-      route,
-      contractDto.details[0],
-    );
+
+    const response = await request(app.getHttpServer())
+      .delete(`${route}/${contractDto.details[0].id}`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .expect(200);
+
     expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
   });
 });

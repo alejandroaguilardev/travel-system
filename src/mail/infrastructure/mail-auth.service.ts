@@ -25,16 +25,20 @@ export class MailAuthService {
   }
 
   async register(email: UserEmail, password: UserPassword): Promise<void> {
-    if (this.isProductionMode === 'false') return;
+    if (this.getProductionMode()) return;
 
     const sendEmail = new SendMailRegister(this.mailerService);
     await sendEmail.execute(email, password);
   }
 
   async recover(email: UserEmail, token: string): Promise<void> {
-    if (this.isProductionMode === 'false') return;
+    if (this.getProductionMode()) return;
 
     const sendEmail = new SendMailResetPassword(this.mailerService);
     await sendEmail.execute(email, token);
+  }
+
+  private getProductionMode() {
+    return this.isProductionMode === 'false';
   }
 }

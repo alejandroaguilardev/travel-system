@@ -23,6 +23,9 @@ import { MongoContractRepository } from '../../contracts/infrastructure/persiste
 import { ContractDetailRemover } from '../application/remove/contract-detail-remover';
 import { ContractDetail } from '../domain/contract-detail';
 import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
+import { TravelAccompaniedDto } from './dto/acompanied.dto';
+import { ContractDetailAccompaniedUpdater } from '../application/update/accompanied-updater';
+import { ContractDetailInterface } from '../domain/interfaces';
 
 @Injectable()
 export class ContractDetailService {
@@ -63,13 +66,46 @@ export class ContractDetailService {
   }
 
   findOne(
-    id: string,
+    contractId: string,
+    contractDetailId: string,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ContractDetailResponse> {
+  ): Promise<ContractDetailInterface> {
     const contractSearchById = new ContractDetailSearchById(
+      this.mongoContractRepository,
       this.mongoContractDetailRepository,
     );
-    return contractSearchById.execute(id, user);
+    return contractSearchById.execute(contractId, contractDetailId, user);
+  }
+
+  updateAccompanied(
+    contractId: string,
+    contractDetailId: string,
+    travelAccompaniedDto: TravelAccompaniedDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ContractDetailUpdaterResponse> {
+    const contractDetailAccompaniedUpdater =
+      new ContractDetailAccompaniedUpdater(
+        this.mongoContractRepository,
+        this.mongoContractDetailRepository,
+      );
+    const accompaniedPet = CommandContractTravel.travelAccompaniedPet(
+      travelAccompaniedDto.accompaniedPet,
+    );
+    const destination = CommandContractTravel.travelDestination(
+      travelAccompaniedDto.destination,
+    );
+    const petPerCharge = CommandContractTravel.travelPetPerCharge(
+      travelAccompaniedDto.petPerCharge,
+    );
+
+    return contractDetailAccompaniedUpdater.execute(
+      contractId,
+      contractDetailId,
+      accompaniedPet,
+      destination,
+      petPerCharge,
+      user,
+    );
   }
 
   async updateDocumentation(
@@ -94,6 +130,12 @@ export class ContractDetailService {
     );
 
     this.mailerService.updateDocumentation(response);
+    if (
+      documentationDto.rabiesSeroLogicalTest.isApplied &&
+      !documentationDto.rabiesSeroLogicalTest.resultDate
+    ) {
+      this.mailerService.travelPersonContract(response);
+    }
 
     return response;
   }

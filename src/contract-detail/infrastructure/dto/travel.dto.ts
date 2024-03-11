@@ -7,10 +7,10 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 import { StatusInterface } from '../../domain/interfaces/status.interface';
+import { TravelAccompaniedDto } from './acompanied.dto';
 import {
   TypeTravelingType,
   TravelAirlineReservationInterface,
-  TravelPetPerChargeInterface,
   TravelInterface,
 } from '../../domain/interfaces/travel.interface';
 
@@ -36,26 +36,7 @@ class TravelAirlineReservationDto
   user?: string;
 }
 
-class TravelPetPerChargeDto implements Partial<TravelPetPerChargeInterface> {
-  @IsString()
-  receptor: string;
-  @IsString()
-  email: string = '';
-  @IsString()
-  phone: string;
-  @IsOptional()
-  @IsDate()
-  pickupDateTime: Date | null = null;
-  @IsString()
-  pickupLocation: string;
-  @IsString()
-  specialRequests: string;
-  @IsOptional()
-  @IsString()
-  user?: string;
-}
-
-export class TravelDto implements TravelInterface {
+export class TravelDto extends TravelAccompaniedDto implements TravelInterface {
   @IsString()
   status: StatusInterface;
   @IsBoolean()
@@ -67,7 +48,4 @@ export class TravelDto implements TravelInterface {
   @Type(() => TravelAirlineReservationDto)
   @ValidateNested()
   airlineReservation: TravelAirlineReservationDto;
-  @Type(() => TravelPetPerChargeDto)
-  @ValidateNested()
-  petPerCharge: TravelPetPerChargeDto;
 }

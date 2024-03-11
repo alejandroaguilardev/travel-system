@@ -25,19 +25,12 @@ import {
   TravelDestinationAirport,
   TravelDepartureDate,
   TravelArrivalDate,
-  TravelPetPerCharge,
-  TravelReceptor,
-  TravelEmail,
-  TravelPhone,
-  TravelPickupDataTime,
-  TravelPickupLocation,
-  TravelSpecialRequests,
 } from '../../domain/value-object/travel';
 import { ContractDetailCreateRequest } from './contract-detail-create-request';
 import { CageChosenModel } from '../../../cages/domain/value-object/cage-selected-model';
 import { CageChosenType } from '../../../cages/domain/value-object/cage-selected-type';
 import { CageChosenDimensions } from '../../../cages/domain/value-object/cage-selected-dimensions';
-import { CommandContractDocumentation } from '../update';
+import { CommandContractDocumentation, CommandContractTravel } from '../update';
 
 export class CommandContractDetailCreator {
   static execute(
@@ -90,15 +83,9 @@ export class CommandContractDetailCreator {
           new TravelArrivalDate(null),
           new UuidOptional(''),
         ),
-        new TravelPetPerCharge(
-          new TravelReceptor(''),
-          new TravelEmail(''),
-          new TravelPhone(''),
-          new TravelPickupDataTime(null),
-          new TravelPickupLocation(''),
-          new TravelSpecialRequests(''),
-          new UuidOptional(''),
-        ),
+        CommandContractTravel.travelPetPerCharge(),
+        CommandContractTravel.travelAccompaniedPet(),
+        CommandContractTravel.travelDestination(),
       ),
       new ContractGuideNumber(''),
       new Uuid(data.pet),

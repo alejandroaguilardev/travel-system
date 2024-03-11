@@ -11,6 +11,7 @@ import { ContractEndDate } from '../../domain/value-object';
 import { Criteria } from '../../../common/domain/criteria/criteria';
 import { ResponseSearch } from '../../../common/domain/response/response-search';
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
+import { ContractMongoPipeline } from './contract-mongo.pipeline';
 
 @Injectable()
 export class MongoContractRepository
@@ -32,6 +33,18 @@ export class MongoContractRepository
       .lean();
 
     return rows;
+  }
+
+  async search<ContractResponse>(
+    criteria: Criteria,
+  ): Promise<ResponseSearch<ContractResponse>> {
+    const rows: ContractResponse[] = await this.contractModel
+      .aggregate(ContractMongoPipeline.execute(criteria))
+      .exec();
+
+    const count = await this.count(criteria);
+
+    return { rows, count };
   }
 
   async searchClient(

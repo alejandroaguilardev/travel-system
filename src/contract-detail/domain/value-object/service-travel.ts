@@ -7,6 +7,8 @@ import {
   TravelAirlineReservation,
   TravelPetPerCharge,
 } from './travel';
+import { TravelDestination } from './travel/destination/travel-destination';
+import { TravelAccompaniedPet } from './travel/accompanied-pet/travel-accompanied-pet';
 
 export class ContractTravel {
   constructor(
@@ -16,6 +18,8 @@ export class ContractTravel {
     public typeTraveling: ContractTypeTraveling,
     readonly airlineReservation: TravelAirlineReservation,
     readonly petPerCharge: TravelPetPerCharge,
+    readonly accompaniedPet: TravelAccompaniedPet,
+    readonly destination: TravelDestination,
   ) {}
 
   toJson(): TravelInterface {
@@ -26,6 +30,8 @@ export class ContractTravel {
       typeTraveling: this.typeTraveling.value,
       airlineReservation: this.airlineReservation.toJson(),
       petPerCharge: this.petPerCharge.toJson(),
+      accompaniedPet: this.accompaniedPet.toJson(),
+      destination: this.destination.toJson(),
     };
   }
 
@@ -44,13 +50,35 @@ export class ContractTravel {
       this.airlineReservation.destinationAirport.value &&
       this.airlineReservation.flightNumber.value;
 
-    if (hasRequiredAirlineReservationFields) {
+    const hasRequiredAccompaniedPetFields =
+      this.accompaniedPet.name.value &&
+      this.accompaniedPet.document.value &&
+      this.accompaniedPet.documentNumber.value &&
+      this.accompaniedPet.phone.value &&
+      this.accompaniedPet.email.value &&
+      this.accompaniedPet.department.value &&
+      this.accompaniedPet.province.value &&
+      this.accompaniedPet.district.value &&
+      this.accompaniedPet.direction.value;
+
+    const hasRequiredDestinationFields =
+      this.destination.cityDestination.value &&
+      this.destination.countryDestination.value &&
+      this.destination.directionDestination.value;
+
+    const hasRequired =
+      hasRequiredAirlineReservationFields &&
+      hasRequiredDestinationFields &&
+      hasRequiredAccompaniedPetFields;
+
+    if (hasRequired) {
       if (this.typeTraveling.value === 'charge') {
         const hasRequiredPetChargeFields =
-          this.petPerCharge.receptor &&
-          this.petPerCharge.phone &&
-          this.petPerCharge.pickupDateTime &&
-          this.petPerCharge.pickupLocation;
+          this.petPerCharge.name.value &&
+          this.petPerCharge.document.value &&
+          this.petPerCharge.documentNumber.value &&
+          this.petPerCharge.phone.value &&
+          this.petPerCharge.email.value;
 
         this.status.value = hasRequiredPetChargeFields
           ? 'completed'

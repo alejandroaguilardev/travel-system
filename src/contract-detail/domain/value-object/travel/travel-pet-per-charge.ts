@@ -1,31 +1,26 @@
-import { UuidOptional } from '../../../../common/domain/value-object';
+import { TravelPetPerChargeInterface } from '../../interfaces';
+import { TravelName } from './accompanied-pet/travel-name';
 import { TravelEmail } from './travel-email';
 import { TravelPhone } from './travel-phone';
-import { TravelPickupDataTime } from './travel-pickup-date-time';
-import { TravelPickupLocation } from './travel-pickup-location';
-import { TravelReceptor } from './travel-receptor';
-import { TravelSpecialRequests } from './travel-special-requests';
+import { TravelDocumentNumber } from './travel-document-number';
+import { TravelDocument } from './travel-document';
 
 export class TravelPetPerCharge {
   constructor(
-    readonly receptor: TravelReceptor,
+    readonly name: TravelName,
+    readonly document: TravelDocument,
+    readonly documentNumber: TravelDocumentNumber,
     readonly email: TravelEmail,
     readonly phone: TravelPhone,
-    readonly pickupDateTime: TravelPickupDataTime,
-    readonly pickupLocation: TravelPickupLocation,
-    readonly specialRequests: TravelSpecialRequests,
-    readonly user: UuidOptional,
   ) {}
 
-  toJson() {
+  toJson(): TravelPetPerChargeInterface {
     return {
-      receptor: this.receptor.value,
-      email: this.email.value,
+      name: this.name.value,
+      document: this.document.value,
+      documentNumber: this.documentNumber.value,
       phone: this.phone.value,
-      pickupDateTime: this.pickupDateTime.value,
-      pickupLocation: this.pickupLocation.value,
-      specialRequests: this.specialRequests.value,
-      user: this.user.value,
+      email: this.email.value,
     };
   }
 }

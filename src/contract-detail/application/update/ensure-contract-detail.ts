@@ -34,9 +34,9 @@ export class EnsureContractDetail {
     ]);
 
     const detailsResponse = await Promise.all(
-      contractResponse.details.map((_) =>
+      contractResponse?.details?.map((_) =>
         this.contractDetailRepository.searchByIdWithPet(new Uuid(_)),
-      ),
+      ) ?? [],
     );
     this.errors(contractResponse, contractDetailResponse);
     return { contractResponse, contractDetailResponse, detailsResponse };

@@ -1,7 +1,33 @@
-import { TravelAirlineReservation } from '../value-object/travel';
 import { StatusInterface } from './status.interface';
 
 export type TypeTravelingType = 'accompanied' | 'charge' | 'none';
+
+export interface TravelAccompaniedPetInterface {
+  name: string;
+  document: string;
+  documentNumber: string;
+  phone: string;
+  email: string;
+  department: string;
+  province: string;
+  district: string;
+  direction: string;
+}
+
+export interface TravelAirlineReservationInterface {
+  code: string;
+  flightNumber: string;
+  departureAirport: string;
+  destinationAirport: string;
+  departureDate: Date | null;
+  arrivalDate: Date | null;
+}
+
+export interface TravelDestinationInterface {
+  countryDestination: string;
+  cityDestination: string;
+  directionDestination: string;
+}
 
 export interface TravelAirlineReservationInterface {
   code: string;
@@ -12,15 +38,12 @@ export interface TravelAirlineReservationInterface {
   arrivalDate: Date | null;
   user?: string;
 }
-
 export interface TravelPetPerChargeInterface {
-  receptor: string;
-  email: string;
+  name: string;
+  document: string;
+  documentNumber: string;
   phone: string;
-  pickupDateTime: Date | null;
-  pickupLocation: string;
-  specialRequests: string;
-  user?: string;
+  email: string;
 }
 
 export interface TravelInterface {
@@ -30,6 +53,8 @@ export interface TravelInterface {
   typeTraveling: TypeTravelingType;
   airlineReservation: TravelAirlineReservationInterface;
   petPerCharge: TravelPetPerChargeInterface;
+  accompaniedPet: TravelAccompaniedPetInterface;
+  destination: TravelDestinationInterface;
 }
 
 export interface PartialTravelInterface
@@ -37,6 +62,6 @@ export interface PartialTravelInterface
     Partial<TravelInterface>,
     'airlineReservation' | 'petPerCharge'
   > {
-  airlineReservation: Partial<TravelAirlineReservation>;
+  airlineReservation: Partial<TravelAirlineReservationInterface>;
   petPerCharge: Partial<TravelPetPerChargeInterface>;
 }

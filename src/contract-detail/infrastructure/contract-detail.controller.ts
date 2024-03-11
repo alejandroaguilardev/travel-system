@@ -13,6 +13,7 @@ import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator'
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { CageDto, DocumentationDto, TravelDto } from './dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import { TravelAccompaniedDto } from './dto/acompanied.dto';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -27,13 +28,30 @@ export class ContractDetailController {
     return this.contractDetailService.findAll(criteriaDto, user);
   }
 
-  @Get(':id')
+  @Get(':id/:detail')
   @Auth()
   findOne(
     @Param('id') id: string,
+    @Param('detail') detail: string,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractDetailService.findOne(id, user);
+    return this.contractDetailService.findOne(id, detail, user);
+  }
+
+  @Patch(':id/:detail/accompanied')
+  @Auth()
+  updateAccompanied(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @Body() travelAccompaniedDto: TravelAccompaniedDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailService.updateAccompanied(
+      id,
+      detail,
+      travelAccompaniedDto,
+      user,
+    );
   }
 
   @Patch(':id/:detail/documentation')

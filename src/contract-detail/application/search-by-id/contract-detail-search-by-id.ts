@@ -1,40 +1,39 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { ContractDetailRepository } from '../../domain/contract-detail.repository';
-import { ContractDetailResponse } from '../response/contract-detail.response';
-import {
-  AuthGroup,
-  AuthPermission,
-} from '../../../common/domain/auth-permissions';
-import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { AuthPermission } from '../../../common/domain/auth-permissions';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
+import { EnsureContractDetail } from '../update/ensure-contract-detail';
+import { ContractRepository } from '../../../contracts/domain/contract.repository';
+import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
 
 export class ContractDetailSearchById {
   constructor(
+    private readonly contractRepository: ContractRepository,
     private readonly contractDetailRepository: ContractDetailRepository,
   ) {}
 
   async execute(
-    id: string,
+    contractId: string,
+    contractDetailId: string,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ContractDetailResponse> {
-    const uuid = new Uuid(id);
-    const response =
-      await this.contractDetailRepository.searchById<ContractDetailResponse>(
-        uuid,
-      );
+  ): Promise<ContractDetailInterface> {
+    const contractUuid = new Uuid(contractId);
+    const contractDetailUuid = new Uuid(contractDetailId);
 
-    if (!response) {
-      throw new ErrorNotFound(
-        ErrorNotFound.messageDefault('detalles del contratos'),
-      );
-    }
-    this.hasPermission(user);
+    const ensureContractDetail = new EnsureContractDetail(
+      this.contractRepository,
+      this.contractDetailRepository,
+    );
 
-    return response;
-  }
+    const { contractResponse, contractDetailResponse } =
+      await ensureContractDetail.searchEnsure(contractUuid, contractDetailUuid);
 
-  private hasPermission(user: UserWithoutWithRoleResponse) {
-    PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.READ);
+    ensureContractDetail.hasPermission(
+      user,
+      contractResponse,
+      AuthPermission.READ,
+    );
+
+    return contractDetailResponse;
   }
 }

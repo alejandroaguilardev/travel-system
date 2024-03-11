@@ -7,6 +7,8 @@ import { UserMongoRepository } from '../../users/infrastructure/persistence/user
 import { ContractDetailUpdaterResponse } from '../../contract-detail/application/response/contract-detail-update.response';
 import { SendMailUpdateDocumentation } from '../application/contracts/send-mail-documentation';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
+import { SendMailTravelPersonContract } from '../application/contracts/send-mail-travel-person-contract';
+import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 
 @Injectable()
 export class MailContractService {
@@ -16,6 +18,7 @@ export class MailContractService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly dayJsService: DayJsService,
+    private readonly jwtService: JWTAdapterService,
   ) {
     this.mailerService = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
@@ -30,7 +33,7 @@ export class MailContractService {
   }
 
   async new(userId: string, contract: Contract): Promise<void> {
-    if (this.isProductionMode === 'false') return;
+    if (this.getProductionMode()) return;
 
     const sendEmail = new SendMailNewContract(
       this.mailerService,
@@ -42,7 +45,7 @@ export class MailContractService {
   async updateDocumentation(
     data: ContractDetailUpdaterResponse,
   ): Promise<void> {
-    if (this.isProductionMode === 'false') return;
+    if (this.getProductionMode()) return;
 
     const sendEmail = new SendMailUpdateDocumentation(
       this.mailerService,
@@ -50,5 +53,23 @@ export class MailContractService {
       this.dayJsService,
     );
     await sendEmail.execute(data);
+  }
+
+  async travelPersonContract(
+    data: ContractDetailUpdaterResponse,
+  ): Promise<void> {
+    if (this.getProductionMode()) return;
+
+    const sendEmail = new SendMailTravelPersonContract(
+      this.mailerService,
+      this.userMongoRepository,
+      this.jwtService,
+    );
+
+    await sendEmail.execute(data);
+  }
+
+  private getProductionMode() {
+    return this.isProductionMode === 'false';
   }
 }

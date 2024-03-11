@@ -9,9 +9,7 @@ import { UserDocument } from '../../../src/users/domain/value-object/profile/use
 export class ProfileMother {
   static create(profile?: Partial<ProfileInterface>): ProfileInterface {
     return {
-      document:
-        profile?.document ??
-        UserDocument.types[faker.number.int({ min: 0, max: 3 })],
+      document: profile?.document ?? UserDocument.types[0],
       documentNumber:
         profile?.documentNumber ??
         faker.number.int({ min: 100000000, max: 1000000000 }).toString(),
