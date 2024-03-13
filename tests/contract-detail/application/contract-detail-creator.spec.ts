@@ -1,6 +1,5 @@
 import { ContractDetailCreator } from '../../../src/contract-detail/application/create/contract-detail-creator';
 import { contractDetailRepositoryMock } from '../domain/contract-detail-mock.repository';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { ContractCreatorMother } from '../../contracts/domain/contract-creator.mother';
 import { CommandContractDetailCreator } from '../../../src/contract-detail/application/create/command-contract-detail-creator';
@@ -16,6 +15,6 @@ describe('ContractDetailCreator', () => {
     const contract = CommandContractDetailCreator.execute(dto.details, user.id);
 
     const expected = await contractDetailCreator.execute(contract, user);
-    expect(expected.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(expected.message).toBe(ContractDetailCreator.messageSuccess());
   });
 });

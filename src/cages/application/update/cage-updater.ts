@@ -34,8 +34,13 @@ export class CageUpdater {
 
     await this.cageRepository.update(uuid, cage);
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(CageUpdater.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'la jaula',
     );
   }
 }

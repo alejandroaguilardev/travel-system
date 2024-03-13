@@ -11,7 +11,7 @@ import { PetMother } from '../../pet/domain/pet.mother';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CageMother } from '../domain/cage-mother';
 import { ContractTravelMother } from '../domain/contract-travel.mother';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
+import { ContractDetailRemover } from '../../../src/contract-detail/application/remove/contract-detail-remover';
 
 const route = '/contract-detail';
 const routeContract = '/contracts';
@@ -146,6 +146,6 @@ describe('ContractDetailController', () => {
       .set('Authorization', `Bearer ${access_token}`)
       .expect(200);
 
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(response.body.message).toBe(ContractDetailRemover.messageSuccess());
   });
 });

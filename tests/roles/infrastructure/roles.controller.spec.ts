@@ -1,9 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { RoleMother } from '../domain/role-mother';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
+import { RoleUpdater } from '../../../src/roles/application/update/role-updater';
+import { RoleCreator } from '../../../src/roles/application/create/role-creator';
+import { RoleRemover } from '../../../src/roles/application/remove/role-remover';
 
 const route = '/roles';
 
@@ -20,7 +22,7 @@ describe('RolesController', () => {
   it('/roles (POST)', async () => {
     const roleDto = RoleMother.create();
     const response = await CrudTest.create(app, access_token, route, roleDto);
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(response.body.message).toBe(RoleCreator.messageSuccess());
   });
 
   it('/roles (GET)', async () => {
@@ -51,12 +53,12 @@ describe('RolesController', () => {
       roleDto,
       roleDtoUpdate,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(response.body.message).toBe(RoleUpdater.messageSuccess());
   });
 
   it('/roles (DELETE)', async () => {
     const roleDto = RoleMother.create();
     const response = await CrudTest.remove(app, access_token, route, roleDto);
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(response.body.message).toBe(RoleRemover.messageSuccess());
   });
 });

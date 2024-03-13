@@ -1,7 +1,6 @@
 import { ContractCreator } from '../../../src/contracts/application/create/contract-creator';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
 import { CommandContractDetailCreator } from '../../../src/contract-detail/application/create/command-contract-detail-creator';
@@ -23,6 +22,6 @@ describe('ContractCreator', () => {
       contractDetail,
       user,
     );
-    expect(expected.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(expected.message).toBe(ContractCreator.messageSuccess());
   });
 });

@@ -33,8 +33,13 @@ export class UserUpdater {
     }
 
     await this.userRepository.update(uuid, userUpdate);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(UserUpdater.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'el usuario',
     );
   }
 }

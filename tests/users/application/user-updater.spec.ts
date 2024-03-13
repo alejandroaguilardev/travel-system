@@ -3,7 +3,6 @@ import { UserCreatorMother } from '../domain/create-user-mother';
 import { userRepositoryMock } from '../domain/user-repository-mock-methods';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { CommandCreatorUser } from '../../../src/users/application/create/command-create-user';
 
 describe('updateUser', () => {
@@ -25,7 +24,7 @@ describe('updateUser', () => {
       userUpdate,
       userAuth,
     );
-    expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(resolved.message).toBe(UserUpdater.messageSuccess());
   });
 
   it('should_call_ update_method_of_UserRepository', async () => {

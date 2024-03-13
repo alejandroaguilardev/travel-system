@@ -1,7 +1,6 @@
 import { PermissionCreator } from '../../../src/permissions/application/create/permission-creator';
 import { PermissionMother } from '../domain/permission.mother';
 import { permissionRepositoryMock } from '../domain/permission-repository-methods.mock';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandPermissionCreate } from '../../../src/permissions/application/create/command-create-permission';
 
@@ -13,7 +12,7 @@ describe('PermissionCreator', () => {
     const user = UserCreatorMother.createWithPassword();
     const permission = CommandPermissionCreate.execute(dto);
     const resolved = await permissionCreator.execute(permission, user);
-    expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(resolved.message).toBe(PermissionCreator.messageSuccess());
   });
 
   it('should_call_creator_method_of_PermissionRepository', async () => {

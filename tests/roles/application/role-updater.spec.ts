@@ -1,7 +1,6 @@
 import { RoleUpdater } from '../../../src/roles/application/update/role-updater';
 import { RoleMother } from '../domain/role-mother';
 import { roleRepositoryMock } from '../domain/role.repository.mock';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
@@ -16,7 +15,7 @@ describe('RoleUpdater', () => {
     const user = UserCreatorMother.createWithPassword();
     roleRepositoryMock.searchById.mockResolvedValueOnce(dto);
     const response = await roleUpdater.update(dto.id, role, user);
-    expect(response.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(response.message).toBe(RoleUpdater.messageSuccess());
   });
 
   it('should_successfully_role_updater_called_with', async () => {

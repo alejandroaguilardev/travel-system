@@ -22,8 +22,13 @@ export class CageCreator {
     PermissionValidator.execute(user, AuthGroup.CAGES, AuthPermission.CREATE);
 
     await this.cageRepository.save(cage);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_CREATED,
+    return ResponseMessage.createSuccessResponse(CageCreator.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_CREATED.replace(
+      '{{elemento}}',
+      'la jaula',
     );
   }
 }

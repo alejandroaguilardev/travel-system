@@ -47,7 +47,7 @@ export class ContractsService {
       user,
     );
     await this.contractDetailService.create(contractDetails, user);
-    this.mailerService.new(createContractDto.client, contract);
+    this.mailerService.new(contract);
     return response;
   }
 

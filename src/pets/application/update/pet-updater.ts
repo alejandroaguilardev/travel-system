@@ -10,6 +10,7 @@ import { PetRepository } from '../../domain/pet.repository';
 import { Pet } from '../../domain/pet';
 import { PetResponse } from '../../domain/interfaces/pet.response';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { ErrorDuplicateElement } from '../../../common/domain/errors/error-duplicate-element';
 import {
   AuthGroup,
   AuthPermission,
@@ -28,14 +29,26 @@ export class PetUpdater {
     const uuid = new Uuid(id);
 
     const response = await this.petRepository.searchById<PetResponse>(uuid);
+
     if (!response) {
-      throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));
+      throw new ErrorNotFound(ErrorNotFound.messageDefault('mascota'));
     }
 
+    if (pet.chip.value) {
+      const petWithChip = await this.petRepository.searchByChip(pet.chip);
+      if (petWithChip?.chip !== response?.chip && petWithChip) {
+        throw new ErrorDuplicateElement('El chip ya se encuentra utilizado');
+      }
+    }
     await this.petRepository.update(uuid, pet);
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(PetUpdater.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'la mascota',
     );
   }
 }

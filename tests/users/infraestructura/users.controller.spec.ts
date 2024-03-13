@@ -1,7 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import { UserCreatorMother } from '../domain/create-user-mother';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { InitTest, AuthTest, CrudTest } from '../../common/infrastructure';
+import { UserRemover } from '../../../src/users/application/remove/user-remover';
+import { UserUpdater } from '../../../src/users/application/update/user-updater';
+import { UserCreator } from '../../../src/users/application/create/user-creator';
 
 const route = '/users';
 
@@ -18,7 +20,7 @@ describe('UsersController', () => {
   it('/users (POST)', async () => {
     const userDto = UserCreatorMother.create();
     const response = await CrudTest.create(app, access_token, route, userDto);
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(response.body.message).toBe(UserCreator.messageSuccess());
   });
 
   it('/users (GET)', async () => {
@@ -49,12 +51,12 @@ describe('UsersController', () => {
       userDto,
       userDtoUpdate,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(response.body.message).toBe(UserUpdater.messageSuccess());
   });
 
   it('/users (DELETE)', async () => {
     const userDto = UserCreatorMother.create();
     const response = await CrudTest.remove(app, access_token, route, userDto);
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(response.body.message).toBe(UserRemover.messageSuccess());
   });
 });

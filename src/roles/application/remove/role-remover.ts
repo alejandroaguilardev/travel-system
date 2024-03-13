@@ -24,8 +24,14 @@ export class RoleRemover {
     const uuid = new Uuid(id);
 
     await this.roleRepository.remove(uuid);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_DELETED,
+
+    return ResponseMessage.createSuccessResponse(RoleRemover.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_DELETED.replace(
+      '{{elemento}}',
+      'el rol',
     );
   }
 }

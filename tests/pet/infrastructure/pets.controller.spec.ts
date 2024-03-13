@@ -1,9 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { PetMother } from '../domain/pet.mother';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
+import { PetCreator } from '../../../src/pets/application/create/pet-creator';
+import { PetUpdater } from '../../../src/pets/application/update/pet-updater';
+import { PetRemover } from '../../../src/pets/application/remove/pet-remover';
 
 const route = '/pets';
 
@@ -20,7 +22,7 @@ describe('PetsController', () => {
   it('/pets (POST)', async () => {
     const petDto = PetMother.create();
     const response = await CrudTest.create(app, access_token, route, petDto);
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(response.body.message).toBe(PetCreator.messageSuccess());
   });
 
   it('/pets (GET)', async () => {
@@ -51,12 +53,12 @@ describe('PetsController', () => {
       petDto,
       petDtoUpdate,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(response.body.message).toBe(PetUpdater.messageSuccess());
   });
 
   it('/pets (DELETE)', async () => {
     const petDto = PetMother.create();
     const response = await CrudTest.remove(app, access_token, route, petDto);
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(response.body.message).toBe(PetRemover.messageSuccess());
   });
 });

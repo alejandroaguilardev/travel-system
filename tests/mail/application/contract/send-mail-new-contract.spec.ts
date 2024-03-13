@@ -14,7 +14,7 @@ describe('sendMailNewContract', () => {
     const contractPrimitives = ContractCreatorMother.createWithTravel();
     const contract = CommandContractUpdater.execute(contractPrimitives);
     userRepositoryMock.searchById.mockResolvedValue(user);
-    const resolved = await sendMail.execute(user.id, contract);
+    const resolved = await sendMail.execute(contract);
     expect(resolved).toBe(undefined);
   });
 
@@ -24,7 +24,7 @@ describe('sendMailNewContract', () => {
     const email = new UserEmail(user.email);
     const contract = CommandContractUpdater.execute(contractPrimitives);
     userRepositoryMock.searchById.mockResolvedValue(user);
-    await sendMail.execute(user.id, contract);
+    await sendMail.execute(contract);
     const haveCalled = sendMail.options(
       email,
       contract,

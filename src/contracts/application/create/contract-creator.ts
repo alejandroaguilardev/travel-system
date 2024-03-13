@@ -34,8 +34,15 @@ export class ContractCreator {
 
     await this.contractRepository.save(contract);
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_CREATED,
+    return ResponseMessage.createSuccessResponse(
+      ContractCreator.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_CREATED.replace(
+      '{{elemento}}',
+      'el contrato',
     );
   }
 }

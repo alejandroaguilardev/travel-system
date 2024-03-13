@@ -4,7 +4,6 @@ import { UuidMother } from '../../common/domain/uuid-mother';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { LastNameMother } from '../domain/last-name-mother';
 import { ErrorInvalidadArgument } from '../../../src/common/domain/errors/error-invalid-argument';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { UserCreatorMother } from '../domain/create-user-mother';
 
 describe('UserRemover', () => {
@@ -14,7 +13,7 @@ describe('UserRemover', () => {
     const id = UuidMother.create();
     const user = UserCreatorMother.createWithPassword();
     const resolved = await userRemover.remove(id, user);
-    expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(resolved.message).toBe(UserRemover.messageSuccess());
   });
 
   it('should_call_ remover_method_of_UserRepository', async () => {

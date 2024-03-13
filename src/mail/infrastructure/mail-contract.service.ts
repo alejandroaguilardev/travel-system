@@ -32,14 +32,14 @@ export class MailContractService {
     this.isProductionMode = process.env.PRODUCTION;
   }
 
-  async new(userId: string, contract: Contract): Promise<void> {
+  async new(contract: Contract): Promise<void> {
     if (this.getProductionMode()) return;
 
     const sendEmail = new SendMailNewContract(
       this.mailerService,
       this.userMongoRepository,
     );
-    await sendEmail.execute(userId, contract);
+    await sendEmail.execute(contract);
   }
 
   async updateDocumentation(

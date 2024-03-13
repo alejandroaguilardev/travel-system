@@ -3,7 +3,6 @@ import { permissionRepositoryMock } from '../domain/permission-repository-method
 import { PermissionMother } from '../domain/permission.mother';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandPermissionCreate } from '../../../src/permissions/application/create/command-create-permission';
 
@@ -18,7 +17,7 @@ describe('PermissionUpdate', () => {
     permissionRepositoryMock.searchById.mockResolvedValueOnce(dto);
 
     const resolved = await permissionUpdater.execute(dto.id, permission, user);
-    expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(resolved.message).toBe(PermissionUpdater.messageSuccess());
   });
 
   it('should_call_updater_method_of_PermissionRepository', async () => {

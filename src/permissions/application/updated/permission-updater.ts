@@ -38,8 +38,15 @@ export class PermissionUpdater {
     }
 
     await this.permissionRepository.update(uuid, permission);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(
+      PermissionUpdater.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'el permiso',
     );
   }
 }

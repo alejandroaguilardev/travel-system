@@ -27,8 +27,15 @@ export class PermissionRemover {
 
     const uuid = new Uuid(id);
     await this.permissionRepository.remove(uuid);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_DELETED,
+    return ResponseMessage.createSuccessResponse(
+      PermissionRemover.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_DELETED.replace(
+      '{{elemento}}',
+      'el permiso',
     );
   }
 }

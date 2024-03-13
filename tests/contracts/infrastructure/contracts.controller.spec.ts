@@ -2,13 +2,15 @@ import { INestApplication } from '@nestjs/common';
 import { getModelToken } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as request from 'supertest';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UuidMother } from '../../common/domain/uuid-mother';
 import { ContractFinish } from '../../../src/contracts/application/finish/contract-finish';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
+import { ContractUpdater } from '../../../src/contracts/application/update/contract-updater';
+import { ContractRemover } from '../../../src/contracts/application/remove/contract-remover';
+import { ContractCreator } from '../../../src/contracts/application/create/contract-creator';
 
 const route = '/contracts';
 
@@ -37,7 +39,7 @@ describe('ContractsController', () => {
       route,
       contractDto,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(response.body.message).toBe(ContractCreator.messageSuccess());
   });
 
   it('/contracts/:id/finish (POST)', async () => {
@@ -90,7 +92,7 @@ describe('ContractsController', () => {
       contractDto,
       contractDtoUpdate,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(response.body.message).toBe(ContractUpdater.messageSuccess());
   });
 
   it('/contracts (DELETE)', async () => {
@@ -101,6 +103,6 @@ describe('ContractsController', () => {
       route,
       contractDto,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(response.body.message).toBe(ContractRemover.messageSuccess());
   });
 });

@@ -30,8 +30,15 @@ export class ContractDetailCreator {
     await Promise.all(
       contractDetail.map((_) => this.contractDetailRepository.save(_)),
     );
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_CREATED,
+    return ResponseMessage.createSuccessResponse(
+      ContractDetailCreator.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_CREATED.replace(
+      '{{elemento}}',
+      'el detalle el contrato',
     );
   }
 }

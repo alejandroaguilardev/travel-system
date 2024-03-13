@@ -1,9 +1,11 @@
 import { INestApplication } from '@nestjs/common';
 import { PermissionMother } from '../domain/permission.mother';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
+import { PermissionCreator } from '../../../src/permissions/application/create/permission-creator';
+import { PermissionUpdater } from '../../../src/permissions/application/updated/permission-updater';
+import { PermissionRemover } from '../../../src/permissions/application/remove/permission-remover';
 
 const route = '/permissions';
 
@@ -25,7 +27,7 @@ describe('PermissionsController', () => {
       route,
       permissionDto,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(response.body.message).toBe(PermissionCreator.messageSuccess());
   });
 
   it('/permissions (GET)', async () => {
@@ -56,7 +58,7 @@ describe('PermissionsController', () => {
       permissionDto,
       permissionDtoUpdate,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(response.body.message).toBe(PermissionUpdater.messageSuccess());
   });
 
   it('/permissions (DELETE)', async () => {
@@ -67,6 +69,6 @@ describe('PermissionsController', () => {
       route,
       permissionDto,
     );
-    expect(response.body.message).toBe(MessageDefault.SUCCESSFULLY_DELETED);
+    expect(response.body.message).toBe(PermissionRemover.messageSuccess());
   });
 });

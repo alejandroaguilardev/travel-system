@@ -24,8 +24,13 @@ export class CageRemover {
     const uuid = new Uuid(id);
 
     await this.roleRepository.remove(uuid);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_DELETED,
+    return ResponseMessage.createSuccessResponse(CageRemover.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_DELETED.replace(
+      '{{elemento}}',
+      'la jaula',
     );
   }
 }

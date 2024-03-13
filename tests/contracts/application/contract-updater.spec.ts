@@ -1,7 +1,6 @@
 import { ContractUpdater } from '../../../src/contracts/application/update/contract-updater';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
@@ -33,7 +32,7 @@ describe('ContractUpdater', () => {
       contractDetail,
       user,
     );
-    expect(expected.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(expected.message).toBe(ContractUpdater.messageSuccess());
   });
 
   it('should_successfully_contract_updater_called_with', async () => {

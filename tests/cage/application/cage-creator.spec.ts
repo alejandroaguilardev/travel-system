@@ -1,4 +1,3 @@
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { CageMother } from '../domain/cage.mother';
 import { CageCreator } from '../../../src/cages/application/create/cage-creator';
 import { cageRepositoryMock } from '../domain/cage.repository.mock';
@@ -13,6 +12,6 @@ describe('CageCreator', () => {
     const user = UserCreatorMother.createWithPassword();
     const cage = CommandCageCreator.execute(cageDto, user.id);
     const expected = await cageCreator.create(cage, user);
-    expect(expected.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(expected.message).toBe(CageCreator.messageSuccess());
   });
 });

@@ -1,7 +1,6 @@
 import { PetUpdater } from '../../../src/pets/application/update/pet-updater';
 import { PetMother } from '../domain/pet.mother';
 import { petRepositoryMock } from '../domain/pet.repository.mock';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
@@ -17,7 +16,7 @@ describe('PetUpdater', () => {
 
     petRepositoryMock.searchById.mockResolvedValueOnce(dto);
     const expected = await petUpdater.execute(dto.id, pet, user);
-    expect(expected.message).toBe(MessageDefault.SUCCESSFULLY_UPDATED);
+    expect(expected.message).toBe(PetUpdater.messageSuccess());
   });
 
   it('should_successfully_pet_updater_called_with', async () => {

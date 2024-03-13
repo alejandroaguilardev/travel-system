@@ -12,7 +12,7 @@ export class ContractModel implements ContractInterface {
   @Prop({ type: String, index: true, unique: true, required: true })
   id: string;
 
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: false })
   number: string;
 
   @Prop({ type: String, required: true, index: true })
@@ -29,9 +29,6 @@ export class ContractModel implements ContractInterface {
 
   @Prop({ type: Date, required: false })
   endDate: Date | null;
-
-  @Prop({ type: String, required: false })
-  guideNumber: string;
 
   @Prop({ type: String, required: false })
   adviser: string;

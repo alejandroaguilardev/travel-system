@@ -33,8 +33,15 @@ export class PermissionCreator {
     }
 
     await this.permissionRepository.save(permission);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_CREATED,
+    return ResponseMessage.createSuccessResponse(
+      PermissionCreator.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_CREATED.replace(
+      '{{elemento}}',
+      'el permiso',
     );
   }
 }

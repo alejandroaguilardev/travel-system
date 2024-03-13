@@ -31,8 +31,13 @@ export class UserCreator {
       new UserPassword(this.hashing.hashPassword(password.value)),
     );
     await this.userRepository.save(newUser);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_CREATED,
+    return ResponseMessage.createSuccessResponse(UserCreator.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_CREATED.replace(
+      '{{elemento}}',
+      'el usuario',
     );
   }
 }

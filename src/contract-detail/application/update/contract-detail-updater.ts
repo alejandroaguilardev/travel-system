@@ -42,8 +42,13 @@ export class ContractDetailUpdater {
       }
     });
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(this.messageSuccess());
+  }
+
+  messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'el detalle el contrato',
     );
   }
 }

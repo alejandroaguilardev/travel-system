@@ -23,8 +23,13 @@ export class UserRemover {
 
     const uuid = new Uuid(userId);
     await this.userRepository.remove(uuid);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_DELETED,
+    return ResponseMessage.createSuccessResponse(UserRemover.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_DELETED.replace(
+      '{{elemento}}',
+      'el usuario',
     );
   }
 }

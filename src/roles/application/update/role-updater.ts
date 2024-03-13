@@ -34,8 +34,13 @@ export class RoleUpdater {
 
     await this.roleRepository.update(uuid, role);
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(RoleUpdater.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'el rol',
     );
   }
 }

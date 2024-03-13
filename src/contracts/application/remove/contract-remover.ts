@@ -24,8 +24,15 @@ export class ContractRemover {
     const uuid = new Uuid(id);
 
     await this.roleRepository.remove(uuid);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_DELETED,
+    return ResponseMessage.createSuccessResponse(
+      ContractRemover.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_DELETED.replace(
+      '{{elemento}}',
+      'el contrato',
     );
   }
 }

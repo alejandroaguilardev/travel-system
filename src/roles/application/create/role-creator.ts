@@ -30,8 +30,13 @@ export class RoleCreator {
 
     await this.roleRepository.save(role);
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_CREATED,
+    return ResponseMessage.createSuccessResponse(RoleCreator.messageSuccess());
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_CREATED.replace(
+      '{{elemento}}',
+      'el rol',
     );
   }
 }

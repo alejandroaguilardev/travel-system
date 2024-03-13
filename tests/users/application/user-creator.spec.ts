@@ -3,7 +3,6 @@ import { UserCreator } from '../../../src/users/application/create/user-creator'
 import { ErrorInvalidadArgument } from '../../../src/common/domain/errors/error-invalid-argument';
 import { userRepositoryMock } from '../domain/user-repository-mock-methods';
 import { BcryptService } from '../../../src/common/infrastructure/services/bcrypt.service';
-import { MessageDefault } from '../../../src/common/domain/response/response-message';
 import { CommandCreatorUser } from '../../../src/users/application/create/command-create-user';
 import { UserPassword } from '../../../src/users/domain/value-object/user-password';
 
@@ -27,7 +26,7 @@ describe('userCreator', () => {
     hashPasswordMock.mockReturnValueOnce(userPassword.value);
     userRepositoryMock.save.mockResolvedValueOnce(user);
     const resolved = await userCreator.create(user, userPassword, userAuth);
-    expect(resolved.message).toBe(MessageDefault.SUCCESSFULLY_CREATED);
+    expect(resolved.message).toBe(UserCreator.messageSuccess());
   });
 
   it('should_call_creator_method_of_UserRepository', async () => {

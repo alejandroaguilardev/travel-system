@@ -48,8 +48,15 @@ export class ContractUpdater {
 
     await this.contractRepository.update(uuid, updateContract);
 
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(
+      ContractUpdater.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'el contrato',
     );
   }
 }

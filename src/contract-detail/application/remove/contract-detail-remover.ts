@@ -26,8 +26,15 @@ export class ContractDetailRemover {
     const uuid = new Uuid(id);
 
     await this.contractDetailRepository.remove(uuid);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_DELETED,
+    return ResponseMessage.createSuccessResponse(
+      ContractDetailRemover.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_DELETED.replace(
+      '{{elemento}}',
+      'el detalle el contrato',
     );
   }
 }

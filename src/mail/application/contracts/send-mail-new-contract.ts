@@ -1,7 +1,6 @@
 import { UserEmail } from '../../../users/domain/value-object/user-email';
 import { Contract } from '../../../contracts/domain/contract';
 import { UserRepository } from '../../../users/domain/user.repository';
-import { Uuid } from '../../../common/domain/value-object';
 import { UserResponse } from '../../../users/domain/interfaces/user.response';
 import newContractTemplate from '../../domain/contracts/new-contract-template';
 
@@ -11,10 +10,9 @@ export class SendMailNewContract {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async execute(userId: string, contract: Contract): Promise<void> {
-    const uuid = new Uuid(userId);
+  async execute(contract: Contract): Promise<void> {
     const [user, adviser] = await Promise.all([
-      this.userRepository.searchById<UserResponse>(uuid),
+      this.userRepository.searchById<UserResponse>(contract.client),
       this.userRepository.searchById<UserResponse>(contract.adviser),
     ]);
 

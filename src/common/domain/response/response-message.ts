@@ -1,9 +1,9 @@
 import { ResponseSuccess } from './response-success';
 
 export enum MessageDefault {
-  SUCCESSFULLY_CREATED = 'El elemento se creó con éxito',
-  SUCCESSFULLY_UPDATED = 'El elemento se actualizó con éxito',
-  SUCCESSFULLY_DELETED = 'El elemento se eliminó con éxito',
+  SUCCESSFULLY_CREATED = 'Se registro {{elemento}} exitosamente',
+  SUCCESSFULLY_UPDATED = 'Se actualizó {{elemento}} exitosamente',
+  SUCCESSFULLY_DELETED = 'Se elimino  {{elemento}} exitosamente',
 }
 
 export class ResponseMessage {
