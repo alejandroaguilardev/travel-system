@@ -10,7 +10,7 @@ export const getRolesData = (
   {
     id: uuid.generate(),
     name: 'Gestión de usuarios',
-    description: 'Gestionar los usuarios del sistemas ',
+    description: 'Gestionar los usuarios del sistemas',
     permissions: [
       ...permissions
         .filter((_) => _.group === AuthGroup.ROLES)
@@ -23,7 +23,7 @@ export const getRolesData = (
   {
     id: uuid.generate(),
     name: 'Gestión de Jaulas',
-    description: 'Gestionar las jaulas del sistemas ',
+    description: 'Gestionar las jaulas del sistemas',
     permissions: [
       ...permissions
         .filter((_) => _.group === AuthGroup.CAGES)
@@ -33,7 +33,7 @@ export const getRolesData = (
   {
     id: uuid.generate(),
     name: 'Gestión de Contratos',
-    description: 'Gestionar las jaulas del sistemas ',
+    description: 'Gestionar las jaulas del sistemas',
     permissions: [
       ...permissions
         .filter((_) => _.group === AuthGroup.CONTRACTS)
@@ -43,7 +43,7 @@ export const getRolesData = (
   {
     id: uuid.generate(),
     name: 'Gestión de Mascotas',
-    description: 'Gestionar las jaulas del sistemas ',
+    description: 'Gestionar las jaulas del sistemas',
     permissions: [
       ...permissions
         .filter((_) => _.group === AuthGroup.CAGES)
@@ -53,10 +53,20 @@ export const getRolesData = (
   {
     id: uuid.generate(),
     name: 'Gestión de Clientes',
-    description: 'Gestionar las jaulas del sistemas ',
+    description: 'Gestionar las jaulas del sistemas',
     permissions: [
       ...permissions
         .filter((_) => _.group === AuthGroup.CLIENT)
+        .map((_) => _.id),
+    ],
+  },
+  {
+    id: uuid.generate(),
+    name: 'Gestión de Expedientes',
+    description: 'Gestionar los expedientes del sistemas',
+    permissions: [
+      ...permissions
+        .filter((_) => _.group === AuthGroup.FOLDER)
         .map((_) => _.id),
     ],
   },

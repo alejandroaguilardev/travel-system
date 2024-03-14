@@ -6,6 +6,7 @@ export enum AuthGroup {
   ROLES = 'roles',
   USERS = 'usuarios',
   CLIENT = 'clientes',
+  FOLDER = 'expedientes',
 }
 
 export enum AuthPermission {
