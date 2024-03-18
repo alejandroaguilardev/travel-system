@@ -18,7 +18,7 @@ export class CommandContractDetailsUpdater {
       CommandContractCage.execute(services.cage),
       CommandContractTravel.execute(services.travel),
       new ContractGuideNumber(contract.guideNumber),
-      new Uuid(data?.pet ?? contract.pet),
+      new UuidOptional(data?.pet ?? contract.pet),
       new UuidOptional(data?.user ?? contract.user),
     );
   }

@@ -87,7 +87,7 @@ export class CommandContractTravel {
     );
   }
 
-  static travelDestination(destination?: TravelDestinationInterface) {
+  static travelDestination(destination?: Partial<TravelDestinationInterface>) {
     return new TravelDestination(
       new TravelCountryDestination(destination?.countryDestination ?? ''),
       new TravelCityDestination(destination?.cityDestination ?? ''),

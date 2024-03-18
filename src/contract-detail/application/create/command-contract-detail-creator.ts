@@ -85,10 +85,10 @@ export class CommandContractDetailCreator {
         ),
         CommandContractTravel.travelPetPerCharge(),
         CommandContractTravel.travelAccompaniedPet(),
-        CommandContractTravel.travelDestination(),
+        CommandContractTravel.travelDestination(data?.travel?.destination),
       ),
       new ContractGuideNumber(''),
-      new Uuid(data.pet),
+      new UuidOptional(data?.pet ?? ''),
       new UuidOptional(userId),
     );
   }

@@ -1,3 +1,4 @@
+export { ContractFolder } from './contract-folder';
 export { ContractEndDate } from './contract-end-date';
 export { ContractNumber } from './contract-number';
 export { ContractDetails } from './contract-details';

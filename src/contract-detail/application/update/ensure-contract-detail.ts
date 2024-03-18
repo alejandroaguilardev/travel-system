@@ -10,7 +10,7 @@ import { ContractDetailResponse } from '../response/contract-detail.response';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractDetailInterface } from 'src/contract-detail/domain/interfaces';
+import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces';
 
 export class EnsureContractDetail {
   constructor(

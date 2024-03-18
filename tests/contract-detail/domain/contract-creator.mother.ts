@@ -22,6 +22,9 @@ export class ContractDetailCreatorMother {
         hasServiceIncluded: faker.datatype.boolean(),
         hasServiceAccompanied: faker.datatype.boolean(),
         typeTraveling: TypeTravelingMother.create(),
+        destination: {
+          countryDestination: faker.location.country(),
+        },
       },
     };
   }

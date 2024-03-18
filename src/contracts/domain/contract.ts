@@ -8,16 +8,24 @@ import {
   ContractEndDate,
   ContractDetails,
 } from './value-object';
+import { ContractPrice } from './value-object/contract-price';
+import { PayInInstallments } from './value-object/pay-in-installments/pay-in-installments';
+import { CustomerPayments } from './value-object/customer-payments/customer-payments';
+import { ContractFolder } from './value-object/contract-folder';
 
 export class Contract {
   constructor(
     readonly id: Uuid,
+    readonly folder: ContractFolder,
     readonly number: ContractNumber,
     readonly client: Uuid,
     public status: ContractStatus,
     readonly startDate: ContractStartDate,
     public endDate: ContractEndDate,
     public details: ContractDetails,
+    readonly price: ContractPrice,
+    readonly payInInstallments: PayInInstallments,
+    readonly customerPayments: CustomerPayments,
     readonly adviser: Uuid,
     readonly user: UuidOptional,
   ) {}
@@ -25,12 +33,16 @@ export class Contract {
   toJson(): ContractInterface {
     return {
       id: this.id.value,
+      folder: this.folder.value,
       number: this.number.value,
       client: this.client.value,
       status: this.status.value as StatusInterface,
       startDate: this.startDate.value,
       details: this.details.toJson(),
       endDate: this.endDate.value,
+      price: this.price.value,
+      payInInstallments: this.payInInstallments.toJson(),
+      customerPayments: this.customerPayments.toJson(),
       adviser: this.adviser.value,
       user: this.user.value,
     };

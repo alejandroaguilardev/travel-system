@@ -11,6 +11,10 @@ import { DocumentationDto } from './documentation.dto';
 import { CageDto } from './cage.dto';
 import { TypeTravelingType } from '../../domain/interfaces/travel.interface';
 
+class DestinationDto {
+  @IsString()
+  countryDestination: string;
+}
 class TravelDto {
   @IsBoolean()
   hasServiceIncluded: boolean;
@@ -18,13 +22,17 @@ class TravelDto {
   hasServiceAccompanied: boolean;
   @IsString()
   typeTraveling: TypeTravelingType;
+  @Type(() => DestinationDto)
+  @ValidateNested()
+  destination: DestinationDto;
 }
 
 export class CreateContractDetailDto implements ContractDetailCreateRequest {
   @IsUUID()
   id: string;
+  @IsOptional()
   @IsUUID()
-  pet: string;
+  pet?: string;
   @Type(() => DocumentationDto)
   @ValidateNested()
   documentation: DocumentationDto;

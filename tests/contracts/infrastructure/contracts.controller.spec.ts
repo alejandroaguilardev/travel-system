@@ -11,6 +11,7 @@ import { CrudTest } from '../../common/infrastructure/crud-test';
 import { ContractUpdater } from '../../../src/contracts/application/update/contract-updater';
 import { ContractRemover } from '../../../src/contracts/application/remove/contract-remover';
 import { ContractCreator } from '../../../src/contracts/application/create/contract-creator';
+import { ContractFolderUpdater } from '../../../src/contracts/application/update/folder-updater';
 
 const route = '/contracts';
 
@@ -93,6 +94,19 @@ describe('ContractsController', () => {
       contractDtoUpdate,
     );
     expect(response.body.message).toBe(ContractUpdater.messageSuccess());
+  });
+
+  it('/contracts:id/folder (Patch)', async () => {
+    const contractDto = ContractCreatorMother.create();
+    const { folder, number } = ContractCreatorMother.create();
+    await CrudTest.create(app, access_token, route, contractDto);
+    const response = await request(app.getHttpServer())
+      .patch(`${route}/${contractDto.id}/folder`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send({ folder, number })
+      .expect(200);
+
+    expect(response.body.message).toBe(ContractFolderUpdater.messageSuccess());
   });
 
   it('/contracts (DELETE)', async () => {

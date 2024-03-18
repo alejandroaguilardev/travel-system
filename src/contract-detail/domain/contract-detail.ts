@@ -14,7 +14,7 @@ export class ContractDetail {
     readonly cage: ContractCage,
     readonly travel: ContractTravel,
     readonly guideNumber: ContractGuideNumber,
-    readonly pet: Uuid,
+    readonly pet: UuidOptional,
     readonly user: UuidOptional,
   ) {}
 

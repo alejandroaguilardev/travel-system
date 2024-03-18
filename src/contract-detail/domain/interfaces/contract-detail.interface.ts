@@ -8,6 +8,6 @@ export interface ContractDetailInterface {
   cage: CageInterface;
   travel: TravelInterface;
   guideNumber: string;
-  pet: string;
+  pet?: string;
   user: string;
 }

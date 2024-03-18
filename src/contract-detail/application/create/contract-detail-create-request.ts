@@ -11,5 +11,8 @@ export interface ContractDetailCreateRequest
     hasServiceIncluded: boolean;
     typeTraveling: TypeTravelingType;
     hasServiceAccompanied: boolean;
+    destination: {
+      countryDestination: string;
+    };
   };
 }
