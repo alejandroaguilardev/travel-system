@@ -72,6 +72,8 @@ export class MongoCriteriaConverter {
 
       if (isValidObjectId(filterValue)) {
         query[field as keyof FilterQuery<T>] = filterValue;
+      } else if (filterValue === '{{no_empty}}') {
+        query[field as keyof FilterQuery<T>] = { $ne: '' };
       } else if (typeof filterValue === 'string') {
         const filterValueRegex = filterValue
           ? new RegExp(filterValue as string, 'i')
