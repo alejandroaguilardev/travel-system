@@ -20,6 +20,8 @@ import { CreateContractDto, UpdateContractDto } from './dto/';
 import { ContractDetailService } from '../../contract-detail/infrastructure/contract-detail.service';
 import { MongoContractDetailRepository } from '../../contract-detail/infrastructure/persistence/contract-detail-mongo.repository';
 import { ContractSearchClient } from '../application/search-client/search-client';
+import { FolderContractDto } from './dto/folder-contract-dto';
+import { ContractFolderUpdater } from '../application/update/folder-updater';
 
 @Injectable()
 export class ContractsService {
@@ -113,6 +115,17 @@ export class ContractsService {
 
     await this.contractDetailService.update(contractDetails, user);
     return contractUpdater.execute(id, contract, contractDetails, user);
+  }
+
+  async updateFolder(
+    id: string,
+    folderContractDto: FolderContractDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const contractFolderUpdater = new ContractFolderUpdater(
+      this.mongoContractRepository,
+    );
+    return contractFolderUpdater.execute(id, folderContractDto, user);
   }
 
   async remove(

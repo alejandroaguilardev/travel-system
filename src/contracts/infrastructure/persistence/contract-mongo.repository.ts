@@ -7,7 +7,11 @@ import { ContractModel } from '../schema/contract.schema';
 import { Contract } from '../../domain/contract';
 import { ContractResponse } from '../../application/response/contract.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractEndDate } from '../../domain/value-object';
+import {
+  ContractEndDate,
+  ContractNumber,
+  ContractFolder,
+} from '../../domain/value-object';
 import { Criteria } from '../../../common/domain/criteria/criteria';
 import { ResponseSearch } from '../../../common/domain/response/response-search';
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
@@ -71,6 +75,20 @@ export class MongoContractRepository
       { id: contractId.value },
       {
         endDate: endDate.value,
+      },
+    );
+  }
+
+  async updateFolder(
+    contractId: Uuid,
+    folder: ContractFolder,
+    number: ContractNumber,
+  ): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        folder: folder.value,
+        number: number.value,
       },
     );
   }

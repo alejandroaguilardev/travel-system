@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
-import { CageDto, DocumentationDto } from './dto';
+import { CageDto, DocumentationDto, PetDetailDto } from './dto';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { ResponseSearch, ResponseSuccess } from '../../common/domain/response';
 import { ContractDetailCreator } from '../application/create';
@@ -26,6 +26,7 @@ import { MailContractService } from '../../mail/infrastructure/mail-contract.ser
 import { TravelAccompaniedDto } from './dto/acompanied.dto';
 import { ContractDetailAccompaniedUpdater } from '../application/update/accompanied-updater';
 import { ContractDetailInterface } from '../domain/interfaces';
+import { ContractDetailPetUpdater } from '../application/pet/contract-detail-pet-updater';
 
 @Injectable()
 export class ContractDetailService {
@@ -75,6 +76,18 @@ export class ContractDetailService {
       this.mongoContractDetailRepository,
     );
     return contractSearchById.execute(contractId, contractDetailId, user);
+  }
+
+  updatePet(
+    contractId: string,
+    petDetailDto: PetDetailDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const contractDetailPetUpdater = new ContractDetailPetUpdater(
+      this.mongoContractRepository,
+      this.mongoContractDetailRepository,
+    );
+    return contractDetailPetUpdater.execute(contractId, petDetailDto, user);
   }
 
   updateAccompanied(

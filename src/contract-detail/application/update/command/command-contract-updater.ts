@@ -9,7 +9,7 @@ import { ContractGuideNumber } from '../../../domain/value-object/contract-guide
 export class CommandContractDetailsUpdater {
   static execute(
     contract: ContractDetailInterface,
-    data?: ContractDetailInterface,
+    data?: Partial<ContractDetailInterface>,
   ): ContractDetail {
     const services = CommandContractDetailsUpdater.services(contract, data);
     return new ContractDetail(
@@ -18,14 +18,14 @@ export class CommandContractDetailsUpdater {
       CommandContractCage.execute(services.cage),
       CommandContractTravel.execute(services.travel),
       new ContractGuideNumber(contract.guideNumber),
-      new Uuid(data?.pet ?? contract.pet),
+      new UuidOptional(data?.pet ?? contract.pet),
       new UuidOptional(data?.user ?? contract.user),
     );
   }
 
   private static services(
     services: ContractDetailInterface,
-    data: ContractDetailInterface,
+    data: Partial<ContractDetailInterface>,
   ): ContractDetailInterface {
     const { cage, documentation, travel } = data;
     return {

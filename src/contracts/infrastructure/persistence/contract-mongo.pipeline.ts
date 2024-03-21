@@ -6,13 +6,26 @@ export class ContractMongoPipeline {
   static execute(criteria: Criteria): PipelineStage[] {
     const { query, start, size, sortQuery } =
       MongoCriteriaConverter.converter(criteria);
-
     const sort = [];
     if (Object.keys(sortQuery).length > 0) {
       sort.push({ $sort: sortQuery });
     }
 
     return [
+      {
+        $lookup: {
+          from: 'contract-detail',
+          localField: 'details',
+          foreignField: 'id',
+          as: 'details',
+        },
+      },
+      {
+        $unwind: {
+          path: '$details',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
       {
         $lookup: {
           from: 'users',
@@ -31,13 +44,17 @@ export class ContractMongoPipeline {
         $group: {
           _id: '$_id',
           contractFields: { $first: '$$ROOT' },
-          client: { $first: '$client' }, // Usar $first para obtener solo el primer cliente
+          client: { $first: '$client' },
+          details: { $push: '$details' },
         },
       },
       {
         $replaceRoot: {
           newRoot: {
-            $mergeObjects: ['$contractFields', { client: '$client' }],
+            $mergeObjects: [
+              '$contractFields',
+              { client: '$client', details: '$details' },
+            ],
           },
         },
       },
@@ -51,6 +68,10 @@ export class ContractMongoPipeline {
           'client.__v': 0,
           'client.createdAt': 0,
           'client.updatedAt': 0,
+          'details._id': 0,
+          'details.__v': 0,
+          'details.createdAt': 0,
+          'details.updatedAt': 0,
         },
       },
       {

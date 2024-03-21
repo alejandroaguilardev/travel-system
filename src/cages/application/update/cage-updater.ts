@@ -29,7 +29,7 @@ export class CageUpdater {
 
     const response = await this.cageRepository.searchById<CageResponse>(uuid);
     if (!response) {
-      throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));
+      throw new ErrorNotFound(ErrorNotFound.messageDefault('jaula'));
     }
 
     await this.cageRepository.update(uuid, cage);

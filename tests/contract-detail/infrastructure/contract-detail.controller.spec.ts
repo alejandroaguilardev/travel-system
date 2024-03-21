@@ -12,6 +12,8 @@ import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CageMother } from '../domain/cage-mother';
 import { ContractTravelMother } from '../domain/contract-travel.mother';
 import { ContractDetailRemover } from '../../../src/contract-detail/application/remove/contract-detail-remover';
+import { DetailPetMother } from '../domain/pet.mother';
+import { ContractDetailPetUpdater } from '../../../src/contract-detail/application/pet/contract-detail-pet-updater';
 
 const route = '/contract-detail';
 const routeContract = '/contracts';
@@ -54,6 +56,33 @@ describe('ContractDetailController', () => {
       .expect(200);
 
     expect(response.body.id).toBe(contractDto.details[0].id);
+  });
+
+  it(':contractId/pet (PATCH)', async () => {
+    const petDto = PetMother.create();
+    await CrudTest.create(app, access_token, routePet, petDto);
+    const userDto = UserCreatorMother.create();
+    await CrudTest.create(app, access_token, routeUser, userDto);
+
+    const contractDto = ContractCreatorMother.create();
+    contractDto.details[0].pet = petDto.id;
+    contractDto.client = userDto.id;
+
+    await CrudTest.create(app, access_token, routeContract, contractDto);
+
+    const petRequest = DetailPetMother.create({
+      details: [{ id: contractDto.details[0].id, pet: petDto.id }],
+    });
+
+    const response = await request(app.getHttpServer())
+      .patch(`/contract-detail/${contractDto.id}/pet`)
+      .set('Authorization', `Bearer ${access_token}`)
+      .send(petRequest)
+      .expect(200);
+
+    expect(response.body.message).toEqual(
+      ContractDetailPetUpdater.messageSuccess(),
+    );
   });
 
   it(':contractId/:contractDetailId/documentation (PATCH)', async () => {

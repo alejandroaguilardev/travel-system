@@ -8,7 +8,7 @@ import { ContractDetailRepository } from '../../domain/contract-detail.repositor
 import { ContractDetail } from '../../domain/contract-detail';
 import { CommandContractDetailsUpdater } from './command/command-contract-updater';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
-import { ContractDetailInterface } from 'src/contract-detail/domain/interfaces';
+import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces';
 import {
   AuthGroup,
   AuthPermission,

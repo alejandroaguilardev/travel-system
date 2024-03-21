@@ -6,11 +6,11 @@ import { ContractDetailUpdaterResponse } from '../response/contract-detail-updat
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
 import { EnsureContractDetail } from './ensure-contract-detail';
-import { TravelPetPerChargeInterface } from 'src/contract-detail/domain/interfaces';
+import { TravelPetPerChargeInterface } from '../../../contract-detail/domain/interfaces';
 import {
   TravelDestinationInterface,
   TravelAccompaniedPetInterface,
-} from 'src/contract-detail/domain/interfaces/travel.interface';
+} from '../../..//contract-detail/domain/interfaces/travel.interface';
 import { TravelAccompaniedPet } from '../../domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
 import { TravelDestination } from '../../domain/value-object/travel/destination/travel-destination';
 import { TravelPetPerCharge } from '../../domain/value-object/travel/travel-pet-per-charge';

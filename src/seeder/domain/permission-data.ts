@@ -152,6 +152,38 @@ export const getPermissionsData = (uuid: UUID): CreatePermissionRequest[] => [
     group: AuthGroup.ROLES,
   },
 
+  // FOLDER
+  {
+    id: uuid.generate(),
+    name: AuthPermission.CREATE,
+    description: 'Crear nuevos elementos',
+    group: AuthGroup.FOLDER,
+  },
+  {
+    id: uuid.generate(),
+    name: AuthPermission.EDIT,
+    description: 'Editar elementos existentes',
+    group: AuthGroup.FOLDER,
+  },
+  {
+    id: uuid.generate(),
+    name: AuthPermission.DELETE,
+    description: 'Eliminar elementos existentes',
+    group: AuthGroup.FOLDER,
+  },
+  {
+    id: uuid.generate(),
+    name: AuthPermission.READ,
+    description: 'Leer detalles de elementos',
+    group: AuthGroup.FOLDER,
+  },
+  {
+    id: uuid.generate(),
+    name: AuthPermission.LIST,
+    description: 'Listar elementos',
+    group: AuthGroup.FOLDER,
+  },
+
   // USERS
   {
     id: uuid.generate(),

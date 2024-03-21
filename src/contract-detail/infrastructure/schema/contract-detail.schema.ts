@@ -13,8 +13,8 @@ import { TravelInterface } from '../../domain/interfaces/travel.interface';
 export class ContractDetailModel implements ContractDetailInterface {
   @Prop({ type: String, index: true, unique: true, required: true })
   id: string;
-  @Prop({ type: String, required: true, index: true })
-  pet: string;
+  @Prop({ type: String, required: false, index: true })
+  pet?: string;
   @Prop({
     type: {
       status: String,

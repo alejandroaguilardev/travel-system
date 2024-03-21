@@ -21,7 +21,11 @@ export class ContractDetailRemover {
     id: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.READ);
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.DELETE,
+    );
 
     const uuid = new Uuid(id);
 

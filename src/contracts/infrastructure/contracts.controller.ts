@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Patch,
 } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
 import { CreateContractDto } from './dto/create-contract.dto';
@@ -15,6 +16,7 @@ import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
+import { FolderContractDto } from './dto/folder-contract-dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -81,6 +83,16 @@ export class ContractsController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractsService.update(id, updateContractDto, user);
+  }
+
+  @Patch(':id/folder')
+  @Auth()
+  updateFolder(
+    @Param('id') id: string,
+    @Body() folderContractDto: FolderContractDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractsService.updateFolder(id, folderContractDto, user);
   }
 
   @Delete(':id')
