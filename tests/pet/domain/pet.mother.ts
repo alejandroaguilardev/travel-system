@@ -23,7 +23,6 @@ export class PetMother {
       type: pet?.type ?? faker.animal.type(),
       sterilized: pet?.sterilized ?? faker.datatype.boolean() ? 'Si' : 'No',
       adopter: pet?.adopter ?? UuidMother.create(),
-      cageRecommendation: pet?.cageRecommendation ?? ChosenMother.create(),
     };
   }
 

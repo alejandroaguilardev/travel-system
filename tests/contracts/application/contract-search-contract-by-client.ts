@@ -13,7 +13,7 @@ const response = [
   ContractCreatorMother.create(),
 ];
 
-describe('C', () => {
+describe('ContractSearchClient', () => {
   const contractSearchById = new ContractSearchById(
     contractRepositoryMock,
     contractDetailRepositoryMock,

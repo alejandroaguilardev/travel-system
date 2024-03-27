@@ -6,6 +6,7 @@ import {
   ContractGuideNumber,
   ContractTravel,
 } from './value-object';
+import { ContractTopico } from './value-object/contract-topico';
 
 export class ContractDetail {
   constructor(
@@ -16,6 +17,7 @@ export class ContractDetail {
     readonly guideNumber: ContractGuideNumber,
     readonly pet: UuidOptional,
     readonly user: UuidOptional,
+    readonly topico: ContractTopico,
   ) {}
 
   toJson(): ContractDetailInterface {
@@ -27,6 +29,7 @@ export class ContractDetail {
       guideNumber: this.guideNumber.value,
       pet: this.pet.value,
       user: this.user.value,
+      topico: this.topico.toJson(),
     };
   }
 }

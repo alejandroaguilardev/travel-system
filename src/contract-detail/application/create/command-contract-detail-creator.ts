@@ -31,6 +31,7 @@ import { CageChosenModel } from '../../../cages/domain/value-object/cage-selecte
 import { CageChosenType } from '../../../cages/domain/value-object/cage-selected-type';
 import { CageChosenDimensions } from '../../../cages/domain/value-object/cage-selected-dimensions';
 import { CommandContractDocumentation, CommandContractTravel } from '../update';
+import { CommandContractTopico } from '../update/command/topico-command';
 
 export class CommandContractDetailCreator {
   static execute(
@@ -90,6 +91,7 @@ export class CommandContractDetailCreator {
       new ContractGuideNumber(''),
       new UuidOptional(data?.pet ?? ''),
       new UuidOptional(userId),
+      CommandContractTopico.execute(data?.topico),
     );
   }
 

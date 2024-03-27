@@ -1,5 +1,6 @@
 import { CageInterface } from './cage.interface';
 import { DocumentationInterface } from './documentation.interface';
+import { ContractTopicoInterface } from './topico.interface';
 import { TravelInterface } from './travel.interface';
 
 export interface ContractDetailInterface {
@@ -10,4 +11,5 @@ export interface ContractDetailInterface {
   guideNumber: string;
   pet?: string;
   user: string;
+  topico?: ContractTopicoInterface;
 }

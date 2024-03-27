@@ -5,6 +5,7 @@ import { CommandContractDocumentation } from './command-documentation';
 import { ContractDetailInterface } from '../../../domain/interfaces/contract-detail.interface';
 import { ContractDetail } from '../../../domain/contract-detail';
 import { ContractGuideNumber } from '../../../domain/value-object/contract-guide-number';
+import { CommandContractTopico } from './topico-command';
 
 export class CommandContractDetailsUpdater {
   static execute(
@@ -20,6 +21,7 @@ export class CommandContractDetailsUpdater {
       new ContractGuideNumber(contract.guideNumber),
       new UuidOptional(data?.pet ?? contract.pet),
       new UuidOptional(data?.user ?? contract.user),
+      CommandContractTopico.execute(contract?.topico),
     );
   }
 

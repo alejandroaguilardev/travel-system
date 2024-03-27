@@ -13,6 +13,12 @@ import { PetSearch } from '../application/search/pet-search';
 import { PetSearchById } from '../application/search-by-id/pet-search-by-id';
 import { PetUpdater } from '../application/update/pet-updater';
 import { PetRemover } from '../application/remove/pet-remover';
+import { PetChipDto } from './dto/pet-chip.dto';
+import { PetMeasurementsAndWeightUpdaterDto } from './dto/pet-measurements-and-weight';
+import { PetChip } from '../domain/value-object/pet-chip';
+import { PetChipDate } from '../domain/value-object/pet-chip-date';
+import { PetChipUpdater } from '../application/update/pet-chip-updater';
+import { PetMeasurementsAndWeightUpdater } from '../application/update/pet-measurements-and-weight-updater';
 
 @Injectable()
 export class PetsService {
@@ -22,23 +28,23 @@ export class PetsService {
     createPetDto: CreatePetDto,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    const cageCreator = new PetCreator(this.mongoPetRepository);
-    const cage = CommandPetCreator.execute(createPetDto, user.id);
-    return cageCreator.create(cage, user);
+    const petCreator = new PetCreator(this.mongoPetRepository);
+    const pet = CommandPetCreator.execute(createPetDto, user.id);
+    return petCreator.create(pet, user);
   }
 
   findAll(
     criteriaDto: CriteriaDto,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSearch<PetResponse>> {
-    const cageSearch = new PetSearch(this.mongoPetRepository);
+    const petSearch = new PetSearch(this.mongoPetRepository);
     const criteria = CommandCriteria.fromData(criteriaDto);
-    return cageSearch.execute(criteria, user);
+    return petSearch.execute(criteria, user);
   }
 
   findOne(id: string, user: UserWithoutWithRoleResponse): Promise<PetResponse> {
-    const cageSearchById = new PetSearchById(this.mongoPetRepository);
-    return cageSearchById.execute(id, user);
+    const petSearchById = new PetSearchById(this.mongoPetRepository);
+    return petSearchById.execute(id, user);
   }
 
   update(
@@ -46,16 +52,42 @@ export class PetsService {
     updatePetDto: UpdatePetDto,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    const cageUpdater = new PetUpdater(this.mongoPetRepository);
-    const cage = CommandPetCreator.execute(updatePetDto, user.id);
-    return cageUpdater.execute(id, cage, user);
+    const petUpdater = new PetUpdater(this.mongoPetRepository);
+    const pet = CommandPetCreator.execute(updatePetDto, user.id);
+    return petUpdater.execute(id, pet, user);
+  }
+
+  updateChip(
+    id: string,
+    petChipDto: PetChipDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const petUpdater = new PetChipUpdater(this.mongoPetRepository);
+    const chip = new PetChip(petChipDto.chip);
+    const chipDate = new PetChipDate(petChipDto.chipDate);
+    return petUpdater.execute(id, chip, chipDate, user);
+  }
+
+  updateMeasurementsAndWeight(
+    id: string,
+    petMeasurementsAndWeightUpdaterDto: PetMeasurementsAndWeightUpdaterDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const petMeasurementsAndWeightUpdater = new PetMeasurementsAndWeightUpdater(
+      this.mongoPetRepository,
+    );
+    return petMeasurementsAndWeightUpdater.execute(
+      id,
+      petMeasurementsAndWeightUpdaterDto,
+      user,
+    );
   }
 
   remove(
     id: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    const cageRemover = new PetRemover(this.mongoPetRepository);
-    return cageRemover.execute(id, user);
+    const petRemover = new PetRemover(this.mongoPetRepository);
+    return petRemover.execute(id, user);
   }
 }

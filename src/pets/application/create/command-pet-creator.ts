@@ -18,6 +18,9 @@ import { CageChosen } from '../../../contract-detail/domain/value-object/cage/ca
 import { CageChosenModel } from '../../../cages/domain/value-object/cage-selected-model';
 import { CageChosenType } from '../../../cages/domain/value-object/cage-selected-type';
 import { CageChosenDimensions } from '../../../cages/domain/value-object/cage-selected-dimensions';
+import { PetMeasurementsAndWeight } from '../../domain/value-object/pet-measurements-and-weight';
+import { PetWeight } from '../../domain/value-object/pet-weight';
+import { PetMeasurement } from '../../domain/value-object/pet-measurement';
 
 export class CommandPetCreator {
   static execute(data: CreatePetRequest, userId: string): Pet {
@@ -38,10 +41,18 @@ export class CommandPetCreator {
       new Uuid(data.adopter),
       new UuidOptional(userId),
       new CageChosen(
-        new CageChosenModel(data.cageRecommendation?.modelCage ?? ''),
-        new CageChosenType(data.cageRecommendation?.typeCage ?? ''),
-        new CageChosenDimensions(data.cageRecommendation?.dimensionsCage ?? ''),
+        new CageChosenModel(data?.cageRecommendation?.modelCage ?? ''),
+        new CageChosenType(data?.cageRecommendation?.typeCage ?? ''),
+        new CageChosenDimensions(
+          data?.cageRecommendation?.dimensionsCage ?? '',
+        ),
         new UuidOptional(''),
+      ),
+      new PetMeasurementsAndWeight(
+        new PetWeight(data?.measurementsAndWeight?.weight ?? 0),
+        new PetMeasurement(data?.measurementsAndWeight?.height ?? 0),
+        new PetMeasurement(data?.measurementsAndWeight?.length ?? 0),
+        new PetMeasurement(data?.measurementsAndWeight?.width ?? 0),
       ),
     );
   }

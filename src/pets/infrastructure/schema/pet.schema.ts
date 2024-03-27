@@ -28,7 +28,7 @@ export class PetModel implements PetInterface {
   birthDate: Date;
   @Prop({ type: String, required: false })
   chip: string;
-  @Prop({ type: String, required: false })
+  @Prop({ type: Date, required: false })
   chipDate: Date | null;
   @Prop({ type: String, required: false })
   color: string;

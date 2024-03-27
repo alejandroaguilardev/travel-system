@@ -5,6 +5,7 @@ import { ContractDetailInterface } from '../../domain/interfaces/contract-detail
 import { DocumentationInterface } from '../../domain/interfaces/documentation.interface';
 import { CageInterface } from '../../domain/interfaces/cage.interface';
 import { TravelInterface } from '../../domain/interfaces/travel.interface';
+import { ContractTopicoInterface } from '../../domain/interfaces/topico.interface';
 
 @Schema({
   collection: 'contract-detail',
@@ -149,6 +150,58 @@ export class ContractDetailModel implements ContractDetailInterface {
     required: false,
   })
   travel: TravelInterface;
+
+  @Prop({
+    type: {
+      chip: {
+        hasIncluded: Boolean,
+        executed: Boolean,
+        date: Date,
+        description: String,
+        observation: String,
+        user: String,
+      },
+      vaccination: {
+        hasIncluded: Boolean,
+        executed: Boolean,
+        date: Date,
+        description: String,
+        observation: String,
+        user: String,
+      },
+      rabiesVaccination: {
+        hasIncluded: Boolean,
+        executed: Boolean,
+        date: Date,
+        description: String,
+        observation: String,
+        user: String,
+      },
+      rabiesReVaccination: {
+        executed: Boolean,
+        date: Date,
+        description: String,
+        observation: String,
+        user: String,
+      },
+      chipReview: {
+        executed: Boolean,
+        date: Date,
+        description: String,
+        observation: String,
+        user: String,
+      },
+      takingSampleSerologicalTest: {
+        executed: Boolean,
+        date: Date,
+        description: String,
+        observation: String,
+        user: String,
+      },
+    },
+    required: false,
+  })
+  topico: ContractTopicoInterface;
   @Prop({ type: String, required: false })
   guideNumber: string;
   @Prop({ type: String, required: false })

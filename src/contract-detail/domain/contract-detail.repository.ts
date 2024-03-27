@@ -7,6 +7,7 @@ import {
   ContractCage,
   ContractDocumentation,
 } from './value-object';
+import { ContractTopico } from './value-object/contract-topico';
 
 export interface ContractDetailRepository extends Repository<ContractDetail> {
   searchByIdWithPet(id: Uuid): Promise<ContractDetailResponse>;
@@ -16,4 +17,8 @@ export interface ContractDetailRepository extends Repository<ContractDetail> {
   ): Promise<void>;
   updateCage(contractDetailId: Uuid, cage: ContractCage): Promise<void>;
   updateTravel(contractDetailId: Uuid, travel: ContractTravel): Promise<void>;
+  updateTopico(
+    contractDetailId: Uuid,
+    topico: Partial<ContractTopico>,
+  ): Promise<void>;
 }

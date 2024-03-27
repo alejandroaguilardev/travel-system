@@ -13,6 +13,7 @@ import {
 } from '../../domain/value-object';
 import { ContractDetailMongoPipeline } from './contract-detail-mongo-pipeline';
 import { ContractDetailResponse } from '../../application/response/contract-detail.response';
+import { ContractTopico } from '../../domain/value-object/contract-topico';
 
 @Injectable()
 export class MongoContractDetailRepository
@@ -40,31 +41,48 @@ export class MongoContractDetailRepository
   }
 
   async updateDocumentation(
-    contractId: Uuid,
+    contractDetailId: Uuid,
     documentation: ContractDocumentation,
   ): Promise<void> {
     return this.contractDetailModel.findOneAndUpdate(
-      { id: contractId.value },
+      { id: contractDetailId.value },
       {
         documentation: documentation.toJson(),
       },
     );
   }
 
-  async updateCage(contractId: Uuid, cage: ContractCage): Promise<void> {
+  async updateCage(contractDetailId: Uuid, cage: ContractCage): Promise<void> {
     return this.contractDetailModel.findOneAndUpdate(
-      { id: contractId.value },
+      { id: contractDetailId.value },
       {
         cage: cage.toJson(),
       },
     );
   }
 
-  async updateTravel(contractId: Uuid, travel: ContractTravel): Promise<void> {
+  async updateTravel(
+    contractDetailId: Uuid,
+    travel: ContractTravel,
+  ): Promise<void> {
     return this.contractDetailModel.findOneAndUpdate(
-      { id: contractId.value },
+      { id: contractDetailId.value },
       {
         travel: travel.toJson(),
+      },
+    );
+  }
+
+  async updateTopico(
+    contractDetailId: Uuid,
+    topicoUpdate: ContractTopico,
+  ): Promise<void> {
+    return this.contractDetailModel.findOneAndUpdate(
+      { id: contractDetailId.value },
+      {
+        topico: {
+          ...topicoUpdate.toJson(),
+        },
       },
     );
   }

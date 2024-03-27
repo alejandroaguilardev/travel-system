@@ -1,9 +1,6 @@
-import { IsDate, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsDate, IsOptional, IsString } from 'class-validator';
 import { CreatePetRequest } from '../../application/create/create-pet-request';
 import { PetGenderType } from '../../domain/value-object/pet-gender';
-import { CageChosenDto } from '../../../contract-detail/infrastructure/dto/cage.dto';
-import { Type } from 'class-transformer';
-import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
 
 export class CreatePetDto implements CreatePetRequest {
   @IsString()
@@ -47,8 +44,4 @@ export class CreatePetDto implements CreatePetRequest {
 
   @IsString()
   adopter: string;
-
-  @Type(() => CageChosenDto)
-  @ValidateNested()
-  cageRecommendation: CageChosenInterface;
 }

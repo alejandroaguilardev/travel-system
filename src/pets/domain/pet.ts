@@ -14,6 +14,7 @@ import { StatusValueObject } from '../../common/domain/value-object/status-value
 import { PetSterilized } from './value-object/pet-sterilized';
 import { PetCountry } from './value-object/pet-country';
 import { CageChosen } from '../../contract-detail/domain/value-object/cage/cage-chosen';
+import { PetMeasurementsAndWeight } from './value-object/pet-measurements-and-weight';
 
 export class Pet {
   constructor(
@@ -23,8 +24,8 @@ export class Pet {
     readonly race: PetRace,
     readonly gender: PetGender,
     readonly birthDate: PetDate,
-    readonly chip: PetChip,
-    readonly chipDate: PetChipDate,
+    public chip: PetChip,
+    public chipDate: PetChipDate,
     readonly color: PetColor,
     readonly image: PetImage,
     readonly country: PetCountry,
@@ -33,6 +34,7 @@ export class Pet {
     readonly adopter: Uuid,
     readonly user: UuidOptional,
     readonly cageRecommendation: CageChosen,
+    readonly measurementsAndWeight: PetMeasurementsAndWeight,
   ) {}
 
   toJson(): PetInterface {
@@ -53,6 +55,15 @@ export class Pet {
       adopter: this.adopter.value,
       user: this.user.value,
       cageRecommendation: this.cageRecommendation.toJson(),
+      measurementsAndWeight: this.measurementsAndWeight.toJson(),
     };
+  }
+
+  setChip(chip: PetChip) {
+    this.chip = chip;
+  }
+
+  setChipDate(chipDate: PetChipDate) {
+    this.chipDate = chipDate;
   }
 }

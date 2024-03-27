@@ -10,6 +10,7 @@ import {
 } from './schema/contract-detail.schema';
 import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
 import { ContractsModule } from '../../contracts/infrastructure/contracts.module';
+import { ContractDetailTopicoService } from './contract-detail-topico.service';
 
 @Module({
   imports: [
@@ -21,7 +22,11 @@ import { ContractsModule } from '../../contracts/infrastructure/contracts.module
     ContractsModule,
   ],
   controllers: [ContractDetailController],
-  providers: [ContractDetailService, MongoContractDetailRepository],
+  providers: [
+    ContractDetailService,
+    ContractDetailTopicoService,
+    MongoContractDetailRepository,
+  ],
   exports: [MongoContractDetailRepository, ContractDetailService],
 })
 export class ContractDetailModule {}

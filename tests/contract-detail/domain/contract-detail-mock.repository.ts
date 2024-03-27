@@ -6,6 +6,7 @@ export const contractDetailRepositoryMock = {
   update: jest.fn(),
   updateCage: jest.fn(),
   updateDocumentation: jest.fn(),
-  updateTravel: jest.fn(),
   searchByIdWithPet: jest.fn(),
+  updateTravel: jest.fn(),
+  updateTopico: jest.fn(),
 };

@@ -19,10 +19,15 @@ import {
   PetDetailDto,
 } from './dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import { ContractDetailTopicoService } from './contract-detail-topico.service';
+import { TopicoDto } from './dto/topico/topico.dto';
 
 @Controller('contract-detail')
 export class ContractDetailController {
-  constructor(private readonly contractDetailService: ContractDetailService) {}
+  constructor(
+    private readonly contractDetailService: ContractDetailService,
+    private readonly contractDetailTopicoService: ContractDetailTopicoService,
+  ) {}
 
   @Get()
   @Auth()
@@ -105,6 +110,24 @@ export class ContractDetailController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailService.updateTravel(id, detail, travelDto, user);
+  }
+
+  @Patch(':id/:detail/topico/:value')
+  @Auth()
+  updateTopico(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @Param('value') value: string,
+    @Body() topicoDto: TopicoDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailTopicoService.updateTopico(
+      id,
+      detail,
+      value,
+      topicoDto,
+      user,
+    );
   }
 
   @Delete(':id')
