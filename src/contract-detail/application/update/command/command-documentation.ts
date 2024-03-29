@@ -70,16 +70,6 @@ export class CommandContractDocumentation {
         new DocumentationResultDate(documentation.chipCertificate.resultDate),
         new UuidOptional(documentation.chipCertificate?.user ?? ''),
       ),
-      new DocumentationChipCertificate(
-        new DocumentationIsApplied(documentation.chipReview.isApplied),
-        new DocumentationIsApplied(
-          documentation.chipCertificate.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(documentation.chipReview.expectedDate),
-        new DocumentationExecutionDate(documentation.chipReview.executionDate),
-        new DocumentationResultDate(documentation.chipReview.resultDate),
-        new UuidOptional(documentation.chipReview?.user ?? ''),
-      ),
       new DocumentationSenasaDocuments(
         new DocumentationIsApplied(documentation.senasaDocuments.isApplied),
         new DocumentationIsApplied(

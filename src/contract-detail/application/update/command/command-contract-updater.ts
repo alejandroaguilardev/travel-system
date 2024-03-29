@@ -83,16 +83,6 @@ export class CommandContractDetailsUpdater {
           resultDate: services.documentation.chipCertificate.resultDate,
           user: services.documentation.chipCertificate.user,
         },
-        chipReview: {
-          hasServiceIncluded:
-            documentation?.chipReview?.hasServiceIncluded ??
-            services.documentation.chipReview.hasServiceIncluded,
-          isApplied: services.documentation.chipReview.isApplied,
-          expectedDate: services.documentation.chipReview.expectedDate,
-          executionDate: services.documentation.chipReview.executionDate,
-          resultDate: services.documentation.chipReview.resultDate,
-          user: services.documentation.chipReview.user,
-        },
         senasaDocuments: {
           hasServiceIncluded:
             documentation?.senasaDocuments?.hasServiceIncluded ??

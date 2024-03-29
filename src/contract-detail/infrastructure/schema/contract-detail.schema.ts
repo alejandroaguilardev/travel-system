@@ -184,13 +184,6 @@ export class ContractDetailModel implements ContractDetailInterface {
         observation: String,
         user: String,
       },
-      chipReview: {
-        executed: Boolean,
-        date: Date,
-        description: String,
-        observation: String,
-        user: String,
-      },
       takingSampleSerologicalTest: {
         executed: Boolean,
         date: Date,

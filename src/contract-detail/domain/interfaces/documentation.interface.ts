@@ -13,7 +13,6 @@ export interface DocumentationInterface {
   vaccinationCertificate: DocumentationCertificateInterface;
   healthCertificate: DocumentationCertificateInterface;
   chipCertificate: DocumentationCertificateInterface;
-  chipReview: DocumentationCertificateInterface;
   senasaDocuments: DocumentationCertificateInterface;
   rabiesSeroLogicalTest: DocumentationCertificateInterface;
   importLicense: DocumentationCertificateInterface;

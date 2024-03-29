@@ -13,13 +13,6 @@ export class ContractDocumentationMother {
         executionDate: null,
         resultDate: null,
       },
-      chipReview: {
-        hasServiceIncluded: faker.datatype.boolean(),
-        isApplied: faker.datatype.boolean(),
-        expectedDate: DateMother.recent(),
-        executionDate: null,
-        resultDate: null,
-      },
       emotionalSupportCertificate: {
         hasServiceIncluded: faker.datatype.boolean(),
         isApplied: faker.datatype.boolean(),

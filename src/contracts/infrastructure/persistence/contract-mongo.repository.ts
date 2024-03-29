@@ -70,6 +70,25 @@ export class MongoContractRepository
     return { rows, count };
   }
 
+  async searchTopico(
+    criteria: Criteria,
+  ): Promise<ResponseSearch<ContractResponse>> {
+    const { query, selectProperties, start, size, sortQuery } =
+      MongoCriteriaConverter.converter(criteria);
+
+    const rows: ContractResponse[] = await this.contractModel
+      .find(query)
+      .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
+      .skip(start)
+      .limit(size)
+      .sort(sortQuery)
+      .lean();
+
+    const count = await this.count(criteria);
+
+    return { rows, count };
+  }
+
   async finish(contractId: Uuid, endDate: ContractEndDate): Promise<void> {
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
