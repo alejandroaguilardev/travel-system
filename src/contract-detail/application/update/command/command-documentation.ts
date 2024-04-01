@@ -2,7 +2,10 @@ import {
   ContractStatus,
   UuidOptional,
 } from '../../../../common/domain/value-object';
-import { DocumentationInterface } from '../../../domain/interfaces';
+import {
+  DocumentationCertificateInterface,
+  DocumentationInterface,
+} from '../../../domain/interfaces';
 import { ContractDocumentation } from '../../../domain/value-object';
 import { DocumentationResultDate } from '../../../domain/value-object/documentation/documentation-result-date';
 import {
@@ -24,114 +27,105 @@ export class CommandContractDocumentation {
       new ContractStatus(
         documentation?.status === 'none' ? 'pending' : documentation.status,
       ),
-      new DocumentationVaccinationCertificate(
-        new DocumentationIsApplied(
-          documentation.vaccinationCertificate.isApplied,
-        ),
-        new DocumentationIsApplied(
-          documentation.vaccinationCertificate.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(
-          documentation.vaccinationCertificate.expectedDate,
-        ),
-        new DocumentationExecutionDate(
-          documentation.vaccinationCertificate.executionDate,
-        ),
-        new DocumentationResultDate(
-          documentation.vaccinationCertificate.resultDate,
-        ),
-        new UuidOptional(documentation.vaccinationCertificate?.user ?? ''),
+      this.vaccinationCertificate(documentation.vaccinationCertificate),
+      this.healthCertificate(documentation.healthCertificate),
+      this.chipCertificate(documentation.chipCertificate),
+      this.senasaDocuments(documentation.senasaDocuments),
+      this.rabiesSeroLogicalTest(documentation.rabiesSeroLogicalTest),
+      this.importLicense(documentation.importLicense),
+      this.importLicense(documentation.importLicense),
+    );
+  }
+  static vaccinationCertificate(
+    vaccinationCertificate: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationVaccinationCertificate(
+      new DocumentationIsApplied(vaccinationCertificate.isApplied),
+      new DocumentationIsApplied(vaccinationCertificate.hasServiceIncluded),
+      new DocumentationExpectedDate(vaccinationCertificate.expectedDate),
+      new DocumentationExecutionDate(vaccinationCertificate.executionDate),
+      new DocumentationResultDate(vaccinationCertificate.resultDate),
+      new UuidOptional(vaccinationCertificate?.user ?? ''),
+    );
+  }
+
+  static healthCertificate(
+    healthCertificate: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationHealthCertificate(
+      new DocumentationIsApplied(healthCertificate.isApplied),
+      new DocumentationIsApplied(healthCertificate.hasServiceIncluded),
+      new DocumentationExpectedDate(healthCertificate.expectedDate),
+      new DocumentationExecutionDate(healthCertificate.executionDate),
+      new DocumentationResultDate(healthCertificate.resultDate),
+      new UuidOptional(healthCertificate?.user ?? ''),
+    );
+  }
+
+  static chipCertificate(
+    chipCertificate: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationChipCertificate(
+      new DocumentationIsApplied(chipCertificate.isApplied),
+      new DocumentationIsApplied(chipCertificate.hasServiceIncluded),
+      new DocumentationExpectedDate(chipCertificate.expectedDate),
+      new DocumentationExecutionDate(chipCertificate.executionDate),
+      new DocumentationResultDate(chipCertificate.resultDate),
+      new UuidOptional(chipCertificate?.user ?? ''),
+    );
+  }
+
+  static senasaDocuments(
+    senasaDocuments: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationSenasaDocuments(
+      new DocumentationIsApplied(senasaDocuments.isApplied),
+      new DocumentationIsApplied(senasaDocuments.hasServiceIncluded),
+      new DocumentationExpectedDate(senasaDocuments.expectedDate),
+      new DocumentationExecutionDate(senasaDocuments.executionDate),
+      new DocumentationResultDate(senasaDocuments.resultDate),
+      new UuidOptional(senasaDocuments?.user ?? ''),
+    );
+  }
+
+  static rabiesSeroLogicalTest(
+    rabiesSeroLogicalTest: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationRabiesSerologicalTest(
+      new DocumentationIsApplied(rabiesSeroLogicalTest.isApplied),
+      new DocumentationIsApplied(rabiesSeroLogicalTest.hasServiceIncluded),
+      new DocumentationExpectedDate(rabiesSeroLogicalTest.expectedDate),
+      new DocumentationExecutionDate(rabiesSeroLogicalTest.executionDate),
+      new DocumentationResultDate(rabiesSeroLogicalTest.resultDate),
+      new UuidOptional(rabiesSeroLogicalTest?.user ?? ''),
+    );
+  }
+
+  static importLicense(
+    importLicense: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationImportLicense(
+      new DocumentationIsApplied(importLicense.isApplied),
+      new DocumentationIsApplied(importLicense.hasServiceIncluded),
+      new DocumentationExpectedDate(importLicense.expectedDate),
+      new DocumentationExecutionDate(importLicense.executionDate),
+      new DocumentationResultDate(importLicense.resultDate),
+      new UuidOptional(importLicense?.user ?? ''),
+    );
+  }
+
+  static emotionalSupportCertificate(
+    emotionalSupportCertificate: DocumentationCertificateInterface,
+  ): DocumentationVaccinationCertificate {
+    return new DocumentationEmocionalSupportCertificate(
+      new DocumentationIsApplied(emotionalSupportCertificate.isApplied),
+      new DocumentationIsApplied(
+        emotionalSupportCertificate.hasServiceIncluded,
       ),
-      new DocumentationHealthCertificate(
-        new DocumentationIsApplied(documentation.healthCertificate.isApplied),
-        new DocumentationIsApplied(
-          documentation.healthCertificate.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(
-          documentation.healthCertificate.expectedDate,
-        ),
-        new DocumentationExecutionDate(
-          documentation.healthCertificate.executionDate,
-        ),
-        new DocumentationResultDate(documentation.healthCertificate.resultDate),
-        new UuidOptional(documentation.healthCertificate?.user ?? ''),
-      ),
-      new DocumentationChipCertificate(
-        new DocumentationIsApplied(documentation.chipCertificate.isApplied),
-        new DocumentationIsApplied(
-          documentation.chipCertificate.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(
-          documentation.chipCertificate.expectedDate,
-        ),
-        new DocumentationExecutionDate(
-          documentation.chipCertificate.executionDate,
-        ),
-        new DocumentationResultDate(documentation.chipCertificate.resultDate),
-        new UuidOptional(documentation.chipCertificate?.user ?? ''),
-      ),
-      new DocumentationSenasaDocuments(
-        new DocumentationIsApplied(documentation.senasaDocuments.isApplied),
-        new DocumentationIsApplied(
-          documentation.senasaDocuments.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(
-          documentation.senasaDocuments.expectedDate,
-        ),
-        new DocumentationExecutionDate(
-          documentation.senasaDocuments.executionDate,
-        ),
-        new DocumentationResultDate(documentation.senasaDocuments.resultDate),
-        new UuidOptional(documentation.senasaDocuments?.user ?? ''),
-      ),
-      new DocumentationRabiesSerologicalTest(
-        new DocumentationIsApplied(
-          documentation.rabiesSeroLogicalTest.isApplied,
-        ),
-        new DocumentationIsApplied(
-          documentation.rabiesSeroLogicalTest.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(
-          documentation.rabiesSeroLogicalTest.expectedDate,
-        ),
-        new DocumentationExecutionDate(
-          documentation.rabiesSeroLogicalTest.executionDate,
-        ),
-        new DocumentationResultDate(
-          documentation.rabiesSeroLogicalTest.resultDate,
-        ),
-        new UuidOptional(documentation.rabiesSeroLogicalTest?.user ?? ''),
-      ),
-      new DocumentationImportLicense(
-        new DocumentationIsApplied(documentation.importLicense.isApplied),
-        new DocumentationIsApplied(
-          documentation.importLicense.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(documentation.importLicense.expectedDate),
-        new DocumentationExecutionDate(
-          documentation.importLicense.executionDate,
-        ),
-        new DocumentationResultDate(documentation.importLicense.resultDate),
-        new UuidOptional(documentation.importLicense?.user ?? ''),
-      ),
-      new DocumentationEmocionalSupportCertificate(
-        new DocumentationIsApplied(
-          documentation.emotionalSupportCertificate.isApplied,
-        ),
-        new DocumentationIsApplied(
-          documentation.emotionalSupportCertificate.hasServiceIncluded,
-        ),
-        new DocumentationExpectedDate(
-          documentation.emotionalSupportCertificate.expectedDate,
-        ),
-        new DocumentationExecutionDate(
-          documentation.emotionalSupportCertificate.executionDate,
-        ),
-        new DocumentationResultDate(
-          documentation.emotionalSupportCertificate.resultDate,
-        ),
-        new UuidOptional(documentation.emotionalSupportCertificate?.user ?? ''),
-      ),
+      new DocumentationExpectedDate(emotionalSupportCertificate.expectedDate),
+      new DocumentationExecutionDate(emotionalSupportCertificate.executionDate),
+      new DocumentationResultDate(emotionalSupportCertificate.resultDate),
+      new UuidOptional(emotionalSupportCertificate?.user ?? ''),
     );
   }
 }

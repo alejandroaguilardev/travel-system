@@ -47,7 +47,9 @@ export class CommandContractDetailsUpdater {
             cage?.chosen?.typeCage ?? services.cage.chosen?.typeCage ?? '',
           user: services.cage.chosen.user,
         },
-        recommendation: services.cage.recommendation,
+        confirmation: cage?.confirmation ?? services.cage.confirmation,
+        petTravelAcquisition:
+          cage?.petTravelAcquisition ?? services.cage.petTravelAcquisition,
       },
       documentation: {
         status: services.documentation.status,

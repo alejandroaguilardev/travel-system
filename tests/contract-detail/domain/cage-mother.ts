@@ -7,9 +7,10 @@ export class CageMother {
   static create(): CageInterface {
     return {
       hasServiceIncluded: faker.datatype.boolean(),
+      confirmation: faker.datatype.boolean(),
+      petTravelAcquisition: faker.datatype.boolean(),
       chosen: ChosenMother.create(),
       status: StatusMother.create(),
-      recommendation: ChosenMother.create(),
     };
   }
 }

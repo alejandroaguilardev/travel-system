@@ -11,6 +11,7 @@ import {
 import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
 import { ContractsModule } from '../../contracts/infrastructure/contracts.module';
 import { ContractDetailTopicoService } from './contract-detail-topico.service';
+import { ContractDetailCertificateService } from './contract-detail-certificate.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ContractDetailTopicoService } from './contract-detail-topico.service';
   providers: [
     ContractDetailService,
     ContractDetailTopicoService,
+    ContractDetailCertificateService,
     MongoContractDetailRepository,
   ],
   exports: [MongoContractDetailRepository, ContractDetailService],

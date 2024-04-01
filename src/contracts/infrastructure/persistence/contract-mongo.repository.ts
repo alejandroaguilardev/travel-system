@@ -98,6 +98,16 @@ export class MongoContractRepository
     );
   }
 
+  async cancel(contractId: Uuid, endDate: ContractEndDate): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        endDate: endDate.value,
+        status: 'canceled',
+      },
+    );
+  }
+
   async updateFolder(
     contractId: Uuid,
     folder: ContractFolder,

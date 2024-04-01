@@ -9,6 +9,8 @@ import { CageChosenModel } from '../../../../cages/domain/value-object/cage-sele
 import { CageChosenType } from '../../../../cages/domain/value-object/cage-selected-type';
 import { CageChosenDimensions } from '../../../../cages/domain/value-object/cage-selected-dimensions';
 import { CageChosen } from '../../../domain/value-object/cage';
+import { ContractCagePetTravelAcquisition } from '../../../domain/value-object/cage/cage-acquisition';
+import { ContractCageConfirmation } from '../../../domain/value-object/cage/cage-confirmation';
 
 export class CommandContractCage {
   static execute(cage: CageInterface): ContractCage {
@@ -21,12 +23,8 @@ export class CommandContractCage {
         new CageChosenDimensions(cage?.chosen?.dimensionsCage ?? ''),
         new UuidOptional(cage.chosen?.user ?? ''),
       ),
-      new CageChosen(
-        new CageChosenModel(cage?.recommendation?.modelCage ?? ''),
-        new CageChosenType(cage?.recommendation?.typeCage ?? ''),
-        new CageChosenDimensions(cage?.recommendation?.dimensionsCage ?? ''),
-        new UuidOptional(''),
-      ),
+      new ContractCageConfirmation(cage?.confirmation ?? false),
+      new ContractCagePetTravelAcquisition(cage?.petTravelAcquisition ?? false),
     );
   }
 }

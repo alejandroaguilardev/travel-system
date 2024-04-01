@@ -10,5 +10,6 @@ export interface CageInterface {
   status: StatusInterface;
   hasServiceIncluded: boolean;
   chosen: CageChosenInterface;
-  recommendation: CageChosenInterface;
+  confirmation: boolean;
+  petTravelAcquisition: boolean;
 }

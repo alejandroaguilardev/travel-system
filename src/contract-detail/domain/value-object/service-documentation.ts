@@ -11,6 +11,23 @@ import {
 } from './documentation';
 
 export class ContractDocumentation {
+  static keys = [
+    'vaccinationCertificate',
+    'healthCertificate',
+    'chipCertificate',
+    'senasaDocuments',
+    'rabiesSeroLogicalTest',
+    'emotionalSupportCertificate',
+  ];
+  static keysObject = {
+    vaccinationCertificate: 'vaccinationCertificate',
+    healthCertificate: 'healthCertificate',
+    chipCertificate: 'chipCertificate',
+    senasaDocuments: 'senasaDocuments',
+    rabiesSeroLogicalTest: 'rabiesSeroLogicalTest',
+    importLicense: 'importLicense',
+    emotionalSupportCertificate: 'emotionalSupportCertificate',
+  };
   constructor(
     readonly status: ContractStatus,
     readonly vaccinationCertificate: DocumentationVaccinationCertificate,

@@ -42,9 +42,6 @@ export class DocumentationDto implements DocumentationInterface {
   @Type(() => CertificateDto)
   @ValidateNested()
   chipCertificate: DocumentationCertificateInterface;
-  @Type(() => CertificateDto)
-  @ValidateNested()
-  chipReview: DocumentationCertificateInterface;
   @ValidateNested()
   @Type(() => CertificateDto)
   @ValidateNested()

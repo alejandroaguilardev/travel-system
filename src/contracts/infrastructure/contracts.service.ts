@@ -22,6 +22,7 @@ import { MongoContractDetailRepository } from '../../contract-detail/infrastruct
 import { ContractSearchClient } from '../application/search-client/search-client';
 import { FolderContractDto } from './dto/folder-contract-dto';
 import { ContractFolderUpdater } from '../application/update/folder-updater';
+import { ContractCancel } from '../application/finish/contract-cancel';
 
 @Injectable()
 export class ContractsService {
@@ -58,6 +59,14 @@ export class ContractsService {
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const contractFinish = new ContractFinish(this.mongoContractRepository);
+    return contractFinish.execute(id, user);
+  }
+
+  cancel(
+    id: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const contractFinish = new ContractCancel(this.mongoContractRepository);
     return contractFinish.execute(id, user);
   }
 

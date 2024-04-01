@@ -21,12 +21,14 @@ import {
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
+import { ContractDetailCertificateService } from './contract-detail-certificate.service';
 
 @Controller('contract-detail')
 export class ContractDetailController {
   constructor(
     private readonly contractDetailService: ContractDetailService,
     private readonly contractDetailTopicoService: ContractDetailTopicoService,
+    private readonly contractDetailCertificateService: ContractDetailCertificateService,
   ) {}
 
   @Get()
@@ -126,6 +128,24 @@ export class ContractDetailController {
       detail,
       value,
       topicoDto,
+      user,
+    );
+  }
+
+  @Patch(':id/:detail/certificate/:value')
+  @Auth()
+  updateCertificate(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @Param('value') value: string,
+    @Body() documentationDto: DocumentationDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailCertificateService.updateCertificate(
+      id,
+      detail,
+      value,
+      documentationDto,
       user,
     );
   }

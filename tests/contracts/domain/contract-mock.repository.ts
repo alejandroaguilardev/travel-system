@@ -8,4 +8,5 @@ export const contractRepositoryMock = {
   searchContractByClient: jest.fn(),
   searchClient: jest.fn(),
   updateFolder: jest.fn(),
+  cancel: jest.fn(),
 };

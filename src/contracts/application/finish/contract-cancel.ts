@@ -13,7 +13,7 @@ import {
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
 
-export class ContractFinish {
+export class ContractCancel {
   constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
@@ -28,29 +28,29 @@ export class ContractFinish {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
 
-    this.permissionFinish(user, response);
+    this.permissionCancel(user, response);
 
-    if (response.status !== 'completed' && response.status !== 'canceled') {
-      throw new ErrorInvalidadArgument(ContractFinish.messageNotCompleted());
+    if (response.status === 'completed') {
+      throw new ErrorInvalidadArgument(ContractCancel.messageNotCompleted());
     }
     const endDate = new ContractEndDate(new Date());
 
-    await this.contractRepository.finish(uuid, endDate);
+    await this.contractRepository.cancel(uuid, endDate);
 
     return ResponseMessage.createSuccessResponse(
-      ContractFinish.messageSuccess(),
+      ContractCancel.messageSuccess(),
     );
   }
 
   static messageSuccess() {
-    return 'El contrato finalizo con éxito';
+    return 'El contrato se cancelo con éxito';
   }
 
   static messageNotCompleted() {
-    return 'El contrato no esta completado';
+    return 'El contrato no puede cancelarse por que ya esta completado';
   }
 
-  private permissionFinish(
+  private permissionCancel(
     user: UserWithoutWithRoleResponse,
     contract: ContractResponse,
   ) {

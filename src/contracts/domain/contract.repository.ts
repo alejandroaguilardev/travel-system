@@ -11,6 +11,7 @@ export interface ContractRepository extends Repository<Contract> {
   searchContractByClient(clientId: Uuid): Promise<ContractResponse[]>;
   searchClient(criteria: Criteria): Promise<ResponseSearch<ContractResponse>>;
   finish(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
+  cancel(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
   updateFolder(
     contractId: Uuid,
     folder: ContractFolder,

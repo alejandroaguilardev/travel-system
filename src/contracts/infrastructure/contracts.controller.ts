@@ -30,6 +30,7 @@ export class ContractsController {
   ) {
     return this.contractsService.create(createContractDto, user);
   }
+
   @Post(':id/finish')
   @Auth()
   finish(
@@ -37,6 +38,15 @@ export class ContractsController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractsService.finish(id, user);
+  }
+
+  @Post(':id/cancel')
+  @Auth()
+  cancel(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractsService.cancel(id, user);
   }
 
   @Get()

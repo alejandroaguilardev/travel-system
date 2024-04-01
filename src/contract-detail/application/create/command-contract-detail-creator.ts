@@ -32,6 +32,8 @@ import { CageChosenType } from '../../../cages/domain/value-object/cage-selected
 import { CageChosenDimensions } from '../../../cages/domain/value-object/cage-selected-dimensions';
 import { CommandContractDocumentation, CommandContractTravel } from '../update';
 import { CommandContractTopico } from '../update/command/topico-command';
+import { ContractCageConfirmation } from '../../domain/value-object/cage/cage-confirmation';
+import { ContractCagePetTravelAcquisition } from '../../domain/value-object/cage/cage-acquisition';
 
 export class CommandContractDetailCreator {
   static execute(
@@ -59,13 +61,9 @@ export class CommandContractDetailCreator {
           new CageChosenDimensions(data.cage?.chosen?.dimensionsCage ?? ''),
           new UuidOptional(data.cage?.chosen?.user),
         ),
-        new CageChosen(
-          new CageChosenModel(data.cage?.recommendation?.modelCage ?? ''),
-          new CageChosenType(data.cage?.recommendation?.typeCage ?? ''),
-          new CageChosenDimensions(
-            data.cage?.recommendation?.dimensionsCage ?? '',
-          ),
-          new UuidOptional(''),
+        new ContractCageConfirmation(data?.cage?.confirmation ?? false),
+        new ContractCagePetTravelAcquisition(
+          data?.cage?.petTravelAcquisition ?? false,
         ),
       ),
       new ContractTravel(
