@@ -21,6 +21,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       status: String,
       chipCertificate: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -29,6 +30,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       },
       vaccinationCertificate: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -37,6 +39,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       },
       rabiesSeroLogicalTest: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -45,6 +48,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       },
       chipReview: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -53,6 +57,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       },
       importLicense: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -61,6 +66,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       },
       healthCertificate: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -70,6 +76,7 @@ export class ContractDetailModel implements ContractDetailInterface {
 
       senasaDocuments: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -79,6 +86,7 @@ export class ContractDetailModel implements ContractDetailInterface {
 
       emotionalSupportCertificate: {
         hasServiceIncluded: Boolean,
+        isRequired: Boolean,
         isApplied: Boolean,
         expectedDate: Date,
         executionDate: Date,
@@ -187,6 +195,7 @@ export class ContractDetailModel implements ContractDetailInterface {
         date: Date,
         description: String,
         observation: String,
+        typeSample: String,
         user: String,
       },
     },

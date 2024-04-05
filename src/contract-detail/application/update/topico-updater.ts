@@ -36,7 +36,7 @@ export class ContractDetailTopicoUpdater {
     ensureContractDetail.hasPermission(
       user,
       contractResponse,
-      AuthPermission.CAGE,
+      AuthPermission.TOPICO,
     );
 
     const contract = CommandContractUpdater.execute(contractResponse);

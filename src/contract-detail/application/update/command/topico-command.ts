@@ -20,6 +20,7 @@ import { TakingSampleSerologicalTest } from '../../../domain/value-object/topico
 import { TopicoObservation } from '../../../domain/value-object/topico/topico-observation';
 import { UuidOptional } from '../../../../common/domain/value-object';
 import { RabiesVaccinationContractInterface } from '../../../domain/interfaces/topico.interface';
+import { TopicoTakingSampleType } from '../../../domain/value-object/topico/topico-taking-sample-type';
 
 export class CommandContractTopico {
   static execute(
@@ -125,6 +126,7 @@ export class CommandContractTopico {
       new TopicoDate(takingSampleSerologicalTest?.date ?? null),
       new TopicoDescription(takingSampleSerologicalTest?.description ?? ''),
       new TopicoObservation(takingSampleSerologicalTest?.observation ?? ''),
+      new TopicoTakingSampleType(takingSampleSerologicalTest?.typeSample ?? ''),
       new UuidOptional(takingSampleSerologicalTest?.user ?? userId ?? ''),
     );
   }

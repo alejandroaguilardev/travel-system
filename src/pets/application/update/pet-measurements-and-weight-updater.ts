@@ -1,8 +1,4 @@
-import {
-  MessageDefault,
-  ResponseMessage,
-} from '../../../common/domain/response/response-message';
-import { ResponseSuccess } from '../../../common/domain/response/response-success';
+import { MessageDefault } from '../../../common/domain/response/response-message';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
@@ -33,7 +29,7 @@ export class PetMeasurementsAndWeightUpdater {
     id: string,
     data: PetMeasurementsAndWeightUpdaterRequest,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
+  ): Promise<PetResponse> {
     PermissionValidator.execute(user, AuthGroup.PETS, AuthPermission.EDIT);
 
     const uuid = new Uuid(id);
@@ -54,9 +50,7 @@ export class PetMeasurementsAndWeightUpdater {
 
     await this.petRepository.update(uuid, petUpdated);
 
-    return ResponseMessage.createSuccessResponse(
-      PetMeasurementsAndWeightUpdater.messageSuccess(),
-    );
+    return petUpdated.toJson();
   }
 
   static messageSuccess(): string {

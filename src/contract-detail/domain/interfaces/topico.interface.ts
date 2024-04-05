@@ -46,6 +46,7 @@ export interface TakingSampleSerologicalTestContractInterface {
   date: Date;
   description: string;
   observation: string;
+  typeSample: string;
   user: string;
 }
 

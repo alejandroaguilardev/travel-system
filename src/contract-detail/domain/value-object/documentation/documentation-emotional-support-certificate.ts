@@ -3,6 +3,7 @@ import { ContractHasServiceIncluded } from '../contract-has-service.included';
 import { DocumentationExecutionDate } from './documentation-execution-date';
 import { DocumentationExpectedDate } from './documentation-expected-date';
 import { DocumentationIsApplied } from './documentation-is-applied';
+import { DocumentationIsRequired } from './documentation-is-required';
 import { DocumentationResultDate } from './documentation-result-date';
 
 export class DocumentationEmocionalSupportCertificate {
@@ -12,6 +13,7 @@ export class DocumentationEmocionalSupportCertificate {
     readonly expectedDate: DocumentationExpectedDate,
     readonly executionDate: DocumentationExecutionDate,
     readonly resultDate: DocumentationResultDate,
+    readonly isRequired: DocumentationIsRequired,
     readonly user: UuidOptional,
   ) {}
 
@@ -22,6 +24,7 @@ export class DocumentationEmocionalSupportCertificate {
       expectedDate: this.expectedDate.value,
       executionDate: this.executionDate.value,
       resultDate: this.resultDate.value,
+      isRequired: this.isRequired.value,
       user: this.user.value,
     };
   }

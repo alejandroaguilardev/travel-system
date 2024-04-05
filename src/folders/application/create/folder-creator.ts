@@ -19,7 +19,7 @@ export class FolderCreator {
     folder: Folder,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    PermissionValidator.execute(user, AuthGroup.FOLDER, AuthPermission.CREATE);
+    PermissionValidator.execute(user, AuthGroup.FOLDERS, AuthPermission.CREATE);
     await this.folderRepository.save(folder);
     return ResponseMessage.createSuccessResponse(
       FolderCreator.messageSuccess(),

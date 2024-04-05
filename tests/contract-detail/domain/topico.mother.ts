@@ -114,6 +114,7 @@ export class TopicoMother {
         date: faker.date.recent(),
         description: StringMother.create(),
         observation: StringMother.create(),
+        typeSample: StringMother.create(),
         user: UuidMother.create(),
       }
     );

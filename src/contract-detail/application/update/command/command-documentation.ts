@@ -19,6 +19,7 @@ import {
   DocumentationRabiesSerologicalTest,
   DocumentationImportLicense,
   DocumentationEmocionalSupportCertificate,
+  DocumentationIsRequired,
 } from '../../../domain/value-object/documentation';
 
 export class CommandContractDocumentation {
@@ -45,6 +46,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(vaccinationCertificate.expectedDate),
       new DocumentationExecutionDate(vaccinationCertificate.executionDate),
       new DocumentationResultDate(vaccinationCertificate.resultDate),
+      new DocumentationIsRequired(vaccinationCertificate.isRequired),
       new UuidOptional(vaccinationCertificate?.user ?? ''),
     );
   }
@@ -58,6 +60,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(healthCertificate.expectedDate),
       new DocumentationExecutionDate(healthCertificate.executionDate),
       new DocumentationResultDate(healthCertificate.resultDate),
+      new DocumentationIsRequired(healthCertificate.isRequired),
       new UuidOptional(healthCertificate?.user ?? ''),
     );
   }
@@ -71,6 +74,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(chipCertificate.expectedDate),
       new DocumentationExecutionDate(chipCertificate.executionDate),
       new DocumentationResultDate(chipCertificate.resultDate),
+      new DocumentationIsRequired(chipCertificate.isRequired),
       new UuidOptional(chipCertificate?.user ?? ''),
     );
   }
@@ -84,6 +88,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(senasaDocuments.expectedDate),
       new DocumentationExecutionDate(senasaDocuments.executionDate),
       new DocumentationResultDate(senasaDocuments.resultDate),
+      new DocumentationIsRequired(senasaDocuments.isRequired),
       new UuidOptional(senasaDocuments?.user ?? ''),
     );
   }
@@ -97,6 +102,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(rabiesSeroLogicalTest.expectedDate),
       new DocumentationExecutionDate(rabiesSeroLogicalTest.executionDate),
       new DocumentationResultDate(rabiesSeroLogicalTest.resultDate),
+      new DocumentationIsRequired(rabiesSeroLogicalTest.isRequired),
       new UuidOptional(rabiesSeroLogicalTest?.user ?? ''),
     );
   }
@@ -110,6 +116,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(importLicense.expectedDate),
       new DocumentationExecutionDate(importLicense.executionDate),
       new DocumentationResultDate(importLicense.resultDate),
+      new DocumentationIsRequired(importLicense.isRequired),
       new UuidOptional(importLicense?.user ?? ''),
     );
   }
@@ -125,6 +132,7 @@ export class CommandContractDocumentation {
       new DocumentationExpectedDate(emotionalSupportCertificate.expectedDate),
       new DocumentationExecutionDate(emotionalSupportCertificate.executionDate),
       new DocumentationResultDate(emotionalSupportCertificate.resultDate),
+      new DocumentationIsRequired(emotionalSupportCertificate.isRequired),
       new UuidOptional(emotionalSupportCertificate?.user ?? ''),
     );
   }

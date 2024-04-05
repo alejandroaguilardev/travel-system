@@ -59,7 +59,11 @@ class ChipReviewDto extends ValuesDto implements ChipReviewContractInterface {}
 
 class TakingSampleSerologicalTestContractDto
   extends ValuesDto
-  implements TakingSampleSerologicalTestContractInterface {}
+  implements TakingSampleSerologicalTestContractInterface
+{
+  @IsString()
+  typeSample: string;
+}
 
 export class TopicoDto implements ContractTopicoInterface {
   @Type(() => ChipTopicoDto)

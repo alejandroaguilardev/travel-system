@@ -17,6 +17,7 @@ export class ContractDocumentation {
     'chipCertificate',
     'senasaDocuments',
     'rabiesSeroLogicalTest',
+    'importLicense',
     'emotionalSupportCertificate',
   ];
   static keysObject = {

@@ -16,6 +16,8 @@ class CertificateDto implements DocumentationCertificateInterface {
   @IsBoolean()
   hasServiceIncluded: boolean;
   @IsBoolean()
+  isRequired: boolean;
+  @IsBoolean()
   isApplied: boolean;
   @IsDate()
   expectedDate: Date;

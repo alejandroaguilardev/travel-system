@@ -5,6 +5,7 @@ import { PetInterface } from '../../domain/interfaces/pet.interface';
 import { PetGenderType } from '../../domain/value-object/pet-gender';
 import { Status } from '../../../common/domain/value-object/status-value-object';
 import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
+import { MeasurementsAndWeightInterface } from '../../domain/interfaces/pet-measurements-and-weight';
 
 @Schema({
   collection: 'pets',
@@ -55,6 +56,16 @@ export class PetModel implements PetInterface {
     required: false,
   })
   cageRecommendation: CageChosenInterface;
+  @Prop({
+    type: {
+      weight: Number,
+      height: Number,
+      width: Number,
+      length: Number,
+    },
+    required: false,
+  })
+  measurementsAndWeight: MeasurementsAndWeightInterface;
 }
 
 export type PetDocument = HydratedDocument<PetModel>;

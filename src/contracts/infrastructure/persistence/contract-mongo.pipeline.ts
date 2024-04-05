@@ -41,11 +41,41 @@ export class ContractMongoPipeline {
         },
       },
       {
+        $lookup: {
+          from: 'users',
+          localField: 'adviser',
+          foreignField: 'id',
+          as: 'adviser',
+        },
+      },
+      {
+        $unwind: {
+          path: '$adviser',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: 'pets',
+          localField: 'details.pet',
+          foreignField: 'id',
+          as: 'pet',
+        },
+      },
+      {
+        $unwind: {
+          path: '$pet',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
         $group: {
           _id: '$_id',
           contractFields: { $first: '$$ROOT' },
           client: { $first: '$client' },
+          adviser: { $first: '$adviser' },
           details: { $push: '$details' },
+          pet: { $first: '$pet' },
         },
       },
       {
@@ -53,7 +83,12 @@ export class ContractMongoPipeline {
           newRoot: {
             $mergeObjects: [
               '$contractFields',
-              { client: '$client', details: '$details' },
+              {
+                client: '$client',
+                details: '$details',
+                adviser: '$adviser',
+                pet: '$pet',
+              },
             ],
           },
         },
@@ -68,6 +103,10 @@ export class ContractMongoPipeline {
           'client.__v': 0,
           'client.createdAt': 0,
           'client.updatedAt': 0,
+          'adviser._id': 0,
+          'adviser.__v': 0,
+          'adviser.createdAt': 0,
+          'adviser.updatedAt': 0,
           'details._id': 0,
           'details.__v': 0,
           'details.createdAt': 0,

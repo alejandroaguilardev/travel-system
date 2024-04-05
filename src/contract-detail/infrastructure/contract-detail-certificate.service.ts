@@ -37,7 +37,6 @@ export class ContractDetailCertificateService {
 
     const certificate = CommandContractDocumentation[value](
       certificateDto[value],
-      user.id,
     );
 
     return contractDetailPetUpdater.execute(

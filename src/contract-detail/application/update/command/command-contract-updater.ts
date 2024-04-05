@@ -63,6 +63,7 @@ export class CommandContractDetailsUpdater {
           executionDate:
             services.documentation.vaccinationCertificate.executionDate,
           resultDate: services.documentation.vaccinationCertificate.resultDate,
+          isRequired: services.documentation.vaccinationCertificate.isRequired,
           user: services.documentation.vaccinationCertificate.user,
         },
         healthCertificate: {
@@ -73,6 +74,7 @@ export class CommandContractDetailsUpdater {
           expectedDate: services.documentation.healthCertificate.expectedDate,
           executionDate: services.documentation.healthCertificate.executionDate,
           resultDate: services.documentation.healthCertificate.resultDate,
+          isRequired: services.documentation.healthCertificate.isRequired,
           user: services.documentation.healthCertificate.user,
         },
         chipCertificate: {
@@ -83,6 +85,7 @@ export class CommandContractDetailsUpdater {
           expectedDate: services.documentation.chipCertificate.expectedDate,
           executionDate: services.documentation.chipCertificate.executionDate,
           resultDate: services.documentation.chipCertificate.resultDate,
+          isRequired: services.documentation.chipCertificate.isRequired,
           user: services.documentation.chipCertificate.user,
         },
         senasaDocuments: {
@@ -93,6 +96,7 @@ export class CommandContractDetailsUpdater {
           expectedDate: services.documentation.senasaDocuments.expectedDate,
           executionDate: services.documentation.senasaDocuments.executionDate,
           resultDate: services.documentation.senasaDocuments.resultDate,
+          isRequired: services.documentation.senasaDocuments.isRequired,
           user: services.documentation.senasaDocuments.user,
         },
         rabiesSeroLogicalTest: {
@@ -105,6 +109,7 @@ export class CommandContractDetailsUpdater {
           executionDate:
             services.documentation.rabiesSeroLogicalTest.executionDate,
           resultDate: services.documentation.rabiesSeroLogicalTest.resultDate,
+          isRequired: services.documentation.rabiesSeroLogicalTest.isRequired,
           user: services.documentation.rabiesSeroLogicalTest.user,
         },
         importLicense: {
@@ -115,6 +120,7 @@ export class CommandContractDetailsUpdater {
           expectedDate: services.documentation.importLicense.expectedDate,
           executionDate: services.documentation.importLicense.executionDate,
           resultDate: services.documentation.importLicense.resultDate,
+          isRequired: services.documentation.importLicense.isRequired,
           user: services.documentation.importLicense.user,
         },
         emotionalSupportCertificate: {
@@ -130,6 +136,8 @@ export class CommandContractDetailsUpdater {
             services.documentation.emotionalSupportCertificate.executionDate,
           resultDate:
             services.documentation.emotionalSupportCertificate.resultDate,
+          isRequired:
+            services.documentation.emotionalSupportCertificate.isRequired,
           user: services.documentation.emotionalSupportCertificate.user,
         },
       },

@@ -72,7 +72,7 @@ export class PetsService {
     id: string,
     petMeasurementsAndWeightUpdaterDto: PetMeasurementsAndWeightUpdaterDto,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
+  ): Promise<PetResponse> {
     const petMeasurementsAndWeightUpdater = new PetMeasurementsAndWeightUpdater(
       this.mongoPetRepository,
     );

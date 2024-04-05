@@ -36,7 +36,7 @@ export class ContractDetailCertificateUpdater {
     ensureContractDetail.hasPermission(
       user,
       contractResponse,
-      AuthPermission.CAGE,
+      AuthPermission.DOCUMENTATION,
     );
 
     const contract = CommandContractUpdater.execute(contractResponse);
@@ -47,6 +47,9 @@ export class ContractDetailCertificateUpdater {
       [value]: documentationPartial.toJson(),
     } as DocumentationInterface);
 
+    console.log({ contractDetailUuid: contractDetailUuid.value });
+    console.log(documentationUpdate.toJson());
+
     await Promise.all([
       this.contractDetailRepository.updateDocumentation(
         contractDetailUuid,
@@ -54,6 +57,7 @@ export class ContractDetailCertificateUpdater {
       ),
       this.contractRepository.update(contractUuid, contract),
     ]);
+    console.log('aqui2');
 
     return {
       contract: contract.toJson(),

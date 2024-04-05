@@ -2,6 +2,7 @@ import { StatusInterface } from './status.interface';
 
 export interface DocumentationCertificateInterface {
   hasServiceIncluded: boolean;
+  isRequired: boolean;
   isApplied: boolean;
   expectedDate: Date;
   executionDate: Date | null;

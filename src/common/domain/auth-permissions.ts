@@ -1,12 +1,13 @@
 export enum AuthGroup {
   CAGES = 'jaulas',
+  CLIENT = 'clientes',
   CONTRACTS = 'contratos',
+  CONTRACTS_DETAIL = 'detalles de contratos',
   PERMISSIONS = 'permisos',
   PETS = 'mascotas',
   ROLES = 'roles',
   USERS = 'usuarios',
-  CLIENT = 'clientes',
-  FOLDER = 'expedientes',
+  FOLDERS = 'expedientes',
 }
 
 export enum AuthPermission {
@@ -18,6 +19,7 @@ export enum AuthPermission {
 
   FINISH = 'finalizar',
   DOCUMENTATION = 'documentación',
+  TOPICO = 'topico',
   CAGE = 'jaula',
   TRAVEL = 'viaje',
 }

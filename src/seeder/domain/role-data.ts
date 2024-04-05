@@ -66,7 +66,7 @@ export const getRolesData = (
     description: 'Gestionar los expedientes del sistemas',
     permissions: [
       ...permissions
-        .filter((_) => _.group === AuthGroup.FOLDER)
+        .filter((_) => _.group === AuthGroup.FOLDERS)
         .map((_) => _.id),
     ],
   },

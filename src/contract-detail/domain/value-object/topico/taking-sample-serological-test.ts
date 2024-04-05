@@ -4,6 +4,7 @@ import { TopicoDescription } from './topico-description';
 import { TopicoExecuted } from './topico-executed';
 import { UuidOptional } from '../../../../common/domain/value-object/uuid-optional-value-object';
 import { TopicoObservation } from './topico-observation';
+import { TopicoTakingSampleType } from './topico-taking-sample-type';
 
 export class TakingSampleSerologicalTest {
   constructor(
@@ -11,6 +12,8 @@ export class TakingSampleSerologicalTest {
     readonly date: TopicoDate,
     readonly description: TopicoDescription,
     readonly observation: TopicoObservation,
+    readonly typeSample: TopicoTakingSampleType,
+
     readonly user: UuidOptional,
   ) {}
 
@@ -20,6 +23,7 @@ export class TakingSampleSerologicalTest {
       date: this.date.value,
       description: this.description.value,
       observation: this.observation.value,
+      typeSample: this.typeSample.value,
       user: this.user.value,
     };
   }

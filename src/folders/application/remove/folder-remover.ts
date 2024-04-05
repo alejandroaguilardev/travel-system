@@ -19,7 +19,7 @@ export class FolderRemover {
     id: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    PermissionValidator.execute(user, AuthGroup.FOLDER, AuthPermission.DELETE);
+    PermissionValidator.execute(user, AuthGroup.FOLDERS, AuthPermission.DELETE);
 
     const uuid = new Uuid(id);
 

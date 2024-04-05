@@ -87,6 +87,12 @@ export const getPermissionsData = (uuid: UUID): CreatePermissionRequest[] => [
     description: 'Editar documentación de la mascota',
     group: AuthGroup.CONTRACTS,
   },
+  {
+    id: uuid.generate(),
+    name: AuthPermission.TOPICO,
+    description: 'Actualizar Topico',
+    group: AuthGroup.CONTRACTS,
+  },
 
   // PETS
   {
@@ -152,36 +158,36 @@ export const getPermissionsData = (uuid: UUID): CreatePermissionRequest[] => [
     group: AuthGroup.ROLES,
   },
 
-  // FOLDER
+  // FOLDERS
   {
     id: uuid.generate(),
     name: AuthPermission.CREATE,
     description: 'Crear nuevos elementos',
-    group: AuthGroup.FOLDER,
+    group: AuthGroup.FOLDERS,
   },
   {
     id: uuid.generate(),
     name: AuthPermission.EDIT,
     description: 'Editar elementos existentes',
-    group: AuthGroup.FOLDER,
+    group: AuthGroup.FOLDERS,
   },
   {
     id: uuid.generate(),
     name: AuthPermission.DELETE,
     description: 'Eliminar elementos existentes',
-    group: AuthGroup.FOLDER,
+    group: AuthGroup.FOLDERS,
   },
   {
     id: uuid.generate(),
     name: AuthPermission.READ,
     description: 'Leer detalles de elementos',
-    group: AuthGroup.FOLDER,
+    group: AuthGroup.FOLDERS,
   },
   {
     id: uuid.generate(),
     name: AuthPermission.LIST,
     description: 'Listar elementos',
-    group: AuthGroup.FOLDER,
+    group: AuthGroup.FOLDERS,
   },
 
   // USERS

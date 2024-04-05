@@ -8,3 +8,4 @@ export { DocumentationIsApplied } from './documentation-is-applied';
 export { DocumentationRabiesSerologicalTest } from './documentation-rabies-serological-test';
 export { DocumentationSenasaDocuments } from './documentation-senasa-documents';
 export { DocumentationVaccinationCertificate } from './documentation-vaccination-certificate';
+export { DocumentationIsRequired } from './documentation-is-required';
