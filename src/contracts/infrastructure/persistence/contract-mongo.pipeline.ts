@@ -12,20 +12,26 @@ export class ContractMongoPipeline {
     }
 
     return [
+      ...ContractMongoPipeline.lookup(),
       {
-        $lookup: {
-          from: 'contract-detail',
-          localField: 'details',
-          foreignField: 'id',
-          as: 'details',
-        },
+        $match: query,
       },
       {
-        $unwind: {
-          path: '$details',
-          preserveNullAndEmptyArrays: true,
-        },
+        $skip: start,
       },
+      {
+        $limit: size,
+      },
+      ...sort,
+    ];
+  }
+
+  static executeById(id: string): PipelineStage[] {
+    return [{ $match: { id: { $eq: id } } }, ...ContractMongoPipeline.lookup()];
+  }
+
+  private static lookup() {
+    return [
       {
         $lookup: {
           from: 'users',
@@ -55,27 +61,29 @@ export class ContractMongoPipeline {
         },
       },
       {
+        $unwind: '$details',
+      },
+      {
         $lookup: {
           from: 'pets',
           localField: 'details.pet',
           foreignField: 'id',
-          as: 'pet',
+          as: 'details.pet',
         },
       },
       {
         $unwind: {
-          path: '$pet',
+          path: '$details.pet',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $group: {
           _id: '$_id',
+          details: { $push: '$details' },
           contractFields: { $first: '$$ROOT' },
           client: { $first: '$client' },
           adviser: { $first: '$adviser' },
-          details: { $push: '$details' },
-          pet: { $first: '$pet' },
         },
       },
       {
@@ -85,9 +93,8 @@ export class ContractMongoPipeline {
               '$contractFields',
               {
                 client: '$client',
-                details: '$details',
                 adviser: '$adviser',
-                pet: '$pet',
+                details: '$details',
               },
             ],
           },
@@ -101,28 +108,27 @@ export class ContractMongoPipeline {
           updatedAt: 0,
           'client._id': 0,
           'client.__v': 0,
+          'client.password': 0,
           'client.createdAt': 0,
           'client.updatedAt': 0,
           'adviser._id': 0,
           'adviser.__v': 0,
           'adviser.createdAt': 0,
           'adviser.updatedAt': 0,
+          'adviser.password': 0,
           'details._id': 0,
           'details.__v': 0,
           'details.createdAt': 0,
           'details.updatedAt': 0,
+          'details.pet._id': 0,
+          'details.pet.__v': 0,
+          'details.pet.createdAt': 0,
+          'details.pet.updatedAt': 0,
+          'details.cage._id': 0,
+          'details.documentation._id': 0,
+          'details.travel._id': 0,
         },
       },
-      {
-        $match: query,
-      },
-      {
-        $skip: start,
-      },
-      {
-        $limit: size,
-      },
-      ...sort,
     ];
   }
 }

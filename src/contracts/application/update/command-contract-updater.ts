@@ -6,11 +6,7 @@ import {
   ContractStatus,
   ContractStartDate,
   ContractEndDate,
-  ContractDetails,
 } from '../../domain/value-object';
-import { ContractUpdaterRequest } from './contract-updater-request';
-import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
-import { CommandContractDetailCreator } from '../../../contract-detail/application/create/command-contract-detail-creator';
 import { ContractPrice } from '../../../contracts/domain/value-object/contract-price';
 import { PayInInstallments } from '../../../contracts/domain/value-object/pay-in-installments/pay-in-installments';
 import { CustomerPayments } from '../../../contracts/domain/value-object/customer-payments/customer-payments';
@@ -20,6 +16,7 @@ import { PayInInstallment } from '../../../contracts/domain/value-object/pay-in-
 import { CustomerPayment } from '../../../contracts/domain/value-object/customer-payments/customer-payment';
 import { CustomerPaymentMethod } from '../../../contracts/domain/value-object/customer-payments/customer-payment-method';
 import { ContractFolder } from '../../../contracts/domain/value-object/contract-folder';
+import { CommandContractDetailsUpdater } from '../../../contract-detail/application/update/command/command-contract-updater';
 
 export class CommandContractUpdater {
   static execute(
@@ -34,7 +31,7 @@ export class CommandContractUpdater {
       new ContractStatus(contract.status),
       new ContractStartDate(data?.startDate ?? contract.startDate),
       new ContractEndDate(contract.endDate),
-      new ContractDetails(data?.details ?? contract.details),
+      CommandContractDetailsUpdater.execute(contract.details, data?.details),
       new ContractPrice(data?.price ?? contract.price),
       new PayInInstallments(
         data?.payInInstallments?.map(
@@ -59,12 +56,5 @@ export class CommandContractUpdater {
       new Uuid(data?.adviser ?? contract.adviser),
       new UuidOptional(data?.user ?? contract.user),
     );
-  }
-
-  static details(
-    data: ContractUpdaterRequest,
-    userId: string,
-  ): ContractDetail[] {
-    return CommandContractDetailCreator.execute(data.details, userId);
   }
 }

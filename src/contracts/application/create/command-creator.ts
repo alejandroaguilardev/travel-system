@@ -5,12 +5,10 @@ import {
   ContractStatus,
   ContractStartDate,
   ContractEndDate,
-  ContractDetails,
 } from '../../domain/value-object';
 
 import { ContractCreateRequest } from './contract-create-request';
 import { CommandContractDetailCreator } from '../../../contract-detail/application/create/command-contract-detail-creator';
-import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
 import { ContractPrice } from '../../../contracts/domain/value-object/contract-price';
 import { PayInInstallments } from '../../../contracts/domain/value-object/pay-in-installments/pay-in-installments';
 import { CustomerPayments } from '../../../contracts/domain/value-object/customer-payments/customer-payments';
@@ -31,7 +29,7 @@ export class CommandContractCreator {
       new ContractStatus('pending'),
       new ContractStartDate(data.startDate),
       new ContractEndDate(null),
-      new ContractDetails([]),
+      CommandContractDetailCreator.execute(data.details, userId),
       new ContractPrice(data.price),
       new PayInInstallments(
         data.payInInstallments.map(
@@ -56,12 +54,5 @@ export class CommandContractCreator {
       new Uuid(data.adviser),
       new UuidOptional(userId),
     );
-  }
-
-  static details(
-    data: ContractCreateRequest,
-    userId: string,
-  ): ContractDetail[] {
-    return CommandContractDetailCreator.execute(data.details, userId);
   }
 }

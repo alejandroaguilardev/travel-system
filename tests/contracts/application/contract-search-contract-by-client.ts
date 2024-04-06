@@ -4,45 +4,47 @@ import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found
 import { ContractSearchById } from '../../../src/contracts/application/search-by-id/contract-search-by-id';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
-import { contractDetailRepositoryMock } from '../../contract-detail/domain/contract-detail-mock.repository';
-
-const response = [
-  ContractCreatorMother.create(),
-  ContractCreatorMother.create(),
-  ContractCreatorMother.create(),
-  ContractCreatorMother.create(),
-];
 
 describe('ContractSearchClient', () => {
-  const contractSearchById = new ContractSearchById(
-    contractRepositoryMock,
-    contractDetailRepositoryMock,
-  );
+  const contractSearchById = new ContractSearchById(contractRepositoryMock);
 
   it('should_successfully_contract_client_id', async () => {
-    const dto = ContractCreatorMother.create();
-    const user = UserCreatorMother.createWithPassword();
-    contractRepositoryMock.searchById.mockResolvedValueOnce(response);
-    const expected = await contractSearchById.execute(dto.client, user);
-    expect(expected).toEqual(dto);
+    const contractResponse = ContractCreatorMother.createResponse();
+    const user = UserCreatorMother.createWithPassword({
+      id: contractResponse.client.id,
+    });
+    contractRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractResponse,
+    );
+    const expected = await contractSearchById.execute(
+      contractResponse.client.id,
+      user,
+    );
+    expect(expected).toEqual(contractResponse);
   });
 
   it('should_successfully_contract_client_id_to_have_call', async () => {
-    const dto = ContractCreatorMother.create();
-    contractRepositoryMock.searchById.mockResolvedValueOnce(dto);
-    const user = UserCreatorMother.createWithPassword();
-    await contractSearchById.execute(dto.id, user);
-    const uuid = new Uuid(dto.id);
-    expect(contractRepositoryMock.searchById).toHaveBeenCalledWith(uuid);
+    const contractResponse = ContractCreatorMother.createResponse();
+    const user = UserCreatorMother.createWithPassword({
+      id: contractResponse.client.id,
+    });
+    contractRepositoryMock.searchByIdWithPet.mockResolvedValueOnce(
+      contractResponse,
+    );
+    await contractSearchById.execute(contractResponse.client.id, user);
+    const uuid = new Uuid(contractResponse.client.id);
+    expect(contractRepositoryMock.searchByIdWithPet).toHaveBeenCalledWith(uuid);
   });
 
   it('should_failed_contract_client_id', async () => {
-    const dto = ContractCreatorMother.create();
-    const user = UserCreatorMother.createWithPassword();
+    const contractResponse = ContractCreatorMother.createResponse();
+    const user = UserCreatorMother.createWithPassword({
+      id: contractResponse.client.id,
+    });
     const error = new ErrorNotFound(ErrorNotFound.messageDefault());
-    contractRepositoryMock.searchById.mockRejectedValueOnce(error);
+    contractRepositoryMock.searchByIdWithPet.mockRejectedValueOnce(error);
     try {
-      await contractSearchById.execute(dto.id, user);
+      await contractSearchById.execute(contractResponse.client.id, user);
       fail('should_failed_contract_client_id');
     } catch (throwError) {
       expect(throwError.message).toBe(error.message);

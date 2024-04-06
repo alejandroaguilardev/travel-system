@@ -2,12 +2,12 @@ import { ResponseMessage } from '../../../common/domain/response/response-messag
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { ContractRepository } from '../../domain/contract.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractResponse } from '../response/contract.response';
 import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
 import { ContractEndDate } from '../../domain/value-object/contract-end-date';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { ContractInterface } from '../../domain/interfaces/contract.interface';
 import {
   AuthGroup,
   AuthPermission,
@@ -22,7 +22,7 @@ export class ContractCancel {
   ): Promise<ResponseSuccess> {
     const uuid = new Uuid(contractId);
     const response =
-      await this.contractRepository.searchById<ContractResponse>(uuid);
+      await this.contractRepository.searchById<ContractInterface>(uuid);
 
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
@@ -52,7 +52,7 @@ export class ContractCancel {
 
   private permissionCancel(
     user: UserWithoutWithRoleResponse,
-    contract: ContractResponse,
+    contract: ContractInterface,
   ) {
     if (user.id === contract.client) {
       return;

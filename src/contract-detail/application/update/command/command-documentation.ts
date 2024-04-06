@@ -34,7 +34,9 @@ export class CommandContractDocumentation {
       this.senasaDocuments(documentation.senasaDocuments),
       this.rabiesSeroLogicalTest(documentation.rabiesSeroLogicalTest),
       this.importLicense(documentation.importLicense),
-      this.importLicense(documentation.importLicense),
+      this.emotionalSupportCertificate(
+        documentation.emotionalSupportCertificate,
+      ),
     );
   }
   static vaccinationCertificate(

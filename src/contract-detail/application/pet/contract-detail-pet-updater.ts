@@ -1,5 +1,4 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { ContractDetailPetUpdaterRequest } from './contract-detail-pet-updater-request';
@@ -9,20 +8,16 @@ import {
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
 import { PermissionValidator } from '../../../auth/application/permission';
-import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import {
   MessageDefault,
   ResponseMessage,
 } from '../../../common/domain/response/response-message';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
-import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces';
-import { CommandContractDetailsUpdater } from '../update';
+import { ContractInterface } from '../../../contracts/domain/interfaces/contract.interface';
+import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
 
 export class ContractDetailPetUpdater {
-  constructor(
-    private readonly contractRepository: ContractRepository,
-    private readonly contractDetailRepository: ContractDetailRepository,
-  ) {}
+  constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
@@ -32,7 +27,7 @@ export class ContractDetailPetUpdater {
     const contractUuid = new Uuid(contractId);
 
     const contract =
-      await this.contractRepository.searchById<ContractResponse>(contractUuid);
+      await this.contractRepository.searchById<ContractInterface>(contractUuid);
 
     if (!contract) {
       throw ErrorNotFound.messageDefault('contrato');
@@ -40,20 +35,19 @@ export class ContractDetailPetUpdater {
 
     this.permission(user, contract.client);
 
-    await Promise.all(
-      details.map(async ({ id, pet }) => {
-        const response =
-          await this.contractDetailRepository.searchById<ContractDetailInterface>(
-            new Uuid(id),
-          );
-        const contractDetail = CommandContractDetailsUpdater.execute(response, {
-          pet,
-        });
-        return this.contractDetailRepository.update(
-          new Uuid(id),
-          contractDetail,
-        );
-      }),
+    const contractDetails = contract.details.map((item) => {
+      const detail = details.find((_) => _.id === item.id);
+      if (detail) {
+        return { ...item, pet: detail.pet };
+      }
+      return item;
+    });
+
+    contract.details = contractDetails;
+
+    await this.contractRepository.update(
+      contractUuid,
+      CommandContractUpdater.execute(contract),
     );
 
     return ResponseMessage.createSuccessResponse(

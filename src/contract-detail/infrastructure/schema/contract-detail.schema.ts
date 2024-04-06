@@ -1,16 +1,10 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
+import { Prop } from '@nestjs/mongoose';
 import { ContractDetailInterface } from '../../domain/interfaces/contract-detail.interface';
 import { DocumentationInterface } from '../../domain/interfaces/documentation.interface';
 import { CageInterface } from '../../domain/interfaces/cage.interface';
 import { TravelInterface } from '../../domain/interfaces/travel.interface';
 import { ContractTopicoInterface } from '../../domain/interfaces/topico.interface';
 
-@Schema({
-  collection: 'contract-detail',
-  ...SCHEMA_OPTIONS,
-})
 export class ContractDetailModel implements ContractDetailInterface {
   @Prop({ type: String, index: true, unique: true, required: true })
   id: string;
@@ -207,7 +201,3 @@ export class ContractDetailModel implements ContractDetailInterface {
   @Prop({ type: String, required: false })
   user: string;
 }
-
-export type ContractDetailDocument = HydratedDocument<ContractDetailModel>;
-export const ContractDetailSchema =
-  SchemaFactory.createForClass(ContractDetailModel);

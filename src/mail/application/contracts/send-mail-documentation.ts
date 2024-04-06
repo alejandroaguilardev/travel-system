@@ -19,8 +19,8 @@ export class SendMailUpdateDocumentation {
     contract,
     contractDetail,
   }: ContractDetailUpdaterResponse): Promise<void> {
-    const clientId = new Uuid(contract.client);
-    const adviserId = new Uuid(contract.adviser);
+    const clientId = new Uuid(contract.client.id);
+    const adviserId = new Uuid(contract.adviser.id);
     const [user, adviser] = await Promise.all([
       this.userRepository.searchById<UserResponse>(clientId),
       this.userRepository.searchById<UserResponse>(adviserId),

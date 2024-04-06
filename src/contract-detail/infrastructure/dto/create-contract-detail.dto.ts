@@ -1,31 +1,10 @@
-import {
-  IsBoolean,
-  IsOptional,
-  IsString,
-  IsUUID,
-  ValidateNested,
-} from 'class-validator';
+import { IsOptional, IsUUID, ValidateNested } from 'class-validator';
 import { ContractDetailCreateRequest } from '../../application/create/contract-detail-create-request';
 import { Type } from 'class-transformer';
 import { DocumentationDto } from './documentation.dto';
 import { CageDto } from './cage.dto';
-import { TypeTravelingType } from '../../domain/interfaces/travel.interface';
-
-class DestinationDto {
-  @IsString()
-  countryDestination: string;
-}
-class TravelDto {
-  @IsBoolean()
-  hasServiceIncluded: boolean;
-  @IsBoolean()
-  hasServiceAccompanied: boolean;
-  @IsString()
-  typeTraveling: TypeTravelingType;
-  @Type(() => DestinationDto)
-  @ValidateNested()
-  destination: DestinationDto;
-}
+import { ContractTopicoInterface } from 'src/contract-detail/domain/interfaces/topico.interface';
+import { TravelDto } from './travel.dto';
 
 export class CreateContractDetailDto implements ContractDetailCreateRequest {
   @IsUUID()
@@ -45,4 +24,8 @@ export class CreateContractDetailDto implements ContractDetailCreateRequest {
   @IsOptional()
   @IsUUID()
   user: string;
+  @IsOptional()
+  guideNumber: string;
+  @IsOptional()
+  topico?: ContractTopicoInterface;
 }

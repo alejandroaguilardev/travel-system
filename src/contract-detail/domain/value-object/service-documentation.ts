@@ -30,7 +30,7 @@ export class ContractDocumentation {
     emotionalSupportCertificate: 'emotionalSupportCertificate',
   };
   constructor(
-    readonly status: ContractStatus,
+    public status: ContractStatus,
     readonly vaccinationCertificate: DocumentationVaccinationCertificate,
     readonly healthCertificate: DocumentationHealthCertificate,
     readonly chipCertificate: DocumentationChipCertificate,
@@ -53,24 +53,30 @@ export class ContractDocumentation {
     };
   }
 
-  documentationIsApplied(): void {
-    let count = 0;
+  setStatus(status: StatusInterface): void {
+    this.status = new ContractStatus(status);
+  }
 
-    Object.keys(this).forEach((key) => {
-      if (typeof this[key]?.hasServiceIncluded?.value == 'boolean') {
-        this[key].isApplied.value = this[key].isApplied.value;
-        if (this[key]?.isApplied.value) {
-          ++count;
-        }
+  documentationIsApplied(data: DocumentationInterface): StatusInterface {
+    let count = 0;
+    let isRequired = 0;
+
+    Object.keys(data).forEach((key) => {
+      if (data[key]?.isRequired) {
+        ++isRequired;
+      }
+
+      if (data[key]?.isApplied) {
+        ++count;
       }
     });
 
-    if (count === 7) {
-      this.status.value = 'completed';
+    if (count === isRequired) {
+      return 'completed';
     } else if (count > 0) {
-      this.status.value = 'in-process';
+      return 'in-process';
     } else {
-      this.status.value = 'pending';
+      return 'pending';
     }
   }
 }

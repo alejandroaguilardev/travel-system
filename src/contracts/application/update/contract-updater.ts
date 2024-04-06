@@ -11,12 +11,9 @@ import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { ContractRepository } from '../../domain/contract.repository';
-import { ContractResponse } from '../response/contract.response';
 import { Contract } from '../../domain/contract';
-import { CommandContractUpdater } from './command-contract-updater';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
-import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
-import { ContractDetails } from '../../domain/value-object/contract-details';
+import { ContractInterface } from '../../domain/interfaces/contract.interface';
 
 export class ContractUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -24,7 +21,6 @@ export class ContractUpdater {
   async execute(
     id: string,
     contract: Contract,
-    contractDetails: ContractDetail[],
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(user, AuthGroup.CONTRACTS, AuthPermission.EDIT);
@@ -32,21 +28,12 @@ export class ContractUpdater {
     const uuid = new Uuid(id);
 
     const response =
-      await this.contractRepository.searchById<ContractResponse>(uuid);
+      await this.contractRepository.searchById<ContractInterface>(uuid);
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));
     }
 
-    const updateContract = CommandContractUpdater.execute(
-      response,
-      contract.toJson(),
-    );
-
-    const details = contractDetails.map((detail) => detail.id.value);
-
-    updateContract.setDetails(new ContractDetails(details));
-
-    await this.contractRepository.update(uuid, updateContract);
+    await this.contractRepository.update(uuid, contract);
 
     return ResponseMessage.createSuccessResponse(
       ContractUpdater.messageSuccess(),

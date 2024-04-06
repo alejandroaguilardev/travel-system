@@ -1,5 +1,4 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { AuthPermission } from '../../../common/domain/auth-permissions';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { EnsureContractDetail } from '../update/ensure-contract-detail';
@@ -7,10 +6,7 @@ import { ContractRepository } from '../../../contracts/domain/contract.repositor
 import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
 
 export class ContractDetailSearchById {
-  constructor(
-    private readonly contractRepository: ContractRepository,
-    private readonly contractDetailRepository: ContractDetailRepository,
-  ) {}
+  constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
@@ -22,7 +18,6 @@ export class ContractDetailSearchById {
 
     const ensureContractDetail = new EnsureContractDetail(
       this.contractRepository,
-      this.contractDetailRepository,
     );
 
     const { contractResponse, contractDetailResponse } =

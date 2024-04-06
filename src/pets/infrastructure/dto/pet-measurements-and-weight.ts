@@ -6,7 +6,9 @@ import { MeasurementsAndWeightInterface } from '../../../pets/domain/interfaces/
 import { PetMeasurementsAndWeightUpdaterRequest } from '../../../pets/application/update/pet-measurements-and-weight-updater';
 import { PetGenderType } from '../../../pets/domain/value-object/pet-gender';
 
-class MeasurementsAndWeightDto implements MeasurementsAndWeightInterface {
+export class MeasurementsAndWeightDto
+  implements MeasurementsAndWeightInterface
+{
   @IsNumber()
   weight: number;
   @IsNumber()

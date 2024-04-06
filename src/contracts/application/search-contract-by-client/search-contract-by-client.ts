@@ -1,41 +1,28 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractRepository } from '../../domain/contract.repository';
-import { ContractWithDetailsResponse } from '../response/contract.response';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { ErrorNotAuthorization } from '../../../common/domain/errors/error-not-authorization';
-import { ContractDetailRepository } from '../../../contract-detail/domain/contract-detail.repository';
+import { ContractResponse } from '../response/contract.response';
+import { CommandCriteria } from '../../../common/application/criteria/command-criteria';
 
 export class ContractSearchByIdClient {
-  constructor(
-    private readonly contractRepository: ContractRepository,
-    private readonly contractDetailRepository: ContractDetailRepository,
-  ) {}
+  constructor(private readonly contractRepository: ContractRepository) {}
   async execute(
-    id: string,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ContractWithDetailsResponse[]> {
-    const uuid = new Uuid(id);
-    const contracts =
-      await this.contractRepository.searchContractByClient(uuid);
+  ): Promise<ContractResponse[]> {
+    const uuid = new Uuid(user.id);
+    const criteria = CommandCriteria.fromData({
+      filters: [
+        { field: 'client.id', value: uuid.value, operator: 'CONTAINS' },
+        { field: 'endDate', value: null, operator: 'CONTAINS' },
+      ],
+    });
 
-    const response: ContractWithDetailsResponse[] = [];
+    const { rows } =
+      await this.contractRepository.search<ContractResponse>(criteria);
 
-    for (const contract of contracts) {
-      const details = await Promise.all(
-        contract.details.map(async (detailId) => {
-          const detailUuid = new Uuid(detailId);
-          return await this.contractDetailRepository.searchByIdWithPet(
-            detailUuid,
-          );
-        }),
-      );
-      response.push({
-        ...contract,
-        details,
-      });
-    }
     this.checkIsUserAsOwner(user, uuid);
-    return response;
+    return rows;
   }
 
   private checkIsUserAsOwner(user: UserWithoutWithRoleResponse, uuid: Uuid) {

@@ -16,6 +16,7 @@ import { Criteria } from '../../../common/domain/criteria/criteria';
 import { ResponseSearch } from '../../../common/domain/response/response-search';
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
 import { ContractMongoPipeline } from './contract-mongo.pipeline';
+import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
 
 @Injectable()
 export class MongoContractRepository
@@ -27,16 +28,6 @@ export class MongoContractRepository
   constructor(@InjectModel(ContractModel.name) model: Model<ContractModel>) {
     super(model);
     this.contractModel = model;
-  }
-
-  async searchContractByClient(clientId: Uuid): Promise<ContractResponse[]> {
-    const rows = await this.contractModel
-      .find({ client: clientId.value, endDate: null })
-      .select(['-_id', '-__v', '-createdAt', '-updatedAt'])
-      .sort({ createdAt: -1 })
-      .lean();
-
-    return rows;
   }
 
   async search<ContractResponse>(
@@ -51,23 +42,14 @@ export class MongoContractRepository
     return { rows, count };
   }
 
-  async searchClient(
-    criteria: Criteria,
-  ): Promise<ResponseSearch<ContractResponse>> {
-    const { query, selectProperties, start, size, sortQuery } =
-      MongoCriteriaConverter.converter(criteria);
-
+  async searchByIdWithPet(uuid: Uuid): Promise<ContractResponse | null> {
     const rows: ContractResponse[] = await this.contractModel
-      .find(query)
-      .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
-      .skip(start)
-      .limit(size)
-      .sort(sortQuery)
-      .lean();
+      .aggregate(ContractMongoPipeline.executeById(uuid.value))
+      .exec();
 
-    const count = await this.count(criteria);
-
-    return { rows, count };
+    const detail = rows.length > 0 ? rows[0] : null;
+    if (!detail) return null;
+    return detail;
   }
 
   async searchTopico(
@@ -93,6 +75,7 @@ export class MongoContractRepository
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
+        status: 'completed',
         endDate: endDate.value,
       },
     );
@@ -118,6 +101,18 @@ export class MongoContractRepository
       {
         folder: folder.value,
         number: number.value,
+      },
+    );
+  }
+
+  async updateDetail(
+    contractId: Uuid,
+    details: ContractDetail[],
+  ): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        details: details.map((detail) => detail.toJson()),
       },
     );
   }

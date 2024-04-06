@@ -5,6 +5,8 @@ import { ContractInterface } from '../../domain/interfaces/contract.interface';
 import { StatusInterface } from '../../domain/interfaces/status.interface';
 import { CustomerPaymentInterface } from '../../domain/interfaces/customer-payment.interface';
 import { PayInInstallmentInterface } from '../../domain/interfaces/pay-in-installment.interface';
+import { ContractDetailModel } from '../../../contract-detail/infrastructure/schema/contract-detail.schema';
+import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
 
 @Schema({
   collection: 'contracts',
@@ -23,8 +25,8 @@ export class ContractModel implements ContractInterface {
   @Prop({ type: String, required: true, index: true })
   client: string;
 
-  @Prop({ type: [String], required: true, index: true })
-  details: string[];
+  @Prop({ type: [ContractDetailModel] })
+  details: ContractDetailInterface[];
 
   @Prop({ type: String, required: true })
   status: StatusInterface;

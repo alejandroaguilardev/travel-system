@@ -1,5 +1,4 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
@@ -11,10 +10,7 @@ import { CommandContractDocumentation } from './command/command-documentation';
 import { DocumentationInterface } from '../../../contract-detail/domain/interfaces/documentation.interface';
 
 export class ContractDetailCertificateUpdater {
-  constructor(
-    private readonly contractRepository: ContractRepository,
-    private readonly contractDetailRepository: ContractDetailRepository,
-  ) {}
+  constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
@@ -28,9 +24,8 @@ export class ContractDetailCertificateUpdater {
 
     const ensureContractDetail = new EnsureContractDetail(
       this.contractRepository,
-      this.contractDetailRepository,
     );
-    const { contractResponse, contractDetailResponse, detailsResponse } =
+    const { contractResponse, contractDetailResponse } =
       await ensureContractDetail.searchEnsure(contractUuid, contractDetailUuid);
 
     ensureContractDetail.hasPermission(
@@ -39,34 +34,37 @@ export class ContractDetailCertificateUpdater {
       AuthPermission.DOCUMENTATION,
     );
 
-    const contract = CommandContractUpdater.execute(contractResponse);
-    contract.status.statusError(contract.endDate.value);
-
     const documentationUpdate = CommandContractDocumentation.execute({
       ...(contractDetailResponse?.documentation ?? {}),
       [value]: documentationPartial.toJson(),
     } as DocumentationInterface);
 
-    console.log({ contractDetailUuid: contractDetailUuid.value });
-    console.log(documentationUpdate.toJson());
+    documentationUpdate.setStatus(
+      documentationUpdate.documentationIsApplied(documentationUpdate.toJson()),
+    );
 
-    await Promise.all([
-      this.contractDetailRepository.updateDocumentation(
-        contractDetailUuid,
-        documentationUpdate,
+    const contractDetail = {
+      ...contractDetailResponse,
+      documentation: documentationUpdate.toJson(),
+    };
+    const contract = CommandContractUpdater.execute({
+      ...contractResponse,
+      details: contractResponse.details.map((_) =>
+        _.id === contractDetail.id ? contractDetail : _,
       ),
-      this.contractRepository.update(contractUuid, contract),
-    ]);
-    console.log('aqui2');
+    });
+
+    contract.status.statusError(contract.endDate.value);
+    contract.establishedStatus();
+
+    await this.contractRepository.update(contractUuid, contract);
+
+    const response =
+      await this.contractRepository.searchByIdWithPet(contractUuid);
 
     return {
-      contract: contract.toJson(),
-      contractDetail: {
-        ...contractDetailResponse,
-        pet: detailsResponse.find(
-          (d) => d.pet.id === contractDetailResponse.pet,
-        ).pet,
-      },
+      contract: response,
+      contractDetail: response.details.find((_) => _.id === contractDetail.id),
     };
   }
 }

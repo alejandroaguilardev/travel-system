@@ -58,13 +58,10 @@ export class ContractsController {
     return this.contractsService.findAll(criteriaDto, user);
   }
 
-  @Get('client/:id')
+  @Get('client/pending')
   @Auth()
-  findContractByClient(
-    @Param('id') id: string,
-    @GetUser() user: UserWithoutWithRoleResponse,
-  ) {
-    return this.contractsService.findContractByClient(id, user);
+  findContractByClient(@GetUser() user: UserWithoutWithRoleResponse) {
+    return this.contractsService.findContractByClient(user);
   }
 
   @Get('client')

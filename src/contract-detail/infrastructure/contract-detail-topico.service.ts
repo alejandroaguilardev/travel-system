@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
@@ -13,7 +12,6 @@ import { ContractTopico } from '../domain/value-object/contract-topico';
 export class ContractDetailTopicoService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mongoContractDetailRepository: MongoContractDetailRepository,
     private readonly mailerService: MailContractService,
   ) {}
 
@@ -32,7 +30,6 @@ export class ContractDetailTopicoService {
 
     const contractDetailPetUpdater = new ContractDetailTopicoUpdater(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
 
     const topico = CommandContractTopico[value](topicoDto[value], user.id);

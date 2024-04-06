@@ -1,5 +1,4 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { ContractTravel } from '../../domain/value-object/service-travel';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { AuthPermission } from '../../../common/domain/auth-permissions';
@@ -7,12 +6,10 @@ import { ContractRepository } from '../../../contracts/domain/contract.repositor
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
 import { EnsureContractDetail } from './ensure-contract-detail';
+import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces';
 
 export class ContractDetailTravelUpdater {
-  constructor(
-    private readonly contractRepository: ContractRepository,
-    private readonly contractDetailRepository: ContractDetailRepository,
-  ) {}
+  constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
@@ -25,9 +22,8 @@ export class ContractDetailTravelUpdater {
 
     const ensureContractDetail = new EnsureContractDetail(
       this.contractRepository,
-      this.contractDetailRepository,
     );
-    const { contractResponse, contractDetailResponse, detailsResponse } =
+    const { contractResponse, contractDetailResponse } =
       await ensureContractDetail.searchEnsure(contractUuid, contractDetailUuid);
 
     ensureContractDetail.hasPermission(
@@ -35,36 +31,39 @@ export class ContractDetailTravelUpdater {
       contractResponse,
       AuthPermission.TRAVEL,
     );
-    const contract = CommandContractUpdater.execute(contractResponse);
-    contract.status.statusError(contract.endDate.value);
 
-    travel.statusCompleted();
-
-    const contractDetail = {
+    const contractDetail: ContractDetailInterface = {
       ...contractDetailResponse,
-      travel: travel.toJson(),
+      travel: {
+        ...travel.toJson(),
+        accompaniedPet: contractDetailResponse.travel.accompaniedPet,
+        destination: contractDetailResponse.travel.destination,
+        petPerCharge: contractDetailResponse.travel.petPerCharge,
+      },
     };
 
-    contract.establishedStatus(
-      detailsResponse.map((_) => {
-        if (_.id === contractDetail.id) {
-          return contractDetail as any;
-        }
-        return _;
-      }),
+    contractDetail.travel.status = travel.statusCompleted(
+      contractDetail.travel,
     );
 
-    await Promise.all([
-      this.contractDetailRepository.updateTravel(contractDetailUuid, travel),
-      this.contractRepository.update(contractUuid, contract),
-    ]);
+    const contract = CommandContractUpdater.execute({
+      ...contractResponse,
+      details: contractResponse.details.map((_) =>
+        _.id === contractDetail.id ? contractDetail : _,
+      ),
+    });
+
+    contract.status.statusError(contract.endDate.value);
+    contract.establishedStatus();
+
+    await this.contractRepository.update(contractUuid, contract);
+
+    const response =
+      await this.contractRepository.searchByIdWithPet(contractUuid);
 
     return {
-      contract: contract.toJson(),
-      contractDetail: {
-        ...contractDetail,
-        pet: detailsResponse.find((d) => d.pet.id === contractDetail.pet).pet,
-      },
+      contract: response,
+      contractDetail: response.details.find((_) => _.id === contractDetail.id),
     };
   }
 }

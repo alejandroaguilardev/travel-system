@@ -1,6 +1,7 @@
 import { CustomerPaymentInterface } from './customer-payment.interface';
 import { PayInInstallmentInterface } from './pay-in-installment.interface';
 import { StatusInterface } from './status.interface';
+import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
 
 export interface ContractInterface {
   id: string;
@@ -10,7 +11,7 @@ export interface ContractInterface {
   status: StatusInterface;
   startDate: Date;
   endDate: Date;
-  details: string[];
+  details: ContractDetailInterface[];
   adviser: string;
   price: number;
   payInInstallments?: PayInInstallmentInterface[];

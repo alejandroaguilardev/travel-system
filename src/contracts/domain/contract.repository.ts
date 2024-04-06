@@ -3,18 +3,17 @@ import { ContractResponse } from '../application/response/contract.response';
 import { Contract } from './contract';
 import { Uuid } from '../../common/domain/value-object/uuid';
 import { ContractEndDate, ContractNumber } from './value-object';
-import { Criteria } from '../../common/domain/criteria/criteria';
-import { ResponseSearch } from '../../common/domain/response/response-search';
 import { ContractFolder } from './value-object/contract-folder';
+import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 
 export interface ContractRepository extends Repository<Contract> {
-  searchContractByClient(clientId: Uuid): Promise<ContractResponse[]>;
-  searchClient(criteria: Criteria): Promise<ResponseSearch<ContractResponse>>;
   finish(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
   cancel(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
+  searchByIdWithPet(detail: Uuid): Promise<ContractResponse>;
   updateFolder(
     contractId: Uuid,
     folder: ContractFolder,
     number: ContractNumber,
   ): Promise<void>;
+  updateDetail(contractId: Uuid, details: ContractDetail[]): Promise<void>;
 }

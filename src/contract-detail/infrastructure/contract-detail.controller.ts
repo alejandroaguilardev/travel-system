@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { ContractDetailService } from './contract-detail.service';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
@@ -18,7 +10,6 @@ import {
   TravelAccompaniedDto,
   PetDetailDto,
 } from './dto';
-import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
@@ -30,15 +21,6 @@ export class ContractDetailController {
     private readonly contractDetailTopicoService: ContractDetailTopicoService,
     private readonly contractDetailCertificateService: ContractDetailCertificateService,
   ) {}
-
-  @Get()
-  @Auth()
-  findAll(
-    @Query() criteriaDto: CriteriaDto,
-    @GetUser() user: UserWithoutWithRoleResponse,
-  ) {
-    return this.contractDetailService.findAll(criteriaDto, user);
-  }
 
   @Get(':id/:detail')
   @Auth()
@@ -150,12 +132,13 @@ export class ContractDetailController {
     );
   }
 
-  @Delete(':id')
+  @Delete(':id/:detailId')
   @Auth()
   remove(
     @Param('id') id: string,
+    @Param('detailId') detailId: string,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractDetailService.remove(id, user);
+    return this.contractDetailService.remove(id, detailId, user);
   }
 }

@@ -41,30 +41,30 @@ export class ContractTravel {
     ));
   }
 
-  statusCompleted() {
-    const hasRequiredAirlineReservationFields =
-      this.airlineReservation.arrivalDate.value &&
-      this.airlineReservation.code.value &&
-      this.airlineReservation.departureAirport.value &&
-      this.airlineReservation.departureDate.value &&
-      this.airlineReservation.destinationAirport.value &&
-      this.airlineReservation.flightNumber.value;
+  statusCompleted(travelData: TravelInterface) {
+    const hasRequiredAirlineReservationFields: boolean =
+      !!travelData.airlineReservation.arrivalDate &&
+      !!travelData.airlineReservation.code &&
+      !!travelData.airlineReservation.departureAirport &&
+      !!travelData.airlineReservation.departureDate &&
+      !!travelData.airlineReservation.destinationAirport &&
+      !!travelData.airlineReservation.flightNumber;
 
-    const hasRequiredAccompaniedPetFields =
-      this.accompaniedPet.name.value &&
-      this.accompaniedPet.document.value &&
-      this.accompaniedPet.documentNumber.value &&
-      this.accompaniedPet.phone.value &&
-      this.accompaniedPet.email.value &&
-      this.accompaniedPet.department.value &&
-      this.accompaniedPet.province.value &&
-      this.accompaniedPet.district.value &&
-      this.accompaniedPet.direction.value;
+    const hasRequiredAccompaniedPetFields: boolean =
+      !!travelData.accompaniedPet.name &&
+      !!travelData.accompaniedPet.document &&
+      !!travelData.accompaniedPet.documentNumber &&
+      !!travelData.accompaniedPet.phone &&
+      !!travelData.accompaniedPet.email &&
+      !!travelData.accompaniedPet.department &&
+      !!travelData.accompaniedPet.province &&
+      !!travelData.accompaniedPet.district &&
+      !!travelData.accompaniedPet.direction;
 
-    const hasRequiredDestinationFields =
-      this.destination.cityDestination.value &&
-      this.destination.countryDestination.value &&
-      this.destination.directionDestination.value;
+    const hasRequiredDestinationFields: boolean =
+      !!travelData.destination.cityDestination &&
+      !!travelData.destination.countryDestination &&
+      !!travelData.destination.directionDestination;
 
     const hasRequired =
       hasRequiredAirlineReservationFields &&
@@ -74,17 +74,15 @@ export class ContractTravel {
     if (hasRequired) {
       if (this.typeTraveling.value === 'charge') {
         const hasRequiredPetChargeFields =
-          this.petPerCharge.name.value &&
-          this.petPerCharge.document.value &&
-          this.petPerCharge.documentNumber.value &&
-          this.petPerCharge.phone.value &&
-          this.petPerCharge.email.value;
+          travelData.petPerCharge.name &&
+          travelData.petPerCharge.document &&
+          travelData.petPerCharge.documentNumber &&
+          travelData.petPerCharge.phone &&
+          travelData.petPerCharge.email;
 
-        this.status.value = hasRequiredPetChargeFields
-          ? 'completed'
-          : 'in-process';
+        return hasRequiredPetChargeFields ? 'completed' : 'in-process';
       } else {
-        this.status.value = 'completed';
+        return 'completed';
       }
     }
   }

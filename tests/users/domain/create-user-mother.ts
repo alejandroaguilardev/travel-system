@@ -14,6 +14,17 @@ export class UserCreatorMother {
     };
   }
 
+  static createNotPassword(
+    newUser?: Partial<CreateUserRequest>,
+  ): CreateUserRequest {
+    return {
+      id: newUser?.id ?? UuidMother.create(),
+      profile: newUser?.profile ?? ProfileMother.create(),
+      email: newUser?.email ?? EmailMother.create(),
+      roles: newUser?.roles ?? [],
+    };
+  }
+
   static createWithPassword(
     newUser?: Partial<UserWithoutWithRoleResponse>,
   ): UserWithoutWithRoleResponse {

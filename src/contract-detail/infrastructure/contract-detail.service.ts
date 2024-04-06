@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
 import { CageDto, DocumentationDto, PetDetailDto } from './dto';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
-import { ResponseSearch, ResponseSuccess } from '../../common/domain/response';
-import { ContractDetailCreator } from '../application/create';
-import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
-import { ContractDetailResponse } from '../application/response/contract-detail.response';
-import { ContractDetailSearch } from '../application/search/contract-detail-search';
+import { ResponseSuccess } from '../../common/domain/response';
 import { ContractDetailSearchById } from '../application/search-by-id/contract-detail-search-by-id';
 import { TravelDto } from '../../contract-detail/infrastructure/dto';
 import {
@@ -16,12 +11,10 @@ import {
   ContractDetailCageUpdater,
   ContractDetailDocumentationUpdater,
   ContractDetailTravelUpdater,
-  ContractDetailUpdater,
 } from '../application/update';
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { ContractDetailRemover } from '../application/remove/contract-detail-remover';
-import { ContractDetail } from '../domain/contract-detail';
 import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 import { TravelAccompaniedDto } from './dto/acompanied.dto';
 import { ContractDetailAccompaniedUpdater } from '../application/update/accompanied-updater';
@@ -32,39 +25,8 @@ import { ContractDetailPetUpdater } from '../application/pet/contract-detail-pet
 export class ContractDetailService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mongoContractDetailRepository: MongoContractDetailRepository,
     private readonly mailerService: MailContractService,
   ) {}
-
-  async create(
-    contractDetails: ContractDetail[],
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
-    const contractDetailCreator = new ContractDetailCreator(
-      this.mongoContractDetailRepository,
-    );
-    return await contractDetailCreator.execute(contractDetails, user);
-  }
-
-  async update(
-    contractDetails: ContractDetail[],
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
-    const contractDetailUpdater = new ContractDetailUpdater(
-      this.mongoContractDetailRepository,
-    );
-    return await contractDetailUpdater.execute(contractDetails, user);
-  }
-
-  findAll(
-    criteriaDto: CriteriaDto,
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSearch<ContractDetailResponse>> {
-    const contractSearch = new ContractDetailSearch(
-      this.mongoContractDetailRepository,
-    );
-    return contractSearch.execute(criteriaDto, user);
-  }
 
   findOne(
     contractId: string,
@@ -73,7 +35,6 @@ export class ContractDetailService {
   ): Promise<ContractDetailInterface> {
     const contractSearchById = new ContractDetailSearchById(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
     return contractSearchById.execute(contractId, contractDetailId, user);
   }
@@ -85,7 +46,6 @@ export class ContractDetailService {
   ): Promise<ResponseSuccess> {
     const contractDetailPetUpdater = new ContractDetailPetUpdater(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
     return contractDetailPetUpdater.execute(contractId, petDetailDto, user);
   }
@@ -97,10 +57,7 @@ export class ContractDetailService {
     user: UserWithoutWithRoleResponse,
   ): Promise<ContractDetailUpdaterResponse> {
     const contractDetailAccompaniedUpdater =
-      new ContractDetailAccompaniedUpdater(
-        this.mongoContractRepository,
-        this.mongoContractDetailRepository,
-      );
+      new ContractDetailAccompaniedUpdater(this.mongoContractRepository);
     const accompaniedPet = CommandContractTravel.travelAccompaniedPet(
       travelAccompaniedDto.accompaniedPet,
     );
@@ -129,7 +86,6 @@ export class ContractDetailService {
   ): Promise<ContractDetailUpdaterResponse> {
     const contractDocumentationUpdater = new ContractDetailDocumentationUpdater(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
 
     const documentation =
@@ -161,7 +117,6 @@ export class ContractDetailService {
   ): Promise<ContractDetailUpdaterResponse> {
     const contractDocumentationUpdater = new ContractDetailCageUpdater(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
     const cage = CommandContractCage.execute(cageDto);
     return contractDocumentationUpdater.execute(
@@ -180,7 +135,6 @@ export class ContractDetailService {
   ): Promise<ContractDetailUpdaterResponse> {
     const contractTravelUpdater = new ContractDetailTravelUpdater(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
     const travel = CommandContractTravel.execute(travelDto);
     return contractTravelUpdater.execute(
@@ -193,11 +147,12 @@ export class ContractDetailService {
 
   remove(
     id: string,
+    detailId: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const contractRemover = new ContractDetailRemover(
-      this.mongoContractDetailRepository,
+      this.mongoContractRepository,
     );
-    return contractRemover.execute(id, user);
+    return contractRemover.execute(id, detailId, user);
   }
 }

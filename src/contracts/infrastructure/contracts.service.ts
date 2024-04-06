@@ -7,18 +7,13 @@ import { ContractCreator } from '../application/create/contract-creator';
 import { ContractSearch } from '../application/search/contract-search';
 import { ContractSearchById } from '../application/search-by-id/contract-search-by-id';
 import { ContractRemover } from '../application/remove/contract-remover';
-import {
-  ContractResponse,
-  ContractWithDetailsResponse,
-} from '../application/response/contract.response';
+import { ContractResponse } from '../application/response/contract.response';
 import { ContractSearchByIdClient } from '../application/search-contract-by-client/search-contract-by-client';
 import { CommandContractCreator } from '../application/create';
 import { ContractFinish } from '../application/finish/contract-finish';
 import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
-import { CommandContractUpdater, ContractUpdater } from '../application/update';
+import { ContractUpdater } from '../application/update';
 import { CreateContractDto, UpdateContractDto } from './dto/';
-import { ContractDetailService } from '../../contract-detail/infrastructure/contract-detail.service';
-import { MongoContractDetailRepository } from '../../contract-detail/infrastructure/persistence/contract-detail-mongo.repository';
 import { ContractSearchClient } from '../application/search-client/search-client';
 import { FolderContractDto } from './dto/folder-contract-dto';
 import { ContractFolderUpdater } from '../application/update/folder-updater';
@@ -28,9 +23,7 @@ import { ContractCancel } from '../application/finish/contract-cancel';
 export class ContractsService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mongoContractDetailRepository: MongoContractDetailRepository,
     private readonly mailerService: MailContractService,
-    private readonly contractDetailService: ContractDetailService,
   ) {}
 
   async create(
@@ -39,17 +32,7 @@ export class ContractsService {
   ): Promise<ResponseSuccess> {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(createContractDto, user.id);
-    const contractDetails = CommandContractCreator.details(
-      createContractDto,
-      user.id,
-    );
-
-    const response = await contractsCreator.execute(
-      contract,
-      contractDetails,
-      user,
-    );
-    await this.contractDetailService.create(contractDetails, user);
+    const response = await contractsCreator.execute(contract, user);
     this.mailerService.new(contract);
     return response;
   }
@@ -81,23 +64,20 @@ export class ContractsService {
   findOne(
     id: string,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ContractWithDetailsResponse> {
+  ): Promise<ContractResponse> {
     const contractSearchById = new ContractSearchById(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
     return contractSearchById.execute(id, user);
   }
 
   findContractByClient(
-    id: string,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ContractWithDetailsResponse[]> {
+  ): Promise<ContractResponse[]> {
     const contractSearchById = new ContractSearchByIdClient(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
-    return contractSearchById.execute(id, user);
+    return contractSearchById.execute(user);
   }
 
   findAllClient(
@@ -117,13 +97,8 @@ export class ContractsService {
   ): Promise<ResponseSuccess> {
     const contractUpdater = new ContractUpdater(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(updateContractDto, user.id);
-    const contractDetails = CommandContractUpdater.details(
-      updateContractDto,
-      user.id,
-    );
 
-    await this.contractDetailService.update(contractDetails, user);
-    return contractUpdater.execute(id, contract, contractDetails, user);
+    return contractUpdater.execute(id, contract, user);
   }
 
   async updateFolder(

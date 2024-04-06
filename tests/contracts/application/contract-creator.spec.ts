@@ -3,7 +3,6 @@ import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { contractRepositoryMock } from '../domain/contract-mock.repository';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
-import { CommandContractDetailCreator } from '../../../src/contract-detail/application/create/command-contract-detail-creator';
 
 describe('ContractCreator', () => {
   const contractCreator = new ContractCreator(contractRepositoryMock);
@@ -12,16 +11,8 @@ describe('ContractCreator', () => {
     const dto = ContractCreatorMother.create();
     const user = UserCreatorMother.createWithPassword();
     const contract = CommandContractCreator.execute(dto, user.id);
-    const contractDetail = CommandContractDetailCreator.execute(
-      dto.details,
-      user.id,
-    );
 
-    const expected = await contractCreator.execute(
-      contract,
-      contractDetail,
-      user,
-    );
+    const expected = await contractCreator.execute(contract, user);
     expect(expected.message).toBe(ContractCreator.messageSuccess());
   });
 });

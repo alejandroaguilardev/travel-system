@@ -1,17 +1,16 @@
 import { Uuid, UuidOptional } from '../../common/domain/value-object';
 import { ContractInterface, StatusInterface } from './interfaces';
-import { ContractDetailResponse } from '../../contract-detail/application/response/contract-detail.response';
 import {
   ContractNumber,
   ContractStatus,
   ContractStartDate,
   ContractEndDate,
-  ContractDetails,
 } from './value-object';
 import { ContractPrice } from './value-object/contract-price';
 import { PayInInstallments } from './value-object/pay-in-installments/pay-in-installments';
 import { CustomerPayments } from './value-object/customer-payments/customer-payments';
 import { ContractFolder } from './value-object/contract-folder';
+import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 
 export class Contract {
   constructor(
@@ -22,7 +21,7 @@ export class Contract {
     public status: ContractStatus,
     readonly startDate: ContractStartDate,
     public endDate: ContractEndDate,
-    public details: ContractDetails,
+    public details: ContractDetail[],
     readonly price: ContractPrice,
     readonly payInInstallments: PayInInstallments,
     readonly customerPayments: CustomerPayments,
@@ -38,7 +37,7 @@ export class Contract {
       client: this.client.value,
       status: this.status.value as StatusInterface,
       startDate: this.startDate.value,
-      details: this.details.toJson(),
+      details: this.details.map((_) => _.toJson()),
       endDate: this.endDate.value,
       price: this.price.value,
       payInInstallments: this.payInInstallments.toJson(),
@@ -48,14 +47,11 @@ export class Contract {
     };
   }
 
-  setDetails(details: ContractDetails) {
-    this.details = details;
-  }
-
-  establishedStatus(contractDetail: ContractDetailResponse[]) {
+  establishedStatus() {
+    const details = this.details.map((_) => _.toJson());
     let count = 0;
     let countHasCompleted = 0;
-    contractDetail.forEach((detail) => {
+    details.forEach((detail) => {
       const hasCompleted =
         detail.documentation.status === 'completed' &&
         detail.cage.status === 'completed' &&

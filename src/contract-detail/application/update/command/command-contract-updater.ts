@@ -9,6 +9,17 @@ import { CommandContractTopico } from './topico-command';
 
 export class CommandContractDetailsUpdater {
   static execute(
+    contract: ContractDetailInterface[],
+    data?: Partial<ContractDetailInterface[]>,
+  ): ContractDetail[] {
+    return contract.map((detail) =>
+      CommandContractDetailsUpdater.detail(
+        detail,
+        data?.find((_) => detail.id === _.id),
+      ),
+    );
+  }
+  static detail(
     contract: ContractDetailInterface,
     data?: Partial<ContractDetailInterface>,
   ): ContractDetail {
@@ -29,7 +40,11 @@ export class CommandContractDetailsUpdater {
     services: ContractDetailInterface,
     data: Partial<ContractDetailInterface>,
   ): ContractDetailInterface {
-    const { cage, documentation, travel } = data;
+    const { cage, documentation, travel } = data ?? {
+      cage: undefined,
+      documentation: undefined,
+      travel: undefined,
+    };
     return {
       ...services,
       cage: {

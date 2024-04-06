@@ -1,5 +1,4 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { MongoContractDetailRepository } from './persistence/contract-detail-mongo.repository';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
@@ -13,7 +12,6 @@ import { DocumentationDto } from './dto';
 export class ContractDetailCertificateService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mongoContractDetailRepository: MongoContractDetailRepository,
     private readonly mailerService: MailContractService,
   ) {}
 
@@ -32,7 +30,6 @@ export class ContractDetailCertificateService {
 
     const contractDetailPetUpdater = new ContractDetailCertificateUpdater(
       this.mongoContractRepository,
-      this.mongoContractDetailRepository,
     );
 
     const certificate = CommandContractDocumentation[value](

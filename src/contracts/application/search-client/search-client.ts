@@ -19,11 +19,12 @@ export class ContractSearchClient {
       ...criteriaRequest,
       filters: [
         ...criteriaRequest.filters,
-        { field: 'client', value: uuid.value, operator: 'CONTAINS' },
+        { field: 'client.id', value: uuid.value, operator: 'CONTAINS' },
       ],
     });
+
     const { rows, count } =
-      await this.contractRepository.searchClient(criteria);
+      await this.contractRepository.search<ContractResponse>(criteria);
     this.checkIsUserAsOwner(user, uuid);
     return { rows, count };
   }

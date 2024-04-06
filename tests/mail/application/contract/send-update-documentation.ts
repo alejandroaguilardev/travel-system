@@ -15,7 +15,7 @@ describe('sendMailUpdateDocumentation', () => {
 
   it('should_successfully_mail_new_contract', async () => {
     const user = UserCreatorMother.create();
-    const contract = ContractCreatorMother.createWithTravel();
+    const contract = ContractCreatorMother.createResponse();
     const details = ContractDetailCreatorMother.createWithPet();
 
     userRepositoryMock.searchById.mockResolvedValue(user);

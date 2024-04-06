@@ -1,5 +1,4 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
-import { ContractDetailRepository } from '../../domain/contract-detail.repository';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
@@ -11,10 +10,7 @@ import { CommandContractTopico } from './command/topico-command';
 import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
 
 export class ContractDetailTopicoUpdater {
-  constructor(
-    private readonly contractRepository: ContractRepository,
-    private readonly contractDetailRepository: ContractDetailRepository,
-  ) {}
+  constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
@@ -28,9 +24,8 @@ export class ContractDetailTopicoUpdater {
 
     const ensureContractDetail = new EnsureContractDetail(
       this.contractRepository,
-      this.contractDetailRepository,
     );
-    const { contractResponse, contractDetailResponse, detailsResponse } =
+    const { contractResponse, contractDetailResponse } =
       await ensureContractDetail.searchEnsure(contractUuid, contractDetailUuid);
 
     ensureContractDetail.hasPermission(
@@ -38,9 +33,6 @@ export class ContractDetailTopicoUpdater {
       contractResponse,
       AuthPermission.TOPICO,
     );
-
-    const contract = CommandContractUpdater.execute(contractResponse);
-    contract.status.statusError(contract.endDate.value);
 
     const topicoUpdate = CommandContractTopico.execute(
       {
@@ -50,22 +42,27 @@ export class ContractDetailTopicoUpdater {
       user.id,
     );
 
-    await Promise.all([
-      this.contractDetailRepository.updateTopico(
-        contractDetailUuid,
-        topicoUpdate,
+    const contractDetail = {
+      ...contractDetailResponse,
+      topico: topicoUpdate.toJson(),
+    };
+
+    const contract = CommandContractUpdater.execute({
+      ...contractResponse,
+      details: contractResponse.details.map((_) =>
+        _.id === contractDetail.id ? contractDetail : _,
       ),
-      this.contractRepository.update(contractUuid, contract),
-    ]);
+    });
+    contract.status.statusError(contract.endDate.value);
+
+    await this.contractRepository.update(contractUuid, contract);
+
+    const response =
+      await this.contractRepository.searchByIdWithPet(contractUuid);
 
     return {
-      contract: contract.toJson(),
-      contractDetail: {
-        ...contractDetailResponse,
-        pet: detailsResponse.find(
-          (d) => d.pet.id === contractDetailResponse.pet,
-        ).pet,
-      },
+      contract: response,
+      contractDetail: response.details.find((_) => _.id === contractDetail.id),
     };
   }
 }

@@ -51,10 +51,10 @@ export class CommandContractTravel {
         new TravelFlightNumber(travel.airlineReservation.flightNumber),
         new TravelDepartureAirport(travel.airlineReservation.departureAirport),
         new TravelDestinationAirport(
-          travel.airlineReservation.destinationAirport,
+          travel?.airlineReservation?.destinationAirport,
         ),
         new TravelDepartureDate(travel.airlineReservation.departureDate),
-        new TravelArrivalDate(travel.airlineReservation.arrivalDate),
+        new TravelArrivalDate(travel.airlineReservation?.arrivalDate),
         new UuidOptional(travel.airlineReservation?.user ?? ''),
       ),
       CommandContractTravel.travelPetPerCharge(travel?.petPerCharge),
