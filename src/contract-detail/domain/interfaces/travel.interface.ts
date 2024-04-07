@@ -48,6 +48,7 @@ export interface TravelPetPerChargeInterface {
 
 export interface TravelInterface {
   status: StatusInterface;
+  guideNumber: string;
   hasServiceIncluded: boolean;
   hasServiceAccompanied: boolean;
   typeTraveling: TypeTravelingType;

@@ -11,6 +11,7 @@ import { PayInInstallments } from './value-object/pay-in-installments/pay-in-ins
 import { CustomerPayments } from './value-object/customer-payments/customer-payments';
 import { ContractFolder } from './value-object/contract-folder';
 import { ContractDetail } from '../../contract-detail/domain/contract-detail';
+import { ContractFinishClient } from './value-object/contract-finish-client';
 
 export class Contract {
   constructor(
@@ -26,6 +27,7 @@ export class Contract {
     readonly payInInstallments: PayInInstallments,
     readonly customerPayments: CustomerPayments,
     readonly adviser: Uuid,
+    readonly finishClient: ContractFinishClient,
     readonly user: UuidOptional,
   ) {}
 
@@ -43,6 +45,7 @@ export class Contract {
       payInInstallments: this.payInInstallments.toJson(),
       customerPayments: this.customerPayments.toJson(),
       adviser: this.adviser.value,
+      finishClient: this.finishClient.value,
       user: this.user.value,
     };
   }

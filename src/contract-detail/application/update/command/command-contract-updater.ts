@@ -4,7 +4,6 @@ import { CommandContractCage } from './command-cage';
 import { CommandContractDocumentation } from './command-documentation';
 import { ContractDetailInterface } from '../../../domain/interfaces/contract-detail.interface';
 import { ContractDetail } from '../../../domain/contract-detail';
-import { ContractGuideNumber } from '../../../domain/value-object/contract-guide-number';
 import { CommandContractTopico } from './topico-command';
 
 export class CommandContractDetailsUpdater {
@@ -29,7 +28,6 @@ export class CommandContractDetailsUpdater {
       CommandContractDocumentation.execute(services.documentation),
       CommandContractCage.execute(services.cage),
       CommandContractTravel.execute(services.travel),
-      new ContractGuideNumber(contract.guideNumber),
       new UuidOptional(data?.pet ?? contract.pet),
       new UuidOptional(data?.user ?? contract.user),
       CommandContractTopico.execute(contract?.topico),
@@ -168,6 +166,7 @@ export class CommandContractDetailsUpdater {
         accompaniedPet: services.travel.accompaniedPet,
         destination: services.travel.destination,
         status: services.travel.status,
+        guideNumber: travel?.guideNumber ?? services.travel.guideNumber,
       },
     };
   }

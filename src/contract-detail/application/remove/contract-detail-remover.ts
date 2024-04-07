@@ -29,14 +29,15 @@ export class ContractDetailRemover {
     );
 
     const uuid = new Uuid(id);
+    const uuidDetail = new Uuid(detailId);
 
     const response =
       await this.contractRepository.searchById<ContractInterface>(uuid);
 
-    const details = response.details.filter((_) => _.id !== detailId);
+    const details = response.details.filter((_) => _.id !== uuidDetail.value);
     const contractDetail = CommandContractDetailsUpdater.execute(details);
 
-    await this.contractRepository.updateDetail(uuid, contractDetail);
+    await this.contractRepository.updateDetail(uuidDetail, contractDetail);
     return ResponseMessage.createSuccessResponse(
       ContractDetailRemover.messageSuccess(),
     );

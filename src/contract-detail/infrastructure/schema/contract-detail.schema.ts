@@ -110,6 +110,7 @@ export class ContractDetailModel implements ContractDetailInterface {
   cage: CageInterface;
   @Prop({
     type: {
+      guideNumber: String,
       status: String,
       hasServiceIncluded: Boolean,
       hasServiceAccompanied: Boolean,
@@ -196,8 +197,7 @@ export class ContractDetailModel implements ContractDetailInterface {
     required: false,
   })
   topico: ContractTopicoInterface;
-  @Prop({ type: String, required: false })
-  guideNumber: string;
+
   @Prop({ type: String, required: false })
   user: string;
 }

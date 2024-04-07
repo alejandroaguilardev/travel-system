@@ -28,6 +28,7 @@ export class ContractCreatorMother {
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
+      finishClient: false,
     };
   }
 
@@ -50,6 +51,7 @@ export class ContractCreatorMother {
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
       user: dto?.user ?? UuidMother.create(),
+      finishClient: faker.datatype.boolean(),
     };
   }
 

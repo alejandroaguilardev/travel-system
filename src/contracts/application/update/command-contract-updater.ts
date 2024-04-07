@@ -17,6 +17,7 @@ import { CustomerPayment } from '../../../contracts/domain/value-object/customer
 import { CustomerPaymentMethod } from '../../../contracts/domain/value-object/customer-payments/customer-payment-method';
 import { ContractFolder } from '../../../contracts/domain/value-object/contract-folder';
 import { CommandContractDetailsUpdater } from '../../../contract-detail/application/update/command/command-contract-updater';
+import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
 
 export class CommandContractUpdater {
   static execute(
@@ -54,6 +55,7 @@ export class CommandContractUpdater {
         ) ?? [],
       ),
       new Uuid(data?.adviser ?? contract.adviser),
+      new ContractFinishClient(data?.finishClient ?? contract.finishClient),
       new UuidOptional(data?.user ?? contract.user),
     );
   }

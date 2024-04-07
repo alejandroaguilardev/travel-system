@@ -16,5 +16,6 @@ export interface ContractInterface {
   price: number;
   payInInstallments?: PayInInstallmentInterface[];
   customerPayments?: CustomerPaymentInterface[];
+  finishClient?: boolean;
   user: string;
 }

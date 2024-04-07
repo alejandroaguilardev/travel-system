@@ -1,6 +1,5 @@
 import { Uuid, UuidOptional } from '../../../common/domain/value-object';
 import { ContractDetail } from '../../domain/contract-detail';
-import { ContractGuideNumber } from '../../domain/value-object';
 import { ContractDetailCreateRequest } from './contract-detail-create-request';
 import {
   CommandContractCage,
@@ -28,7 +27,6 @@ export class CommandContractDetailCreator {
       CommandContractDocumentation.execute(data.documentation),
       CommandContractCage.execute(data.cage),
       CommandContractTravel.execute(data.travel),
-      new ContractGuideNumber(data.guideNumber),
       new UuidOptional(data?.pet ?? ''),
       new UuidOptional(userId),
       CommandContractTopico.execute(data?.topico),

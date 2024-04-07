@@ -9,6 +9,7 @@ import {
 } from './travel';
 import { TravelDestination } from './travel/destination/travel-destination';
 import { TravelAccompaniedPet } from './travel/accompanied-pet/travel-accompanied-pet';
+import { ContractGuideNumber } from './contract-guide-number';
 
 export class ContractTravel {
   constructor(
@@ -20,6 +21,7 @@ export class ContractTravel {
     readonly petPerCharge: TravelPetPerCharge,
     readonly accompaniedPet: TravelAccompaniedPet,
     readonly destination: TravelDestination,
+    readonly guideNumber: ContractGuideNumber,
   ) {}
 
   toJson(): TravelInterface {
@@ -32,6 +34,7 @@ export class ContractTravel {
       petPerCharge: this.petPerCharge.toJson(),
       accompaniedPet: this.accompaniedPet.toJson(),
       destination: this.destination.toJson(),
+      guideNumber: this.guideNumber.value,
     };
   }
 
@@ -71,19 +74,19 @@ export class ContractTravel {
       hasRequiredDestinationFields &&
       hasRequiredAccompaniedPetFields;
 
-    if (hasRequired) {
-      if (this.typeTraveling.value === 'charge') {
-        const hasRequiredPetChargeFields =
-          travelData.petPerCharge.name &&
-          travelData.petPerCharge.document &&
-          travelData.petPerCharge.documentNumber &&
-          travelData.petPerCharge.phone &&
-          travelData.petPerCharge.email;
+    if (!hasRequired) return 'pending';
+    if (this.typeTraveling.value === 'charge') {
+      const hasRequiredPetChargeFields: boolean =
+        !!travelData.petPerCharge.name &&
+        !!travelData.petPerCharge.document &&
+        !!travelData.petPerCharge.documentNumber &&
+        !!travelData.petPerCharge.phone &&
+        !!travelData.guideNumber &&
+        !!travelData.petPerCharge.email;
 
-        return hasRequiredPetChargeFields ? 'completed' : 'in-process';
-      } else {
-        return 'completed';
-      }
+      return hasRequiredPetChargeFields ? 'completed' : 'in-process';
+    } else {
+      return 'completed';
     }
   }
 }

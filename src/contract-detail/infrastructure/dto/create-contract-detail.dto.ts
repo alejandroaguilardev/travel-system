@@ -25,7 +25,5 @@ export class CreateContractDetailDto implements ContractDetailCreateRequest {
   @IsUUID()
   user: string;
   @IsOptional()
-  guideNumber: string;
-  @IsOptional()
   topico?: ContractTopicoInterface;
 }

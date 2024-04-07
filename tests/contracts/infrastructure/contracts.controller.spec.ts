@@ -1,6 +1,4 @@
 import { INestApplication } from '@nestjs/common';
-import { getModelToken } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
 import * as request from 'supertest';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UuidMother } from '../../common/domain/uuid-mother';
@@ -12,28 +10,33 @@ import { ContractUpdater } from '../../../src/contracts/application/update/contr
 import { ContractRemover } from '../../../src/contracts/application/remove/contract-remover';
 import { ContractCreator } from '../../../src/contracts/application/create/contract-creator';
 import { ContractFolderUpdater } from '../../../src/contracts/application/update/folder-updater';
+import { UserInterface } from '../../../dist/src/users/domain/interfaces/user.interface';
 
 const route = '/contracts';
 
 describe('ContractsController', () => {
   let app: INestApplication;
   let access_token: string;
-  let contractModel: Model<any>;
+  let user: UserInterface;
 
   beforeAll(async () => {
     app = await InitTest.execute();
-    contractModel = app.get<Model<any>>(getModelToken('ContractModel'));
     await app.init();
-    access_token = await AuthTest.execute(app);
+    const response = await AuthTest.executeWithUser(app);
+    access_token = response.token;
+    user = response.user;
   });
 
   afterAll(async () => {
-    await contractModel.deleteMany({});
     await app.close();
   });
 
   it('/contracts (POST)', async () => {
-    const contractDto = ContractCreatorMother.create();
+    const contractDto = ContractCreatorMother.create({
+      client: user.id,
+      adviser: user.id,
+    });
+
     const response = await CrudTest.create(
       app,
       access_token,
@@ -44,16 +47,20 @@ describe('ContractsController', () => {
   });
 
   it('/contracts/:id/finish (POST)', async () => {
-    const contractDto = ContractCreatorMother.create();
+    const contractDto = ContractCreatorMother.create({
+      client: user.id,
+      adviser: user.id,
+    });
+
     await CrudTest.create(app, access_token, route, contractDto);
 
     const response = await request(app.getHttpServer())
       .post(`/contracts/${contractDto.id}/finish`)
       .set('Authorization', `Bearer ${access_token}`)
       .send()
-      .expect(400);
+      .expect(201);
 
-    expect(response.body.message).toBe(ContractFinish.messageNotCompleted());
+    expect(response.body.message).toBe(ContractFinish.messageSuccess());
   });
 
   it('/contracts (GET)', async () => {
@@ -64,7 +71,10 @@ describe('ContractsController', () => {
   });
 
   it('/contracts:id (GET)', async () => {
-    const contractDto = ContractCreatorMother.create();
+    const contractDto = ContractCreatorMother.create({
+      client: user.id,
+      adviser: user.id,
+    });
     const response = await CrudTest.searchById(
       app,
       access_token,
@@ -83,7 +93,11 @@ describe('ContractsController', () => {
   });
 
   it('/contracts:id (PUT)', async () => {
-    const contractDto = ContractCreatorMother.create();
+    const contractDto = ContractCreatorMother.create({
+      client: user.id,
+      adviser: user.id,
+    });
+
     const contractDtoUpdate = ContractCreatorMother.create();
     contractDtoUpdate.id = contractDto.id;
     const response = await CrudTest.update(
@@ -97,7 +111,11 @@ describe('ContractsController', () => {
   });
 
   it('/contracts:id/folder (Patch)', async () => {
-    const contractDto = ContractCreatorMother.create();
+    const contractDto = ContractCreatorMother.create({
+      client: user.id,
+      adviser: user.id,
+    });
+
     const { folder, number } = ContractCreatorMother.create();
     await CrudTest.create(app, access_token, route, contractDto);
     const response = await request(app.getHttpServer())
@@ -110,7 +128,11 @@ describe('ContractsController', () => {
   });
 
   it('/contracts (DELETE)', async () => {
-    const contractDto = ContractCreatorMother.create();
+    const contractDto = ContractCreatorMother.create({
+      client: user.id,
+      adviser: user.id,
+    });
+
     const response = await CrudTest.remove(
       app,
       access_token,

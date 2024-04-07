@@ -5,7 +5,6 @@ import { Uuid } from '../../../src/common/domain/value-object/uuid';
 import { ErrorNotFound } from '../../../src/common/domain/errors/error-not-found';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
 import { CommandContractCreator } from '../../../src/contracts/application/create/command-creator';
-import { CommandContractUpdater } from '../../../src/contracts/application/update/command-contract-updater';
 
 describe('ContractUpdater', () => {
   const contractUpdater: ContractUpdater = new ContractUpdater(
@@ -39,15 +38,8 @@ describe('ContractUpdater', () => {
     await contractUpdater.execute(dto.id, contract, user);
 
     const uuid = new Uuid(dto.id);
-    const contractUpdate = CommandContractUpdater.execute(
-      response,
-      contract.toJson(),
-    );
 
-    expect(contractRepositoryMock.update).toHaveBeenCalledWith(
-      uuid,
-      contractUpdate,
-    );
+    expect(contractRepositoryMock.update).toHaveBeenCalledWith(uuid, contract);
   });
 
   it('should_failed_contract_updater', async () => {

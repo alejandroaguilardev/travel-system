@@ -6,7 +6,10 @@ import {
   TravelInterface,
   TravelPetPerChargeInterface,
 } from '../../../domain/interfaces';
-import { ContractHasServiceIncluded } from '../../../domain/value-object';
+import {
+  ContractGuideNumber,
+  ContractHasServiceIncluded,
+} from '../../../domain/value-object';
 import { ContractTravel } from '../../../domain/value-object';
 import { TravelName } from '../../../domain/value-object/travel/accompanied-pet/travel-name';
 import {
@@ -60,6 +63,7 @@ export class CommandContractTravel {
       CommandContractTravel.travelPetPerCharge(travel?.petPerCharge),
       CommandContractTravel.travelAccompaniedPet(travel?.accompaniedPet),
       CommandContractTravel.travelDestination(travel?.destination),
+      new ContractGuideNumber(travel?.guideNumber ?? ''),
     );
   }
 

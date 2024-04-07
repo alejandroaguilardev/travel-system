@@ -39,6 +39,14 @@ export class ContractsController {
   ) {
     return this.contractsService.finish(id, user);
   }
+  @Post(':id/finish/client')
+  @Auth()
+  finishClient(
+    @Param('id') id: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractsService.finishClient(id, user);
+  }
 
   @Post(':id/cancel')
   @Auth()

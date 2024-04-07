@@ -9,6 +9,8 @@ describe('ContractDetailRemover', () => {
   it('should_successfully_remover_contract', async () => {
     const contract = ContractCreatorMother.createWithTravel();
     const user = UserCreatorMother.createWithPassword();
+    contractRepositoryMock.searchById.mockResolvedValueOnce(contract);
+
     const expected = await contractRemover.execute(
       contract.id,
       contract.details[0].id,
@@ -20,7 +22,9 @@ describe('ContractDetailRemover', () => {
   it('should_successfully_remover_contract_to_have_called', async () => {
     const contract = ContractCreatorMother.createWithTravel();
     const user = UserCreatorMother.createWithPassword();
+    contractRepositoryMock.searchById.mockResolvedValueOnce(contract);
+
     await contractRemover.execute(contract.id, contract.details[0].id, user);
-    expect(contractRepositoryMock.update).toHaveBeenCalled();
+    expect(contractRepositoryMock.updateDetail).toHaveBeenCalled();
   });
 });

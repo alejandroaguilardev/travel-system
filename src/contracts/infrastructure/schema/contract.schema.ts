@@ -67,6 +67,9 @@ export class ContractModel implements ContractInterface {
   })
   customerPayments?: CustomerPaymentInterface[];
 
+  @Prop({ type: Boolean, required: false })
+  finishClient: boolean;
+
   @Prop({ type: String, required: false })
   user: string;
 }

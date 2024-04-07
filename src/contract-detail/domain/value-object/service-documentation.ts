@@ -71,7 +71,7 @@ export class ContractDocumentation {
       }
     });
 
-    if (count === isRequired) {
+    if (count >= isRequired) {
       return 'completed';
     } else if (count > 0) {
       return 'in-process';

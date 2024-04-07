@@ -14,7 +14,7 @@ export class ContractSearchByIdClient {
     const criteria = CommandCriteria.fromData({
       filters: [
         { field: 'client.id', value: uuid.value, operator: 'CONTAINS' },
-        { field: 'endDate', value: null, operator: 'CONTAINS' },
+        { field: 'finishClient', value: false, operator: 'CONTAINS' },
       ],
     });
 

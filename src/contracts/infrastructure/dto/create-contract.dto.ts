@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsBoolean,
   IsDate,
   IsNumber,
   IsOptional,
@@ -44,6 +45,9 @@ export class CreateContractDto implements ContractCreateRequest {
   @Type(() => CustomerPaymentsDto)
   @ValidateNested({ each: true })
   customerPayments?: CustomerPaymentInterface[] = [];
+  @IsOptional()
+  @IsBoolean()
+  finishClient?: boolean;
 
   @IsOptional()
   @IsUUID()

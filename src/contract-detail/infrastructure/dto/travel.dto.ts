@@ -48,4 +48,7 @@ export class TravelDto extends TravelAccompaniedDto implements TravelInterface {
   @Type(() => TravelAirlineReservationDto)
   @ValidateNested()
   airlineReservation: TravelAirlineReservationDto;
+  @IsOptional()
+  @IsString()
+  guideNumber: string;
 }

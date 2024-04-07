@@ -13,7 +13,6 @@ export class ContractDetailCreatorMother {
     return {
       id: dto?.id ?? UuidMother.create(),
       pet: dto?.pet ?? UuidMother.create(),
-      guideNumber: dto?.guideNumber ?? '',
       documentation: ContractDocumentationMother.create(),
       cage: CageMother.create(),
       travel: ContractTravelMother.create(),

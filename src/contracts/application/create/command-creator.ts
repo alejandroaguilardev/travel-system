@@ -18,6 +18,7 @@ import { PayInInstallment } from '../../../contracts/domain/value-object/pay-in-
 import { CustomerPayment } from '../../../contracts/domain/value-object/customer-payments/customer-payment';
 import { CustomerPaymentMethod } from '../../../contracts/domain/value-object/customer-payments/customer-payment-method';
 import { ContractFolder } from '../../../contracts/domain/value-object/contract-folder';
+import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
 
 export class CommandContractCreator {
   static execute(data: ContractCreateRequest, userId: string): Contract {
@@ -52,6 +53,7 @@ export class CommandContractCreator {
         ),
       ),
       new Uuid(data.adviser),
+      new ContractFinishClient(data.finishClient),
       new UuidOptional(userId),
     );
   }

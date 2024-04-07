@@ -59,6 +59,10 @@ export class ContractDetailAccompaniedUpdater {
       travel: travel.toJson(),
     };
 
+    contractDetail.travel.status = travel.statusCompleted(
+      contractDetail.travel,
+    );
+
     const contract = CommandContractUpdater.execute({
       ...contractResponse,
       details: contractResponse.details.map((_) =>

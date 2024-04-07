@@ -18,6 +18,7 @@ export class ContractTravelMother {
   static create(dto?: Partial<TravelInterface>): TravelInterface {
     return {
       status: 'in-process',
+      guideNumber: '',
       hasServiceIncluded: false,
       hasServiceAccompanied: false,
       typeTraveling: 'charge',
