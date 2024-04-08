@@ -14,6 +14,7 @@ import {
 } from '../../../common/domain/response/response-message';
 import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 
 export class UserUpdater {
   constructor(private readonly userRepository: UserRepository) {}
@@ -30,6 +31,24 @@ export class UserUpdater {
 
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
+    }
+    console.log(response.profile.document, userUpdate.profile.document.value);
+    console.log(
+      response.profile.documentNumber,
+      userUpdate.profile.documentNumber.value,
+    );
+
+    if (
+      response.profile.document !== userUpdate.profile.document.value ||
+      response.profile.documentNumber !==
+        userUpdate.profile.documentNumber.value
+    ) {
+      const find = await this.userRepository.searchDocument(
+        userUpdate.profile.document,
+        userUpdate.profile.documentNumber,
+      );
+      if (find)
+        throw new ErrorBadRequest('el documento del  usuario ya existe');
     }
 
     await this.userRepository.update(uuid, userUpdate);

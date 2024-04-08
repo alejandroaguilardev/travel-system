@@ -9,6 +9,7 @@ import { ResponseSuccess } from '../../../common/domain/response/response-succes
 import { User } from '../../domain/user';
 import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 import {
   AuthGroup,
   AuthPermission,
@@ -26,6 +27,18 @@ export class UserCreator {
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.CREATE);
+
+    const find = await this.userRepository.searchDocument(
+      newUser.profile.document,
+      newUser.profile.documentNumber,
+    );
+    const email = await this.userRepository.searchEmail(newUser.email);
+
+    if (find) throw new ErrorBadRequest('el documento del  usuario ya existe');
+    if (email)
+      throw new ErrorBadRequest(
+        'ya existe un correo electrónico para este usuario',
+      );
 
     newUser.setPassword(
       new UserPassword(this.hashing.hashPassword(password.value)),

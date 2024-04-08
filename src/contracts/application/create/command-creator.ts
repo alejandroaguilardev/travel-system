@@ -53,7 +53,7 @@ export class CommandContractCreator {
         ),
       ),
       new Uuid(data.adviser),
-      new ContractFinishClient(data.finishClient),
+      new ContractFinishClient(data?.finishClient ?? false),
       new UuidOptional(userId),
     );
   }

@@ -66,7 +66,7 @@ export class ContractDocumentation {
         ++isRequired;
       }
 
-      if (data[key]?.isApplied) {
+      if (data[key]?.isApplied && data[key]?.isRequired) {
         ++count;
       }
     });

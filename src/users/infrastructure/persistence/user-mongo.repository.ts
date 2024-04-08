@@ -18,6 +18,9 @@ import { FilterOperator } from '../../../common/domain/criteria/filter-operator'
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserPassword } from '../../domain/value-object/user-password';
 import { UserProfile } from '../../domain/value-object/user-profile';
+import { UserDocument } from '../../domain/value-object/profile/user-document';
+import { UserDocumentNumber } from '../../domain/value-object/profile/user-document-number';
+import { UserInterface } from '../../domain/interfaces/user.interface';
 
 @Injectable()
 export class UserMongoRepository
@@ -54,6 +57,20 @@ export class UserMongoRepository
 
     const user = rows.length > 0 ? rows[0] : null;
     return { ...user, password };
+  }
+
+  async searchDocument(
+    document: UserDocument,
+    documentNumber: UserDocumentNumber,
+  ): Promise<UserInterface | null> {
+    const response = await this.userModel
+      .findOne({
+        'profile.document': document.value,
+        'profile.documentNumber': documentNumber.value,
+      })
+      .lean();
+    if (!response) return null;
+    return response;
   }
 
   async searchByIdWithRole(uuid: Uuid): Promise<UserResponseWithRole | null> {

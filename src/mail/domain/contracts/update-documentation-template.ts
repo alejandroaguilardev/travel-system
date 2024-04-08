@@ -111,7 +111,7 @@ export default `<!DOCTYPE html>
                                     Por favor, manténgase informado y realice un seguimiento constante en la plataforma, o comuníquese regularmente con su asesor para obtener información actualizada.
                                 </p>
                                 <div align="center" style="margin-top: 20px;">
-                                    <a href="https://wa.me/{{phone}}?text=Buenas%20tardes,%20necesito%20información%20sobre%20mi%20contrato%20N°%20{{number_contract}}"  rel="noopener noreferrer" target="_blank" style="display: inline-block; padding: 10px 40px; background-color: #4cb440; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;margin: auto;">
+                                    <a href="https://wa.me/{{phone}}?text=Buen%20día,%20necesito%20información%20sobre%20mi%20contrato%20N°%20{{number_contract}}"  rel="noopener noreferrer" target="_blank" style="display: inline-block; padding: 10px 40px; background-color: #4cb440; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;margin: auto;">
                                         <div>Consultar con el asesor</div>
                                     </a>
                                 </div>
