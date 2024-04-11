@@ -15,7 +15,7 @@ export class ContractDetailCertificateService {
     private readonly mailerService: MailContractService,
   ) {}
 
-  updateCertificate(
+  async updateCertificate(
     contractId: string,
     contractDetailId: string,
     value: string,
@@ -36,12 +36,24 @@ export class ContractDetailCertificateService {
       certificateDto[value],
     );
 
-    return contractDetailPetUpdater.execute(
+    const response = await contractDetailPetUpdater.execute(
       contractId,
       contractDetailId,
       certificate,
       value as keyof typeof ContractDocumentation.keysObject,
       user,
     );
+
+    if (
+      ContractDocumentation.keysObject.senasaDocuments === value &&
+      response.contractDetail.documentation.senasaDocuments.executionDate &&
+      !response.contractDetail.documentation.senasaDocuments.isApplied
+    ) {
+      this.mailerService.senasaIntroduceContract(response);
+    } else {
+      this.mailerService.updateDetail(response);
+    }
+
+    return response;
   }
 }

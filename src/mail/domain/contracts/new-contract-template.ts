@@ -4,7 +4,7 @@ export default `<!DOCTYPE html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title>Pet Travel Contrato Nª {{number_contract}}</title>
+    <title>Pet Travel Contrato {{client}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
 
@@ -27,9 +27,9 @@ export default `<!DOCTYPE html>
             <td align="center" >
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
                     <tr>
-                        <td align="left" bgcolor="#ffffff" style="padding: 20px 50px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #d4dadf;">
+                        <td align="left" bgcolor="#ffffff" style="padding: 20px 50px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #002060;">
                             <h1  style="font-size: 22px;">
-                                ¡Contrato N° {{number_contract}} creado con éxito en Pet Travel!
+                                ¡Contrato creado con éxito en Pet Travel!
                             </h1>
                                                         
                             <p  style="margin-top: 20px;">¡Su contrato ha sido creado con éxito! Para acceder a la plataforma, inicie sesión utilizando su correo electrónico y su contraseña .
@@ -68,7 +68,7 @@ export default `<!DOCTYPE html>
                                     Por favor, manténgase informado y realice un seguimiento constante en la plataforma, o comuníquese regularmente con su asesor para obtener información actualizada.
                                 </p>
                                 <div align="center" style="margin-top: 20px;">
-                                    <a href="https://wa.me/{{phone}}?text=Buen%20día,%20necesito%20información%20sobre%20mi%20contrato%20N°%20{{number_contract}}"  rel="noopener noreferrer" target="_blank" style="display: inline-block; padding: 10px 40px; background-color: #4cb440; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;margin: auto;">
+                                    <a href="https://wa.me/{{phone}}?text=Buen%20día,%20necesito%20información%20sobre%20mi%20contrato%20N°%20{{client}}"  rel="noopener noreferrer" target="_blank" style="display: inline-block; padding: 10px 40px; background-color: #4cb440; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;margin: auto;">
                                         <div>Consultar con el asesor</div>
                                     </a>
                                 </div>

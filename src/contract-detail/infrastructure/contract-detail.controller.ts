@@ -1,4 +1,13 @@
-import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Post,
+  HttpCode,
+} from '@nestjs/common';
 import { ContractDetailService } from './contract-detail.service';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
@@ -110,6 +119,21 @@ export class ContractDetailController {
       detail,
       value,
       topicoDto,
+      user,
+    );
+  }
+
+  @Post(':id/:detail/measurementsAndWeightMail')
+  @HttpCode(200)
+  @Auth()
+  updateMeasurementsAndWeightMail(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailTopicoService.updateMeasurementMail(
+      id,
+      detail,
       user,
     );
   }

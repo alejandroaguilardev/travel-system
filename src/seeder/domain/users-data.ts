@@ -4,7 +4,7 @@ import { CreateUserRequest } from '../../users/application/create/create-user-re
 export const getUserData = (uuid: UUID): CreateUserRequest[] => [
   {
     id: uuid.generate(),
-    email: 'alex@gmail.com',
+    email: 'alexaguilar281@gmail.com',
     roles: [],
     profile: {
       document: 'C.E.',
@@ -19,7 +19,7 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       direction: '',
       district: '',
       gender: 'male',
-      phone: '',
+      phone: '51939130496',
     },
     status: '',
     auth: {
@@ -28,6 +28,33 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       lastLogin: null,
     },
   },
+  {
+    id: uuid.generate(),
+    email: 'crichrissuarez82@gmail.com',
+    roles: [],
+    profile: {
+      document: 'D.N.I.',
+      documentNumber: '41233194',
+      name: 'Christian',
+      secondName: '',
+      lastName: 'Suarez',
+      secondLastName: '',
+      birthDate: new Date(),
+      province: '',
+      department: '',
+      direction: '',
+      district: '',
+      gender: 'male',
+      phone: '51994748870',
+    },
+    status: '',
+    auth: {
+      admin: true,
+      rememberToken: '',
+      lastLogin: null,
+    },
+  },
+
   {
     id: uuid.generate(),
     email: 'pedro@gmail.com',
@@ -45,7 +72,7 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       direction: '',
       district: '',
       gender: 'male',
-      phone: '',
+      phone: '51939130496',
     },
     status: '',
   },

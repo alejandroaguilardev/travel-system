@@ -6,9 +6,9 @@ import { ContractDetailUpdaterResponse } from '../../../contract-detail/applicat
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../../../contract-detail/application/response/contract-detail.response';
 import { DateService } from '../../../common/application/services/date-service';
-import updateDocumentationTemplate from '../../domain/contracts/update-documentation-template';
+import Template from '../../domain/contracts/senasa-introduce-template';
 
-export class SendMailUpdateDocumentation {
+export class SendMailSenasaIntroduce {
   constructor(
     private readonly transporter: any,
     private readonly userRepository: UserRepository,
@@ -32,7 +32,7 @@ export class SendMailUpdateDocumentation {
       this.options(
         email,
         contractDetail,
-        this.getHtml(contract, contractDetail, adviser.profile.phone),
+        await this.getHtml(contract, contractDetail, adviser.profile.phone),
       ),
     );
   }
@@ -45,77 +45,30 @@ export class SendMailUpdateDocumentation {
     return {
       from: `Pet travel <${process.env.MAIL_TO}>`,
       to: email.value,
-      subject: `Pet Travel Documentación Actualizada de ${contractDetail.pet.name}`,
+      subject: `Pet Travel Contrato Inspección Senasa ${contractDetail.pet.name}`,
       html,
     };
   }
 
-  getHtml(
+  async getHtml(
     contract: ContractResponse,
     contractDetail: ContractDetailResponse,
     phone: string,
   ) {
-    const { documentation } = contractDetail;
-    const names = this.getDocumentation();
-
-    let template = updateDocumentationTemplate
-      .replaceAll('{{number_contract}}', contract.number)
+    return Template.replaceAll(
+      '{{client}}',
+      `${contract.client?.profile?.name ?? 'Cliente'} ${
+        contract.client?.profile?.lastName ?? ''
+      }`,
+    )
       .replaceAll('{{pet.name}}', contractDetail.pet.name)
-      .replaceAll('{{phone}}', phone);
-
-    names.forEach(({ name }) => {
-      template = template
-        .replaceAll(
-          `{{${name}.hasServiceIncluded}}`,
-          documentation[name].hasServiceIncluded ? 'SI' : 'NO',
-        )
-        .replaceAll(
-          `{{${name}.date}}`,
-          documentation[name].executionDate
-            ? this.dateService.formatDateTime(
-                documentation[name].executionDate,
-                'DD/MM/YYYY',
-              )
-            : '--',
-        )
-        .replaceAll(
-          `{{${name}.isApplied}}`,
-          `${documentation[name].isApplied ? 'Completado' : 'Pendiente'}`,
-        )
-        .replaceAll(
-          `${name}_color`,
-          `${documentation[name].isApplied ? '#98fb98' : '#f08080'}`,
-        );
-    });
-    return template;
-  }
-
-  private getDocumentation() {
-    return [
-      {
-        name: 'chipCertificate',
-      },
-      {
-        name: 'vaccinationCertificate',
-      },
-      {
-        name: 'rabiesSeroLogicalTest',
-      },
-      {
-        name: 'chipReview',
-      },
-      {
-        name: 'importLicense',
-      },
-      {
-        name: 'healthCertificate',
-      },
-      {
-        name: 'senasaDocuments',
-      },
-      {
-        name: 'emotionalSupportCertificate',
-      },
-    ];
+      .replaceAll('{{phone}}', phone)
+      .replaceAll(
+        '{{date}}',
+        this.dateService.formatDateTime(
+          contractDetail.documentation.senasaDocuments.executionDate,
+          'DD/MM/YYYY',
+        ),
+      );
   }
 }

@@ -5,10 +5,12 @@ import { SendMailNewContract } from '../application/contracts/send-mail-new-cont
 import { Contract } from '../../contracts/domain/contract';
 import { UserMongoRepository } from '../../users/infrastructure/persistence/user-mongo.repository';
 import { ContractDetailUpdaterResponse } from '../../contract-detail/application/response/contract-detail-update.response';
-import { SendMailUpdateDocumentation } from '../application/contracts/send-mail-documentation';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 import { SendMailTravelPersonContract } from '../application/contracts/send-mail-travel-person-contract';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
+import { SendMailUpdateDetail } from '../application/contracts/send-mail-detail';
+import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
+import { SendMailSenasaIntroduce } from '../application/contracts/send-mail-senasa-introduce';
 
 @Injectable()
 export class MailContractService {
@@ -19,6 +21,7 @@ export class MailContractService {
     private readonly userMongoRepository: UserMongoRepository,
     private readonly dayJsService: DayJsService,
     private readonly jwtService: JWTAdapterService,
+    private readonly ubigeoQuery: UbigeoQuery,
   ) {
     this.mailerService = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
@@ -42,12 +45,10 @@ export class MailContractService {
     await sendEmail.execute(contract);
   }
 
-  async updateDocumentation(
-    data: ContractDetailUpdaterResponse,
-  ): Promise<void> {
+  async updateDetail(data: ContractDetailUpdaterResponse): Promise<void> {
     if (this.getProductionMode()) return;
 
-    const sendEmail = new SendMailUpdateDocumentation(
+    const sendEmail = new SendMailUpdateDetail(
       this.mailerService,
       this.userMongoRepository,
       this.dayJsService,
@@ -64,6 +65,21 @@ export class MailContractService {
       this.mailerService,
       this.userMongoRepository,
       this.jwtService,
+      this.ubigeoQuery,
+    );
+
+    await sendEmail.execute(data);
+  }
+
+  async senasaIntroduceContract(
+    data: ContractDetailUpdaterResponse,
+  ): Promise<void> {
+    if (this.getProductionMode()) return;
+
+    const sendEmail = new SendMailSenasaIntroduce(
+      this.mailerService,
+      this.userMongoRepository,
+      this.dayJsService,
     );
 
     await sendEmail.execute(data);

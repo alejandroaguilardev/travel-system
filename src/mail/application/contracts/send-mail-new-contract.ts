@@ -19,11 +19,7 @@ export class SendMailNewContract {
     const email = new UserEmail(user.email);
 
     await this.transporter.sendMail(
-      this.options(
-        email,
-        contract,
-        this.getHtml(contract, adviser.profile.phone),
-      ),
+      this.options(email, contract, this.getHtml(user, adviser.profile.phone)),
     );
   }
 
@@ -31,14 +27,17 @@ export class SendMailNewContract {
     return {
       from: `Pet travel <${process.env.MAIL_TO}>`,
       to: email.value,
-      subject: `Pet Travel Contrato Nª ${contract.number.value}`,
+      subject: `Pet Travel Contrato ${contract.number.value}`,
       html,
     };
   }
 
-  getHtml(contract: Contract, phone: string) {
+  getHtml(user: UserResponse, phone: string) {
     return newContractTemplate
-      .replaceAll('{{number_contract}}', contract.number.value)
+      .replaceAll(
+        '{{client}}',
+        `${user?.profile?.name ?? 'Cliente'} ${user?.profile?.lastName ?? ''}`,
+      )
       .replaceAll('{{phone}}', phone);
   }
 }

@@ -1,4 +1,10 @@
-import { TravelInterface, StatusInterface } from '../interfaces';
+import {
+  TravelInterface,
+  StatusInterface,
+  TravelAccompaniedPetInterface,
+  TravelDestinationInterface,
+  TravelPetPerChargeInterface,
+} from '../interfaces';
 import { ContractHasServiceIncluded } from './contract-has-service.included';
 import { ContractStatus } from '../../../common/domain/value-object/contract-status';
 import {
@@ -54,20 +60,10 @@ export class ContractTravel {
       !!travelData.airlineReservation.flightNumber;
 
     const hasRequiredAccompaniedPetFields: boolean =
-      !!travelData.accompaniedPet.name &&
-      !!travelData.accompaniedPet.document &&
-      !!travelData.accompaniedPet.documentNumber &&
-      !!travelData.accompaniedPet.phone &&
-      !!travelData.accompaniedPet.email &&
-      !!travelData.accompaniedPet.department &&
-      !!travelData.accompaniedPet.province &&
-      !!travelData.accompaniedPet.district &&
-      !!travelData.accompaniedPet.direction;
+      ContractTravel.hasRequiredAccompaniedPetFields(travelData.accompaniedPet);
 
     const hasRequiredDestinationFields: boolean =
-      !!travelData.destination.cityDestination &&
-      !!travelData.destination.countryDestination &&
-      !!travelData.destination.directionDestination;
+      ContractTravel.hasRequiredDestinationFields(travelData.destination);
 
     const hasRequired =
       hasRequiredAirlineReservationFields &&
@@ -77,16 +73,50 @@ export class ContractTravel {
     if (!hasRequired) return 'pending';
     if (this.typeTraveling.value === 'charge') {
       const hasRequiredPetChargeFields: boolean =
-        !!travelData.petPerCharge.name &&
-        !!travelData.petPerCharge.document &&
-        !!travelData.petPerCharge.documentNumber &&
-        !!travelData.petPerCharge.phone &&
-        !!travelData.guideNumber &&
-        !!travelData.petPerCharge.email;
+        ContractTravel.hasRequiredPetChargeFields(travelData.petPerCharge) &&
+        !!travelData.guideNumber;
 
       return hasRequiredPetChargeFields ? 'completed' : 'in-process';
     } else {
       return 'completed';
     }
+  }
+
+  static hasRequiredAccompaniedPetFields(
+    accompaniedPet: TravelAccompaniedPetInterface,
+  ): boolean {
+    return (
+      !!accompaniedPet.name &&
+      !!accompaniedPet.document &&
+      !!accompaniedPet.documentNumber &&
+      !!accompaniedPet.phone &&
+      !!accompaniedPet.email &&
+      !!accompaniedPet.department &&
+      !!accompaniedPet.province &&
+      !!accompaniedPet.district &&
+      !!accompaniedPet.direction
+    );
+  }
+
+  static hasRequiredDestinationFields(
+    destination: TravelDestinationInterface,
+  ): boolean {
+    return (
+      !!destination.cityDestination &&
+      !!destination.countryDestination &&
+      !!destination.directionDestination
+    );
+  }
+
+  static hasRequiredPetChargeFields(
+    petPerCharge: TravelPetPerChargeInterface,
+  ): boolean {
+    return (
+      !!petPerCharge.name &&
+      !!petPerCharge.document &&
+      !!petPerCharge.documentNumber &&
+      !!petPerCharge.phone &&
+      !!petPerCharge.email
+    );
   }
 }

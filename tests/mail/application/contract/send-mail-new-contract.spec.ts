@@ -5,6 +5,7 @@ import { SendMailNewContract } from '../../../../src/mail/application/contracts/
 import { ContractCreatorMother } from '../../../contracts/domain/contract-creator.mother';
 import { CommandContractUpdater } from '../../../../src/contracts/application/update/command-contract-updater';
 import { userRepositoryMock } from '../../../users/domain/user-repository-mock-methods';
+import { UserResponse } from '../../../../src/users/domain/interfaces/user.response';
 
 describe('sendMailNewContract', () => {
   const sendMail = new SendMailNewContract(transportMock, userRepositoryMock);
@@ -28,7 +29,7 @@ describe('sendMailNewContract', () => {
     const haveCalled = sendMail.options(
       email,
       contract,
-      sendMail.getHtml(contract, user.profile.phone),
+      sendMail.getHtml(user as UserResponse, user.profile.phone),
     );
     expect(transportMock.sendMail).toHaveBeenCalledWith(haveCalled);
   });

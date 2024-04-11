@@ -7,6 +7,12 @@ import { ContractDetailTopicoUpdater } from '../application/update/topico-update
 import { CommandContractTopico } from '../application/update/command/topico-command';
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
 import { ContractTopico } from '../domain/value-object/contract-topico';
+import { Uuid } from '../../common/domain/value-object/uuid';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../common/domain/auth-permissions';
+import { PermissionValidator } from '../../auth/application/permission/permission-validate';
 
 @Injectable()
 export class ContractDetailTopicoService {
@@ -15,7 +21,7 @@ export class ContractDetailTopicoService {
     private readonly mailerService: MailContractService,
   ) {}
 
-  updateTopico(
+  async updateTopico(
     contractId: string,
     contractDetailId: string,
     value: string,
@@ -34,12 +40,47 @@ export class ContractDetailTopicoService {
 
     const topico = CommandContractTopico[value](topicoDto[value], user.id);
 
-    return contractDetailPetUpdater.execute(
+    const response = await contractDetailPetUpdater.execute(
       contractId,
       contractDetailId,
       topico,
       value as keyof typeof ContractTopico.keysTopicoObject,
       user,
     );
+
+    if (value !== ContractTopico.keysTopicoObject.chipReview) {
+      this.mailerService.updateDetail(response);
+    }
+
+    if (
+      value !== ContractTopico.keysTopicoObject.takingSampleSerologicalTest &&
+      response.contractDetail.topico.takingSampleSerologicalTest.executed
+    ) {
+      this.mailerService.travelPersonContract(response);
+    }
+    return response;
+  }
+
+  async updateMeasurementMail(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<void> {
+    const contract = await this.mongoContractRepository.searchByIdWithPet(
+      new Uuid(contractId),
+    );
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId,
+    );
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.TOPICO,
+    );
+
+    this.mailerService.updateDetail({
+      contract,
+      contractDetail,
+    });
   }
 }

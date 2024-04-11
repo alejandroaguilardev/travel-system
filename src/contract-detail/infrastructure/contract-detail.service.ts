@@ -15,7 +15,6 @@ import {
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { ContractDetailRemover } from '../application/remove/contract-detail-remover';
-import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 import { TravelAccompaniedDto } from './dto/acompanied.dto';
 import { ContractDetailAccompaniedUpdater } from '../application/update/accompanied-updater';
 import { ContractDetailInterface } from '../domain/interfaces';
@@ -25,7 +24,6 @@ import { ContractDetailPetUpdater } from '../application/pet/contract-detail-pet
 export class ContractDetailService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailerService: MailContractService,
   ) {}
 
   findOne(
@@ -97,14 +95,6 @@ export class ContractDetailService {
       documentation,
       user,
     );
-
-    this.mailerService.updateDocumentation(response);
-    if (
-      documentationDto.rabiesSeroLogicalTest.isApplied &&
-      !documentationDto.rabiesSeroLogicalTest.resultDate
-    ) {
-      this.mailerService.travelPersonContract(response);
-    }
 
     return response;
   }

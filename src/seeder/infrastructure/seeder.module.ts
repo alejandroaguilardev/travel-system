@@ -7,9 +7,16 @@ import { PermissionsModule } from '../../permissions/infrastructure/permissions.
 import { SeederController } from './seeder.controller';
 import { SeederService } from './seeder.service';
 import { CagesModule } from '../../cages/infrastructure/cages.module';
+import { UbigeoModule } from '../../ubigeo/infrastructure/ubigeo.module';
 
 @Module({
-  imports: [UsersModule, RolesModule, PermissionsModule, CagesModule],
+  imports: [
+    UsersModule,
+    RolesModule,
+    PermissionsModule,
+    CagesModule,
+    UbigeoModule,
+  ],
   controllers: [SeederController],
   providers: [SeederService, UUIDService, BcryptService],
 })

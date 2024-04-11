@@ -13,6 +13,7 @@ import { PetsModule } from './pets/infrastructure/pets.module';
 import { MailModule } from './mail/infrastructure/mail.module';
 import { ContractDetailModule } from './contract-detail/infrastructure/contract-detail.module';
 import { FoldersModule } from './folders/infrastructure/folders.module';
+import { UbigeoModule } from './ubigeo/infrastructure/ubigeo.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { FoldersModule } from './folders/infrastructure/folders.module';
     MailModule,
     ContractDetailModule,
     FoldersModule,
+    UbigeoModule,
   ],
   controllers: [],
   providers: [BcryptService],

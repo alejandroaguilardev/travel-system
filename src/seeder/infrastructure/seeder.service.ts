@@ -15,6 +15,10 @@ import { getPermissionsData } from '../domain/permission-data';
 import { getRolesData } from '../domain/role-data';
 import { CagesSeeder } from '../application/cages/seeder-cages';
 import { MongoCageRepository } from '../../cages/infrastructure/persistence/mongo-cage.repository';
+import { UbigeoSeeder } from '../application/ubigeo/seeder-ubigeo';
+import { MongoDepartmentRepository } from '../../ubigeo/infrastructure/persistence/mongo-department.repository';
+import { MongoDistrictRepository } from '../../ubigeo/infrastructure/persistence/mongo-district.repository';
+import { MongoProvinceRepository } from '../../ubigeo/infrastructure/persistence/mongo-province.repository';
 
 @Injectable()
 export class SeederService {
@@ -25,6 +29,9 @@ export class SeederService {
     private readonly mongoCageRepository: MongoCageRepository,
     private readonly uuid: UUIDService,
     private readonly bcrypt: BcryptService,
+    private readonly mongoDepartmentRepository: MongoDepartmentRepository,
+    private readonly mongoProvinceRepository: MongoProvinceRepository,
+    private readonly mongoDistrictRepository: MongoDistrictRepository,
     @InjectConnection() private readonly connection: Connection,
   ) {}
   async seeder(): Promise<ResponseSuccess> {
@@ -38,6 +45,11 @@ export class SeederService {
       this.uuid,
     );
     const cagesSeeder = new CagesSeeder(this.mongoCageRepository, this.uuid);
+    const ubigeoSeeder = new UbigeoSeeder(
+      this.mongoDepartmentRepository,
+      this.mongoProvinceRepository,
+      this.mongoDistrictRepository,
+    );
 
     const permissions = getPermissionsData(this.uuid);
     const roles = getRolesData(this.uuid, permissions);
@@ -48,6 +60,7 @@ export class SeederService {
     await roleSeeder.execute(roles);
     await userSeeder.execute();
     await cagesSeeder.execute();
+    await ubigeoSeeder.execute();
 
     return ResponseMessage.createSuccessResponse('seeder ejecutado');
   }

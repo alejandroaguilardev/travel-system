@@ -12,6 +12,7 @@ import { DayJsService } from '../../common/infrastructure/services/dayjs.service
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { UbigeoModule } from '../../ubigeo/infrastructure/ubigeo.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PassportModule } from '@nestjs/passport';
         },
       }),
     }),
+    UbigeoModule,
   ],
   controllers: [],
   providers: [

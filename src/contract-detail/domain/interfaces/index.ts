@@ -11,4 +11,6 @@ export {
   TravelInterface,
   TravelPetPerChargeInterface,
   TypeTravelingType,
+  TravelAccompaniedPetInterface,
+  TravelDestinationInterface,
 } from './travel.interface';
