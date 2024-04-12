@@ -18,6 +18,7 @@ import { CustomerPaymentMethod } from '../../../contracts/domain/value-object/cu
 import { ContractFolder } from '../../../contracts/domain/value-object/contract-folder';
 import { CommandContractDetailsUpdater } from '../../../contract-detail/application/update/command/command-contract-updater';
 import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
+import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 
 export class CommandContractUpdater {
   static execute(
@@ -56,6 +57,9 @@ export class CommandContractUpdater {
       ),
       new Uuid(data?.adviser ?? contract.adviser),
       new ContractFinishClient(data?.finishClient ?? contract.finishClient),
+      new ContractReasonForCancellation(
+        data?.reasonForCancellation ?? contract?.reasonForCancellation ?? '',
+      ),
       new UuidOptional(data?.user ?? contract.user),
     );
   }

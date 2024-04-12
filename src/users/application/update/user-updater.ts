@@ -32,11 +32,6 @@ export class UserUpdater {
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault());
     }
-    console.log(response.profile.document, userUpdate.profile.document.value);
-    console.log(
-      response.profile.documentNumber,
-      userUpdate.profile.documentNumber.value,
-    );
 
     if (
       response.profile.document !== userUpdate.profile.document.value ||

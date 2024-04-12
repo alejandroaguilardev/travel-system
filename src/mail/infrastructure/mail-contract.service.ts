@@ -11,6 +11,9 @@ import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.servic
 import { SendMailUpdateDetail } from '../application/contracts/send-mail-detail';
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 import { SendMailSenasaIntroduce } from '../application/contracts/send-mail-senasa-introduce';
+import { SendMailFinishContract } from '../application/contracts/send-mail-finish';
+import { SendMailCancelContract } from '../application/contracts/send-mail-cancel';
+import { ContractReasonForCancellation } from '../../contracts/domain/value-object/reason-for-cancellation';
 
 @Injectable()
 export class MailContractService {
@@ -83,6 +86,29 @@ export class MailContractService {
     );
 
     await sendEmail.execute(data);
+  }
+
+  async contractFinish(contract: Contract): Promise<void> {
+    if (this.getProductionMode()) return;
+    const sendEmail = new SendMailFinishContract(
+      this.mailerService,
+      this.userMongoRepository,
+    );
+
+    await sendEmail.execute(contract);
+  }
+
+  async contractCancel(
+    contract: Contract,
+    reasonForCancellation: ContractReasonForCancellation,
+  ): Promise<void> {
+    if (this.getProductionMode()) return;
+    const sendEmail = new SendMailCancelContract(
+      this.mailerService,
+      this.userMongoRepository,
+    );
+
+    await sendEmail.execute(contract, reasonForCancellation);
   }
 
   private getProductionMode() {

@@ -28,7 +28,7 @@ export default `<!DOCTYPE html>
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
                     <tr>
                         <td align="left" bgcolor="#ffffff" style="padding: 20px 50px 0; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; border-top: 3px solid #002060;">
-                            <h1  style="font-size: 22px;">
+                            <h1 style="font-size: 22px;text-align: center;">
                                 ¡Contrato creado con éxito en Pet Travel!
                             </h1>
                                                         

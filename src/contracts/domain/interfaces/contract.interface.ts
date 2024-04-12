@@ -17,5 +17,6 @@ export interface ContractInterface {
   payInInstallments?: PayInInstallmentInterface[];
   customerPayments?: CustomerPaymentInterface[];
   finishClient?: boolean;
+  reasonForCancellation?: string;
   user: string;
 }

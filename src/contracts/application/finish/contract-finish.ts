@@ -12,6 +12,8 @@ import {
   AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
+import { CommandContractUpdater } from '../update';
+import { Contract } from '../../domain/contract';
 
 export class ContractFinish {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -19,7 +21,7 @@ export class ContractFinish {
   async execute(
     contractId: string,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
+  ): Promise<{ contract: Contract; response: ResponseSuccess }> {
     const uuid = new Uuid(contractId);
     const response =
       await this.contractRepository.searchById<ContractInterface>(uuid);
@@ -37,9 +39,13 @@ export class ContractFinish {
 
     await this.contractRepository.finish(uuid, endDate);
 
-    return ResponseMessage.createSuccessResponse(
-      ContractFinish.messageSuccess(),
-    );
+    const contract = CommandContractUpdater.execute(response);
+    return {
+      contract,
+      response: ResponseMessage.createSuccessResponse(
+        ContractFinish.messageSuccess(),
+      ),
+    };
   }
 
   static messageSuccess() {

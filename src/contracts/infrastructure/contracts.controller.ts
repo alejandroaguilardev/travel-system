@@ -17,6 +17,7 @@ import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { FolderContractDto } from './dto/folder-contract-dto';
+import { ContractCancelDto } from './dto/contract-cancel.dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -52,9 +53,10 @@ export class ContractsController {
   @Auth()
   cancel(
     @Param('id') id: string,
+    @Body() contractCancelDto: ContractCancelDto,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractsService.cancel(id, user);
+    return this.contractsService.cancel(id, contractCancelDto, user);
   }
 
   @Get()

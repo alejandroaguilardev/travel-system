@@ -17,6 +17,7 @@ import { ResponseSearch } from '../../../common/domain/response/response-search'
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
 import { ContractMongoPipeline } from './contract-mongo.pipeline';
 import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
+import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 
 @Injectable()
 export class MongoContractRepository
@@ -81,11 +82,16 @@ export class MongoContractRepository
     );
   }
 
-  async cancel(contractId: Uuid, endDate: ContractEndDate): Promise<void> {
+  async cancel(
+    contractId: Uuid,
+    endDate: ContractEndDate,
+    reasonForCancellation: ContractReasonForCancellation,
+  ): Promise<void> {
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
         endDate: endDate.value,
+        reasonForCancellation: reasonForCancellation.value,
         status: 'canceled',
       },
     );

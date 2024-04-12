@@ -71,6 +71,9 @@ export class ContractModel implements ContractInterface {
   finishClient: boolean;
 
   @Prop({ type: String, required: false })
+  reasonForCancellation: string;
+
+  @Prop({ type: String, required: false })
   user: string;
 }
 

@@ -14,7 +14,7 @@ describe('ContractFinish', () => {
     contractRepositoryMock.searchById.mockResolvedValueOnce(dto);
     const user = UserCreatorMother.createWithPassword();
     const expected = await contractDocumentation.execute(id, user);
-    expect(expected.message).toEqual(ContractFinish.messageSuccess());
+    expect(expected.response.message).toEqual(ContractFinish.messageSuccess());
   });
 
   it('should_failed_contract_documentation', async () => {

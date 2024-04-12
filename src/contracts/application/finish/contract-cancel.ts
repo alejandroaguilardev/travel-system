@@ -12,14 +12,18 @@ import {
   AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
+import { CommandContractUpdater } from '../update';
+import { Contract } from '../../domain/contract';
+import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 
 export class ContractCancel {
   constructor(private readonly contractRepository: ContractRepository) {}
 
   async execute(
     contractId: string,
+    reasonForCancellation: ContractReasonForCancellation,
     user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
+  ): Promise<{ contract: Contract; response: ResponseSuccess }> {
     const uuid = new Uuid(contractId);
     const response =
       await this.contractRepository.searchById<ContractInterface>(uuid);
@@ -35,11 +39,15 @@ export class ContractCancel {
     }
     const endDate = new ContractEndDate(new Date());
 
-    await this.contractRepository.cancel(uuid, endDate);
+    await this.contractRepository.cancel(uuid, endDate, reasonForCancellation);
 
-    return ResponseMessage.createSuccessResponse(
-      ContractCancel.messageSuccess(),
-    );
+    const contract = CommandContractUpdater.execute(response);
+    return {
+      contract,
+      response: ResponseMessage.createSuccessResponse(
+        ContractCancel.messageSuccess(),
+      ),
+    };
   }
 
   static messageSuccess() {

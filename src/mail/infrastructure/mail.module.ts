@@ -36,9 +36,9 @@ import { UbigeoModule } from '../../ubigeo/infrastructure/ubigeo.module';
   providers: [
     MailAuthService,
     MailContractService,
-    UserMongoRepository,
     DayJsService,
     JWTAdapterService,
+    UserMongoRepository,
   ],
   exports: [MailAuthService, MailContractService],
 })

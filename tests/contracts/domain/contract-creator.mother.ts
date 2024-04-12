@@ -10,6 +10,7 @@ import { faker } from '@faker-js/faker';
 import { PayInInstallmentMother } from './pay-in-installments.mother';
 import { ContractResponse } from '../../../src/contracts/application/response/contract.response';
 import { UserCreatorMother } from '../../users/domain/create-user-mother';
+import { StringMother } from '../../common/domain/string.mother';
 
 export class ContractCreatorMother {
   static create(dto?: Partial<ContractCreateRequest>): ContractCreateRequest {
@@ -28,6 +29,7 @@ export class ContractCreatorMother {
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
+      reasonForCancellation: StringMother.create(),
       finishClient: false,
     };
   }
@@ -51,6 +53,7 @@ export class ContractCreatorMother {
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
       user: dto?.user ?? UuidMother.create(),
+      reasonForCancellation: StringMother.create(),
       finishClient: faker.datatype.boolean(),
     };
   }
@@ -73,6 +76,7 @@ export class ContractCreatorMother {
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
+      reasonForCancellation: StringMother.create(),
       user: dto?.user ?? UuidMother.create(),
     };
   }

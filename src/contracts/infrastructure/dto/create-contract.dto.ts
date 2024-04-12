@@ -50,6 +50,10 @@ export class CreateContractDto implements ContractCreateRequest {
   finishClient?: boolean;
 
   @IsOptional()
+  @IsString()
+  reasonForCancellation?: string;
+
+  @IsOptional()
   @IsUUID()
   user: string;
 }

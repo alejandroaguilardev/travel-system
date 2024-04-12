@@ -19,6 +19,8 @@ import { FolderContractDto } from './dto/folder-contract-dto';
 import { ContractFolderUpdater } from '../application/update/folder-updater';
 import { ContractCancel } from '../application/finish/contract-cancel';
 import { ContractFinishClientUpdater } from '../application/finish/contract-finish-client-updater';
+import { ContractCancelDto } from './dto/contract-cancel.dto';
+import { ContractReasonForCancellation } from '../domain/value-object/reason-for-cancellation';
 
 @Injectable()
 export class ContractsService {
@@ -38,12 +40,34 @@ export class ContractsService {
     return response;
   }
 
-  finish(
+  async finish(
     id: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
     const contractFinish = new ContractFinish(this.mongoContractRepository);
-    return contractFinish.execute(id, user);
+
+    const { contract, response } = await contractFinish.execute(id, user);
+    this.mailerService.contractFinish(contract);
+    return response;
+  }
+
+  async cancel(
+    id: string,
+    contractCancelDto: ContractCancelDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const contractFinish = new ContractCancel(this.mongoContractRepository);
+    const reasonForCancellation = new ContractReasonForCancellation(
+      contractCancelDto.reasonForCancellation,
+    );
+
+    const { contract, response } = await contractFinish.execute(
+      id,
+      reasonForCancellation,
+      user,
+    );
+    this.mailerService.contractCancel(contract, reasonForCancellation);
+    return response;
   }
 
   finishClient(
@@ -53,14 +77,6 @@ export class ContractsService {
     const contractFinish = new ContractFinishClientUpdater(
       this.mongoContractRepository,
     );
-    return contractFinish.execute(id, user);
-  }
-
-  cancel(
-    id: string,
-    user: UserWithoutWithRoleResponse,
-  ): Promise<ResponseSuccess> {
-    const contractFinish = new ContractCancel(this.mongoContractRepository);
     return contractFinish.execute(id, user);
   }
 
