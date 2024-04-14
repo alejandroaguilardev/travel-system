@@ -6,6 +6,7 @@ import { ContractEndDate, ContractNumber } from './value-object';
 import { ContractFolder } from './value-object/contract-folder';
 import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 import { ContractReasonForCancellation } from './value-object/reason-for-cancellation';
+import { PayInInstallments } from './value-object/pay-in-installments/pay-in-installments';
 
 export interface ContractRepository extends Repository<Contract> {
   finish(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
@@ -21,4 +22,5 @@ export interface ContractRepository extends Repository<Contract> {
     number: ContractNumber,
   ): Promise<void>;
   updateDetail(contractId: Uuid, details: ContractDetail[]): Promise<void>;
+  updatePayment(contractId: Uuid, payment: PayInInstallments): Promise<void>;
 }

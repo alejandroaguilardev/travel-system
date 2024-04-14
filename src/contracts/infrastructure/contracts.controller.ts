@@ -18,6 +18,7 @@ import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator'
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { FolderContractDto } from './dto/folder-contract-dto';
 import { ContractCancelDto } from './dto/contract-cancel.dto';
+import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -110,6 +111,20 @@ export class ContractsController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractsService.updateFolder(id, folderContractDto, user);
+  }
+
+  @Patch(':id/payment')
+  @Auth()
+  updatePayment(
+    @Param('id') id: string,
+    @Body() payInInstallmentArrayDto: PayInInstallmentArrayDto,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractsService.updatePayInInstallment(
+      id,
+      payInInstallmentArrayDto,
+      user,
+    );
   }
 
   @Delete(':id')

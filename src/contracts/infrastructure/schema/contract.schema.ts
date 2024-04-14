@@ -3,7 +3,6 @@ import { HydratedDocument } from 'mongoose';
 import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
 import { ContractInterface } from '../../domain/interfaces/contract.interface';
 import { StatusInterface } from '../../domain/interfaces/status.interface';
-import { CustomerPaymentInterface } from '../../domain/interfaces/customer-payment.interface';
 import { PayInInstallmentInterface } from '../../domain/interfaces/pay-in-installment.interface';
 import { ContractDetailModel } from '../../../contract-detail/infrastructure/schema/contract-detail.schema';
 import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
@@ -49,23 +48,19 @@ export class ContractModel implements ContractInterface {
         price: Number,
         percentage: Number,
         date: Date,
+        isPay: Boolean,
+        customerPayments: [
+          {
+            price: Number,
+            date: Date,
+            method: String,
+          },
+        ],
       },
     ],
     required: false,
   })
   payInInstallments?: PayInInstallmentInterface[];
-
-  @Prop({
-    type: [
-      {
-        price: Number,
-        date: Date,
-        method: String,
-      },
-    ],
-    required: false,
-  })
-  customerPayments?: CustomerPaymentInterface[];
 
   @Prop({ type: Boolean, required: false })
   finishClient: boolean;

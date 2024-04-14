@@ -21,6 +21,8 @@ import { ContractCancel } from '../application/finish/contract-cancel';
 import { ContractFinishClientUpdater } from '../application/finish/contract-finish-client-updater';
 import { ContractCancelDto } from './dto/contract-cancel.dto';
 import { ContractReasonForCancellation } from '../domain/value-object/reason-for-cancellation';
+import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
+import { ContractPayInInstallmentsUpdater } from '../application/update/payment-updater';
 
 @Injectable()
 export class ContractsService {
@@ -137,6 +139,20 @@ export class ContractsService {
       this.mongoContractRepository,
     );
     return contractFolderUpdater.execute(id, folderContractDto, user);
+  }
+
+  async updatePayInInstallment(
+    id: string,
+    payInInstallmentArrayDto: PayInInstallmentArrayDto,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<ResponseSuccess> {
+    const contractPayInInstallmentsUpdater =
+      new ContractPayInInstallmentsUpdater(this.mongoContractRepository);
+    return contractPayInInstallmentsUpdater.execute(
+      id,
+      payInInstallmentArrayDto.payInInstallments,
+      user,
+    );
   }
 
   async remove(

@@ -11,9 +11,7 @@ import {
 import { ContractCreateRequest } from '../../application/create/contract-create-request';
 import { CreateContractDetailDto } from '../../../contract-detail/infrastructure/dto/create-contract-detail.dto';
 import { ContractDetailCreateRequest } from '../../../contract-detail/application/create';
-import { CustomerPaymentInterface } from '../../../contracts/domain/interfaces/customer-payment.interface';
 import { PayInInstallmentInterface } from '../../../contracts/domain/interfaces/pay-in-installment.interface';
-import { CustomerPaymentsDto } from './customer-payments.dto';
 import { PayInInstallmentDto } from './pay-installment.dto';
 
 export class CreateContractDto implements ContractCreateRequest {
@@ -41,10 +39,6 @@ export class CreateContractDto implements ContractCreateRequest {
   @ValidateNested({ each: true })
   payInInstallments?: PayInInstallmentInterface[];
 
-  @IsOptional()
-  @Type(() => CustomerPaymentsDto)
-  @ValidateNested({ each: true })
-  customerPayments?: CustomerPaymentInterface[] = [];
   @IsOptional()
   @IsBoolean()
   finishClient?: boolean;

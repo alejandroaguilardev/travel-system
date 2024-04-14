@@ -18,6 +18,7 @@ import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mon
 import { ContractMongoPipeline } from './contract-mongo.pipeline';
 import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
+import { PayInInstallments } from '../../domain/value-object/pay-in-installments/pay-in-installments';
 
 @Injectable()
 export class MongoContractRepository
@@ -107,6 +108,18 @@ export class MongoContractRepository
       {
         folder: folder.value,
         number: number.value,
+      },
+    );
+  }
+
+  async updatePayment(
+    contractId: Uuid,
+    payInInstallments: PayInInstallments,
+  ): Promise<void> {
+    return this.contractModel.findOneAndUpdate(
+      { id: contractId.value },
+      {
+        payInInstallments: payInInstallments.toJson(),
       },
     );
   }

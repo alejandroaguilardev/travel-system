@@ -19,6 +19,7 @@ import { ContractFolder } from '../../../contracts/domain/value-object/contract-
 import { CommandContractDetailsUpdater } from '../../../contract-detail/application/update/command/command-contract-updater';
 import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
+import { ContractIsPay } from '../../domain/value-object/pay-in-installments/contract-is-pay';
 
 export class CommandContractUpdater {
   static execute(
@@ -42,16 +43,17 @@ export class CommandContractUpdater {
               new ContractPrice(_.price),
               new ContractPercentage(_.percentage),
               new ContractDate(_.date),
-            ),
-        ) ?? [],
-      ),
-      new CustomerPayments(
-        data?.customerPayments?.map(
-          (_) =>
-            new CustomerPayment(
-              new ContractPrice(_.price),
-              new CustomerPaymentMethod(_.method),
-              new ContractDate(_.date),
+              new ContractIsPay(_.isPay),
+              new CustomerPayments(
+                _?.customerPayments?.map(
+                  (_) =>
+                    new CustomerPayment(
+                      new ContractPrice(_.price),
+                      new CustomerPaymentMethod(_.method),
+                      new ContractDate(_.date),
+                    ),
+                ) ?? [],
+              ),
             ),
         ) ?? [],
       ),

@@ -5,7 +5,6 @@ import { NumberMother } from '../../common/domain/number.mother';
 import { ContractInterface } from '../../../src/contracts/domain/interfaces/contract.interface';
 import { ContractDetailCreatorMother } from '../../contract-detail/domain/contract-creator.mother';
 import { ContractPriceMother } from './contract-price.mother';
-import { CustomerPaymentsMother } from './customer-payments.mother';
 import { faker } from '@faker-js/faker';
 import { PayInInstallmentMother } from './pay-in-installments.mother';
 import { ContractResponse } from '../../../src/contracts/application/response/contract.response';
@@ -23,9 +22,6 @@ export class ContractCreatorMother {
       details: dto?.details ?? [ContractDetailCreatorMother.createWithTravel()],
       adviser: dto?.adviser ?? UuidMother.create(),
       price: dto?.price ?? ContractPriceMother.create(),
-      customerPayments:
-        dto?.customerPayments ??
-        CustomerPaymentsMother.create(faker.number.int({ min: 0, max: 10 })),
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
@@ -46,9 +42,6 @@ export class ContractCreatorMother {
       status: dto?.status ?? 'in-process',
       adviser: dto?.adviser ?? UuidMother.create(),
       price: dto?.price ?? ContractPriceMother.create(),
-      customerPayments:
-        dto?.customerPayments ??
-        CustomerPaymentsMother.create(faker.number.int({ min: 0, max: 10 })),
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
@@ -70,9 +63,6 @@ export class ContractCreatorMother {
       status: dto?.status ?? 'in-process',
       adviser: dto?.adviser ?? UserCreatorMother.createWithPassword(),
       price: dto?.price ?? ContractPriceMother.create(),
-      customerPayments:
-        dto?.customerPayments ??
-        CustomerPaymentsMother.create(faker.number.int({ min: 0, max: 10 })),
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),

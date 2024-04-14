@@ -10,4 +10,5 @@ export const contractRepositoryMock = {
   searchByIdWithPet: jest.fn(),
   updateFolder: jest.fn(),
   updateDetail: jest.fn(),
+  updatePayment: jest.fn(),
 };

@@ -8,7 +8,6 @@ import {
 } from './value-object';
 import { ContractPrice } from './value-object/contract-price';
 import { PayInInstallments } from './value-object/pay-in-installments/pay-in-installments';
-import { CustomerPayments } from './value-object/customer-payments/customer-payments';
 import { ContractFolder } from './value-object/contract-folder';
 import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 import { ContractFinishClient } from './value-object/contract-finish-client';
@@ -26,7 +25,6 @@ export class Contract {
     public details: ContractDetail[],
     readonly price: ContractPrice,
     readonly payInInstallments: PayInInstallments,
-    readonly customerPayments: CustomerPayments,
     readonly adviser: Uuid,
     readonly finishClient: ContractFinishClient,
     readonly reasonForCancellation: ContractReasonForCancellation,
@@ -45,7 +43,6 @@ export class Contract {
       endDate: this.endDate.value,
       price: this.price.value,
       payInInstallments: this.payInInstallments.toJson(),
-      customerPayments: this.customerPayments.toJson(),
       adviser: this.adviser.value,
       finishClient: this.finishClient.value,
       reasonForCancellation: this.reasonForCancellation.value,

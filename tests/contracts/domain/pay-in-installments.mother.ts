@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { ContractPriceMother } from './contract-price.mother';
 import { PayInInstallmentInterface } from '../../../src/contracts/domain/interfaces/pay-in-installment.interface';
+import { CustomerPaymentsMother } from './customer-payments.mother';
 
 export class PayInInstallmentMother {
   static create(quantity: number = 1): PayInInstallmentInterface[] {
@@ -8,6 +9,8 @@ export class PayInInstallmentMother {
       date: faker.date.recent(),
       percentage: faker.number.int({ min: 1, max: 100 }),
       price: ContractPriceMother.create(),
+      isPay: faker.datatype.boolean(),
+      customerPayments: CustomerPaymentsMother.create(),
     }));
   }
 }

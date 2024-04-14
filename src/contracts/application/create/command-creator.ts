@@ -20,6 +20,7 @@ import { CustomerPaymentMethod } from '../../../contracts/domain/value-object/cu
 import { ContractFolder } from '../../../contracts/domain/value-object/contract-folder';
 import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
+import { ContractIsPay } from '../../domain/value-object/pay-in-installments/contract-is-pay';
 
 export class CommandContractCreator {
   static execute(data: ContractCreateRequest, userId: string): Contract {
@@ -40,19 +41,21 @@ export class CommandContractCreator {
               new ContractPrice(_.price),
               new ContractPercentage(_.percentage),
               new ContractDate(_.date),
+              new ContractIsPay(_.isPay),
+              new CustomerPayments(
+                _.customerPayments.map(
+                  (_) =>
+                    new CustomerPayment(
+                      new ContractPrice(_.price),
+                      new CustomerPaymentMethod(_.method),
+                      new ContractDate(_.date),
+                    ),
+                ),
+              ),
             ),
         ),
       ),
-      new CustomerPayments(
-        data.customerPayments.map(
-          (_) =>
-            new CustomerPayment(
-              new ContractPrice(_.price),
-              new CustomerPaymentMethod(_.method),
-              new ContractDate(_.date),
-            ),
-        ),
-      ),
+
       new Uuid(data.adviser),
       new ContractFinishClient(data?.finishClient ?? false),
       new ContractReasonForCancellation(data?.reasonForCancellation ?? ''),
