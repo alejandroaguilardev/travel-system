@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
@@ -14,6 +14,7 @@ import { AuthController } from './auth.controller';
 import { JWTAdapterService } from './services/jwt.service';
 import { JwtStrategyService } from './services/jwt-strategy.service';
 import { MailModule } from '../../mail/infrastructure/mail.module';
+import { RecaptchaMiddleware } from './middleware/recaptcha-middleware';
 
 @Module({
   imports: [
@@ -40,7 +41,17 @@ import { MailModule } from '../../mail/infrastructure/mail.module';
     BcryptService,
     JWTAdapterService,
     JwtStrategyService,
+    RecaptchaMiddleware,
   ],
   exports: [JwtStrategyService, PassportModule, JwtModule],
 })
-export class AuthModule {}
+export class AuthModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(RecaptchaMiddleware)
+      .forRoutes(
+        { path: 'auth', method: RequestMethod.POST },
+        { path: 'auth/recover', method: RequestMethod.POST },
+      );
+  }
+}
