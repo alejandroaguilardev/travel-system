@@ -34,4 +34,16 @@ export class DayJsService implements DateService {
   isDateInPast(date: Date | string): boolean {
     return dayjs(date).isBefore(dayjs(), 'day');
   }
+
+  isSame(date: Date | string): boolean {
+    return dayjs(date).isSame(dayjs(), 'day');
+  }
+
+  isAfter(date: Date | string): boolean {
+    return dayjs(date).isAfter(dayjs(), 'day');
+  }
+
+  isBefore(date: Date | string): boolean {
+    return dayjs(date).isBefore(dayjs(), 'day');
+  }
 }

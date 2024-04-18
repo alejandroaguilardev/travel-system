@@ -7,6 +7,7 @@ import { ContractFolder } from './value-object/contract-folder';
 import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 import { ContractReasonForCancellation } from './value-object/reason-for-cancellation';
 import { PayInInstallments } from './value-object/pay-in-installments/pay-in-installments';
+import { Criteria } from '../../common/domain/criteria/criteria';
 
 export interface ContractRepository extends Repository<Contract> {
   finish(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
@@ -16,6 +17,7 @@ export interface ContractRepository extends Repository<Contract> {
     reasonForCancellation: ContractReasonForCancellation,
   ): Promise<void>;
   searchByIdWithPet(detail: Uuid): Promise<ContractResponse>;
+  searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]>;
   updateFolder(
     contractId: Uuid,
     folder: ContractFolder,

@@ -4,4 +4,7 @@ export interface DateService {
   getDifferenceInDays(startDate: Date | string, endDate: Date | string): number;
   addDays(date: Date | string, days: number): string;
   isDateInPast(date: Date | string): boolean;
+  isSame(date: Date | string): boolean;
+  isAfter(date: Date | string): boolean;
+  isBefore(date: Date | string): boolean;
 }

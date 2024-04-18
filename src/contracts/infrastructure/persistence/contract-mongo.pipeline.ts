@@ -26,6 +26,17 @@ export class ContractMongoPipeline {
     ];
   }
 
+  static executePayments(criteria: Criteria): PipelineStage[] {
+    const { query } = MongoCriteriaConverter.converter(criteria);
+
+    return [
+      ...ContractMongoPipeline.lookup(),
+      {
+        $match: query,
+      },
+    ];
+  }
+
   static executeById(id: string): PipelineStage[] {
     return [{ $match: { id: { $eq: id } } }, ...ContractMongoPipeline.lookup()];
   }

@@ -44,6 +44,13 @@ export class MongoContractRepository
     return { rows, count };
   }
 
+  async searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]> {
+    const rows: ContractResponse[] = await this.contractModel
+      .aggregate(ContractMongoPipeline.executePayments(criteria))
+      .exec();
+    return rows;
+  }
+
   async searchByIdWithPet(uuid: Uuid): Promise<ContractResponse | null> {
     const rows: ContractResponse[] = await this.contractModel
       .aggregate(ContractMongoPipeline.executeById(uuid.value))

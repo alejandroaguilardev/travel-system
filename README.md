@@ -25,6 +25,10 @@ This project represents an API system built with the following technologies:
 
 - **UUID (Universally Unique Identifier)**: UUIDs are standardized 128-bit unique identifiers. They can be used as a unique identifier for records in the database or for generating tokens.
 
+- **CRONJOB** In NestJS, you can schedule cron tasks using the @nestjs/schedule module. It allows you to define and execute scheduled tasks in your application using cron expressions. This is useful for automating recurring processes such as database cleanup, scheduled email sending, etc.
+
+
+- **RECAPTCHA V3** Google reCAPTCHA V3 is a service that helps protect websites from spam and abuse. Unlike previous versions, it relies on risk analysis to determine if a request is from a human or a bot. It provides a risk score for each request, allowing you to make decisions based on this score, such as allowing access, showing a CAPTCHA challenge, or blocking the request. This is useful for protecting forms, user registrations, comments, and other areas from malicious or unwanted activities.
 
 ## Best Practices and Patterns
 

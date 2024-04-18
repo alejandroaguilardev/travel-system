@@ -14,6 +14,8 @@ import { SendMailSenasaIntroduce } from '../application/contracts/send-mail-sena
 import { SendMailFinishContract } from '../application/contracts/send-mail-finish';
 import { SendMailCancelContract } from '../application/contracts/send-mail-cancel';
 import { ContractReasonForCancellation } from '../../contracts/domain/value-object/reason-for-cancellation';
+import { SendMailPayment } from '../application/contracts/send-mail.payment';
+import { ContractResponse } from '../../contracts/application/response/contract.response';
 
 @Injectable()
 export class MailContractService {
@@ -109,6 +111,16 @@ export class MailContractService {
     );
 
     await sendEmail.execute(contract, reasonForCancellation);
+  }
+
+  async contractPayment(contract: ContractResponse): Promise<void> {
+    if (this.getProductionMode()) return;
+    const sendEmail = new SendMailPayment(
+      this.mailerService,
+      this.dayJsService,
+    );
+
+    await sendEmail.execute(contract);
   }
 
   private getProductionMode() {

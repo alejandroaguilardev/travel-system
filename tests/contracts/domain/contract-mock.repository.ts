@@ -3,6 +3,7 @@ export const contractRepositoryMock = {
   remove: jest.fn(),
   searchById: jest.fn(),
   search: jest.fn(),
+  searchPaymentsMissing: jest.fn(),
   update: jest.fn(),
   finish: jest.fn(),
   cancel: jest.fn(),
