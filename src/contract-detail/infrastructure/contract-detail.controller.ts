@@ -123,19 +123,26 @@ export class ContractDetailController {
     );
   }
 
-  @Post(':id/:detail/measurementsAndWeightMail')
+  @Post(':id/:detail/mailDetail')
   @HttpCode(200)
   @Auth()
-  updateMeasurementsAndWeightMail(
+  mailDetail(
     @Param('id') id: string,
     @Param('detail') detail: string,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractDetailTopicoService.updateMeasurementMail(
-      id,
-      detail,
-      user,
-    );
+    return this.contractDetailTopicoService.mailDetail(id, detail, user);
+  }
+
+  @Post(':id/:detail/mailTravelDetail')
+  @HttpCode(200)
+  @Auth()
+  mailTravelDetail(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailTopicoService.mailTravelDetail(id, detail, user);
   }
 
   @Patch(':id/:detail/certificate/:value')

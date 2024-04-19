@@ -7,6 +7,12 @@ import { CommandContractDocumentation } from '../application/update/command/comm
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
 import { ContractDocumentation } from '../domain/value-object/service-documentation';
 import { DocumentationDto } from './dto';
+import { Uuid } from '../../common/domain/value-object/uuid';
+import { PermissionValidator } from '../../auth/application/permission/permission-validate';
+import {
+  AuthGroup,
+  AuthPermission,
+} from '../../common/domain/auth-permissions';
 
 @Injectable()
 export class ContractDetailCertificateService {
@@ -43,17 +49,34 @@ export class ContractDetailCertificateService {
       value as keyof typeof ContractDocumentation.keysObject,
       user,
     );
+    return response;
+  }
+
+  async senasaIntroduceContract(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<void> {
+    const contract = await this.mongoContractRepository.searchByIdWithPet(
+      new Uuid(contractId),
+    );
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId,
+    );
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.DOCUMENTATION,
+    );
 
     if (
-      ContractDocumentation.keysObject.senasaDocuments === value &&
-      response.contractDetail.documentation.senasaDocuments.executionDate &&
-      !response.contractDetail.documentation.senasaDocuments.isApplied
+      contractDetail.documentation.senasaDocuments.executionDate &&
+      !contractDetail.documentation.senasaDocuments.isApplied
     ) {
-      this.mailerService.senasaIntroduceContract(response);
-    } else {
-      this.mailerService.updateDetail(response);
+      this.mailerService.senasaIntroduceContract({
+        contract,
+        contractDetail,
+      });
     }
-
-    return response;
   }
 }

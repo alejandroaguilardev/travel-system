@@ -14,6 +14,7 @@ import { ContractRepository } from '../../domain/contract.repository';
 import { Contract } from '../../domain/contract';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import { ContractInterface } from '../../domain/interfaces/contract.interface';
+import { CommandContractUpdater } from './command-contract-updater';
 
 export class ContractUpdater {
   constructor(private readonly contractRepository: ContractRepository) {}
@@ -33,7 +34,12 @@ export class ContractUpdater {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('contrato'));
     }
 
-    await this.contractRepository.update(uuid, contract);
+    const contractUpdate = CommandContractUpdater.execute(
+      response,
+      contract.toJson(),
+    );
+
+    await this.contractRepository.update(uuid, contractUpdate);
 
     return ResponseMessage.createSuccessResponse(
       ContractUpdater.messageSuccess(),

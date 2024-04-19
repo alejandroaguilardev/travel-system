@@ -128,7 +128,7 @@ export class SendMailUpdateDetail {
   ): string {
     if (!documentation[service].hasServiceIncluded) return '';
     if (!topico[name].executed)
-      return `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label}: Aún no realizado</h4>`;
+      return `<h4 style="background-color:red;padding:10px; color:#fff;border-radius:5px">${label}: Aún no realizado</h4>`;
 
     const value = `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label} realizada el ${this.dateService.formatDateTime(
       topico[name]?.date ?? '',
@@ -144,7 +144,7 @@ export class SendMailUpdateDetail {
   ): string {
     if (!documentation[name].hasServiceIncluded) return '';
     if (!documentation[name].isApplied)
-      return `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label}: Aún no realizado</h4>`;
+      return `<h4 style="background-color:red;padding:10px; color:#fff;border-radius:5px">${label}: Aún no realizado</h4>`;
 
     const value = `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label} realizada el ${this.dateService.formatDateTime(
       documentation[name]?.resultDate ?? '',

@@ -10,7 +10,7 @@ import { ContractUpdater } from '../../../src/contracts/application/update/contr
 import { ContractRemover } from '../../../src/contracts/application/remove/contract-remover';
 import { ContractCreator } from '../../../src/contracts/application/create/contract-creator';
 import { ContractFolderUpdater } from '../../../src/contracts/application/update/folder-updater';
-import { UserInterface } from '../../../dist/src/users/domain/interfaces/user.interface';
+import { UserInterface } from '../../../src/users/domain/interfaces/user.interface';
 
 const route = '/contracts';
 

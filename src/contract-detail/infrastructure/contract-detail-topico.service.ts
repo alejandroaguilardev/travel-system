@@ -40,28 +40,16 @@ export class ContractDetailTopicoService {
 
     const topico = CommandContractTopico[value](topicoDto[value], user.id);
 
-    const response = await contractDetailPetUpdater.execute(
+    return await contractDetailPetUpdater.execute(
       contractId,
       contractDetailId,
       topico,
       value as keyof typeof ContractTopico.keysTopicoObject,
       user,
     );
-
-    if (value !== ContractTopico.keysTopicoObject.chipReview) {
-      this.mailerService.updateDetail(response);
-    }
-
-    if (
-      value !== ContractTopico.keysTopicoObject.takingSampleSerologicalTest &&
-      response.contractDetail.topico.takingSampleSerologicalTest.executed
-    ) {
-      this.mailerService.travelPersonContract(response);
-    }
-    return response;
   }
 
-  async updateMeasurementMail(
+  async mailTravelDetail(
     contractId: string,
     contractDetailId: string,
     user: UserWithoutWithRoleResponse,
@@ -76,6 +64,29 @@ export class ContractDetailTopicoService {
       user,
       AuthGroup.CONTRACTS,
       AuthPermission.TOPICO,
+    );
+
+    this.mailerService.travelPersonContract({
+      contract,
+      contractDetail,
+    });
+  }
+
+  async mailDetail(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<void> {
+    const contract = await this.mongoContractRepository.searchByIdWithPet(
+      new Uuid(contractId),
+    );
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId,
+    );
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.TOPICO || AuthPermission.DOCUMENTATION,
     );
 
     this.mailerService.updateDetail({
