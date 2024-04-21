@@ -145,6 +145,17 @@ export class ContractDetailController {
     return this.contractDetailTopicoService.mailTravelDetail(id, detail, user);
   }
 
+  @Post(':id/:detail/mailTakingSample')
+  @HttpCode(200)
+  @Auth()
+  mailTakingSample(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailTopicoService.mailTakingSample(id, detail, user);
+  }
+
   @Patch(':id/:detail/certificate/:value')
   @Auth()
   updateCertificate(

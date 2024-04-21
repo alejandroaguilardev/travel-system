@@ -2,12 +2,13 @@ import { Hashing } from '../../../common/application/services/hashing';
 import { JWT } from '../services/jwt';
 import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 import { UserRepository } from '../../../users/domain/user.repository';
-import { UserEmail } from '../../../users/domain/value-object/user-email';
 import { UserPassword } from '../../../users/domain/value-object/user-password';
 import { Auth } from '../../domain/auth';
 import { LoginResponse } from '../response/login.response';
 import { LoginUserRequest } from './login-user-request';
 import { GenerateToken } from '../token/generate';
+import { UserDocument } from '../../../users/domain/value-object/profile/user-document';
+import { UserDocumentNumber } from '../../../users/domain/value-object/profile/user-document-number';
 
 export class LoginUser {
   constructor(
@@ -17,13 +18,17 @@ export class LoginUser {
   ) {}
 
   async login(loginUserRequest: LoginUserRequest): Promise<LoginResponse> {
-    const { email, password } = loginUserRequest;
+    const { document, documentNumber, password } = loginUserRequest;
     const credentials = new Auth(
-      new UserEmail(email),
+      new UserDocument(document),
+      new UserDocumentNumber(documentNumber),
       new UserPassword(password),
     );
 
-    const user = await this.userRepository.searchEmail(credentials.email);
+    const user = await this.userRepository.searchDocument(
+      credentials.document,
+      credentials.documentNumber,
+    );
 
     if (!user) {
       throw new ErrorBadRequest('El correo electrónico es incorrecto');

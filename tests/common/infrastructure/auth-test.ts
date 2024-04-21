@@ -4,10 +4,12 @@ import { UserInterface } from '../../../src/users/domain/interfaces/user.interfa
 
 export class AuthTest {
   static async execute(app: INestApplication): Promise<string> {
-    const response = await request(app.getHttpServer())
-      .post('/auth')
-      .send({ email: 'alexaguilar281@gmail.com', password: '12345678' })
-      .expect(200);
+    const response = await request(app.getHttpServer()).post('/auth').send({
+      document: 'C.E.',
+      documentNumber: '987654321',
+      password: '12345678',
+    });
+
     return response.body.token;
   }
 
@@ -16,7 +18,11 @@ export class AuthTest {
   ): Promise<{ token: string; user: UserInterface }> {
     const response = await request(app.getHttpServer())
       .post('/auth')
-      .send({ email: 'alexaguilar281@gmail.com', password: '12345678' })
+      .send({
+        document: 'C.E.',
+        documentNumber: '987654321',
+        password: '12345678',
+      })
       .expect(200);
 
     return {

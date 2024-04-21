@@ -32,13 +32,8 @@ export class UserCreator {
       newUser.profile.document,
       newUser.profile.documentNumber,
     );
-    const email = await this.userRepository.searchEmail(newUser.email);
 
     if (find) throw new ErrorBadRequest('el documento del  usuario ya existe');
-    if (email)
-      throw new ErrorBadRequest(
-        'ya existe un correo electrónico para este usuario',
-      );
 
     newUser.setPassword(
       new UserPassword(this.hashing.hashPassword(password.value)),

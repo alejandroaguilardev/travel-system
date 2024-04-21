@@ -27,24 +27,31 @@ describe('loginUser', () => {
     const passwordHash = hashing.hashPassword(password);
 
     generateTokenMock.mockReturnValueOnce('token');
-    userRepositoryMock.searchEmail.mockResolvedValueOnce({
+    userRepositoryMock.searchDocument.mockResolvedValueOnce({
       ...user,
       password: passwordHash,
     });
-    const resolve = await loginUser.login({ email: user.email, password });
+    const resolve = await loginUser.login({
+      document: user.profile.document,
+      documentNumber: user.profile.documentNumber,
+      password,
+    });
     expect(resolve).toEqual({ user, token: 'token' });
   });
 
   it('should failed log email credentials', async () => {
-    const dto = UserCreatorMother.create();
-    const { email } = dto;
+    const user = UserCreatorMother.create();
     const password = UserPassword.generatePassword();
     generateTokenMock.mockReturnValueOnce('token');
-    userRepositoryMock.searchEmail.mockResolvedValue(null);
+    userRepositoryMock.searchDocument.mockResolvedValue(null);
 
     const error = new ErrorBadRequest('El correo electrónico es incorrecto');
     try {
-      await loginUser.login({ email, password });
+      await loginUser.login({
+        document: user.profile.document,
+        documentNumber: user.profile.documentNumber,
+        password,
+      });
       fail('Fallo la prueba should failed log email credentials');
     } catch (thrownError) {
       expect(thrownError.message).toBe(error.message);
@@ -54,7 +61,7 @@ describe('loginUser', () => {
   it('should failed log password credentials', async () => {
     const error = new ErrorBadRequest('La contraseña es incorrecta');
     try {
-      const dto = UserCreatorMother.create();
+      const user = UserCreatorMother.create();
       const password = UserPassword.generatePassword();
 
       const passwordHash = hashing.hashPassword(password);
@@ -62,12 +69,16 @@ describe('loginUser', () => {
       const passwordIncorrect = PasswordMother.create();
 
       generateTokenMock.mockReturnValueOnce('token');
-      userRepositoryMock.searchEmail.mockResolvedValueOnce({
-        ...dto,
+      userRepositoryMock.searchDocument.mockResolvedValueOnce({
+        ...user,
         password: passwordHash,
       });
 
-      await loginUser.login({ email: dto.email, password: passwordIncorrect });
+      await loginUser.login({
+        document: user.profile.document,
+        documentNumber: user.profile.documentNumber,
+        password: passwordIncorrect,
+      });
       fail('Fallo la prueba should failed log password credentials');
     } catch (thrownError) {
       expect(thrownError.message).toBe(error.message);

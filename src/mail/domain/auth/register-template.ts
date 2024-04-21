@@ -32,9 +32,9 @@ export default `<!DOCTYPE html>
                                 ¡Bienvenido a Pet Travel, tu compañero perfecto para viajar con mascotas!
                             </h1>
                                                         
-                            <p  style="margin-top: 20px;">¡Su registro se ha completado con éxito! Por favor, inicie sesión en la plataforma utilizando su correo electrónico y la contraseña proporcionada.</p>
+                            <p  style="margin-top: 20px;">¡Su registró se ha completado con éxito! Por favor, inicie sesión en la plataforma utilizando su correo electrónico y la contraseña proporcionada.</p>
                             <p style="margin-top: 20px;font-weight: bold;">Detalles de inicio de sesión:</p>
-                            <p>Correo Electrónico: {{email}}</p>
+                            <p>Usuario: {{documentNumber}}</p>
                             <p>Contraseña: {{password}}</p>
                             <p align="center" style="margin-top: 20px;">
                                 <a href="https://www.app.pettravelperu.com/" target="_blank" style="display: inline-block; padding: 10px 30px; background-color: #1a82e2; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;">

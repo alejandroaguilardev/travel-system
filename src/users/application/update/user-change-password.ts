@@ -9,10 +9,11 @@ import {
 } from '../../../common/domain/response/response-message';
 import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
 import { UserPassword } from '../../domain/value-object/user-password';
-import { UserEmail } from '../../domain/value-object/user-email';
 import { Auth } from '../../../auth/domain/auth';
 import { Hashing } from '../../../common/application/services/hashing';
 import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
+import { UserDocumentNumber } from '../../domain/value-object/profile/user-document-number';
+import { UserDocument } from '../../domain/value-object/profile/user-document';
 
 export class UserChangePasswordUpdater {
   constructor(
@@ -34,7 +35,8 @@ export class UserChangePasswordUpdater {
     }
 
     const credentials = new Auth(
-      new UserEmail(response.email),
+      new UserDocument(response.profile.document),
+      new UserDocumentNumber(response.profile.documentNumber),
       new UserPassword(password.value),
     );
 

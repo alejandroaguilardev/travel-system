@@ -1,4 +1,5 @@
 export interface LoginUserRequest {
-  email: string;
+  document: string;
+  documentNumber: string;
   password: string;
 }

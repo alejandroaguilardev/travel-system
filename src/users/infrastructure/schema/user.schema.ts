@@ -12,7 +12,7 @@ import { UserAuthInterface } from '../../domain/interfaces/user-auth.interface';
 export class UserModel implements UserInterface {
   @Prop({ type: String, index: true, unique: true, required: true })
   id: string;
-  @Prop({ type: String, index: true, unique: true, required: true })
+  @Prop({ type: String, index: true, unique: false, required: false })
   email: string;
   @Prop({ type: String, required: false })
   password: string;
@@ -57,6 +57,8 @@ export class UserModel implements UserInterface {
   auth?: UserAuthInterface;
   @Prop({ type: Boolean, required: false })
   isAdvisor?: boolean;
+  @Prop({ type: Boolean, required: false })
+  isDoctor: boolean;
 }
 
 export type UserDocument = HydratedDocument<UserModel>;

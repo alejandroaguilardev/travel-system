@@ -164,7 +164,17 @@ export class CommandContractDetailsUpdater {
         airlineReservation: services.travel.airlineReservation,
         petPerCharge: services.travel.petPerCharge,
         accompaniedPet: services.travel.accompaniedPet,
-        destination: services.travel.destination,
+        destination: {
+          cityDestination:
+            travel?.destination?.cityDestination ??
+            services.travel.destination.cityDestination,
+          countryDestination:
+            travel?.destination?.countryDestination ??
+            services.travel.destination.countryDestination,
+          directionDestination:
+            travel?.destination?.directionDestination ??
+            services.travel.destination.directionDestination,
+        },
         status: services.travel.status,
         guideNumber: travel?.guideNumber ?? services.travel.guideNumber,
       },

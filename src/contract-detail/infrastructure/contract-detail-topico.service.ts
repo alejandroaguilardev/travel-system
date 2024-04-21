@@ -71,6 +71,28 @@ export class ContractDetailTopicoService {
       contractDetail,
     });
   }
+  async mailTakingSample(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<void> {
+    const contract = await this.mongoContractRepository.searchByIdWithPet(
+      new Uuid(contractId),
+    );
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId,
+    );
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.TOPICO,
+    );
+
+    this.mailerService.takingSample({
+      contract,
+      contractDetail,
+    });
+  }
 
   async mailDetail(
     contractId: string,

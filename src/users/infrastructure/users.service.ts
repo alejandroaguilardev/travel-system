@@ -51,7 +51,12 @@ export class UsersService {
     );
 
     const response = await userCreator.create(userCommand, password, user);
-    this.mailService.register(userCommand.email, password);
+    this.mailService.register(
+      userCommand.email,
+      userCommand.profile.document,
+      userCommand.profile.documentNumber,
+      password,
+    );
     return response;
   }
 

@@ -35,4 +35,7 @@ export class UserCreatorDto implements CreateUserRequest {
   @IsOptional()
   @IsBoolean()
   isAdvisor?: boolean;
+  @IsOptional()
+  @IsBoolean()
+  isDoctor: boolean;
 }

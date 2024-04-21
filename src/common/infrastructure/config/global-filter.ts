@@ -30,7 +30,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         error = (exception.getResponse() as { error: string }).error;
       }
     } else if (exception?.code === 11000) {
-      message = `Ya existe un registro para este elemento`;
+      message = `Ya existe un registró para este elemento`;
       status = 400;
       error = exception?.message;
     }

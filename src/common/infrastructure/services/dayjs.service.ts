@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import dayjs, { locale } from 'dayjs';
+import * as dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import { DateService } from '../../application/services/date-service';
 
 @Injectable()
 export class DayJsService implements DateService {
   constructor() {
-    locale('es');
+    dayjs.locale('es');
   }
 
   formatDateTime(

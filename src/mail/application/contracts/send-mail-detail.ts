@@ -8,8 +8,6 @@ import { DateService } from '../../../common/application/services/date-service';
 import updateTopicoTemplate from '../../domain/contracts/update-detail-template';
 import { MeasurementsAndWeightInterface } from '../../../pets/domain/interfaces/pet-measurements-and-weight';
 import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
-import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
-import { PetInterface } from '../../../pets/domain/interfaces/pet.interface';
 import { DocumentationInterface } from '../../../contract-detail/domain/interfaces/documentation.interface';
 
 export class SendMailUpdateDetail {
@@ -53,8 +51,7 @@ export class SendMailUpdateDetail {
   }
 
   getHtml(contractDetail: ContractDetailResponse, phone: string) {
-    const { documentation, topico, pet } = contractDetail;
-    const topicoKeys = this.getTopico(pet);
+    const { documentation, pet } = contractDetail;
     const documentationKeys = this.getDocumentation();
 
     const measurementsAndWeight = this.measurementsAndWeight(
@@ -67,13 +64,6 @@ export class SendMailUpdateDetail {
       .replaceAll('{{phone}}', phone)
       .replaceAll('{{measurementsAndWeight}}', measurementsAndWeight)
       .replaceAll('{{chosen}}', chosenCage);
-
-    topicoKeys.forEach(({ name, label, service }) => {
-      template = template.replaceAll(
-        `{{${name}}}`,
-        this.renderServiceTopico(name, label, service, documentation, topico),
-      );
-    });
 
     documentationKeys.forEach(({ name, label }) => {
       template = template.replaceAll(
@@ -119,76 +109,26 @@ export class SendMailUpdateDetail {
     return cage;
   }
 
-  private renderServiceTopico(
-    name: string,
-    label: string,
-    service: string,
-    documentation: DocumentationInterface,
-    topico: ContractTopicoInterface,
-  ): string {
-    if (!documentation[service].hasServiceIncluded) return '';
-    if (!topico[name].executed)
-      return `<h4 style="background-color:red;padding:10px; color:#fff;border-radius:5px">${label}: Aún no realizado</h4>`;
-
-    const value = `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label} realizada el ${this.dateService.formatDateTime(
-      topico[name]?.date ?? '',
-      'DD/MM/YYYY',
-    )}</h4><span> ${topico[name]?.observation ?? ''}</span>`;
-    return value;
-  }
-
   private renderServiceDocumentation(
     name: string,
     label: string,
     documentation: DocumentationInterface,
   ): string {
-    if (!documentation[name].hasServiceIncluded) return '';
-    if (!documentation[name].isApplied)
-      return `<h4 style="background-color:red;padding:10px; color:#fff;border-radius:5px">${label}: Aún no realizado</h4>`;
+    const isRequired: boolean = documentation[name]?.isRequired ?? false;
+    const required: string = isRequired ? '(requerido)' : '(opcional)';
 
-    const value = `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label} realizada el ${this.dateService.formatDateTime(
+    if (!documentation[name].hasServiceIncluded) return '';
+    if (!documentation[name].isApplied && isRequired)
+      return `<h4 style="background-color:red;padding:10px; color:#fff;border-radius:5px">${label} ${required}: Aún no realizado</h4>`;
+
+    if (!documentation[name].isApplied && !isRequired)
+      return `<h4 style="background-color:##5DADE2;padding:10px; color:#fff;border-radius:5px">${label}  ${required}: Aún no realizado</h4>`;
+
+    const value = `<h4 style="background-color:green;padding:10px; color:#fff;border-radius:5px">${label}  ${required}: realizada el ${this.dateService.formatDateTime(
       documentation[name]?.resultDate ?? '',
       'DD/MM/YYYY',
     )}</h4><span> ${documentation[name]?.observation ?? ''}</span>`;
     return value;
-  }
-
-  private getTopico(pet?: PetInterface) {
-    let vaccination = 'Vacunación';
-    if (pet?.type?.toLowerCase() === 'perro') {
-      vaccination = 'Vacuna Quintuple';
-    }
-    if (pet?.type?.toLowerCase() === 'gato') {
-      vaccination = 'Vacuna triple felina';
-    }
-
-    return [
-      {
-        name: 'chip',
-        label: 'Implantación de Chip',
-        service: 'chipCertificate',
-      },
-      {
-        name: 'vaccination',
-        label: vaccination,
-        service: 'vaccinationCertificate',
-      },
-      {
-        name: 'rabiesVaccination',
-        label: 'Vacuna de Rabia',
-        service: 'rabiesSeroLogicalTest',
-      },
-      {
-        name: 'rabiesReVaccination',
-        label: 'Revacunación de Rabia',
-        service: 'rabiesSeroLogicalTest',
-      },
-      {
-        name: 'takingSampleSerologicalTest',
-        label: 'Toma de muestra para el test serological de rabia',
-        service: 'rabiesSeroLogicalTest',
-      },
-    ];
   }
 
   private getDocumentation() {

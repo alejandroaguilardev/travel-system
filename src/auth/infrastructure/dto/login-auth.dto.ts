@@ -1,9 +1,11 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { LoginUserRequest } from '../../application/login/login-user-request';
 
 export class LoginAuthDto implements LoginUserRequest {
-  @IsEmail()
-  email: string;
+  @IsString()
+  document: string;
+  @IsString()
+  documentNumber: string;
   @IsString()
   password: string;
 }

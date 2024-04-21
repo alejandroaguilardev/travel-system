@@ -3,6 +3,7 @@ import { UuidMother } from '../../common/domain/uuid-mother';
 import { EmailMother } from '../../common/domain/email-mother';
 import { ProfileMother } from './profile.mother';
 import { UserWithoutWithRoleResponse } from '../../../src/users/domain/interfaces/user-without.response';
+import { BooleanMother } from '../../common/domain/boolean.mother';
 
 export class UserCreatorMother {
   static create(newUser?: Partial<CreateUserRequest>): CreateUserRequest {
@@ -11,6 +12,7 @@ export class UserCreatorMother {
       profile: newUser?.profile ?? ProfileMother.create(),
       email: newUser?.email ?? EmailMother.create(),
       roles: newUser?.roles ?? [],
+      isDoctor: BooleanMother.create(newUser?.isDoctor),
     };
   }
 
@@ -22,6 +24,7 @@ export class UserCreatorMother {
       profile: newUser?.profile ?? ProfileMother.create(),
       email: newUser?.email ?? EmailMother.create(),
       roles: newUser?.roles ?? [],
+      isDoctor: BooleanMother.create(newUser?.isDoctor),
     };
   }
 
@@ -38,6 +41,7 @@ export class UserCreatorMother {
         rememberToken: '',
         lastLogin: new Date(),
       },
+      isDoctor: BooleanMother.create(newUser?.isDoctor),
     };
   }
 }

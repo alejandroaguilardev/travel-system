@@ -1,7 +1,7 @@
 import { ResponseSuccess } from './response-success';
 
 export enum MessageDefault {
-  SUCCESSFULLY_CREATED = 'Se registro {{elemento}} exitosamente',
+  SUCCESSFULLY_CREATED = 'Se registró {{elemento}} exitosamente',
   SUCCESSFULLY_UPDATED = 'Se actualizó {{elemento}} exitosamente',
   SUCCESSFULLY_DELETED = 'Se elimino  {{elemento}} exitosamente',
 }

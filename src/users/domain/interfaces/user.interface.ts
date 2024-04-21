@@ -11,4 +11,5 @@ export interface UserInterface {
   status?: string;
   auth?: UserAuthInterface;
   isAdvisor?: boolean;
+  isDoctor?: boolean;
 }

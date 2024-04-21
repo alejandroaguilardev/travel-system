@@ -27,6 +27,8 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       rememberToken: '',
       lastLogin: null,
     },
+    isAdvisor: true,
+    isDoctor: false,
   },
   {
     id: uuid.generate(),
@@ -53,11 +55,13 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       rememberToken: '',
       lastLogin: null,
     },
+    isAdvisor: true,
+    isDoctor: false,
   },
 
   {
     id: uuid.generate(),
-    email: 'pedro@gmail.com',
+    email: 'alexaguilar281@gmail.com',
     roles: [],
     profile: {
       document: 'D.N.I.',
@@ -75,5 +79,7 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       phone: '51939130496',
     },
     status: '',
+    isDoctor: false,
+    isAdvisor: false,
   },
 ];

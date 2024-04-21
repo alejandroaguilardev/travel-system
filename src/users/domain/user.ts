@@ -8,6 +8,7 @@ import { StatusValueObject } from '../../common/domain/value-object/status-value
 import { UserInterface } from './interfaces/user.interface';
 import { UserAuth } from './value-object/user-auth';
 import { UserIsAdvisor } from './value-object/user-advisor';
+import { UserIsDoctor } from './value-object/user-is-doctor';
 
 export class User {
   constructor(
@@ -20,6 +21,7 @@ export class User {
     readonly user: UuidOptional,
     readonly auth: UserAuth,
     readonly isAdvisor: UserIsAdvisor,
+    readonly isDoctor: UserIsDoctor,
   ) {}
 
   toJson(): UserInterface {
@@ -33,6 +35,7 @@ export class User {
       user: this.user.value,
       auth: this.auth.toJson(),
       isAdvisor: this.isAdvisor.value,
+      isDoctor: this.isDoctor.value,
     };
   }
 

@@ -1,13 +1,20 @@
 import { UserPassword } from '../../../users/domain/value-object/user-password';
 import { UserEmail } from '../../../users/domain/value-object/user-email';
 import register from '../../domain/auth/register-template';
+import { UserDocument } from '../../../users/domain/value-object/profile/user-document';
+import { UserDocumentNumber } from '../../../users/domain/value-object/profile/user-document-number';
 
 export class SendMailRegister {
   constructor(private readonly transporter: any) {}
 
-  async execute(email: UserEmail, password: UserPassword): Promise<void> {
+  async execute(
+    email: UserEmail,
+    document: UserDocument,
+    documentNumber: UserDocumentNumber,
+    password: UserPassword,
+  ): Promise<void> {
     await this.transporter.sendMail(
-      this.options(email, this.getHtml(email, password)),
+      this.options(email, this.getHtml(document, documentNumber, password)),
     );
   }
 
@@ -20,9 +27,14 @@ export class SendMailRegister {
     };
   }
 
-  getHtml(email: UserEmail, password: UserPassword) {
+  getHtml(
+    document: UserDocument,
+    documentNumber: UserDocumentNumber,
+    password: UserPassword,
+  ) {
     return register
-      .replace('{{email}}', email.value)
+      .replace('{{document}}', document.value)
+      .replace('{{documentNumber}}', documentNumber.value)
       .replace('{{password}}', password.value);
   }
 }

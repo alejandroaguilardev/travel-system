@@ -16,6 +16,7 @@ import { SendMailCancelContract } from '../application/contracts/send-mail-cance
 import { ContractReasonForCancellation } from '../../contracts/domain/value-object/reason-for-cancellation';
 import { SendMailPayment } from '../application/contracts/send-mail.payment';
 import { ContractResponse } from '../../contracts/application/response/contract.response';
+import { SendMailTakingSample } from '../application/contracts/send-mail-taking-sample';
 
 @Injectable()
 export class MailContractService {
@@ -54,6 +55,17 @@ export class MailContractService {
     if (this.getProductionMode()) return;
 
     const sendEmail = new SendMailUpdateDetail(
+      this.mailerService,
+      this.userMongoRepository,
+      this.dayJsService,
+    );
+    await sendEmail.execute(data);
+  }
+
+  async takingSample(data: ContractDetailUpdaterResponse): Promise<void> {
+    if (this.getProductionMode()) return;
+
+    const sendEmail = new SendMailTakingSample(
       this.mailerService,
       this.userMongoRepository,
       this.dayJsService,
