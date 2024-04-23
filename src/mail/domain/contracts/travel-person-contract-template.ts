@@ -15,7 +15,7 @@ export default `<!DOCTYPE html>
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
                     <tr>
                         <td align="center" valign="top">
-                            <a href="https://www.app.pettravelperu.com/" target="_blank" style="display: inline-block">
+                            <a href="https://travel-system-client.vercel.app/" target="_blank" style="display: inline-block">
                                 <img src="https://pettravelperu.com/storage/3oI8cZmcGuWB969fhdFOoH4ysCIVEKZejFTpTSka.png" alt="Pet Travel Logo" border="0" style="display: block; width: 150px; max-width: 150px" />
                             </a>
                         </td>
@@ -36,7 +36,7 @@ export default `<!DOCTYPE html>
                             <p style="margin-top: 20px;">Por favor, complete los detalles de la persona que acompañará a {{pet.name}} durante el viaje.
                             </p>
                             <p align="center" style="margin-top: 20px;">
-                                <a href="https://www.app.pettravelperu.com/viaje/{{contractId}}/{{contractDetailId}}/{{token}}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 30px; background-color: #1a82e2; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;">
+                                <a href="https://travel-system-client.vercel.app/viaje/{{contractId}}/{{contractDetailId}}/{{token}}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 10px 30px; background-color: #1a82e2; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 14px; transition: background-color 0.3s;">
                                     Complete el formulario haciendo clic aquí.
                                 </a>
                             </p>

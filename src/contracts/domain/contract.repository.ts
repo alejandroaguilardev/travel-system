@@ -16,7 +16,7 @@ export interface ContractRepository extends Repository<Contract> {
     endDate: ContractEndDate,
     reasonForCancellation: ContractReasonForCancellation,
   ): Promise<void>;
-  searchByIdWithPet(detail: Uuid): Promise<ContractResponse>;
+  searchByIdWithPet(uuid: Uuid): Promise<ContractResponse>;
   searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]>;
   updateFolder(
     contractId: Uuid,

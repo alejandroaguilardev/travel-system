@@ -15,7 +15,7 @@ export default `<!DOCTYPE html>
                 <table border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px">
                     <tr>
                         <td align="center" valign="top">
-                            <a href="https://www.app.pettravelperu.com/" target="_blank" style="display: inline-block">
+                            <a href="https://travel-system-client.vercel.app/" target="_blank" style="display: inline-block">
                                 <img src="https://pettravelperu.com/storage/3oI8cZmcGuWB969fhdFOoH4ysCIVEKZejFTpTSka.png"
                                     alt="Pet Travel Logo" border="0"
                                     style="display: block; width: 150px; max-width: 150px" />

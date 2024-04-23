@@ -23,12 +23,15 @@ import { ContractCancelDto } from './dto/contract-cancel.dto';
 import { ContractReasonForCancellation } from '../domain/value-object/reason-for-cancellation';
 import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
 import { ContractPayInInstallmentsUpdater } from '../application/update/payment-updater';
+import { AxiosAdapter } from '../../common/infrastructure/services/http.service';
+import { NewContractMail } from '../application/mail/new-contract-mail';
 
 @Injectable()
 export class ContractsService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly mailerService: MailContractService,
+    private readonly axiosAdapter: AxiosAdapter,
   ) {}
 
   async create(
@@ -38,7 +41,12 @@ export class ContractsService {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(createContractDto, user.id);
     const response = await contractsCreator.execute(contract, user);
-    this.mailerService.new(contract);
+    const mail = new NewContractMail(
+      this.mongoContractRepository,
+      this.axiosAdapter,
+    );
+    mail.execute(contract.id);
+
     return response;
   }
 

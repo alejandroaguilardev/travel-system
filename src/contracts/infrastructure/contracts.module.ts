@@ -6,6 +6,7 @@ import { ContractModel, ContractSchema } from './schema/contract.schema';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
 import { MailModule } from '../../mail/infrastructure/mail.module';
+import { AxiosAdapter } from '../../common/infrastructure/services/http.service';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { MailModule } from '../../mail/infrastructure/mail.module';
     MailModule,
   ],
   controllers: [ContractsController],
-  providers: [ContractsService, MongoContractRepository],
+  providers: [ContractsService, MongoContractRepository, AxiosAdapter],
   exports: [MongoContractRepository],
 })
 export class ContractsModule {}
