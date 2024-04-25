@@ -6,6 +6,7 @@ import { UserModel, UserSchema } from './schema/user.schema';
 import { UserMongoRepository } from './persistence/user-mongo.repository';
 import { BcryptService } from '../../common/infrastructure/services/bcrypt.service';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import {
   RoleModel,
   RoleSchema,
@@ -14,7 +15,6 @@ import {
   PermissionModel,
   PermissionSchema,
 } from '../../permissions/infrastructure/schema/permission.schema';
-import { MailModule } from '../../mail/infrastructure/mail.module';
 
 @Module({
   imports: [
@@ -24,10 +24,9 @@ import { MailModule } from '../../mail/infrastructure/mail.module';
     MongooseModule.forFeature([{ name: RoleModel.name, schema: RoleSchema }]),
     MongooseModule.forFeature([{ name: UserModel.name, schema: UserSchema }]),
     AuthModule,
-    MailModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserMongoRepository, BcryptService],
+  providers: [UsersService, UserMongoRepository, BcryptService, MailApiAdapter],
   exports: [UserMongoRepository],
 })
 export class UsersModule {}

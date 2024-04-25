@@ -10,19 +10,20 @@ import { GenerateToken } from '../application/token/generate';
 import { RecoverDto } from './dto/recover-auth.dto';
 import { ResponseSuccess } from '../../common/domain/response/response-success';
 import { RecoverPassword } from '../application/recover/recover-password';
-import { MailAuthService } from '../../mail/infrastructure/mail-auth.service';
 import { UserEmail } from '../../users/domain/value-object/user-email';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ResetPasswordUser } from '../application/reset-password/reset-password-user';
 import { UserPassword } from '../../users/domain/value-object/user-password';
+import { RecoverMail } from '../application/mail/recover-mail';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
+    private mailApiAdapter: MailApiAdapter,
     private jwtService: JWTAdapterService,
-    private readonly mailService: MailAuthService,
   ) {}
 
   async login(loginAuthDto: LoginAuthDto): Promise<LoginResponse> {
@@ -47,7 +48,9 @@ export class AuthService {
       { id: user.id },
       { expiresIn: 86400 },
     );
-    await this.mailService.recover(new UserEmail(user.email), generateToken);
+
+    const mail = new RecoverMail(this.mailApiAdapter);
+    await mail.execute(new UserEmail(user.email), generateToken);
 
     return { message: 'Revisa tu correo electrónico' };
   }

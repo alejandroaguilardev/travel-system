@@ -11,7 +11,6 @@ import { ContractResponse } from '../application/response/contract.response';
 import { ContractSearchByIdClient } from '../application/search-contract-by-client/search-contract-by-client';
 import { CommandContractCreator } from '../application/create';
 import { ContractFinish } from '../application/finish/contract-finish';
-import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 import { ContractUpdater } from '../application/update';
 import { CreateContractDto, UpdateContractDto } from './dto/';
 import { ContractSearchClient } from '../application/search-client/search-client';
@@ -23,15 +22,16 @@ import { ContractCancelDto } from './dto/contract-cancel.dto';
 import { ContractReasonForCancellation } from '../domain/value-object/reason-for-cancellation';
 import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
 import { ContractPayInInstallmentsUpdater } from '../application/update/payment-updater';
-import { AxiosAdapter } from '../../common/infrastructure/services/http.service';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import { NewContractMail } from '../application/mail/new-contract-mail';
+import { CancelContractMail } from '../application/mail/cancel-contract-mail';
+import { FinishContractMail } from '../application/mail/finish-contract';
 
 @Injectable()
 export class ContractsService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailerService: MailContractService,
-    private readonly axiosAdapter: AxiosAdapter,
+    private readonly axiosAdapter: MailApiAdapter,
   ) {}
 
   async create(
@@ -57,7 +57,12 @@ export class ContractsService {
     const contractFinish = new ContractFinish(this.mongoContractRepository);
 
     const { contract, response } = await contractFinish.execute(id, user);
-    this.mailerService.contractFinish(contract);
+
+    const mail = new FinishContractMail(
+      this.mongoContractRepository,
+      this.axiosAdapter,
+    );
+    mail.execute(contract.id);
     return response;
   }
 
@@ -76,7 +81,11 @@ export class ContractsService {
       reasonForCancellation,
       user,
     );
-    this.mailerService.contractCancel(contract, reasonForCancellation);
+    const mail = new CancelContractMail(
+      this.mongoContractRepository,
+      this.axiosAdapter,
+    );
+    mail.execute(contract.id);
     return response;
   }
 

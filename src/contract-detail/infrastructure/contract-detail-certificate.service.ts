@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
-import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 import { ContractDetailCertificateUpdater } from '../application/update/certificate-updater';
 import { CommandContractDocumentation } from '../application/update/command/command-documentation';
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
@@ -13,12 +12,16 @@ import {
   AuthGroup,
   AuthPermission,
 } from '../../common/domain/auth-permissions';
+import { SendMailSenasaIntroduce } from '../application/mail/senasa-mail';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 
 @Injectable()
 export class ContractDetailCertificateService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailerService: MailContractService,
+    private readonly axiosAdapter: MailApiAdapter,
+    private readonly dayJsService: DayJsService,
   ) {}
 
   async updateCertificate(
@@ -73,10 +76,11 @@ export class ContractDetailCertificateService {
       contractDetail.documentation.senasaDocuments.executionDate &&
       !contractDetail.documentation.senasaDocuments.isApplied
     ) {
-      this.mailerService.senasaIntroduceContract({
-        contract,
-        contractDetail,
-      });
+      const mail = new SendMailSenasaIntroduce(
+        this.axiosAdapter,
+        this.dayJsService,
+      );
+      mail.execute(contract, contractDetail);
     }
   }
 }

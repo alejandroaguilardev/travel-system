@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
-import { MailContractService } from '../../mail/infrastructure/mail-contract.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailTopicoUpdater } from '../application/update/topico-updater';
 import { CommandContractTopico } from '../application/update/command/topico-command';
@@ -13,12 +12,22 @@ import {
   AuthPermission,
 } from '../../common/domain/auth-permissions';
 import { PermissionValidator } from '../../auth/application/permission/permission-validate';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { InfoDetailMail } from '../application/mail/info.detail-mail';
+import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
+import { TakeSampleMail } from '../application/mail/take-sample-mail';
+import { TravelPersonMail } from '../application/mail/travel-person-mail';
+import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
+import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 
 @Injectable()
 export class ContractDetailTopicoService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailerService: MailContractService,
+    private readonly jwtService: JWTAdapterService,
+    private readonly ubigeoQuery: UbigeoQuery,
+    private readonly axiosAdapter: MailApiAdapter,
+    private readonly dayJsService: DayJsService,
   ) {}
 
   async updateTopico(
@@ -66,10 +75,13 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO,
     );
 
-    this.mailerService.travelPersonContract({
-      contract,
-      contractDetail,
-    });
+    const mail = new TravelPersonMail(
+      this.axiosAdapter,
+      this.ubigeoQuery,
+      this.jwtService,
+    );
+
+    mail.execute(contract, contractDetail);
   }
   async mailTakingSample(
     contractId: string,
@@ -88,10 +100,8 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO,
     );
 
-    this.mailerService.takingSample({
-      contract,
-      contractDetail,
-    });
+    const mail = new TakeSampleMail(this.axiosAdapter, this.dayJsService);
+    mail.execute(contract, contractDetail);
   }
 
   async mailDetail(
@@ -111,9 +121,7 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO || AuthPermission.DOCUMENTATION,
     );
 
-    this.mailerService.updateDetail({
-      contract,
-      contractDetail,
-    });
+    const mail = new InfoDetailMail(this.axiosAdapter, this.dayJsService);
+    mail.execute(contract, contractDetail);
   }
 }

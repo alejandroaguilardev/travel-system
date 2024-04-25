@@ -2,7 +2,7 @@ import { HttpInterface } from '../../../common/application/services/http-service
 import { ContractRepository } from '../../domain/contract.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 
-export class NewContractMail {
+export class FinishContractMail {
   constructor(
     private readonly contractRepository: ContractRepository,
     private readonly http: HttpInterface,
@@ -13,7 +13,7 @@ export class NewContractMail {
       await this.contractRepository.searchByIdWithPet(contractId);
 
     this.http
-      .post(`/mail/contract/new`, {
+      .post(`/mail/contract/finish`, {
         email: contract.client.email,
         client:
           contract?.client?.profile?.name +

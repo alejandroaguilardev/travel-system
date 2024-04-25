@@ -1,16 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { MongoContractRepository } from '../../../contracts/infrastructure/persistence/contract-mongo.repository';
-import { MailContractService } from '../../../mail/infrastructure/mail-contract.service';
 import { ContractSearchPayments } from '../../../contracts/application/search-payments/contract-search-payments';
 import { DayJsService } from '../../../common/infrastructure/services/dayjs.service';
+import { MailApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
+import { PendingPaymentMail } from '../../../contracts/application/mail/peding-payment-mail';
 
 @Injectable()
 export class PaymentScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
+    private readonly mailApiAdapter: MailApiAdapter,
     private readonly dayJsService: DayJsService,
-    private readonly mailerService: MailContractService,
   ) {}
 
   @Cron('00 08 * * *')
@@ -20,9 +21,7 @@ export class PaymentScheduleService {
       this.dayJsService,
     );
     const contracts = await contractSearchPayments.execute();
-
-    Promise.allSettled(
-      contracts.map((contract) => this.mailerService.contractPayment(contract)),
-    );
+    const mail = new PendingPaymentMail(this.mailApiAdapter, this.dayJsService);
+    Promise.allSettled(contracts.map((contract) => mail.execute(contract)));
   }
 }

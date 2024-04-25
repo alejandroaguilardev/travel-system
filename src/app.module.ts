@@ -10,7 +10,6 @@ import { SeederModule } from './seeder/infrastructure/seeder.module';
 import { ContractsModule } from './contracts/infrastructure/contracts.module';
 import { CagesModule } from './cages/infrastructure/cages.module';
 import { PetsModule } from './pets/infrastructure/pets.module';
-import { MailModule } from './mail/infrastructure/mail.module';
 import { ContractDetailModule } from './contract-detail/infrastructure/contract-detail.module';
 import { FoldersModule } from './folders/infrastructure/folders.module';
 import { UbigeoModule } from './ubigeo/infrastructure/ubigeo.module';
@@ -28,7 +27,6 @@ import { ScheduleCustomModule } from './schedule/infrastructure/schedule-custom.
     ContractsModule,
     CagesModule,
     PetsModule,
-    MailModule,
     ContractDetailModule,
     FoldersModule,
     UbigeoModule,

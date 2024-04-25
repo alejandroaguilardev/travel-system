@@ -13,8 +13,8 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JWTAdapterService } from './services/jwt.service';
 import { JwtStrategyService } from './services/jwt-strategy.service';
-import { MailModule } from '../../mail/infrastructure/mail.module';
 import { RecaptchaMiddleware } from './middleware/recaptcha-middleware';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Module({
   imports: [
@@ -32,7 +32,6 @@ import { RecaptchaMiddleware } from './middleware/recaptcha-middleware';
         },
       }),
     }),
-    MailModule,
   ],
   controllers: [AuthController],
   providers: [
@@ -42,6 +41,7 @@ import { RecaptchaMiddleware } from './middleware/recaptcha-middleware';
     JWTAdapterService,
     JwtStrategyService,
     RecaptchaMiddleware,
+    MailApiAdapter,
   ],
   exports: [JwtStrategyService, PassportModule, JwtModule],
 })

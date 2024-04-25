@@ -16,12 +16,13 @@ import {
 } from '../domain/interfaces/user-without.response';
 import { UserCreatorDto } from './dto/create-user.dto';
 import { CommandCreatorUser } from '../application/create/command-create-user';
-import { MailAuthService } from '../../mail/infrastructure/mail-auth.service';
 import { UserPassword } from '../domain/value-object/user-password';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { UserProfileUpdater } from '../application/update/profile-client/user-profile-updater';
 import { UserChangePasswordUpdater } from '../application/update/user-change-password';
 import { ClientProfileDto } from './dto/client-profile.dto';
+import { CredentialsMail } from '../../auth/application/mail/credentials-mail';
+import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Injectable()
 export class UsersService {
@@ -29,7 +30,7 @@ export class UsersService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
-    private readonly mailService: MailAuthService,
+    private readonly adapterApi: MailApiAdapter,
   ) {
     this.isProductionMode = process.env.PRODUCTION;
   }
@@ -51,7 +52,8 @@ export class UsersService {
     );
 
     const response = await userCreator.create(userCommand, password, user);
-    this.mailService.register(
+    const mail = new CredentialsMail(this.adapterApi);
+    mail.execute(
       userCommand.email,
       userCommand.profile.document,
       userCommand.profile.documentNumber,

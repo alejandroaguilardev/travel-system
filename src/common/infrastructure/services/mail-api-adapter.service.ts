@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { HttpInterface } from 'src/common/application/services/http-service';
+import { HttpInterface } from '../../../common/application/services/http-service';
 
 @Injectable()
-export class AxiosAdapter implements HttpInterface {
+export class MailApiAdapter implements HttpInterface {
   private axiosInstance: AxiosInstance;
   constructor() {
     this.axiosInstance = axios.create({ baseURL: process.env.API_MAIL });
