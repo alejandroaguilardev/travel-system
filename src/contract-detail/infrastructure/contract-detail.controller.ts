@@ -7,6 +7,7 @@ import {
   Delete,
   Post,
   HttpCode,
+  Res,
 } from '@nestjs/common';
 import { ContractDetailService } from './contract-detail.service';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
@@ -22,6 +23,8 @@ import {
 import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { Response } from 'express';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -29,6 +32,7 @@ export class ContractDetailController {
     private readonly contractDetailService: ContractDetailService,
     private readonly contractDetailTopicoService: ContractDetailTopicoService,
     private readonly contractDetailCertificateService: ContractDetailCertificateService,
+    private readonly axiosAdapter: LaravelApiAdapter,
   ) {}
 
   @Get(':id/:detail')
@@ -154,6 +158,57 @@ export class ContractDetailController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailTopicoService.mailTakingSample(id, detail, user);
+  }
+
+  @Post(':id/:detail/excel/senasa')
+  @Auth()
+  async downloadSenasaExcel(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+    @Res() res: Response,
+  ) {
+    const { response, name } =
+      await this.contractDetailCertificateService.senasaExcelDownload(
+        id,
+        detail,
+        user,
+      );
+    response.pipe(res);
+    res.header('Access-Control-Expose-Headers', 'name');
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
+    res.setHeader('name', name);
+    return response;
+  }
+
+  @Post(':id/:detail/excel/certificate')
+  @Auth()
+  async downloadCertificateExcel(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+    @Res() res: Response,
+  ) {
+    const { response, name } =
+      await this.contractDetailCertificateService.certificateExcelDownload(
+        id,
+        detail,
+        user,
+      );
+
+    response.pipe(res);
+    res.header('Access-Control-Expose-Headers', 'name');
+    res.setHeader(
+      'Content-Type',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    );
+    res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
+    res.setHeader('name', name);
+    return response;
   }
 
   @Patch(':id/:detail/certificate/:value')

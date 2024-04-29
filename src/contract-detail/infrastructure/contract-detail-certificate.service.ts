@@ -13,14 +13,18 @@ import {
   AuthPermission,
 } from '../../common/domain/auth-permissions';
 import { SendMailSenasaIntroduce } from '../application/mail/senasa-mail';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
+import { SenasaExcelDownload } from '../application/download/senasa-excel';
+import { CertificateExcelDownload } from '../application/download/certificate-excel';
+import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 
 @Injectable()
 export class ContractDetailCertificateService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly axiosAdapter: MailApiAdapter,
+    private readonly ubigeoQuery: UbigeoQuery,
+    private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
   ) {}
 
@@ -82,5 +86,41 @@ export class ContractDetailCertificateService {
       );
       mail.execute(contract, contractDetail);
     }
+  }
+
+  async senasaExcelDownload(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ) {
+    const excel = new SenasaExcelDownload(
+      this.mongoContractRepository,
+      this.axiosAdapter,
+      this.dayJsService,
+      this.ubigeoQuery,
+    );
+    return excel.execute(
+      new Uuid(contractId),
+      new Uuid(contractDetailId),
+      user,
+    );
+  }
+
+  async certificateExcelDownload(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ) {
+    const excel = new CertificateExcelDownload(
+      this.mongoContractRepository,
+      this.axiosAdapter,
+      this.dayJsService,
+      this.ubigeoQuery,
+    );
+    return excel.execute(
+      new Uuid(contractId),
+      new Uuid(contractDetailId),
+      user,
+    );
   }
 }

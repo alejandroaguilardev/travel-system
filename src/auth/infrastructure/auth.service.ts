@@ -15,14 +15,14 @@ import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ResetPasswordUser } from '../application/reset-password/reset-password-user';
 import { UserPassword } from '../../users/domain/value-object/user-password';
 import { RecoverMail } from '../application/mail/recover-mail';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
-    private mailApiAdapter: MailApiAdapter,
+    private mailApiAdapter: LaravelApiAdapter,
     private jwtService: JWTAdapterService,
   ) {}
 

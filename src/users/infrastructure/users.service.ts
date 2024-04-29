@@ -22,7 +22,7 @@ import { UserProfileUpdater } from '../application/update/profile-client/user-pr
 import { UserChangePasswordUpdater } from '../application/update/user-change-password';
 import { ClientProfileDto } from './dto/client-profile.dto';
 import { CredentialsMail } from '../../auth/application/mail/credentials-mail';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Injectable()
 export class UsersService {
@@ -30,7 +30,7 @@ export class UsersService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
-    private readonly adapterApi: MailApiAdapter,
+    private readonly adapterApi: LaravelApiAdapter,
   ) {
     this.isProductionMode = process.env.PRODUCTION;
   }

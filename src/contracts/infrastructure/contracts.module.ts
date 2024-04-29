@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContractModel, ContractSchema } from './schema/contract.schema';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Module({
   imports: [
@@ -15,7 +15,7 @@ import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-ad
     AuthModule,
   ],
   controllers: [ContractsController],
-  providers: [ContractsService, MongoContractRepository, MailApiAdapter],
+  providers: [ContractsService, MongoContractRepository, LaravelApiAdapter],
   exports: [MongoContractRepository],
 })
 export class ContractsModule {}

@@ -6,7 +6,7 @@ import { UserModel, UserSchema } from './schema/user.schema';
 import { UserMongoRepository } from './persistence/user-mongo.repository';
 import { BcryptService } from '../../common/infrastructure/services/bcrypt.service';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import {
   RoleModel,
   RoleSchema,
@@ -26,7 +26,12 @@ import {
     AuthModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserMongoRepository, BcryptService, MailApiAdapter],
+  providers: [
+    UsersService,
+    UserMongoRepository,
+    BcryptService,
+    LaravelApiAdapter,
+  ],
   exports: [UserMongoRepository],
 })
 export class UsersModule {}

@@ -29,8 +29,8 @@ export class DayJsService implements DateService {
     return end.diff(start, 'days');
   }
 
-  addDays(date: Date | string, days: number): string {
-    return dayjs(date).add(days, 'days').format('YYYY-MM-DD');
+  addDays(date: Date | string, days: number, format = 'YYYY-MM-DD'): string {
+    return dayjs(date).add(days, 'days').format(format);
   }
 
   isDateInPast(date: Date | string): boolean {
@@ -47,5 +47,30 @@ export class DayJsService implements DateService {
 
   isBefore(date: Date | string): boolean {
     return dayjs(date).isBefore(dayjs(), 'day');
+  }
+
+  formatDifferenceInYearsAndMonths(
+    startDate: Date | string,
+    endDate = new Date(),
+  ): string {
+    const start = dayjs(startDate);
+    const end = dayjs(endDate);
+
+    const years = end.diff(start, 'year');
+    start.add(years, 'year');
+    const months = end.diff(start, 'month');
+
+    let result = '';
+    if (years > 0) {
+      result += years === 1 ? '1 año' : `${years} años`;
+      if (months > 0) {
+        result += ' y ';
+      }
+    }
+    if (months > 0) {
+      result += months === 1 ? '1 mes' : `${Math.round(months / years)} meses`;
+    }
+
+    return result;
   }
 }

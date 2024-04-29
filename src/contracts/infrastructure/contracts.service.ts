@@ -22,7 +22,7 @@ import { ContractCancelDto } from './dto/contract-cancel.dto';
 import { ContractReasonForCancellation } from '../domain/value-object/reason-for-cancellation';
 import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
 import { ContractPayInInstallmentsUpdater } from '../application/update/payment-updater';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import { NewContractMail } from '../application/mail/new-contract-mail';
 import { CancelContractMail } from '../application/mail/cancel-contract-mail';
 import { FinishContractMail } from '../application/mail/finish-contract';
@@ -31,7 +31,7 @@ import { FinishContractMail } from '../application/mail/finish-contract';
 export class ContractsService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly axiosAdapter: MailApiAdapter,
+    private readonly axiosAdapter: LaravelApiAdapter,
   ) {}
 
   async create(

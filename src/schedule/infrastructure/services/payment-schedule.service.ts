@@ -3,14 +3,14 @@ import { Cron } from '@nestjs/schedule';
 import { MongoContractRepository } from '../../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { ContractSearchPayments } from '../../../contracts/application/search-payments/contract-search-payments';
 import { DayJsService } from '../../../common/infrastructure/services/dayjs.service';
-import { MailApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
 import { PendingPaymentMail } from '../../../contracts/application/mail/peding-payment-mail';
 
 @Injectable()
 export class PaymentScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailApiAdapter: MailApiAdapter,
+    private readonly mailApiAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
   ) {}
 

@@ -12,7 +12,7 @@ import {
   AuthPermission,
 } from '../../common/domain/auth-permissions';
 import { PermissionValidator } from '../../auth/application/permission/permission-validate';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import { InfoDetailMail } from '../application/mail/info.detail-mail';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 import { TakeSampleMail } from '../application/mail/take-sample-mail';
@@ -26,7 +26,7 @@ export class ContractDetailTopicoService {
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly jwtService: JWTAdapterService,
     private readonly ubigeoQuery: UbigeoQuery,
-    private readonly axiosAdapter: MailApiAdapter,
+    private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
   ) {}
 

@@ -14,7 +14,7 @@ import { AuthController } from './auth.controller';
 import { JWTAdapterService } from './services/jwt.service';
 import { JwtStrategyService } from './services/jwt-strategy.service';
 import { RecaptchaMiddleware } from './middleware/recaptcha-middleware';
-import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { MailApiAdapter } from '../../common/infrastructure/services/mail-api-ad
     JWTAdapterService,
     JwtStrategyService,
     RecaptchaMiddleware,
-    MailApiAdapter,
+    LaravelApiAdapter,
   ],
   exports: [JwtStrategyService, PassportModule, JwtModule],
 })
