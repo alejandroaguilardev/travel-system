@@ -10,7 +10,7 @@ export class InfoDetailMail {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -44,9 +44,8 @@ export class InfoDetailMail {
       !!chosenCage?.typeCage;
 
     const cage = isCage
-      ? `Tipo: ${chosenCage?.typeCage ?? '--'}   Modelo: ${
-          chosenCage?.modelCage ?? 0
-        }   Medidas: ${chosenCage?.dimensionsCage ?? 0} cm`
+      ? `Tipo: ${chosenCage?.typeCage ?? '--'}   Modelo: ${chosenCage?.modelCage ?? 0
+      }   Medidas: ${chosenCage?.dimensionsCage ?? 0} cm`
       : 'Aún no se ha recomendado jaula a la mascota';
 
     return cage;
@@ -62,11 +61,9 @@ export class InfoDetailMail {
       !!measurementsAndWeight?.weight;
 
     const measurements = isMeasurements
-      ? `${measurementsAndWeight?.height ?? 0} cm  x ${
-          measurementsAndWeight?.width ?? 0
-        } x  ${measurementsAndWeight?.length ?? 0} cm / ${
-          measurementsAndWeight?.weight ?? 0
-        } kg`
+      ? `${measurementsAndWeight?.height ?? 0} cm  x ${measurementsAndWeight?.width ?? 0
+      } x  ${measurementsAndWeight?.length ?? 0} cm / ${measurementsAndWeight?.weight ?? 0
+      } kg`
       : 'Aún no se han tomado las medidas ni el peso de la mascota';
 
     return measurements;
@@ -97,7 +94,7 @@ export class InfoDetailMail {
 
     const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: realizada el ${this.dateService.formatDateTime(
       documentation[name]?.resultDate ?? '',
-      'DD/MM/YYYY',
+      'dd/MM/yyyy',
     )}</h4><span> ${documentation[name]?.observation ?? ''}</span>`;
     return value;
   }

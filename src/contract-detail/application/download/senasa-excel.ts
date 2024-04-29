@@ -17,7 +17,7 @@ export class SenasaExcelDownload {
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
     private readonly ubigeo: UbigeoQueryInterface,
-  ) {}
+  ) { }
 
   async execute(
     contractId: Uuid,
@@ -78,15 +78,15 @@ export class SenasaExcelDownload {
 
       inspectionDate: this.dateService.formatDateTime(
         documentation.senasaDocuments.executionDate,
-        'DD/MM/YYYY',
+        'dd/MM/yyyy',
       ),
       shippingDate: this.dateService.formatDateTime(
         airlineReservation.departureDate,
-        'DD/MM/YYYY',
+        'dd/MM/yyyy',
       ),
       disembarkationDate: this.dateService.formatDateTime(
         airlineReservation.arrivalDate,
-        'DD/MM/YYYY',
+        'dd/MM/yyyy',
       ),
       countryDestiny: destination.countryDestination,
       aeroportDestiny: airlineReservation.destinationAirport,

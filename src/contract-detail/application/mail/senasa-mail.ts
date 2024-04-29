@@ -7,7 +7,7 @@ export class SendMailSenasaIntroduce {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -23,7 +23,7 @@ export class SendMailSenasaIntroduce {
       phone: contract.adviser.profile.phone,
       date: this.dateService.formatDateTime(
         contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
-        'DD/MM/YYYY',
+        'dd/MM/yyyy',
       ),
     };
 

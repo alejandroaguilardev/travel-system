@@ -12,7 +12,7 @@ export class PendingPaymentMail {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(contract: ContractResponse): Promise<void> {
     const data = {
@@ -36,27 +36,24 @@ export class PendingPaymentMail {
       if (!payInInstallment.isPay) {
         selectedColor =
           this.dateService.isSame(payInInstallment.date) ||
-          this.dateService.isBefore(payInInstallment.date)
+            this.dateService.isBefore(payInInstallment.date)
             ? this.colors.danger
             : this.colors.default;
       }
 
       payment += `<tr>
-                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
-                      this.colors.default === selectedColor ? '#000' : '#fff'
-                    }'>
+                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${this.colors.default === selectedColor ? '#000' : '#fff'
+        }'>
                         ${this.dateService.formatDateTime(
-                          payInInstallment.date,
-                          'DD/MM/YYYY',
-                        )}
+          payInInstallment.date,
+          'dd/MM/yyyy',
+        )}
                     </td>
-                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
-                      this.colors.default === selectedColor ? '#000' : '#fff'
-                    }'>
+                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${this.colors.default === selectedColor ? '#000' : '#fff'
+        }'>
                     ${payInInstallment.price.toFixed(2)}$</td>
-                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
-                      this.colors.default === selectedColor ? '#000' : '#fff'
-                    }'>
+                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${this.colors.default === selectedColor ? '#000' : '#fff'
+        }'>
                         ${payInInstallment.isPay ? 'Pagado' : 'Pendiente'}
                     </td>
                 </tr>`;

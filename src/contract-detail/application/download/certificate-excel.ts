@@ -22,7 +22,7 @@ export class CertificateExcelDownload {
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
     private readonly ubigeo: UbigeoQueryInterface,
-  ) {}
+  ) { }
 
   async execute(
     contractId: Uuid,
@@ -84,9 +84,9 @@ export class CertificateExcelDownload {
 
       inspectionDate: documentation.senasaDocuments.executionDate
         ? this.dateService.formatDateTime(
-            documentation.senasaDocuments.executionDate,
-            'DD/MM/YYYY',
-          )
+          documentation.senasaDocuments.executionDate,
+          'dd/MM/yyyy',
+        )
         : '',
       countryDestiny: destination.countryDestination,
       cityDestiny: destination.cityDestination,
@@ -94,53 +94,53 @@ export class CertificateExcelDownload {
 
       petName: pet.name,
       petAge: this.petAge(pet.birthDate),
-      petDate: this.dateService.formatDateTime(pet.birthDate, 'DD/MM/YYYY'),
+      petDate: this.dateService.formatDateTime(pet.birthDate, 'dd/MM/yyyy'),
       petRace: pet.race,
       petGender: this.petGender(pet.gender),
       petColor: pet.color,
       petChip: pet.chip,
-      petChipDate: this.dateService.formatDateTime(pet.chipDate, 'DD/MM/YYYY'),
+      petChipDate: pet.chipDate ? this.dateService.formatDateTime(pet.chipDate, 'dd/MM/yyyy') : "",
       petAgeVaccination: this.petAgeVaccination(
         pet.birthDate,
         documentation.vaccinationCertificate.resultDate,
       ),
       vaccinationDate: documentation.vaccinationCertificate.resultDate
         ? this.dateService.formatDateTime(
-            documentation.vaccinationCertificate.resultDate,
-            'DD/MM/YYYY',
-          )
+          documentation.vaccinationCertificate.resultDate,
+          'dd/MM/yyyy',
+        )
         : '',
       healthDayAndMonth: documentation.healthCertificate.resultDate
         ? this.dateService.formatDateTime(
-            documentation.healthCertificate.resultDate,
-            'DD [de] MMMM',
-          )
+          documentation.healthCertificate.resultDate,
+          "dd 'de' MMMM",
+        )
         : '',
       healthYear: this.dateService.formatDateTime(
         documentation.healthCertificate.resultDate,
-        'YYYY',
+        'yyyy',
       ),
 
       petAgeEnglish: this.petAgeEnglish(pet.birthDate),
       petDateEnglish: this.dateService.formatDateTime(
         pet.birthDate,
-        'MM/DD/YYYY',
+        'MM/dd/yyyy',
       ),
       PetRaceEnglish: pet.race,
       PetGenderEnglish: pet.gender,
       petColorEnglish: pet.color,
       petChipDateEnglish: this.dateService.formatDateTime(
         pet.chipDate,
-        'MM/DD/YYYY',
+        'MM/dd/yyyy',
       ),
 
       healthEnglish: this.dateService.formatDateTime(
         documentation.vaccinationCertificate.resultDate,
-        'MM/DD/YYYY',
+        'MM/dd/yyyy',
       ),
       vaccinationDateEnglish: this.dateService.formatDateTime(
         documentation.vaccinationCertificate.resultDate,
-        'MM/DD/YYYY',
+        'MM/dd/yyyy',
       ),
       vaccinationNextDateEnglish: this.vaccinationNextDateEnglish(
         documentation.vaccinationCertificate.resultDate,
@@ -153,7 +153,7 @@ export class CertificateExcelDownload {
   }
 
   private vaccinationNextDateEnglish(value: Date): string {
-    return this.dateService.addDays(value, 365, 'MM/DD/YYYY');
+    return this.dateService.addDays(value, 365, 'MM/dd/yyyy');
   }
 
   private petAgeVaccination(birthDate: Date, dateVaccination: Date) {

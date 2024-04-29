@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import dayjs from 'dayjs';
-import 'dayjs/locale/es';
+import { format, differenceInDays, addDays, isBefore, isAfter, isSameDay, isPast, differenceInYears, differenceInMonths } from 'date-fns';
+import { es } from 'date-fns/locale';
+
+
 import { DateService } from '../../application/services/date-service';
 
 @Injectable()
@@ -8,54 +10,48 @@ export class DayJsService implements DateService {
 
   formatDateTime(
     date: Date | string,
-    format: string = 'YYYY-MM-DD HH:mm:ss',
+    formatStr: string = 'yyyy-MM-dd HH:mm:ss',
   ): string {
-    return dayjs(date).locale('es').format(format);
+    return format(new Date(date), formatStr, { locale: es });
   }
 
-  getCurrentDateTime(format: string = 'YYYY-MM-DD HH:mm:ss'): string {
-    return dayjs().locale('es').format(format);
+  getCurrentDateTime(formatStr: string = 'yyyy-MM-dd HH:mm:ss'): string {
+    return format(new Date(), formatStr, { locale: es });
   }
 
   getDifferenceInDays(
     startDate: Date | string,
     endDate: Date | string,
   ): number {
-    const start = dayjs(startDate).locale('es');
-    const end = dayjs(endDate).locale('es');
-    return end.diff(start, 'days');
+    return differenceInDays(new Date(endDate), new Date(startDate));
   }
 
-  addDays(date: Date | string, days: number, format = 'YYYY-MM-DD'): string {
-    return dayjs(date).locale('es').add(days, 'days').format(format);
+  addDays(date: Date | string, days: number, formatStr = 'yyyy-MM-dd'): string {
+    return format(addDays(new Date(date), days), formatStr, { locale: es });
   }
 
   isDateInPast(date: Date | string): boolean {
-    return dayjs(date).locale('es').isBefore(dayjs().locale('es'), 'day');
+    return isPast(new Date(date));
   }
 
   isSame(date: Date | string): boolean {
-    return dayjs(date).locale('es').isSame(dayjs().locale('es'), 'day');
+    return isSameDay(new Date(date), new Date());
   }
 
   isAfter(date: Date | string): boolean {
-    return dayjs(date).locale('es').isAfter(dayjs().locale('es'), 'day');
+    return isAfter(new Date(date), new Date());
   }
 
   isBefore(date: Date | string): boolean {
-    return dayjs(date).locale('es').isBefore(dayjs().locale('es'), 'day');
+    return isBefore(new Date(date), new Date());
   }
 
   formatDifferenceInYearsAndMonths(
     startDate: Date | string,
     endDate = new Date(),
   ): string {
-    const start = dayjs(startDate).locale('es');
-    const end = dayjs(endDate).locale('es');
-
-    const years = end.diff(start, 'year');
-    start.add(years, 'year');
-    const months = end.diff(start, 'month');
+    const years = differenceInYears(new Date(endDate), new Date(startDate));
+    const months = differenceInMonths(new Date(endDate), new Date(startDate)) % 12;
 
     let result = '';
     if (years > 0) {
@@ -65,7 +61,7 @@ export class DayJsService implements DateService {
       }
     }
     if (months > 0) {
-      result += months === 1 ? '1 mes' : `${Math.round(months / years)} meses`;
+      result += months === 1 ? '1 mes' : `${months} meses`;
     }
 
     return result;
