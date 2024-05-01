@@ -17,7 +17,7 @@ export class SenasaExcelDownload {
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
     private readonly ubigeo: UbigeoQueryInterface,
-  ) { }
+  ) {}
 
   async execute(
     contractId: Uuid,
@@ -90,17 +90,24 @@ export class SenasaExcelDownload {
       ),
       countryDestiny: destination.countryDestination,
       aeroportDestiny: airlineReservation.destinationAirport,
-      petSpecie: pet.type.toLowerCase() === 'perro' ? 'Canino' : pet.type,
+      petSpecie: this.petSpecie(pet.type.toLowerCase()),
       petGender: this.petGender(pet.gender),
       petAge: this.petAge(pet.birthDate),
       petType: pet.type,
-      petIdentification: pet.chip,
+      petIdentification: pet.name,
+      petIdentificationType: 'Chip',
       petsQuantity: this.petsQuantity(),
     };
   }
 
   private petAge(birthDate: Date) {
     return this.dateService.formatDifferenceInYearsAndMonths(birthDate);
+  }
+
+  private petSpecie(type: string) {
+    if (type === 'perro') return 'Canino';
+    if (type === 'gato') return 'Felino';
+    return type;
   }
 
   private petsQuantity() {

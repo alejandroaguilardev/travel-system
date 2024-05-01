@@ -7,6 +7,8 @@ export interface DocumentationCertificateInterface {
   expectedDate: Date;
   executionDate: Date | null;
   resultDate: Date | null;
+  observation?: string;
+  isPrint?: boolean;
   user?: string;
 }
 export interface DocumentationInterface {

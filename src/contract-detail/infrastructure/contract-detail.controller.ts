@@ -160,6 +160,21 @@ export class ContractDetailController {
     return this.contractDetailTopicoService.mailTakingSample(id, detail, user);
   }
 
+  @Post(':id/:detail/mailTakingSampleExecuted')
+  @HttpCode(200)
+  @Auth()
+  mailTakingSampleExecuted(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailTopicoService.mailTakingSampleExecuted(
+      id,
+      detail,
+      user,
+    );
+  }
+
   @Post(':id/:detail/excel/senasa')
   @Auth()
   async downloadSenasaExcel(

@@ -70,70 +70,105 @@ export class CommandContractDetailsUpdater {
           hasServiceIncluded:
             documentation?.vaccinationCertificate?.hasServiceIncluded ??
             services.documentation.vaccinationCertificate.hasServiceIncluded,
-          isApplied: services.documentation.vaccinationCertificate.isApplied,
+          isRequired:
+            documentation?.vaccinationCertificate?.isRequired ??
+            services.documentation.vaccinationCertificate.isRequired,
           expectedDate:
+            documentation?.vaccinationCertificate?.expectedDate ??
             services.documentation.vaccinationCertificate.expectedDate,
+          isApplied: services.documentation.vaccinationCertificate.isApplied,
           executionDate:
             services.documentation.vaccinationCertificate.executionDate,
           resultDate: services.documentation.vaccinationCertificate.resultDate,
-          isRequired: services.documentation.vaccinationCertificate.isRequired,
+          observation:
+            services.documentation.vaccinationCertificate.observation,
+          isPrint: services.documentation.vaccinationCertificate.isPrint,
           user: services.documentation.vaccinationCertificate.user,
         },
         healthCertificate: {
           hasServiceIncluded:
             documentation?.healthCertificate?.hasServiceIncluded ??
             services.documentation.healthCertificate.hasServiceIncluded,
+          isRequired:
+            documentation?.healthCertificate?.isRequired ??
+            services.documentation.healthCertificate.isRequired,
+          expectedDate:
+            documentation?.healthCertificate?.expectedDate ??
+            services.documentation.healthCertificate.expectedDate,
           isApplied: services.documentation.healthCertificate.isApplied,
-          expectedDate: services.documentation.healthCertificate.expectedDate,
           executionDate: services.documentation.healthCertificate.executionDate,
           resultDate: services.documentation.healthCertificate.resultDate,
-          isRequired: services.documentation.healthCertificate.isRequired,
+          observation: services.documentation.healthCertificate.observation,
+          isPrint: services.documentation.healthCertificate.isPrint,
           user: services.documentation.healthCertificate.user,
         },
         chipCertificate: {
           hasServiceIncluded:
             documentation?.chipCertificate?.hasServiceIncluded ??
             services.documentation.chipCertificate.hasServiceIncluded,
+          isRequired:
+            documentation?.chipCertificate?.isRequired ??
+            services.documentation.chipCertificate.isRequired,
+          expectedDate:
+            documentation?.chipCertificate?.expectedDate ??
+            services.documentation.chipCertificate.expectedDate,
           isApplied: services.documentation.chipCertificate.isApplied,
-          expectedDate: services.documentation.chipCertificate.expectedDate,
           executionDate: services.documentation.chipCertificate.executionDate,
           resultDate: services.documentation.chipCertificate.resultDate,
-          isRequired: services.documentation.chipCertificate.isRequired,
+          observation: services.documentation.chipCertificate.observation,
+          isPrint: services.documentation.chipCertificate.isPrint,
           user: services.documentation.chipCertificate.user,
         },
         senasaDocuments: {
           hasServiceIncluded:
             documentation?.senasaDocuments?.hasServiceIncluded ??
             services.documentation.senasaDocuments.hasServiceIncluded,
-          isApplied: services.documentation.senasaDocuments.isApplied,
-          expectedDate: services.documentation.senasaDocuments.expectedDate,
+          expectedDate:
+            documentation?.senasaDocuments?.expectedDate ??
+            services.documentation.senasaDocuments.expectedDate,
+          isRequired:
+            documentation?.senasaDocuments?.isRequired ??
+            services.documentation.senasaDocuments.isRequired,
           executionDate: services.documentation.senasaDocuments.executionDate,
+          isApplied: services.documentation.senasaDocuments.isApplied,
           resultDate: services.documentation.senasaDocuments.resultDate,
-          isRequired: services.documentation.senasaDocuments.isRequired,
+          observation: services.documentation.senasaDocuments.observation,
+          isPrint: services.documentation.senasaDocuments.isPrint,
           user: services.documentation.senasaDocuments.user,
         },
         rabiesSeroLogicalTest: {
           hasServiceIncluded:
             documentation?.rabiesSeroLogicalTest?.hasServiceIncluded ??
             services.documentation.rabiesSeroLogicalTest.hasServiceIncluded,
-          isApplied: services.documentation.rabiesSeroLogicalTest.isApplied,
           expectedDate:
+            documentation?.rabiesSeroLogicalTest?.expectedDate ??
             services.documentation.rabiesSeroLogicalTest.expectedDate,
+          isRequired:
+            documentation?.rabiesSeroLogicalTest?.isRequired ??
+            services.documentation.rabiesSeroLogicalTest.isRequired,
+          isApplied: services.documentation.rabiesSeroLogicalTest.isApplied,
           executionDate:
             services.documentation.rabiesSeroLogicalTest.executionDate,
           resultDate: services.documentation.rabiesSeroLogicalTest.resultDate,
-          isRequired: services.documentation.rabiesSeroLogicalTest.isRequired,
+          observation: services.documentation.rabiesSeroLogicalTest.observation,
+          isPrint: services.documentation.rabiesSeroLogicalTest.isPrint,
           user: services.documentation.rabiesSeroLogicalTest.user,
         },
         importLicense: {
           hasServiceIncluded:
             documentation?.importLicense?.hasServiceIncluded ??
             services.documentation.importLicense.hasServiceIncluded,
+          expectedDate:
+            documentation?.importLicense?.expectedDate ??
+            services.documentation.importLicense.expectedDate,
+          isRequired:
+            documentation?.importLicense?.isRequired ??
+            services.documentation.importLicense.isRequired,
           isApplied: services.documentation.importLicense.isApplied,
-          expectedDate: services.documentation.importLicense.expectedDate,
           executionDate: services.documentation.importLicense.executionDate,
           resultDate: services.documentation.importLicense.resultDate,
-          isRequired: services.documentation.importLicense.isRequired,
+          observation: services.documentation.importLicense.observation,
+          isPrint: services.documentation.importLicense.isPrint,
           user: services.documentation.importLicense.user,
         },
         emotionalSupportCertificate: {
@@ -141,16 +176,21 @@ export class CommandContractDetailsUpdater {
             documentation?.emotionalSupportCertificate?.hasServiceIncluded ??
             services.documentation.emotionalSupportCertificate
               .hasServiceIncluded,
+          isRequired:
+            documentation?.emotionalSupportCertificate?.isRequired ??
+            services.documentation.emotionalSupportCertificate.isRequired,
+          expectedDate:
+            documentation?.emotionalSupportCertificate?.expectedDate ??
+            services.documentation.emotionalSupportCertificate.expectedDate,
           isApplied:
             services.documentation.emotionalSupportCertificate.isApplied,
-          expectedDate:
-            services.documentation.emotionalSupportCertificate.expectedDate,
           executionDate:
             services.documentation.emotionalSupportCertificate.executionDate,
           resultDate:
             services.documentation.emotionalSupportCertificate.resultDate,
-          isRequired:
-            services.documentation.emotionalSupportCertificate.isRequired,
+          observation:
+            services.documentation.emotionalSupportCertificate.observation,
+          isPrint: services.documentation.emotionalSupportCertificate.isPrint,
           user: services.documentation.emotionalSupportCertificate.user,
         },
       },

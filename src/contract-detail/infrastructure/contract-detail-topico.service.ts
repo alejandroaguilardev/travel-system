@@ -19,6 +19,7 @@ import { TakeSampleMail } from '../application/mail/take-sample-mail';
 import { TravelPersonMail } from '../application/mail/travel-person-mail';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
+import { TakeSampleExecutedMail } from '../application/mail/take-sample-executed-mail';
 
 @Injectable()
 export class ContractDetailTopicoService {
@@ -83,6 +84,7 @@ export class ContractDetailTopicoService {
 
     mail.execute(contract, contractDetail);
   }
+
   async mailTakingSample(
     contractId: string,
     contractDetailId: string,
@@ -101,6 +103,27 @@ export class ContractDetailTopicoService {
     );
 
     const mail = new TakeSampleMail(this.axiosAdapter, this.dayJsService);
+    mail.execute(contract, contractDetail);
+  }
+
+  async mailTakingSampleExecuted(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<void> {
+    const contract = await this.mongoContractRepository.searchByIdWithPet(
+      new Uuid(contractId),
+    );
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId,
+    );
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.TOPICO,
+    );
+
+    const mail = new TakeSampleExecutedMail(this.axiosAdapter);
     mail.execute(contract, contractDetail);
   }
 

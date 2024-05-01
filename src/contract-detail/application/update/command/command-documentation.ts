@@ -20,6 +20,8 @@ import {
   DocumentationImportLicense,
   DocumentationEmocionalSupportCertificate,
   DocumentationIsRequired,
+  DocumentationIsPrint,
+  DocumentationObservation,
 } from '../../../domain/value-object/documentation';
 
 export class CommandContractDocumentation {
@@ -49,6 +51,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(vaccinationCertificate.executionDate),
       new DocumentationResultDate(vaccinationCertificate.resultDate),
       new DocumentationIsRequired(vaccinationCertificate.isRequired),
+      new DocumentationObservation(vaccinationCertificate.observation),
+      new DocumentationIsPrint(vaccinationCertificate.isPrint),
       new UuidOptional(vaccinationCertificate?.user ?? ''),
     );
   }
@@ -63,6 +67,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(healthCertificate.executionDate),
       new DocumentationResultDate(healthCertificate.resultDate),
       new DocumentationIsRequired(healthCertificate.isRequired),
+      new DocumentationObservation(healthCertificate.observation),
+      new DocumentationIsPrint(healthCertificate.isPrint),
       new UuidOptional(healthCertificate?.user ?? ''),
     );
   }
@@ -77,6 +83,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(chipCertificate.executionDate),
       new DocumentationResultDate(chipCertificate.resultDate),
       new DocumentationIsRequired(chipCertificate.isRequired),
+      new DocumentationObservation(chipCertificate.observation),
+      new DocumentationIsPrint(chipCertificate.isPrint),
       new UuidOptional(chipCertificate?.user ?? ''),
     );
   }
@@ -91,6 +99,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(senasaDocuments.executionDate),
       new DocumentationResultDate(senasaDocuments.resultDate),
       new DocumentationIsRequired(senasaDocuments.isRequired),
+      new DocumentationObservation(senasaDocuments.observation),
+      new DocumentationIsPrint(senasaDocuments.isPrint),
       new UuidOptional(senasaDocuments?.user ?? ''),
     );
   }
@@ -105,6 +115,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(rabiesSeroLogicalTest.executionDate),
       new DocumentationResultDate(rabiesSeroLogicalTest.resultDate),
       new DocumentationIsRequired(rabiesSeroLogicalTest.isRequired),
+      new DocumentationObservation(rabiesSeroLogicalTest.observation),
+      new DocumentationIsPrint(rabiesSeroLogicalTest.isPrint),
       new UuidOptional(rabiesSeroLogicalTest?.user ?? ''),
     );
   }
@@ -119,6 +131,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(importLicense.executionDate),
       new DocumentationResultDate(importLicense.resultDate),
       new DocumentationIsRequired(importLicense.isRequired),
+      new DocumentationObservation(importLicense.observation),
+      new DocumentationIsPrint(importLicense.isPrint),
       new UuidOptional(importLicense?.user ?? ''),
     );
   }
@@ -135,6 +149,8 @@ export class CommandContractDocumentation {
       new DocumentationExecutionDate(emotionalSupportCertificate.executionDate),
       new DocumentationResultDate(emotionalSupportCertificate.resultDate),
       new DocumentationIsRequired(emotionalSupportCertificate.isRequired),
+      new DocumentationObservation(emotionalSupportCertificate.observation),
+      new DocumentationIsPrint(emotionalSupportCertificate.isPrint),
       new UuidOptional(emotionalSupportCertificate?.user ?? ''),
     );
   }

@@ -27,6 +27,12 @@ class CertificateDto implements DocumentationCertificateInterface {
   @IsOptional()
   @IsDate()
   resultDate: Date | null;
+  @IsBoolean()
+  @IsOptional()
+  isPrint: boolean;
+  @IsString()
+  @IsOptional()
+  observation: string;
   @IsOptional()
   @IsString()
   user?: string;

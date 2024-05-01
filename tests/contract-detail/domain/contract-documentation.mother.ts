@@ -6,6 +6,7 @@ import {
 import { DateMother } from '../../common/domain/date.mother';
 import { StatusMother } from '../../contracts/domain/status.mother';
 import { ContractDocumentation } from '../../../src/contract-detail/domain/value-object/service-documentation';
+import { StringMother } from '../../common/domain/string.mother';
 export class ContractDocumentationMother {
   static value(): keyof typeof ContractDocumentation.keysObject {
     return ContractDocumentation.keys[
@@ -34,6 +35,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 
@@ -45,6 +48,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 
@@ -56,6 +61,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 
@@ -67,6 +74,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 
@@ -78,6 +87,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 
@@ -89,6 +100,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 
@@ -100,6 +113,8 @@ export class ContractDocumentationMother {
       expectedDate: DateMother.recent(),
       executionDate: null,
       resultDate: null,
+      isPrint: faker.datatype.boolean(),
+      observation: StringMother.create(),
     };
   }
 }

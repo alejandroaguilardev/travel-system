@@ -20,16 +20,28 @@ export class TravelPersonMail {
     contract: ContractResponse,
     contractDetail: ContractDetailResponse,
   ): Promise<void> {
+    const data = await this.formatData(contract, contractDetail);
+
+    this.http
+      .post(`/mail/detail/travel-person`, { ...data })
+      .catch((e) => console.log(e));
+  }
+
+  private async formatData(
+    contract: ContractResponse,
+    contractDetail: ContractDetailResponse,
+  ) {
     const { pet } = contractDetail;
     const { accompaniedPet, petPerCharge, typeTraveling, destination } =
       contractDetail.travel;
+    let token = '';
+    let accompaniedDepartment = '--';
+    let accompaniedProvince = '--';
+    let accompaniedDistrict = '--';
+
     const isConfirmedData = this.isConfirmedData(contractDetail);
 
-    let token = '';
-    let [accompaniedDepartment, accompaniedProvince, accompaniedDistrict] =
-      '--';
     if (isConfirmedData) {
-      token = this.jwt.generateToken({ id: contract.client.id });
       const [department, province, district] = await Promise.all([
         this.ubigeo.findOneDepartment(accompaniedPet?.department ?? ''),
         this.ubigeo.findOneProvince(accompaniedPet?.province ?? ''),
@@ -38,11 +50,13 @@ export class TravelPersonMail {
       accompaniedDepartment = department?.name ?? '--';
       accompaniedProvince = province?.name ?? '--';
       accompaniedDistrict = district?.name ?? '--';
+    } else {
+      token = this.jwt.generateToken({ id: contract.client.id });
     }
 
-    const data = {
+    return {
       contractId: contract.id,
-      contractDetail: contractDetail.id,
+      contractDetailId: contractDetail.id,
       client:
         contract?.client?.profile?.name + ' ' + contract?.client?.profile?.name,
       email: contract.client.email,
@@ -67,10 +81,6 @@ export class TravelPersonMail {
       token,
       isConfirmedData,
     };
-
-    this.http
-      .post(`/mail/detail/travel-person`, { data })
-      .catch((e) => console.log(e));
   }
 
   private isConfirmedData(contractDetail: ContractDetailResponse): boolean {

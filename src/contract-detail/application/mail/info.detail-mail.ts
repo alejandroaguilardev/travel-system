@@ -10,7 +10,7 @@ export class InfoDetailMail {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) { }
+  ) {}
 
   async execute(
     contract: ContractResponse,
@@ -34,7 +34,9 @@ export class InfoDetailMail {
       documentation: documentationData.join(' '),
     };
 
-    this.http.post(`/mail/detail/info`, { data }).catch((e) => console.log(e));
+    this.http
+      .post(`/mail/detail/info`, { ...data })
+      .catch((e) => console.log(e));
   }
 
   private chosenCage(chosenCage?: CageChosenInterface): string {
@@ -44,8 +46,9 @@ export class InfoDetailMail {
       !!chosenCage?.typeCage;
 
     const cage = isCage
-      ? `Tipo: ${chosenCage?.typeCage ?? '--'}   Modelo: ${chosenCage?.modelCage ?? 0
-      }   Medidas: ${chosenCage?.dimensionsCage ?? 0} cm`
+      ? `Tipo: ${chosenCage?.typeCage ?? '--'}   Modelo: ${
+          chosenCage?.modelCage ?? 0
+        }   Medidas: ${chosenCage?.dimensionsCage ?? 0} cm`
       : 'Aún no se ha recomendado jaula a la mascota';
 
     return cage;
@@ -61,9 +64,11 @@ export class InfoDetailMail {
       !!measurementsAndWeight?.weight;
 
     const measurements = isMeasurements
-      ? `${measurementsAndWeight?.height ?? 0} cm  x ${measurementsAndWeight?.width ?? 0
-      } x  ${measurementsAndWeight?.length ?? 0} cm / ${measurementsAndWeight?.weight ?? 0
-      } kg`
+      ? `${measurementsAndWeight?.height ?? 0} cm  x ${
+          measurementsAndWeight?.width ?? 0
+        } x  ${measurementsAndWeight?.length ?? 0} cm / ${
+          measurementsAndWeight?.weight ?? 0
+        } kg`
       : 'Aún no se han tomado las medidas ni el peso de la mascota';
 
     return measurements;

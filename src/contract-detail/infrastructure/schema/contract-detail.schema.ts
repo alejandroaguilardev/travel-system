@@ -20,6 +20,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
       vaccinationCertificate: {
@@ -29,6 +31,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
       rabiesSeroLogicalTest: {
@@ -38,15 +42,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
-        user: String,
-      },
-      chipReview: {
-        hasServiceIncluded: Boolean,
-        isRequired: Boolean,
-        isApplied: Boolean,
-        expectedDate: Date,
-        executionDate: Date,
-        resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
       importLicense: {
@@ -56,6 +53,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
       healthCertificate: {
@@ -65,6 +64,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
 
@@ -75,6 +76,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
 
@@ -85,6 +88,8 @@ export class ContractDetailModel implements ContractDetailInterface {
         expectedDate: Date,
         executionDate: Date,
         resultDate: Date,
+        observation: String,
+        isPrint: Boolean,
         user: String,
       },
     },

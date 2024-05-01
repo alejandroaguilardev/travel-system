@@ -1,13 +1,9 @@
 import { HttpInterface } from '../../../common/application/services/http-service';
-import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
 
-export class SendMailSenasaIntroduce {
-  constructor(
-    private readonly http: HttpInterface,
-    private readonly dateService: DateService,
-  ) {}
+export class TakeSampleExecutedMail {
+  constructor(private readonly http: HttpInterface) {}
 
   async execute(
     contract: ContractResponse,
@@ -21,14 +17,10 @@ export class SendMailSenasaIntroduce {
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract.adviser.profile.phone,
-      date: this.dateService.formatDateTime(
-        contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
-        'dd/MM/yyyy',
-      ),
     };
 
     this.http
-      .post(`/mail/detail/senasa-introduce`, { ...data })
+      .post(`/mail/detail/taking-sample-executed`, { ...data })
       .catch((e) => console.log(e));
   }
 }

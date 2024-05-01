@@ -9,3 +9,5 @@ export { DocumentationRabiesSerologicalTest } from './documentation-rabies-serol
 export { DocumentationSenasaDocuments } from './documentation-senasa-documents';
 export { DocumentationVaccinationCertificate } from './documentation-vaccination-certificate';
 export { DocumentationIsRequired } from './documentation-is-required';
+export { DocumentationIsPrint } from './documentation-is-print';
+export { DocumentationObservation } from './documentation-observation';
