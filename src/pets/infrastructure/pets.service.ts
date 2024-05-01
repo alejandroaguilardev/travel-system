@@ -14,11 +14,9 @@ import { PetSearchById } from '../application/search-by-id/pet-search-by-id';
 import { PetUpdater } from '../application/update/pet-updater';
 import { PetRemover } from '../application/remove/pet-remover';
 import { PetChipDto } from './dto/pet-chip.dto';
-import { PetMeasurementsAndWeightUpdaterDto } from './dto/pet-measurements-and-weight';
 import { PetChip } from '../domain/value-object/pet-chip';
 import { PetChipDate } from '../domain/value-object/pet-chip-date';
 import { PetChipUpdater } from '../application/update/pet-chip-updater';
-import { PetMeasurementsAndWeightUpdater } from '../application/update/pet-measurements-and-weight-updater';
 
 @Injectable()
 export class PetsService {
@@ -66,21 +64,6 @@ export class PetsService {
     const chip = new PetChip(petChipDto.chip);
     const chipDate = new PetChipDate(petChipDto.chipDate);
     return petUpdater.execute(id, chip, chipDate, user);
-  }
-
-  updateMeasurementsAndWeight(
-    id: string,
-    petMeasurementsAndWeightUpdaterDto: PetMeasurementsAndWeightUpdaterDto,
-    user: UserWithoutWithRoleResponse,
-  ): Promise<PetResponse> {
-    const petMeasurementsAndWeightUpdater = new PetMeasurementsAndWeightUpdater(
-      this.mongoPetRepository,
-    );
-    return petMeasurementsAndWeightUpdater.execute(
-      id,
-      petMeasurementsAndWeightUpdaterDto,
-      user,
-    );
   }
 
   remove(

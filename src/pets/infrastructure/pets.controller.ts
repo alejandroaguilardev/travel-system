@@ -16,7 +16,6 @@ import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-
 import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { PetChipDto } from './dto/pet-chip.dto';
-import { PetMeasurementsAndWeightUpdaterDto } from './dto/pet-measurements-and-weight';
 import { UpdatePetDto } from './dto/update-pet.dto';
 
 @Controller('pets')
@@ -68,21 +67,6 @@ export class PetsController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.petsService.updateChip(id, petChipDto, user);
-  }
-
-  @Patch(':id/measurement')
-  @Auth()
-  updateMeasurementsAndWeight(
-    @Param('id') id: string,
-    @Body()
-    petMeasurementsAndWeightUpdaterDto: PetMeasurementsAndWeightUpdaterDto,
-    @GetUser() user: UserWithoutWithRoleResponse,
-  ) {
-    return this.petsService.updateMeasurementsAndWeight(
-      id,
-      petMeasurementsAndWeightUpdaterDto,
-      user,
-    );
   }
 
   @Delete(':id')
