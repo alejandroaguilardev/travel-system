@@ -20,6 +20,7 @@ import { TravelPersonMail } from '../application/mail/travel-person-mail';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 import { TakeSampleExecutedMail } from '../application/mail/take-sample-executed-mail';
+import { RabiesReVaccinationMail } from '../application/mail/re-vaccination.mail';
 
 @Injectable()
 export class ContractDetailTopicoService {
@@ -57,6 +58,31 @@ export class ContractDetailTopicoService {
       value as keyof typeof ContractTopico.keysTopicoObject,
       user,
     );
+  }
+
+  async mailTopicRabiesReVaccination(
+    contractId: string,
+    contractDetailId: string,
+    user: UserWithoutWithRoleResponse,
+  ): Promise<void> {
+    const contract = await this.mongoContractRepository.searchByIdWithPet(
+      new Uuid(contractId),
+    );
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId,
+    );
+    PermissionValidator.execute(
+      user,
+      AuthGroup.CONTRACTS,
+      AuthPermission.TOPICO,
+    );
+
+    const mail = new RabiesReVaccinationMail(
+      this.axiosAdapter,
+      this.dayJsService,
+    );
+
+    mail.execute(contract, contractDetail);
   }
 
   async mailTravelDetail(

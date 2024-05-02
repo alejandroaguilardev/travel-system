@@ -55,6 +55,8 @@ export class UserModel implements UserInterface {
     required: false,
   })
   auth?: UserAuthInterface;
+  @Prop({ type: String, required: false })
+  linkWhatsApp?: string;
   @Prop({ type: Boolean, required: false })
   isAdvisor?: boolean;
   @Prop({ type: Boolean, required: false })

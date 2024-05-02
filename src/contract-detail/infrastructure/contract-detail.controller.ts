@@ -23,7 +23,6 @@ import {
 import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import { Response } from 'express';
 
 @Controller('contract-detail')
@@ -32,7 +31,6 @@ export class ContractDetailController {
     private readonly contractDetailService: ContractDetailService,
     private readonly contractDetailTopicoService: ContractDetailTopicoService,
     private readonly contractDetailCertificateService: ContractDetailCertificateService,
-    private readonly axiosAdapter: LaravelApiAdapter,
   ) {}
 
   @Get(':id/:detail')
@@ -136,6 +134,21 @@ export class ContractDetailController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailTopicoService.mailDetail(id, detail, user);
+  }
+
+  @Post(':id/:detail/mailTopicRabiesReVaccination')
+  @HttpCode(200)
+  @Auth()
+  mailTopicRabiesReVaccination(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailTopicoService.mailTopicRabiesReVaccination(
+      id,
+      detail,
+      user,
+    );
   }
 
   @Post(':id/:detail/mailTravelDetail')

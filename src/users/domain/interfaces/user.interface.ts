@@ -7,6 +7,7 @@ export interface UserInterface {
   password: string;
   roles: string[];
   profile: ProfileInterface;
+  linkWhatsApp?: string;
   user?: string;
   status?: string;
   auth?: UserAuthInterface;
