@@ -25,6 +25,7 @@ export class UserCreatorMother {
       email: newUser?.email ?? EmailMother.create(),
       roles: newUser?.roles ?? [],
       isDoctor: BooleanMother.create(newUser?.isDoctor),
+      linkWhatsApp: '',
     };
   }
 
@@ -42,6 +43,7 @@ export class UserCreatorMother {
         lastLogin: new Date(),
       },
       isDoctor: BooleanMother.create(newUser?.isDoctor),
+      linkWhatsApp: '',
     };
   }
 }

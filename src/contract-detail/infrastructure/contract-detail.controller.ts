@@ -188,6 +188,21 @@ export class ContractDetailController {
     );
   }
 
+  @Post(':id/:detail/mailSenasaIntroduceContract')
+  @HttpCode(200)
+  @Auth()
+  senasaIntroduceContract(
+    @Param('id') id: string,
+    @Param('detail') detail: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.contractDetailCertificateService.senasaIntroduceContract(
+      id,
+      detail,
+      user,
+    );
+  }
+
   @Post(':id/:detail/excel/senasa')
   @Auth()
   async downloadSenasaExcel(

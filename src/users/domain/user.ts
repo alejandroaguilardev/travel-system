@@ -9,6 +9,7 @@ import { UserInterface } from './interfaces/user.interface';
 import { UserAuth } from './value-object/user-auth';
 import { UserIsAdvisor } from './value-object/user-advisor';
 import { UserIsDoctor } from './value-object/user-is-doctor';
+import { userLinkWhatsApp } from './value-object/user-link-whats-app';
 
 export class User {
   constructor(
@@ -22,6 +23,7 @@ export class User {
     readonly auth: UserAuth,
     readonly isAdvisor: UserIsAdvisor,
     readonly isDoctor: UserIsDoctor,
+    readonly linkWhatsApp: userLinkWhatsApp,
   ) {}
 
   toJson(): UserInterface {
@@ -36,6 +38,7 @@ export class User {
       auth: this.auth.toJson(),
       isAdvisor: this.isAdvisor.value,
       isDoctor: this.isDoctor.value,
+      linkWhatsApp: this.linkWhatsApp.value,
     };
   }
 

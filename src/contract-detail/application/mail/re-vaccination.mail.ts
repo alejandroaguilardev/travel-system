@@ -23,7 +23,7 @@ export class RabiesReVaccinationMail {
       phone: contract.adviser.profile.phone,
       date: this.dateService.formatDateTime(
         contractDetail.topico.rabiesReVaccination.date,
-        'dd/MM/yyyy',
+        'dd/MM/yyyy HH:mm:ss',
       ),
     };
 

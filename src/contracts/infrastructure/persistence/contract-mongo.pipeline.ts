@@ -1,4 +1,4 @@
-import { PipelineStage } from 'mongoose';
+import { FilterQuery, PipelineStage } from 'mongoose';
 import { Criteria } from '../../../common/domain/criteria/criteria';
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
 
@@ -24,6 +24,10 @@ export class ContractMongoPipeline {
       },
       ...sort,
     ];
+  }
+
+  static executeTravelFound(query: FilterQuery<unknown>): PipelineStage[] {
+    return [...ContractMongoPipeline.lookup(), { $match: query }];
   }
 
   static executePayments(criteria: Criteria): PipelineStage[] {
@@ -138,6 +142,7 @@ export class ContractMongoPipeline {
           'details.cage._id': 0,
           'details.documentation._id': 0,
           'details.travel._id': 0,
+          hasMailSendReview: 0,
         },
       },
     ];

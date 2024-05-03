@@ -5,6 +5,7 @@ import {
   IsUUID,
   ValidateNested,
   IsBoolean,
+  IsString,
 } from 'class-validator';
 import { CreateUserRequest } from '../../application/create/create-user-request';
 import { Type } from 'class-transformer';
@@ -38,4 +39,7 @@ export class UserCreatorDto implements CreateUserRequest {
   @IsOptional()
   @IsBoolean()
   isDoctor: boolean;
+  @IsOptional()
+  @IsString()
+  linkWhatsApp: string;
 }

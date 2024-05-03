@@ -3,8 +3,8 @@ import { ContractDetailCreateRequest } from '../../application/create/contract-d
 import { Type } from 'class-transformer';
 import { DocumentationDto } from './documentation.dto';
 import { CageDto } from './cage.dto';
-import { ContractTopicoInterface } from 'src/contract-detail/domain/interfaces/topico.interface';
 import { TravelDto } from './travel.dto';
+import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
 
 export class CreateContractDetailDto implements ContractDetailCreateRequest {
   @IsUUID()

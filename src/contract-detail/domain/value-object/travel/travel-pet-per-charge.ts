@@ -23,4 +23,16 @@ export class TravelPetPerCharge {
       email: this.email.value,
     };
   }
+
+  static hasRequiredPetChargeFields(
+    petPerCharge: TravelPetPerChargeInterface,
+  ): boolean {
+    return (
+      !!petPerCharge.name &&
+      !!petPerCharge.document &&
+      !!petPerCharge.documentNumber &&
+      !!petPerCharge.phone &&
+      !!petPerCharge.email
+    );
+  }
 }

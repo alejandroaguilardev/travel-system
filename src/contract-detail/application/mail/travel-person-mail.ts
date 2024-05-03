@@ -1,9 +1,11 @@
 import { HttpInterface } from '../../../common/application/services/http-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
-import { ContractTravel } from '../../domain/value-object/service-travel';
 import { JWT } from '../../../auth/application/services/jwt';
 import { UbigeoQueryInterface } from '../../../ubigeo/domain/interfaces/ubigeo-query.interface';
+import { TravelDestination } from '../../domain/value-object/travel/destination/travel-destination';
+import { TravelAccompaniedPet } from '../../domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
+import { TravelPetPerCharge } from '../../domain/value-object/travel/travel-pet-per-charge';
 import {
   TravelPetPerChargeInterface,
   TypeTravelingType,
@@ -86,19 +88,20 @@ export class TravelPersonMail {
   private isConfirmedData(contractDetail: ContractDetailResponse): boolean {
     let hasRequiredPetChargeFields = true;
     const hasRequiredAccompaniedPetFields: boolean =
-      ContractTravel.hasRequiredAccompaniedPetFields(
+      TravelAccompaniedPet.hasRequiredAccompaniedPetFields(
         contractDetail.travel.accompaniedPet,
       );
 
     const hasRequiredDestinationFields: boolean =
-      ContractTravel.hasRequiredDestinationFields(
+      TravelDestination.hasRequiredDestinationFields(
         contractDetail.travel.destination,
       );
 
     if (contractDetail.travel.typeTraveling === 'charge') {
-      hasRequiredPetChargeFields = ContractTravel.hasRequiredPetChargeFields(
-        contractDetail.travel.petPerCharge,
-      );
+      hasRequiredPetChargeFields =
+        TravelPetPerCharge.hasRequiredPetChargeFields(
+          contractDetail.travel.petPerCharge,
+        );
     }
     return (
       hasRequiredPetChargeFields &&

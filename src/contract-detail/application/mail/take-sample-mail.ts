@@ -23,7 +23,7 @@ export class TakeSampleMail {
       phone: contract.adviser.profile.phone,
       date: this.dateService.formatDateTime(
         contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
-        'dd/MM/yyyy',
+        'dd/MM/yyyy HH:mm:ss',
       ),
     };
 

@@ -35,4 +35,20 @@ export class TravelAccompaniedPet {
       department: this.department.value,
     };
   }
+
+  static hasRequiredAccompaniedPetFields(
+    accompaniedPet: TravelAccompaniedPetInterface,
+  ): boolean {
+    return (
+      !!accompaniedPet.name &&
+      !!accompaniedPet.document &&
+      !!accompaniedPet.documentNumber &&
+      !!accompaniedPet.phone &&
+      !!accompaniedPet.email &&
+      !!accompaniedPet.department &&
+      !!accompaniedPet.province &&
+      !!accompaniedPet.district &&
+      !!accompaniedPet.direction
+    );
+  }
 }

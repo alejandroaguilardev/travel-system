@@ -17,4 +17,14 @@ export class TravelDestination {
       directionDestination: this.directionDestination.value,
     };
   }
+
+  static hasRequiredDestinationFields(
+    destination: TravelDestinationInterface,
+  ): boolean {
+    return (
+      !!destination.cityDestination &&
+      !!destination.countryDestination &&
+      !!destination.directionDestination
+    );
+  }
 }

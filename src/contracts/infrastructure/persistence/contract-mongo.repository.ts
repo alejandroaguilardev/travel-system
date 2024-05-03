@@ -51,6 +51,35 @@ export class MongoContractRepository
     return rows;
   }
 
+  async searchTravelFound(): Promise<ContractResponse[]> {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 1);
+
+    const query = {
+      $and: [{ status: 'pending' }, { startDate: { $lt: date } }],
+    };
+    const rows: ContractResponse[] = await this.contractModel
+      .aggregate(ContractMongoPipeline.executeTravelFound(query))
+      .exec();
+    return rows;
+  }
+
+  async findFinishAndUpdateReview(): Promise<ContractResponse[]> {
+    const date = new Date();
+    date.setDate(date.getDate() - 2);
+
+    const query = {
+      $and: [{ status: 'completed' }, { endDate: { $lt: date } }],
+    };
+    const rows: ContractResponse[] = await this.contractModel
+      .aggregate(ContractMongoPipeline.executeTravelFound(query))
+      .exec();
+
+    const ids = rows.map((_) => ({ id: _.id }));
+    await this.contractModel.updateMany(ids, { hasMailSendReview: true });
+    return rows;
+  }
+
   async searchByIdWithPet(uuid: Uuid): Promise<ContractResponse | null> {
     const rows: ContractResponse[] = await this.contractModel
       .aggregate(ContractMongoPipeline.executeById(uuid.value))
