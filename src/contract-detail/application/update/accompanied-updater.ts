@@ -14,11 +14,13 @@ import { TravelAccompaniedPet } from '../../domain/value-object/travel/accompani
 import { TravelDestination } from '../../domain/value-object/travel/destination/travel-destination';
 import { TravelPetPerCharge } from '../../domain/value-object/travel/travel-pet-per-charge';
 import { CommandContractTravel } from './command/command-travel';
+import { TravelObservation } from '../../domain/value-object/travel/travel-observation';
 
 export interface TravelAccompaniedRequest {
   destination: TravelDestinationInterface;
   petPerCharge: TravelPetPerChargeInterface;
   accompaniedPet: TravelAccompaniedPetInterface;
+  observation: string;
 }
 
 export class ContractDetailAccompaniedUpdater {
@@ -30,6 +32,7 @@ export class ContractDetailAccompaniedUpdater {
     accompaniedPet: TravelAccompaniedPet,
     destination: TravelDestination,
     petPerCharge: TravelPetPerCharge,
+    observation: TravelObservation,
     user: UserWithoutWithRoleResponse,
   ): Promise<ContractDetailUpdaterResponse> {
     const contractUuid = new Uuid(contractId);
@@ -52,6 +55,7 @@ export class ContractDetailAccompaniedUpdater {
       accompaniedPet: accompaniedPet.toJson(),
       destination: destination.toJson(),
       petPerCharge: petPerCharge.toJson(),
+      observation: observation.value,
     });
 
     const contractDetail = {

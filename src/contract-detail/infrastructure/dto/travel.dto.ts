@@ -51,4 +51,7 @@ export class TravelDto extends TravelAccompaniedDto implements TravelInterface {
   @IsOptional()
   @IsString()
   guideNumber: string;
+  @IsOptional()
+  @IsString()
+  observation: string;
 }

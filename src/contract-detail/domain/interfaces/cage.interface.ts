@@ -12,4 +12,5 @@ export interface CageInterface {
   chosen: CageChosenInterface;
   confirmation: boolean;
   petTravelAcquisition: boolean;
+  isCabinTransporting: boolean;
 }

@@ -19,6 +19,7 @@ import { TravelAccompaniedDto } from './dto/acompanied.dto';
 import { ContractDetailAccompaniedUpdater } from '../application/update/accompanied-updater';
 import { ContractDetailInterface } from '../domain/interfaces';
 import { ContractDetailPetUpdater } from '../application/pet/contract-detail-pet-updater';
+import { TravelObservation } from '../domain/value-object/travel/travel-observation';
 
 @Injectable()
 export class ContractDetailService {
@@ -72,6 +73,7 @@ export class ContractDetailService {
       accompaniedPet,
       destination,
       petPerCharge,
+      new TravelObservation(travelAccompaniedDto?.observation ?? ''),
       user,
     );
   }

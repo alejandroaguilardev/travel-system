@@ -20,6 +20,7 @@ export class CancelContractMail {
           ' ' +
           contract?.client?.profile?.name,
         phone: contract.adviser.profile.phone,
+        linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
         reasonForCancellation: contract.reasonForCancellation,
       })
       .catch((e) => console.log(e));

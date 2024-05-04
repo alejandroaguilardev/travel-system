@@ -21,6 +21,7 @@ export class RabiesReVaccinationMail {
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract.adviser.profile.phone,
+      linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       date: this.dateService.formatDateTime(
         contractDetail.topico.rabiesReVaccination.date,
         'dd/MM/yyyy HH:mm:ss',

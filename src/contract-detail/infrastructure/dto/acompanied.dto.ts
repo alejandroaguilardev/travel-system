@@ -77,4 +77,7 @@ export class TravelAccompaniedDto implements TravelAccompaniedRequest {
   @Type(() => TravelAccompaniedPetDto)
   @ValidateNested()
   accompaniedPet: TravelAccompaniedPetInterface;
+  @IsOptional()
+  @IsString()
+  observation: string;
 }

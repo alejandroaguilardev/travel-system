@@ -109,6 +109,7 @@ export class ContractDetailCertificateService {
   async certificateExcelDownload(
     contractId: string,
     contractDetailId: string,
+    certificate: string,
     user: UserWithoutWithRoleResponse,
   ) {
     const excel = new CertificateExcelDownload(
@@ -120,6 +121,7 @@ export class ContractDetailCertificateService {
     return excel.execute(
       new Uuid(contractId),
       new Uuid(contractDetailId),
+      certificate,
       user,
     );
   }

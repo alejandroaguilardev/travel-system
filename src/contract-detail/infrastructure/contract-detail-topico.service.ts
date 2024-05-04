@@ -156,6 +156,7 @@ export class ContractDetailTopicoService {
   async mailDetail(
     contractId: string,
     contractDetailId: string,
+    message: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<void> {
     const contract = await this.mongoContractRepository.searchByIdWithPet(
@@ -171,6 +172,6 @@ export class ContractDetailTopicoService {
     );
 
     const mail = new InfoDetailMail(this.axiosAdapter, this.dayJsService);
-    mail.execute(contract, contractDetail);
+    mail.execute(contract, contractDetail, message);
   }
 }

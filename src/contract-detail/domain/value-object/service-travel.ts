@@ -10,6 +10,7 @@ import {
 import { TravelDestination } from './travel/destination/travel-destination';
 import { TravelAccompaniedPet } from './travel/accompanied-pet/travel-accompanied-pet';
 import { ContractGuideNumber } from './contract-guide-number';
+import { TravelObservation } from './travel/travel-observation';
 
 export class ContractTravel {
   constructor(
@@ -22,6 +23,7 @@ export class ContractTravel {
     readonly accompaniedPet: TravelAccompaniedPet,
     readonly destination: TravelDestination,
     readonly guideNumber: ContractGuideNumber,
+    readonly observation: TravelObservation,
   ) {}
 
   toJson(): TravelInterface {
@@ -35,6 +37,7 @@ export class ContractTravel {
       accompaniedPet: this.accompaniedPet.toJson(),
       destination: this.destination.toJson(),
       guideNumber: this.guideNumber.value,
+      observation: this.observation.value,
     };
   }
 

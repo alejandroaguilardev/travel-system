@@ -10,29 +10,40 @@ import {
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
 import {
+  ContractDetailInterface,
   TravelAccompaniedPetInterface,
   TravelPetPerChargeInterface,
   TypeTravelingType,
 } from '../../../contract-detail/domain/interfaces';
 import { UbigeoQueryInterface } from '../../../ubigeo/domain/interfaces/ubigeo-query.interface';
+import { ErrorInvalidadArgument } from '../../../common/domain/errors/error-invalid-argument';
+import { ContractResponse } from '../../../contracts/application/response/contract.response';
+import { CommandContractDetailsUpdater } from '../update';
 
 export class CertificateExcelDownload {
+  private certificates = [
+    'chipCertificate',
+    'healthCertificate',
+    'vaccinationCertificate',
+  ];
+
   constructor(
     private readonly contractRepository: ContractRepository,
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
     private readonly ubigeo: UbigeoQueryInterface,
-  ) { }
+  ) {}
 
   async execute(
     contractId: Uuid,
     contractDetailId: Uuid,
+    certificate: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<{ response: any; name: string }> {
-    const contract =
-      await this.contractRepository.searchByIdWithPet(contractId);
-    const contractDetail = contract.details.find(
-      (_) => _.id === contractDetailId.value,
+    this.enSecureParam(certificate);
+    const { contract, contractDetail } = await this.getDetailContract(
+      contractId,
+      contractDetailId,
     );
 
     PermissionValidator.execute(
@@ -42,15 +53,27 @@ export class CertificateExcelDownload {
     );
 
     const data = await this.formatData(contractDetail);
-    const response = await this.http.post(`/excel/certificate`, data, {
-      headers: {
-        Authorization: process.env.API_MAIL_KEY,
+    const response = await this.http.post(
+      `/excel/certificate/${certificate}`,
+      data,
+      {
+        headers: {
+          Authorization: process.env.API_MAIL_KEY,
+        },
+        responseType: 'stream',
       },
-      responseType: 'stream',
-    });
+    );
+
+    if (contractDetail.documentation[certificate]?.isPrint) {
+      this.updateIsPrint(contractId, contract, contractDetail, certificate);
+    }
+
+    const name: string =
+      response?.headers['content-disposition']?.split('filename=')?.[1] ??
+      `certificado-${data.client?.toLowerCase()}.xlsx`;
     return {
       response: response.data,
-      name: `certificado-${data.client?.toLowerCase()}.xlsx`,
+      name: name.replaceAll('"', ''),
     };
   }
 
@@ -84,9 +107,9 @@ export class CertificateExcelDownload {
 
       inspectionDate: documentation.senasaDocuments.executionDate
         ? this.dateService.formatDateTime(
-          documentation.senasaDocuments.executionDate,
-          'dd/MM/yyyy',
-        )
+            documentation.senasaDocuments.executionDate,
+            'dd/MM/yyyy',
+          )
         : '',
       countryDestiny: destination.countryDestination,
       cityDestiny: destination.cityDestination,
@@ -99,22 +122,24 @@ export class CertificateExcelDownload {
       petGender: this.petGender(pet.gender),
       petColor: pet.color,
       petChip: pet.chip,
-      petChipDate: pet.chipDate ? this.dateService.formatDateTime(pet.chipDate, 'dd/MM/yyyy') : "",
+      petChipDate: pet.chipDate
+        ? this.dateService.formatDateTime(pet.chipDate, 'dd/MM/yyyy')
+        : '',
       petAgeVaccination: this.petAgeVaccination(
         pet.birthDate,
         documentation.vaccinationCertificate.resultDate,
       ),
       vaccinationDate: documentation.vaccinationCertificate.resultDate
         ? this.dateService.formatDateTime(
-          documentation.vaccinationCertificate.resultDate,
-          'dd/MM/yyyy',
-        )
+            documentation.vaccinationCertificate.resultDate,
+            'dd/MM/yyyy',
+          )
         : '',
       healthDayAndMonth: documentation.healthCertificate.resultDate
         ? this.dateService.formatDateTime(
-          documentation.healthCertificate.resultDate,
-          "dd 'de' MMMM",
-        )
+            documentation.healthCertificate.resultDate,
+            "dd 'de' MMMM",
+          )
         : '',
       healthYear: this.dateService.formatDateTime(
         documentation.healthCertificate.resultDate,
@@ -189,7 +214,10 @@ export class CertificateExcelDownload {
   }
 
   private petAge(birthDate: Date) {
-    return this.dateService.formatDifferenceInYearsAndMonths(birthDate);
+    const value = this.dateService.formatDifferenceInYearsAndMonths(birthDate);
+    console.log({ birthDate });
+    console.log({ value });
+    return value;
   }
 
   private petAgeEnglish(birthDate: Date) {
@@ -213,5 +241,54 @@ export class CertificateExcelDownload {
       .replace('año', 'year')
       .replace('meses', 'months')
       .replace('mes', 'month');
+  }
+
+  private enSecureParam(certificate: string) {
+    if (!this.certificates.includes(certificate)) {
+      throw new ErrorInvalidadArgument(
+        'No es un certificado disponible para descargar',
+      );
+    }
+  }
+
+  private async getDetailContract(contractId: Uuid, contractDetailId: Uuid) {
+    const contract =
+      await this.contractRepository.searchByIdWithPet(contractId);
+
+    const contractDetail = contract.details.find(
+      (_) => _.id === contractDetailId.value,
+    );
+    return { contract, contractDetail };
+  }
+
+  private async updateIsPrint(
+    contractId: Uuid,
+    contract: ContractResponse,
+    contractDetail: ContractDetailResponse,
+    certificate: string,
+  ) {
+    const details: ContractDetailInterface[] = contract.details.map(
+      (detail) => {
+        const pet =
+          typeof detail.pet === 'string' ? detail.pet : detail?.pet?.id ?? '';
+        if (detail.id === contractDetail.id) {
+          return {
+            ...detail,
+            pet,
+            documentation: {
+              ...detail.documentation,
+              [certificate]: {
+                ...detail.documentation[certificate],
+                isPrint: true,
+              },
+            },
+          };
+        }
+        return { ...detail, pet };
+      },
+    );
+
+    const updatedDetails = CommandContractDetailsUpdater.execute(details);
+    this.contractRepository.updateDetail(contractId, updatedDetails);
   }
 }

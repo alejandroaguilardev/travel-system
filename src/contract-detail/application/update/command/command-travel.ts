@@ -41,6 +41,7 @@ import {
 } from '../../../../contract-detail/domain/interfaces/travel.interface';
 import { TravelDocument } from '../../../domain/value-object/travel/travel-document';
 import { TravelDocumentNumber } from '../../../domain/value-object/travel/travel-document-number';
+import { TravelObservation } from '../../../domain/value-object/travel/travel-observation';
 
 export class CommandContractTravel {
   static execute(travel: TravelInterface): ContractTravel {
@@ -64,6 +65,7 @@ export class CommandContractTravel {
       CommandContractTravel.travelAccompaniedPet(travel?.accompaniedPet),
       CommandContractTravel.travelDestination(travel?.destination),
       new ContractGuideNumber(travel?.guideNumber ?? ''),
+      new TravelObservation(travel?.observation ?? ''),
     );
   }
 

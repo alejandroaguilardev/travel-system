@@ -21,6 +21,7 @@ export class TakeSampleMail {
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract.adviser.profile.phone,
+      linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       date: this.dateService.formatDateTime(
         contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
         'dd/MM/yyyy HH:mm:ss',

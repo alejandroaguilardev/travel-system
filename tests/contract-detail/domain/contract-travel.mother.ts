@@ -34,6 +34,7 @@ export class ContractTravelMother {
       petPerCharge: ContractTravelMother.petPerCharge(dto?.petPerCharge),
       destination: ContractTravelMother.destination(dto?.destination),
       accompaniedPet: ContractTravelMother.accompaniedPet(dto?.accompaniedPet),
+      observation: dto?.observation ?? StringMother.create(),
     };
   }
 

@@ -56,6 +56,7 @@ export interface TravelInterface {
   petPerCharge: TravelPetPerChargeInterface;
   accompaniedPet: TravelAccompaniedPetInterface;
   destination: TravelDestinationInterface;
+  observation: string;
 }
 
 export interface PartialTravelInterface

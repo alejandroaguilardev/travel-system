@@ -23,6 +23,8 @@ export class CreateContractDto implements ContractCreateRequest {
   @IsOptional()
   @IsString()
   number: string;
+  @IsString()
+  format: string;
   @IsUUID()
   client: string;
   @IsDate()

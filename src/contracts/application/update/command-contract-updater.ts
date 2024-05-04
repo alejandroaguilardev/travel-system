@@ -20,6 +20,7 @@ import { CommandContractDetailsUpdater } from '../../../contract-detail/applicat
 import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 import { ContractIsPay } from '../../domain/value-object/pay-in-installments/contract-is-pay';
+import { ContractFormat } from '../../domain/value-object/contract-format';
 
 export class CommandContractUpdater {
   static execute(
@@ -62,6 +63,7 @@ export class CommandContractUpdater {
       new ContractReasonForCancellation(
         data?.reasonForCancellation ?? contract?.reasonForCancellation ?? '',
       ),
+      new ContractFormat(data?.format ?? contract.format),
       new UuidOptional(data?.user ?? contract.user),
     );
   }

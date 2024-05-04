@@ -17,6 +17,7 @@ export class TakeSampleExecutedMail {
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract.adviser.profile.phone,
+      linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
     };
 
     this.http

@@ -1,13 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { format, differenceInDays, addDays, isBefore, isAfter, isSameDay, isPast, differenceInYears, differenceInMonths } from 'date-fns';
+import {
+  format,
+  differenceInDays,
+  addDays,
+  isBefore,
+  isAfter,
+  isSameDay,
+  isPast,
+  differenceInYears,
+  differenceInMonths,
+} from 'date-fns';
 import { es } from 'date-fns/locale';
-
 
 import { DateService } from '../../application/services/date-service';
 
 @Injectable()
 export class DayJsService implements DateService {
-
   formatDateTime(
     date: Date | string,
     formatStr: string = 'yyyy-MM-dd HH:mm:ss',
@@ -51,7 +59,8 @@ export class DayJsService implements DateService {
     endDate = new Date(),
   ): string {
     const years = differenceInYears(new Date(endDate), new Date(startDate));
-    const months = differenceInMonths(new Date(endDate), new Date(startDate)) % 12;
+    const months =
+      differenceInMonths(new Date(endDate), new Date(startDate)) % 12;
 
     let result = '';
     if (years > 0) {
@@ -63,6 +72,7 @@ export class DayJsService implements DateService {
     if (months > 0) {
       result += months === 1 ? '1 mes' : `${months} meses`;
     }
+    if (result === '') return '1 mes';
 
     return result;
   }

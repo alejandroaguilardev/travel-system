@@ -109,6 +109,7 @@ export class ContractDetailModel implements ContractDetailInterface {
       confirmation: Boolean,
 
       petTravelAcquisition: Boolean,
+      isCabinTransporting: Boolean,
     },
     required: false,
   })
@@ -152,6 +153,7 @@ export class ContractDetailModel implements ContractDetailInterface {
         cityDestination: String,
         directionDestination: String,
       },
+      observation: String,
     },
     required: false,
   })

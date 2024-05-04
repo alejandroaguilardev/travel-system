@@ -27,6 +27,7 @@ export class ContractCreatorMother {
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
       reasonForCancellation: StringMother.create(),
       finishClient: false,
+      format: dto?.format ?? StringMother.create(),
     };
   }
 
@@ -45,6 +46,7 @@ export class ContractCreatorMother {
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),
+      format: dto?.format ?? StringMother.create(),
       user: dto?.user ?? UuidMother.create(),
       reasonForCancellation: StringMother.create(),
       finishClient: faker.datatype.boolean(),
@@ -63,6 +65,7 @@ export class ContractCreatorMother {
       status: dto?.status ?? 'in-process',
       adviser: dto?.adviser ?? UserCreatorMother.createWithPassword(),
       price: dto?.price ?? ContractPriceMother.create(),
+      format: dto?.format ?? StringMother.create(),
       payInInstallments:
         dto?.payInInstallments ??
         PayInInstallmentMother.create(faker.number.int({ min: 0, max: 10 })),

@@ -21,6 +21,7 @@ import { ContractFolder } from '../../../contracts/domain/value-object/contract-
 import { ContractFinishClient } from '../../domain/value-object/contract-finish-client';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 import { ContractIsPay } from '../../domain/value-object/pay-in-installments/contract-is-pay';
+import { ContractFormat } from '../../domain/value-object/contract-format';
 
 export class CommandContractCreator {
   static execute(data: ContractCreateRequest, userId: string): Contract {
@@ -59,6 +60,7 @@ export class CommandContractCreator {
       new Uuid(data.adviser),
       new ContractFinishClient(data?.finishClient ?? false),
       new ContractReasonForCancellation(data?.reasonForCancellation ?? ''),
+      new ContractFormat(data.format),
       new UuidOptional(userId),
     );
   }

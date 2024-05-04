@@ -24,6 +24,7 @@ import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
 import { Response } from 'express';
+import { MailDetailDto } from './dto/mail-detail.dto';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -131,9 +132,15 @@ export class ContractDetailController {
   mailDetail(
     @Param('id') id: string,
     @Param('detail') detail: string,
+    @Body() { message = '' }: MailDetailDto,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractDetailTopicoService.mailDetail(id, detail, user);
+    return this.contractDetailTopicoService.mailDetail(
+      id,
+      detail,
+      message,
+      user,
+    );
   }
 
   @Post(':id/:detail/mailTopicRabiesReVaccination')
@@ -228,11 +235,12 @@ export class ContractDetailController {
     return response;
   }
 
-  @Post(':id/:detail/excel/certificate')
+  @Post(':id/:detail/excel/certificate/:certificate')
   @Auth()
   async downloadCertificateExcel(
     @Param('id') id: string,
     @Param('detail') detail: string,
+    @Param('certificate') certificate: string,
     @GetUser() user: UserWithoutWithRoleResponse,
     @Res() res: Response,
   ) {
@@ -240,6 +248,7 @@ export class ContractDetailController {
       await this.contractDetailCertificateService.certificateExcelDownload(
         id,
         detail,
+        certificate,
         user,
       );
 

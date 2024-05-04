@@ -20,6 +20,7 @@ export class FinishContractMail {
           ' ' +
           contract?.client?.profile?.name,
         phone: contract.adviser.profile.phone,
+        linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       })
       .catch((e) => console.log(e));
   }

@@ -12,6 +12,7 @@ import { ContractFolder } from './value-object/contract-folder';
 import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 import { ContractFinishClient } from './value-object/contract-finish-client';
 import { ContractReasonForCancellation } from './value-object/reason-for-cancellation';
+import { ContractFormat } from './value-object/contract-format';
 
 export class Contract {
   constructor(
@@ -28,6 +29,7 @@ export class Contract {
     readonly adviser: Uuid,
     readonly finishClient: ContractFinishClient,
     readonly reasonForCancellation: ContractReasonForCancellation,
+    readonly format: ContractFormat,
     readonly user: UuidOptional,
   ) {}
 
@@ -46,6 +48,7 @@ export class Contract {
       adviser: this.adviser.value,
       finishClient: this.finishClient.value,
       reasonForCancellation: this.reasonForCancellation.value,
+      format: this.format.value,
       user: this.user.value,
     };
   }

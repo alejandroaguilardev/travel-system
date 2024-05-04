@@ -4,6 +4,7 @@ import { CageChosen } from './cage';
 import { ContractStatus } from '../../../common/domain/value-object/contract-status';
 import { ContractCageConfirmation } from './cage/cage-confirmation';
 import { ContractCagePetTravelAcquisition } from './cage/cage-acquisition';
+import { ContractCageIsCabenTransporting } from './cage/cage-cabin-transporting';
 
 export class ContractCage {
   constructor(
@@ -12,6 +13,7 @@ export class ContractCage {
     readonly chosen: CageChosen,
     public confirmation: ContractCageConfirmation,
     public petTravelAcquisition: ContractCagePetTravelAcquisition,
+    public isCabinTransporting: ContractCageIsCabenTransporting,
   ) {}
 
   toJson(): CageInterface {
@@ -21,6 +23,7 @@ export class ContractCage {
       chosen: this.chosen.toJson(),
       confirmation: this.confirmation.value,
       petTravelAcquisition: this.petTravelAcquisition.value,
+      isCabinTransporting: this.isCabinTransporting.value,
     };
   }
 

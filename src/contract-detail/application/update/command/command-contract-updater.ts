@@ -63,6 +63,8 @@ export class CommandContractDetailsUpdater {
         confirmation: cage?.confirmation ?? services.cage.confirmation,
         petTravelAcquisition:
           cage?.petTravelAcquisition ?? services.cage.petTravelAcquisition,
+        isCabinTransporting:
+          cage?.isCabinTransporting ?? services.cage.isCabinTransporting,
       },
       documentation: {
         status: services.documentation.status,
@@ -217,6 +219,7 @@ export class CommandContractDetailsUpdater {
         },
         status: services.travel.status,
         guideNumber: travel?.guideNumber ?? services.travel.guideNumber,
+        observation: travel?.observation ?? services.travel.observation,
       },
     };
   }

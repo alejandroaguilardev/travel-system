@@ -11,6 +11,7 @@ import { CageChosenDimensions } from '../../../../cages/domain/value-object/cage
 import { CageChosen } from '../../../domain/value-object/cage';
 import { ContractCagePetTravelAcquisition } from '../../../domain/value-object/cage/cage-acquisition';
 import { ContractCageConfirmation } from '../../../domain/value-object/cage/cage-confirmation';
+import { ContractCageIsCabenTransporting } from '../../../domain/value-object/cage/cage-cabin-transporting';
 
 export class CommandContractCage {
   static execute(cage: CageInterface): ContractCage {
@@ -25,6 +26,7 @@ export class CommandContractCage {
       ),
       new ContractCageConfirmation(cage?.confirmation ?? false),
       new ContractCagePetTravelAcquisition(cage?.petTravelAcquisition ?? false),
+      new ContractCageIsCabenTransporting(cage?.isCabinTransporting ?? false),
     );
   }
 }

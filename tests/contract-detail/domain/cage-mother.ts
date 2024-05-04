@@ -9,6 +9,7 @@ export class CageMother {
       hasServiceIncluded: faker.datatype.boolean(),
       confirmation: faker.datatype.boolean(),
       petTravelAcquisition: faker.datatype.boolean(),
+      isCabinTransporting: faker.datatype.boolean(),
       chosen: ChosenMother.create(),
       status: StatusMother.create(),
     };

@@ -15,6 +15,7 @@ export class InfoDetailMail {
   async execute(
     contract: ContractResponse,
     contractDetail: ContractDetailResponse,
+    message: string,
   ): Promise<void> {
     const { documentation, pet } = contractDetail;
     const chosenCage = this.chosenCage(pet?.cageRecommendation);
@@ -29,9 +30,11 @@ export class InfoDetailMail {
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract.adviser.profile.phone,
+      linkWhatsApp: contract.adviser.linkWhatsApp,
       chosenCage,
       measurementsAndWeight,
       documentation: documentationData.join(' '),
+      message,
     };
 
     this.http
@@ -97,7 +100,7 @@ export class InfoDetailMail {
     if (!documentation[name].isApplied && !isRequired)
       return `<h4 style='background-color:##5DADE2;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: Aún no realizado</h4>`;
 
-    const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: realizada el ${this.dateService.formatDateTime(
+    const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: finalizada el ${this.dateService.formatDateTime(
       documentation[name]?.resultDate ?? '',
       'dd/MM/yyyy',
     )}</h4><span> ${documentation[name]?.observation ?? ''}</span>`;

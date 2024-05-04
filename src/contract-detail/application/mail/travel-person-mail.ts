@@ -64,7 +64,7 @@ export class TravelPersonMail {
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract.adviser.profile.phone,
-
+      linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       country: destination.countryDestination,
       city: destination.cityDestination,
       direction: destination.directionDestination,

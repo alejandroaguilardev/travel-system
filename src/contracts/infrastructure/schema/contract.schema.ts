@@ -67,6 +67,8 @@ export class ContractModel implements ContractInterface {
 
   @Prop({ type: String, required: false })
   reasonForCancellation: string;
+  @Prop({ type: String, required: true })
+  format: string;
 
   @Prop({ type: Boolean, required: false })
   hasMailSendReview: boolean;
