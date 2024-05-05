@@ -19,6 +19,7 @@ export class ContractCreatorMother {
       number: dto?.number ?? NumberMother.create(),
       folder: dto?.folder ?? NumberMother.create(),
       startDate: dto?.startDate ?? DateMother.recent(),
+      estimatedDate: dto?.estimatedDate ?? DateMother.future(),
       details: dto?.details ?? [ContractDetailCreatorMother.createWithTravel()],
       adviser: dto?.adviser ?? UuidMother.create(),
       price: dto?.price ?? ContractPriceMother.create(),
@@ -35,12 +36,17 @@ export class ContractCreatorMother {
     return {
       id: dto?.id ?? UuidMother.create(),
       client: dto?.client ?? UuidMother.create(),
+      correlative: dto?.correlative ?? faker.number.int(),
       details: dto?.details ?? [ContractDetailCreatorMother.createWithTravel()],
       number: NumberMother.create(),
       folder: dto?.folder ?? NumberMother.create(),
       startDate: DateMother.recent(),
+      estimatedDate: DateMother.future(),
       endDate: dto?.endDate ?? null,
-      status: dto?.status ?? 'in-process',
+      status: {
+        client: dto?.status?.client ?? 'in-process',
+        petTravel: dto?.status?.petTravel ?? 'in-process',
+      },
       adviser: dto?.adviser ?? UuidMother.create(),
       price: dto?.price ?? ContractPriceMother.create(),
       payInInstallments:
@@ -56,13 +62,18 @@ export class ContractCreatorMother {
   static createResponse(dto?: Partial<ContractResponse>): ContractResponse {
     return {
       id: dto?.id ?? UuidMother.create(),
+      correlative: dto?.correlative ?? faker.number.int(),
       client: dto?.client ?? UserCreatorMother.createWithPassword(),
       details: dto?.details ?? [ContractDetailCreatorMother.createWithPet()],
       number: NumberMother.create(),
       folder: dto?.folder ?? NumberMother.create(),
       startDate: DateMother.recent(),
+      estimatedDate: DateMother.future(),
       endDate: dto?.endDate ?? null,
-      status: dto?.status ?? 'in-process',
+      status: {
+        client: dto?.status?.client ?? 'in-process',
+        petTravel: dto?.status?.petTravel ?? 'in-process',
+      },
       adviser: dto?.adviser ?? UserCreatorMother.createWithPassword(),
       price: dto?.price ?? ContractPriceMother.create(),
       format: dto?.format ?? StringMother.create(),

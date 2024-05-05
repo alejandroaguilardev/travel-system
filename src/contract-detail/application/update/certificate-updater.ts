@@ -54,7 +54,7 @@ export class ContractDetailCertificateUpdater {
       ),
     });
 
-    contract.status.statusError(contract.endDate.value);
+    contract.status.petTravel.statusError(contract.endDate.value);
     contract.establishedStatus();
 
     await this.contractRepository.update(contractUuid, contract);

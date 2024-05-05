@@ -6,6 +6,7 @@ import { ContractModel, ContractSchema } from './schema/contract.schema';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
 import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 
 @Module({
   imports: [
@@ -15,7 +16,12 @@ import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api
     AuthModule,
   ],
   controllers: [ContractsController],
-  providers: [ContractsService, MongoContractRepository, LaravelApiAdapter],
+  providers: [
+    ContractsService,
+    MongoContractRepository,
+    LaravelApiAdapter,
+    DayJsService,
+  ],
   exports: [MongoContractRepository],
 })
 export class ContractsModule {}

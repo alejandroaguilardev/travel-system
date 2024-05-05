@@ -14,7 +14,9 @@ describe('PetUpdater', () => {
     const user = UserCreatorMother.createWithPassword();
     const pet = CommandPetCreator.execute(dto, user.id);
 
-    petRepositoryMock.searchById.mockResolvedValueOnce(dto);
+    petRepositoryMock.searchById.mockResolvedValueOnce(
+      CommandPetCreator.execute(dto, user.id).toJson(),
+    );
     const expected = await petUpdater.execute(dto.id, pet, user);
     expect(expected.message).toBe(PetUpdater.messageSuccess());
   });
@@ -24,7 +26,9 @@ describe('PetUpdater', () => {
     const user = UserCreatorMother.createWithPassword();
     const pet = CommandPetCreator.execute(dto, user.id);
 
-    petRepositoryMock.searchById.mockResolvedValueOnce(dto);
+    petRepositoryMock.searchById.mockResolvedValueOnce(
+      CommandPetCreator.execute(dto, user.id).toJson(),
+    );
     await petUpdater.execute(dto.id, pet, user);
 
     const uuid = new Uuid(dto.id);

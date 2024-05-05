@@ -29,6 +29,8 @@ export class CreateContractDto implements ContractCreateRequest {
   client: string;
   @IsDate()
   startDate: Date;
+  @IsDate()
+  estimatedDate: Date;
   @Type(() => CreateContractDetailDto)
   @ValidateNested({ each: true })
   details: ContractDetailCreateRequest[];

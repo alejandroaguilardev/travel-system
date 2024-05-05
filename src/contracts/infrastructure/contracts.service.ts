@@ -26,12 +26,14 @@ import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api
 import { NewContractMail } from '../application/mail/new-contract-mail';
 import { CancelContractMail } from '../application/mail/cancel-contract-mail';
 import { FinishContractMail } from '../application/mail/finish-contract';
+import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 
 @Injectable()
 export class ContractsService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly axiosAdapter: LaravelApiAdapter,
+    private readonly dateService: DayJsService,
   ) {}
 
   async create(
@@ -44,6 +46,7 @@ export class ContractsService {
     const mail = new NewContractMail(
       this.mongoContractRepository,
       this.axiosAdapter,
+      this.dateService,
     );
     mail.execute(contract.id);
 

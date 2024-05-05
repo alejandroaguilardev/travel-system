@@ -18,5 +18,6 @@ import { AuthModule } from '../../auth/infrastructure/auth.module';
   ],
   controllers: [PetsController],
   providers: [PetsService, MongoPetRepository],
+  exports: [MongoPetRepository],
 })
 export class PetsModule {}

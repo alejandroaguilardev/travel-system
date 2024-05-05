@@ -1,5 +1,5 @@
 import {
-  ContractStatus,
+  ContractStatusDetail,
   UuidOptional,
 } from '../../../../common/domain/value-object';
 import {
@@ -42,11 +42,12 @@ import {
 import { TravelDocument } from '../../../domain/value-object/travel/travel-document';
 import { TravelDocumentNumber } from '../../../domain/value-object/travel/travel-document-number';
 import { TravelObservation } from '../../../domain/value-object/travel/travel-observation';
+import { TravelItinerary } from '../../../domain/value-object/travel/travel-itinerary';
 
 export class CommandContractTravel {
   static execute(travel: TravelInterface): ContractTravel {
     return new ContractTravel(
-      new ContractStatus(travel.status),
+      new ContractStatusDetail(travel.status),
       new ContractHasServiceIncluded(travel.hasServiceIncluded),
       new ContractHasServiceAccompanied(travel.hasServiceAccompanied),
       new ContractTypeTraveling(travel.typeTraveling),
@@ -59,6 +60,7 @@ export class CommandContractTravel {
         ),
         new TravelDepartureDate(travel.airlineReservation.departureDate),
         new TravelArrivalDate(travel.airlineReservation?.arrivalDate),
+        new TravelItinerary(travel.airlineReservation?.itinerary ?? ''),
         new UuidOptional(travel.airlineReservation?.user ?? ''),
       ),
       CommandContractTravel.travelPetPerCharge(travel?.petPerCharge),

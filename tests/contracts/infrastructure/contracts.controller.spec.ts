@@ -2,7 +2,6 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { ContractCreatorMother } from '../domain/contract-creator.mother';
 import { UuidMother } from '../../common/domain/uuid-mother';
-import { ContractFinish } from '../../../src/contracts/application/finish/contract-finish';
 import { InitTest } from '../../common/infrastructure/init-test';
 import { AuthTest } from '../../common/infrastructure/auth-test';
 import { CrudTest } from '../../common/infrastructure/crud-test';
@@ -54,13 +53,11 @@ describe('ContractsController', () => {
 
     await CrudTest.create(app, access_token, route, contractDto);
 
-    const response = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .post(`/contracts/${contractDto.id}/finish`)
       .set('Authorization', `Bearer ${access_token}`)
       .send()
-      .expect(201);
-
-    expect(response.body.message).toBe(ContractFinish.messageSuccess());
+      .expect(400);
   });
 
   it('/contracts (GET)', async () => {

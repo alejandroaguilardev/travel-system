@@ -41,6 +41,8 @@ class CertificateDto implements DocumentationCertificateInterface {
 export class DocumentationDto implements DocumentationInterface {
   @IsString()
   status: StatusInterface;
+  @IsString()
+  clientStatus: StatusInterface;
   @Type(() => CertificateDto)
   @ValidateNested()
   vaccinationCertificate: DocumentationCertificateInterface;

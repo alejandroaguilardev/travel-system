@@ -34,6 +34,8 @@ export class InfoDetailMail {
       chosenCage,
       measurementsAndWeight,
       documentation: documentationData.join(' '),
+      isBrachycephalic: pet.isBrachycephalic,
+      isPotentiallyDangerous: pet.isPotentiallyDangerous,
       message,
     };
 
@@ -95,15 +97,14 @@ export class InfoDetailMail {
 
     if (!documentation[name].hasServiceIncluded) return '';
     if (!documentation[name].isApplied && isRequired)
-      return `<h4 style='background-color:red;padding:10px; color:#fff;border-radius:5px'>${label} ${required}: Aún no realizado</h4>`;
+      return `<h4 style='background-color:tomato;padding:10px; color:#fff;border-radius:5px'>${label} ${required}: pendiente</h4>`;
 
     if (!documentation[name].isApplied && !isRequired)
-      return `<h4 style='background-color:##5DADE2;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: Aún no realizado</h4>`;
+      return `<h4 style='background-color:##5DADE2;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: pendiente</h4>`;
 
-    const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: finalizada el ${this.dateService.formatDateTime(
-      documentation[name]?.resultDate ?? '',
-      'dd/MM/yyyy',
-    )}</h4><span> ${documentation[name]?.observation ?? ''}</span>`;
+    const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: finalizado</h4><span> ${
+      documentation[name]?.observation ?? ''
+    }</span>`;
     return value;
   }
 

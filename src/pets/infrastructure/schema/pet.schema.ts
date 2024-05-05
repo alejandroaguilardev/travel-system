@@ -6,6 +6,8 @@ import { PetGenderType } from '../../domain/value-object/pet-gender';
 import { Status } from '../../../common/domain/value-object/status-value-object';
 import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
 import { MeasurementsAndWeightInterface } from '../../domain/interfaces/pet-measurements-and-weight';
+import { topicoSchema } from '../../../contract-detail/infrastructure/schema/topico.schema';
+import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
 
 @Schema({
   collection: 'pets',
@@ -45,6 +47,15 @@ export class PetModel implements PetInterface {
   status: Status;
   @Prop({ type: String, required: false })
   adopter: string;
+  @Prop({ type: Boolean, required: false })
+  isBrachycephalic: boolean;
+
+  @Prop({ type: Boolean, required: false })
+  isPotentiallyDangerous: boolean;
+
+  @Prop(topicoSchema)
+  topico: ContractTopicoInterface;
+
   @Prop({ type: String, required: false })
   user: string;
   @Prop({

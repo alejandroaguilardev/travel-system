@@ -8,9 +8,14 @@ import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 import { ContractReasonForCancellation } from './value-object/reason-for-cancellation';
 import { PayInInstallments } from './value-object/pay-in-installments/pay-in-installments';
 import { Criteria } from '../../common/domain/criteria/criteria';
+import { ContractStatusInterface } from './interfaces/contract.interface';
 
 export interface ContractRepository extends Repository<Contract> {
-  finish(contractId: Uuid, endDate: ContractEndDate): Promise<void>;
+  finish(
+    contractId: Uuid,
+    endDate: ContractEndDate,
+    status: ContractStatusInterface,
+  ): Promise<void>;
   cancel(
     contractId: Uuid,
     endDate: ContractEndDate,

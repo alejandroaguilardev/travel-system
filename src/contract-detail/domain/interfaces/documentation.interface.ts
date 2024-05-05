@@ -13,6 +13,7 @@ export interface DocumentationCertificateInterface {
 }
 export interface DocumentationInterface {
   status: StatusInterface;
+  clientStatus: StatusInterface;
   vaccinationCertificate: DocumentationCertificateInterface;
   healthCertificate: DocumentationCertificateInterface;
   chipCertificate: DocumentationCertificateInterface;

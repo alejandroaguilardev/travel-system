@@ -67,6 +67,7 @@ export class CommandContractDetailsUpdater {
           cage?.isCabinTransporting ?? services.cage.isCabinTransporting,
       },
       documentation: {
+        clientStatus: services.documentation.clientStatus,
         status: services.documentation.status,
         vaccinationCertificate: {
           hasServiceIncluded:

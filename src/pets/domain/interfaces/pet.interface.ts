@@ -2,6 +2,7 @@ import { Status } from '../../../common/domain/value-object/status-value-object'
 import { PetGenderType } from '../value-object/pet-gender';
 import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
 import { MeasurementsAndWeightInterface } from './pet-measurements-and-weight';
+import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
 
 export interface PetInterface {
   id: string;
@@ -20,5 +21,8 @@ export interface PetInterface {
   adopter: string;
   cageRecommendation?: CageChosenInterface;
   measurementsAndWeight?: MeasurementsAndWeightInterface;
+  isBrachycephalic: boolean;
+  isPotentiallyDangerous: boolean;
+  topico?: ContractTopicoInterface;
   user?: string;
 }

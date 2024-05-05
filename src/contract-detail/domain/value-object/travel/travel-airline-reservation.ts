@@ -5,6 +5,7 @@ import { TravelFlightNumber } from './travel-flight-number';
 import { TravelDestinationAirport } from './travel-destination-airport';
 import { TravelDepartureDate } from './travel-departure-date';
 import { TravelArrivalDate } from './travel-arrival-date';
+import { TravelItinerary } from './travel-itinerary';
 
 export class TravelAirlineReservation {
   constructor(
@@ -14,6 +15,7 @@ export class TravelAirlineReservation {
     readonly destinationAirport: TravelDestinationAirport,
     readonly departureDate: TravelDepartureDate,
     readonly arrivalDate: TravelArrivalDate,
+    readonly itinerary: TravelItinerary,
     readonly user: UuidOptional,
   ) {}
 
@@ -24,6 +26,7 @@ export class TravelAirlineReservation {
       departureAirport: this.departureAirport.value,
       destinationAirport: this.destinationAirport.value,
       departureDate: this.departureDate.value,
+      itinerary: this.itinerary.value,
       arrivalDate: this.arrivalDate.value,
       user: this.user.value,
     };

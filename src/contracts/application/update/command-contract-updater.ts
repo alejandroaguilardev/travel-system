@@ -1,4 +1,8 @@
-import { Uuid, UuidOptional } from '../../../common/domain/value-object';
+import {
+  ContractStatusDetail,
+  Uuid,
+  UuidOptional,
+} from '../../../common/domain/value-object';
 import { ContractInterface } from '../../domain/interfaces';
 import { Contract } from '../../domain/contract';
 import {
@@ -21,6 +25,7 @@ import { ContractFinishClient } from '../../domain/value-object/contract-finish-
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 import { ContractIsPay } from '../../domain/value-object/pay-in-installments/contract-is-pay';
 import { ContractFormat } from '../../domain/value-object/contract-format';
+import { ContractEstimatedDate } from '../../domain/value-object/contract-estimated-date';
 
 export class CommandContractUpdater {
   static execute(
@@ -32,8 +37,12 @@ export class CommandContractUpdater {
       new ContractFolder(data?.folder ?? contract.folder),
       new ContractNumber(data?.number ?? contract.number),
       new Uuid(data?.client ?? contract.client),
-      new ContractStatus(contract.status),
+      new ContractStatus(
+        new ContractStatusDetail(contract.status.petTravel),
+        new ContractStatusDetail(contract.status.client),
+      ),
       new ContractStartDate(data?.startDate ?? contract.startDate),
+      new ContractEstimatedDate(data?.estimatedDate ?? contract.estimatedDate),
       new ContractEndDate(contract.endDate),
       CommandContractDetailsUpdater.execute(contract.details, data?.details),
       new ContractPrice(data?.price ?? contract.price),

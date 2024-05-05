@@ -1,5 +1,5 @@
 import {
-  ContractStatus,
+  ContractStatusDetail,
   UuidOptional,
 } from '../../../../common/domain/value-object';
 import { CageInterface } from '../../../domain/interfaces';
@@ -16,7 +16,7 @@ import { ContractCageIsCabenTransporting } from '../../../domain/value-object/ca
 export class CommandContractCage {
   static execute(cage: CageInterface): ContractCage {
     return new ContractCage(
-      new ContractStatus(cage.status),
+      new ContractStatusDetail(cage.status),
       new ContractHasServiceIncluded(cage.hasServiceIncluded),
       new CageChosen(
         new CageChosenModel(cage?.chosen?.modelCage ?? ''),

@@ -1,5 +1,5 @@
 import { DocumentationInterface, StatusInterface } from '../interfaces';
-import { ContractStatus } from '../../../common/domain/value-object/contract-status';
+import { ContractStatusDetail } from '../../../common/domain/value-object/contract-status-detail';
 import {
   DocumentationVaccinationCertificate,
   DocumentationHealthCertificate,
@@ -30,7 +30,8 @@ export class ContractDocumentation {
     emotionalSupportCertificate: 'emotionalSupportCertificate',
   };
   constructor(
-    public status: ContractStatus,
+    public status: ContractStatusDetail,
+    public clientStatus: ContractStatusDetail,
     readonly vaccinationCertificate: DocumentationVaccinationCertificate,
     readonly healthCertificate: DocumentationHealthCertificate,
     readonly chipCertificate: DocumentationChipCertificate,
@@ -43,6 +44,7 @@ export class ContractDocumentation {
   toJson(): DocumentationInterface {
     return {
       status: this.status.value as StatusInterface,
+      clientStatus: this.clientStatus.value as StatusInterface,
       vaccinationCertificate: this.vaccinationCertificate.toJson(),
       healthCertificate: this.healthCertificate.toJson(),
       chipCertificate: this.chipCertificate.toJson(),
@@ -54,10 +56,33 @@ export class ContractDocumentation {
   }
 
   setStatus(status: StatusInterface): void {
-    this.status = new ContractStatus(status);
+    this.status = new ContractStatusDetail(status);
   }
 
   documentationIsApplied(data: DocumentationInterface): StatusInterface {
+    let count = 0;
+    let isRequired = 0;
+    data.chipCertificate.hasServiceIncluded;
+    Object.keys(data).forEach((key) => {
+      if (data[key]?.hasServiceIncluded) {
+        ++isRequired;
+      }
+
+      if (data[key]?.isApplied && data[key]?.hasServiceIncluded) {
+        ++count;
+      }
+    });
+
+    if (count >= isRequired) {
+      return 'completed';
+    } else if (count > 0) {
+      return 'in-process';
+    } else {
+      return 'pending';
+    }
+  }
+
+  documentationClientIsApplied(data: DocumentationInterface): StatusInterface {
     let count = 0;
     let isRequired = 0;
 

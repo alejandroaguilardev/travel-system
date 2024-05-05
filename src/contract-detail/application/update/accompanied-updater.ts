@@ -73,7 +73,7 @@ export class ContractDetailAccompaniedUpdater {
         _.id === contractDetail.id ? contractDetail : _,
       ),
     });
-    contract.status.statusError(contract.endDate.value);
+    contract.status.petTravel.statusError(contract.endDate.value);
 
     contract.establishedStatus();
 

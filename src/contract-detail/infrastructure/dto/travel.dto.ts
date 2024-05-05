@@ -25,6 +25,8 @@ class TravelAirlineReservationDto
   departureAirport: string;
   @IsString()
   destinationAirport: string;
+  @IsString()
+  itinerary: string;
   @IsOptional()
   @IsDate()
   departureDate: Date | null = null;

@@ -1,5 +1,5 @@
 import { Uuid, UuidOptional } from '../../common/domain/value-object';
-import { ContractInterface, StatusInterface } from './interfaces';
+import { ContractInterface } from './interfaces';
 import {
   ContractNumber,
   ContractStatus,
@@ -13,6 +13,7 @@ import { ContractDetail } from '../../contract-detail/domain/contract-detail';
 import { ContractFinishClient } from './value-object/contract-finish-client';
 import { ContractReasonForCancellation } from './value-object/reason-for-cancellation';
 import { ContractFormat } from './value-object/contract-format';
+import { ContractEstimatedDate } from './value-object/contract-estimated-date';
 
 export class Contract {
   constructor(
@@ -22,6 +23,7 @@ export class Contract {
     readonly client: Uuid,
     public status: ContractStatus,
     readonly startDate: ContractStartDate,
+    readonly estimatedDate: ContractEstimatedDate,
     public endDate: ContractEndDate,
     public details: ContractDetail[],
     readonly price: ContractPrice,
@@ -39,8 +41,9 @@ export class Contract {
       folder: this.folder.value,
       number: this.number.value,
       client: this.client.value,
-      status: this.status.value as StatusInterface,
+      status: this.status.toJson(),
       startDate: this.startDate.value,
+      estimatedDate: this.estimatedDate.value,
       details: this.details.map((_) => _.toJson()),
       endDate: this.endDate.value,
       price: this.price.value,
@@ -58,6 +61,24 @@ export class Contract {
     let count = 0;
     let countHasCompleted = 0;
     details.forEach((detail) => {
+      const hasCompleted = detail.documentation.status === 'completed';
+      count += 1;
+      countHasCompleted += hasCompleted ? 1 : 0;
+    });
+
+    if (count === countHasCompleted) {
+      this.status.petTravel.value = 'completed';
+    } else if (countHasCompleted > 0) {
+      this.status.petTravel.value = 'in-process';
+    } else {
+      this.status.petTravel.value = 'pending';
+    }
+  }
+  establishedClientStatus() {
+    const details = this.details.map((_) => _.toJson());
+    let count = 0;
+    let countHasCompleted = 0;
+    details.forEach((detail) => {
       const hasCompleted =
         detail.documentation.status === 'completed' &&
         detail.cage.status === 'completed' &&
@@ -67,11 +88,11 @@ export class Contract {
     });
 
     if (count === countHasCompleted) {
-      this.status.value = 'completed';
+      this.status.client.value = 'completed';
     } else if (countHasCompleted > 0) {
-      this.status.value = 'in-process';
+      this.status.client.value = 'in-process';
     } else {
-      this.status.value = 'pending';
+      this.status.client.value = 'pending';
     }
   }
 }

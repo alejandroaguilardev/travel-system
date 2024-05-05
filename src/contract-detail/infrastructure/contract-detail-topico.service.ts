@@ -21,11 +21,13 @@ import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.servic
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 import { TakeSampleExecutedMail } from '../application/mail/take-sample-executed-mail';
 import { RabiesReVaccinationMail } from '../application/mail/re-vaccination.mail';
+import { MongoPetRepository } from '../../pets/infrastructure/persistence/mongo-pet.repository';
 
 @Injectable()
 export class ContractDetailTopicoService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
+    private readonly mongoPetRepository: MongoPetRepository,
     private readonly jwtService: JWTAdapterService,
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly axiosAdapter: LaravelApiAdapter,
@@ -51,13 +53,19 @@ export class ContractDetailTopicoService {
 
     const topico = CommandContractTopico[value](topicoDto[value], user.id);
 
-    return await contractDetailPetUpdater.execute(
+    const response = await contractDetailPetUpdater.execute(
       contractId,
       contractDetailId,
       topico,
       value as keyof typeof ContractTopico.keysTopicoObject,
       user,
     );
+
+    this.mongoPetRepository.updateTopico(
+      new Uuid(response.contractDetail.pet.id),
+      CommandContractTopico.execute(response.contractDetail?.topico),
+    );
+    return response;
   }
 
   async mailTopicRabiesReVaccination(

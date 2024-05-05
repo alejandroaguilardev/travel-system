@@ -22,6 +22,9 @@ export class PetMother {
       country: pet?.country ?? faker.location.country(),
       type: pet?.type ?? faker.animal.type(),
       sterilized: pet?.sterilized ?? faker.datatype.boolean() ? 'Si' : 'No',
+      isBrachycephalic: pet?.isBrachycephalic ?? faker.datatype.boolean(),
+      isPotentiallyDangerous:
+        pet?.isPotentiallyDangerous ?? faker.datatype.boolean(),
       adopter: pet?.adopter ?? UuidMother.create(),
     };
   }
@@ -41,6 +44,9 @@ export class PetMother {
       country: pet?.country ?? faker.location.country(),
       type: pet?.type ?? faker.animal.type(),
       sterilized: pet?.sterilized ?? faker.datatype.boolean() ? 'Si' : 'No',
+      isBrachycephalic: pet?.isBrachycephalic ?? faker.datatype.boolean(),
+      isPotentiallyDangerous:
+        pet?.isPotentiallyDangerous ?? faker.datatype.boolean(),
       adopter: pet?.adopter ?? UuidMother.create(),
       cageRecommendation: pet?.cageRecommendation ?? ChosenMother.create(),
       status: 'active',

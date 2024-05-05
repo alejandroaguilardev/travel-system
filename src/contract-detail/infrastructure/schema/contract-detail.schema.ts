@@ -4,6 +4,7 @@ import { DocumentationInterface } from '../../domain/interfaces/documentation.in
 import { CageInterface } from '../../domain/interfaces/cage.interface';
 import { TravelInterface } from '../../domain/interfaces/travel.interface';
 import { ContractTopicoInterface } from '../../domain/interfaces/topico.interface';
+import { topicoSchema } from './topico.schema';
 
 export class ContractDetailModel implements ContractDetailInterface {
   @Prop({ type: String, index: true, unique: true, required: true })
@@ -13,6 +14,7 @@ export class ContractDetailModel implements ContractDetailInterface {
   @Prop({
     type: {
       status: String,
+      clientStatus: String,
       chipCertificate: {
         hasServiceIncluded: Boolean,
         isRequired: Boolean,
@@ -128,6 +130,7 @@ export class ContractDetailModel implements ContractDetailInterface {
         destinationAirport: String,
         departureDate: Date,
         arrivalDate: Date,
+        itinerary: String,
         user: String,
       },
       petPerCharge: {
@@ -159,50 +162,7 @@ export class ContractDetailModel implements ContractDetailInterface {
   })
   travel: TravelInterface;
 
-  @Prop({
-    type: {
-      chip: {
-        hasIncluded: Boolean,
-        executed: Boolean,
-        date: Date,
-        description: String,
-        observation: String,
-        user: String,
-      },
-      vaccination: {
-        hasIncluded: Boolean,
-        executed: Boolean,
-        date: Date,
-        description: String,
-        observation: String,
-        user: String,
-      },
-      rabiesVaccination: {
-        hasIncluded: Boolean,
-        executed: Boolean,
-        date: Date,
-        description: String,
-        observation: String,
-        user: String,
-      },
-      rabiesReVaccination: {
-        executed: Boolean,
-        date: Date,
-        description: String,
-        observation: String,
-        user: String,
-      },
-      takingSampleSerologicalTest: {
-        executed: Boolean,
-        date: Date,
-        description: String,
-        observation: String,
-        typeSample: String,
-        user: String,
-      },
-    },
-    required: false,
-  })
+  @Prop(topicoSchema)
   topico: ContractTopicoInterface;
 
   @Prop({ type: String, required: false })

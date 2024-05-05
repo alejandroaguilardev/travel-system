@@ -1,8 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import { SCHEMA_OPTIONS } from '../../../common/infrastructure/mongo/schema-options';
-import { ContractInterface } from '../../domain/interfaces/contract.interface';
-import { StatusInterface } from '../../domain/interfaces/status.interface';
+import {
+  ContractInterface,
+  ContractStatusInterface,
+} from '../../domain/interfaces/contract.interface';
 import { PayInInstallmentInterface } from '../../domain/interfaces/pay-in-installment.interface';
 import { ContractDetailModel } from '../../../contract-detail/infrastructure/schema/contract-detail.schema';
 import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
@@ -21,17 +23,29 @@ export class ContractModel implements ContractInterface {
   @Prop({ type: String, required: false })
   number: string;
 
+  @Prop({ type: Number, required: false })
+  correlative?: number;
+
   @Prop({ type: String, required: true, index: true })
   client: string;
 
   @Prop({ type: [ContractDetailModel] })
   details: ContractDetailInterface[];
 
-  @Prop({ type: String, required: true })
-  status: StatusInterface;
+  @Prop({
+    type: {
+      petTravel: String,
+      client: String,
+    },
+    required: true,
+  })
+  status: ContractStatusInterface;
 
   @Prop({ type: Date, required: true })
   startDate: Date;
+
+  @Prop({ type: Date, required: true })
+  estimatedDate: Date;
 
   @Prop({ type: Date, required: false })
   endDate: Date | null;

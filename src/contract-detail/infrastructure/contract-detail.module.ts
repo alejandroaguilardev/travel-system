@@ -9,9 +9,10 @@ import { UbigeoModule } from '../../ubigeo/infrastructure/ubigeo.module';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
+import { PetsModule } from '../../pets/infrastructure/pets.module';
 
 @Module({
-  imports: [AuthModule, ContractsModule, UbigeoModule],
+  imports: [AuthModule, ContractsModule, UbigeoModule, PetsModule],
   controllers: [ContractDetailController],
   providers: [
     ContractDetailService,

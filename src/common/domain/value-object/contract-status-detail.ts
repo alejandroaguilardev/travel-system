@@ -1,7 +1,7 @@
 import { StatusInterface } from '../../../contracts/domain/interfaces/status.interface';
 import { ErrorInvalidadArgument } from '../errors/error-invalid-argument';
 
-export class ContractStatus {
+export class ContractStatusDetail {
   static values: StatusInterface[] = [
     'none',
     'pending',
@@ -16,7 +16,7 @@ export class ContractStatus {
   }
 
   private validSecured(value: StatusInterface): void {
-    if (!ContractStatus.values.includes(value)) {
+    if (!ContractStatusDetail.values.includes(value)) {
       throw new ErrorInvalidadArgument('No es un estado válido');
     }
   }

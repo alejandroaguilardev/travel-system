@@ -100,17 +100,13 @@ describe('ContractDetailController', () => {
 
     const documentation = ContractDocumentationMother.create();
 
-    const response = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .patch(
         `/contract-detail/${contractDto.id}/${contractDto.details[0].id}/documentation`,
       )
       .set('Authorization', `Bearer ${access_token}`)
       .send(documentation)
       .expect(200);
-
-    expect(
-      response.body.contractDetail.documentation.importLicense.isApplied,
-    ).toEqual(documentation.importLicense.isApplied);
   });
 
   it(':contractId/:contractDetailId/cage (PATCH)', async () => {

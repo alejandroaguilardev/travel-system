@@ -1,5 +1,5 @@
 import {
-  ContractStatus,
+  ContractStatusDetail,
   UuidOptional,
 } from '../../../../common/domain/value-object';
 import {
@@ -27,8 +27,13 @@ import {
 export class CommandContractDocumentation {
   static execute(documentation: DocumentationInterface): ContractDocumentation {
     return new ContractDocumentation(
-      new ContractStatus(
+      new ContractStatusDetail(
         documentation?.status === 'none' ? 'pending' : documentation.status,
+      ),
+      new ContractStatusDetail(
+        documentation?.clientStatus === 'none'
+          ? 'pending'
+          : documentation.clientStatus,
       ),
       this.vaccinationCertificate(documentation.vaccinationCertificate),
       this.healthCertificate(documentation.healthCertificate),

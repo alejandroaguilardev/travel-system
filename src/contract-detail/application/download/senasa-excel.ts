@@ -105,8 +105,6 @@ export class SenasaExcelDownload {
   }
 
   private petSpecie(type: string) {
-    if (type === 'perro') return 'Canino';
-    if (type === 'gato') return 'Felino';
     return type;
   }
 

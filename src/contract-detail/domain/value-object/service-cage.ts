@@ -1,14 +1,14 @@
 import { CageInterface, StatusInterface } from '../interfaces';
 import { ContractHasServiceIncluded } from './contract-has-service.included';
 import { CageChosen } from './cage';
-import { ContractStatus } from '../../../common/domain/value-object/contract-status';
+import { ContractStatusDetail } from '../../../common/domain/value-object/contract-status-detail';
 import { ContractCageConfirmation } from './cage/cage-confirmation';
 import { ContractCagePetTravelAcquisition } from './cage/cage-acquisition';
 import { ContractCageIsCabenTransporting } from './cage/cage-cabin-transporting';
 
 export class ContractCage {
   constructor(
-    readonly status: ContractStatus,
+    readonly status: ContractStatusDetail,
     public hasServiceIncluded: ContractHasServiceIncluded,
     readonly chosen: CageChosen,
     public confirmation: ContractCageConfirmation,

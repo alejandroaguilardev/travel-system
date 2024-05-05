@@ -1,4 +1,8 @@
-import { Uuid, UuidOptional } from '../../../common/domain/value-object';
+import {
+  ContractStatusDetail,
+  Uuid,
+  UuidOptional,
+} from '../../../common/domain/value-object';
 import { Contract } from '../../domain/contract';
 import {
   ContractNumber,
@@ -22,6 +26,7 @@ import { ContractFinishClient } from '../../domain/value-object/contract-finish-
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 import { ContractIsPay } from '../../domain/value-object/pay-in-installments/contract-is-pay';
 import { ContractFormat } from '../../domain/value-object/contract-format';
+import { ContractEstimatedDate } from '../../domain/value-object/contract-estimated-date';
 
 export class CommandContractCreator {
   static execute(data: ContractCreateRequest, userId: string): Contract {
@@ -30,8 +35,12 @@ export class CommandContractCreator {
       new ContractFolder(data.folder),
       new ContractNumber(data.number),
       new Uuid(data.client),
-      new ContractStatus('pending'),
+      new ContractStatus(
+        new ContractStatusDetail('pending'),
+        new ContractStatusDetail('pending'),
+      ),
       new ContractStartDate(data.startDate),
+      new ContractEstimatedDate(data.estimatedDate),
       new ContractEndDate(null),
       CommandContractDetailCreator.execute(data.details, userId),
       new ContractPrice(data.price),

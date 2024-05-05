@@ -1,6 +1,6 @@
 import { TravelInterface, StatusInterface } from '../interfaces';
 import { ContractHasServiceIncluded } from './contract-has-service.included';
-import { ContractStatus } from '../../../common/domain/value-object/contract-status';
+import { ContractStatusDetail } from '../../../common/domain/value-object/contract-status-detail';
 import {
   ContractHasServiceAccompanied,
   ContractTypeTraveling,
@@ -14,7 +14,7 @@ import { TravelObservation } from './travel/travel-observation';
 
 export class ContractTravel {
   constructor(
-    readonly status: ContractStatus,
+    readonly status: ContractStatusDetail,
     public hasServiceIncluded: ContractHasServiceIncluded,
     readonly hasServiceAccompanied: ContractHasServiceAccompanied,
     public typeTraveling: ContractTypeTraveling,

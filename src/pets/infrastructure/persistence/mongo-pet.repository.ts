@@ -7,6 +7,8 @@ import { PetModel } from '../schema/pet.schema';
 import { MongoRepository } from '../../../common/infrastructure/mongo/mongo.repository';
 import { PetChip } from '../../domain/value-object/pet-chip';
 import { PetResponse } from '../../../pets/domain/interfaces/pet.response';
+import { Uuid } from '../../../common/domain/value-object';
+import { ContractTopico } from '../../../contract-detail/domain/value-object/contract-topico';
 
 @Injectable()
 export class MongoPetRepository
@@ -25,5 +27,14 @@ export class MongoPetRepository
       .findOne({ chip: chip.value })
       .select(['-_id', '-__v', '-createdAt', '-updatedAt'])
       .lean();
+  }
+
+  async updateTopico(petId: Uuid, topico: ContractTopico): Promise<void> {
+    return this.petModel.findOneAndUpdate(
+      { id: petId.value },
+      {
+        topico: topico.toJson(),
+      },
+    );
   }
 }

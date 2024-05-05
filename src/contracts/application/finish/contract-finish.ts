@@ -32,12 +32,15 @@ export class ContractFinish {
 
     this.permissionFinish(user, response);
 
-    if (response.status === 'canceled') {
+    if (response.status.petTravel !== 'completed') {
       throw new ErrorInvalidadArgument(ContractFinish.messageNotCompleted());
     }
     const endDate = new ContractEndDate(new Date());
 
-    await this.contractRepository.finish(uuid, endDate);
+    await this.contractRepository.finish(uuid, endDate, {
+      client: response.status.client,
+      petTravel: 'completed',
+    });
 
     const contract = CommandContractUpdater.execute(response);
     return {

@@ -53,7 +53,7 @@ export class ContractDetailTopicoUpdater {
         _.id === contractDetail.id ? contractDetail : _,
       ),
     });
-    contract.status.statusError(contract.endDate.value);
+    contract.status.petTravel.statusError(contract.endDate.value);
 
     await this.contractRepository.update(contractUuid, contract);
 

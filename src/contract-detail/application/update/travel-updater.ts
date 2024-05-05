@@ -53,8 +53,8 @@ export class ContractDetailTravelUpdater {
       ),
     });
 
-    contract.status.statusError(contract.endDate.value);
-    contract.establishedStatus();
+    contract.status.client.statusError(contract.endDate.value);
+    contract.establishedClientStatus();
 
     await this.contractRepository.update(contractUuid, contract);
 

@@ -36,6 +36,7 @@ export interface TravelAirlineReservationInterface {
   destinationAirport: string;
   departureDate: Date | null;
   arrivalDate: Date | null;
+  itinerary: string;
   user?: string;
 }
 export interface TravelPetPerChargeInterface {

@@ -15,6 +15,9 @@ import { PetSterilized } from './value-object/pet-sterilized';
 import { PetCountry } from './value-object/pet-country';
 import { CageChosen } from '../../contract-detail/domain/value-object/cage/cage-chosen';
 import { PetMeasurementsAndWeight } from './value-object/pet-measurements-and-weight';
+import { PetIsBrachycephalic } from './value-object/pet-is-brachycephalic';
+import { PetIsPotentiallyDangerous } from './value-object/pet-is-potentially-dangerous';
+import { ContractTopico } from '../../contract-detail/domain/value-object/contract-topico';
 
 export class Pet {
   constructor(
@@ -30,11 +33,14 @@ export class Pet {
     readonly image: PetImage,
     readonly country: PetCountry,
     readonly sterilized: PetSterilized,
+    readonly isBrachycephalic: PetIsBrachycephalic,
+    readonly isPotentiallyDangerous: PetIsPotentiallyDangerous,
     readonly status: StatusValueObject,
     readonly adopter: Uuid,
     readonly user: UuidOptional,
     readonly cageRecommendation: CageChosen,
     readonly measurementsAndWeight: PetMeasurementsAndWeight,
+    readonly topico: ContractTopico,
   ) {}
 
   toJson(): PetInterface {
@@ -54,8 +60,11 @@ export class Pet {
       status: this.status.value,
       adopter: this.adopter.value,
       user: this.user.value,
+      isBrachycephalic: this.isBrachycephalic.value,
+      isPotentiallyDangerous: this.isPotentiallyDangerous.value,
       cageRecommendation: this.cageRecommendation.toJson(),
       measurementsAndWeight: this.measurementsAndWeight.toJson(),
+      topico: this.topico.toJson(),
     };
   }
 

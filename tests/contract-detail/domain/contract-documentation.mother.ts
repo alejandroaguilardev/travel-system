@@ -24,6 +24,7 @@ export class ContractDocumentationMother {
       senasaDocuments: this.senasaDocuments(),
       vaccinationCertificate: this.vaccinationCertificate(),
       status: StatusMother.create(),
+      clientStatus: StatusMother.create(),
     };
   }
 

@@ -34,7 +34,7 @@ export class ContractCancel {
 
     this.permissionCancel(user, response);
 
-    if (response.status === 'completed') {
+    if (response.status.petTravel === 'completed') {
       throw new ErrorInvalidadArgument(ContractCancel.messageNotCompleted());
     }
     const endDate = new ContractEndDate(new Date());

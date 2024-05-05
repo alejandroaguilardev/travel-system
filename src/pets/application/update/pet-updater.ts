@@ -8,13 +8,14 @@ import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { PetRepository } from '../../domain/pet.repository';
 import { Pet } from '../../domain/pet';
-import { PetResponse } from '../../domain/interfaces/pet.response';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import { ErrorDuplicateElement } from '../../../common/domain/errors/error-duplicate-element';
 import {
   AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
+import { CommandPetUpdater } from './pet-command-updater';
+import { PetInterface } from '../../../pets/domain/interfaces/pet.interface';
 
 export class PetUpdater {
   constructor(private readonly petRepository: PetRepository) {}
@@ -28,7 +29,7 @@ export class PetUpdater {
 
     const uuid = new Uuid(id);
 
-    const response = await this.petRepository.searchById<PetResponse>(uuid);
+    const response = await this.petRepository.searchById<PetInterface>(uuid);
 
     if (!response) {
       throw new ErrorNotFound(ErrorNotFound.messageDefault('mascota'));
@@ -40,7 +41,9 @@ export class PetUpdater {
         throw new ErrorDuplicateElement('El chip ya se encuentra utilizado');
       }
     }
-    await this.petRepository.update(uuid, pet);
+    const petUpdater = CommandPetUpdater.execute(response, pet.toJson());
+
+    await this.petRepository.update(uuid, petUpdater);
 
     return ResponseMessage.createSuccessResponse(PetUpdater.messageSuccess());
   }

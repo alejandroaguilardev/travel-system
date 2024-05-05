@@ -44,8 +44,8 @@ export class ContractDetailCageUpdater {
         _.id === contractDetail.id ? contractDetail : _,
       ),
     });
-    contract.status.statusError(contract.endDate.value);
-    contract.establishedStatus();
+    contract.status.client.statusError(contract.endDate.value);
+    contract.establishedClientStatus();
 
     await this.contractRepository.update(contractUuid, contract);
 

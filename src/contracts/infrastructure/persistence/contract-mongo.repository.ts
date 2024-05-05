@@ -19,6 +19,7 @@ import { ContractMongoPipeline } from './contract-mongo.pipeline';
 import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 import { PayInInstallments } from '../../domain/value-object/pay-in-installments/pay-in-installments';
+import { ContractStatusInterface } from '../../domain/interfaces/contract.interface';
 
 @Injectable()
 export class MongoContractRepository
@@ -30,6 +31,14 @@ export class MongoContractRepository
   constructor(@InjectModel(ContractModel.name) model: Model<ContractModel>) {
     super(model);
     this.contractModel = model;
+  }
+
+  async save(data: Contract): Promise<void> {
+    const correlative: number = await this.contractModel
+      .find()
+      .countDocuments();
+    const newData = { ...data.toJson(), correlative: correlative + 1 };
+    await this.contractModel.create(newData);
   }
 
   async search<ContractResponse>(
@@ -109,11 +118,15 @@ export class MongoContractRepository
     return { rows, count };
   }
 
-  async finish(contractId: Uuid, endDate: ContractEndDate): Promise<void> {
+  async finish(
+    contractId: Uuid,
+    endDate: ContractEndDate,
+    status: ContractStatusInterface,
+  ): Promise<void> {
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
-        status: 'completed',
+        status: status,
         endDate: endDate.value,
       },
     );

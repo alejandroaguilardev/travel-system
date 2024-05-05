@@ -8,7 +8,9 @@ describe('ContractFinish', () => {
   const contractDocumentation = new ContractFinish(contractRepositoryMock);
 
   it('should_successfully_contract_documentation', async () => {
-    const dto = ContractCreatorMother.createWithTravel({ status: 'completed' });
+    const dto = ContractCreatorMother.createWithTravel({
+      status: { client: 'completed', petTravel: 'completed' },
+    });
 
     const { id } = dto;
     contractRepositoryMock.searchById.mockResolvedValueOnce(dto);
