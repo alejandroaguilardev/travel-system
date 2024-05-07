@@ -20,6 +20,7 @@ export interface ContractRepository extends Repository<Contract> {
     contractId: Uuid,
     endDate: ContractEndDate,
     reasonForCancellation: ContractReasonForCancellation,
+    status: ContractStatusInterface,
   ): Promise<void>;
   searchByIdWithPet(uuid: Uuid): Promise<ContractResponse>;
   searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]>;

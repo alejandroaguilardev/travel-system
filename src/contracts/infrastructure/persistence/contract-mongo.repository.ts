@@ -126,7 +126,7 @@ export class MongoContractRepository
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
-        status: status,
+        status,
         endDate: endDate.value,
       },
     );
@@ -136,13 +136,15 @@ export class MongoContractRepository
     contractId: Uuid,
     endDate: ContractEndDate,
     reasonForCancellation: ContractReasonForCancellation,
+    status: ContractStatusInterface,
   ): Promise<void> {
     return this.contractModel.findOneAndUpdate(
       { id: contractId.value },
       {
         endDate: endDate.value,
         reasonForCancellation: reasonForCancellation.value,
-        status: 'canceled',
+        status,
+        finishClient: true,
       },
     );
   }

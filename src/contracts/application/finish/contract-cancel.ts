@@ -39,7 +39,10 @@ export class ContractCancel {
     }
     const endDate = new ContractEndDate(new Date());
 
-    await this.contractRepository.cancel(uuid, endDate, reasonForCancellation);
+    await this.contractRepository.cancel(uuid, endDate, reasonForCancellation, {
+      client: 'canceled',
+      petTravel: 'canceled',
+    });
 
     const contract = CommandContractUpdater.execute(response);
     return {
