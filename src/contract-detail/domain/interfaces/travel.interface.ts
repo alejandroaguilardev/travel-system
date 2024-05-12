@@ -12,6 +12,7 @@ export interface TravelAccompaniedPetInterface {
   province: string;
   district: string;
   direction: string;
+  image: string;
 }
 
 export interface TravelAirlineReservationInterface {
@@ -37,6 +38,7 @@ export interface TravelAirlineReservationInterface {
   departureDate: Date | null;
   arrivalDate: Date | null;
   itinerary: string;
+  archive?: string;
   user?: string;
 }
 export interface TravelPetPerChargeInterface {

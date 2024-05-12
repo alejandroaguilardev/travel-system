@@ -131,6 +131,7 @@ export class ContractDetailModel implements ContractDetailInterface {
         departureDate: Date,
         arrivalDate: Date,
         itinerary: String,
+        archive: String,
         user: String,
       },
       petPerCharge: {
@@ -150,6 +151,7 @@ export class ContractDetailModel implements ContractDetailInterface {
         district: String,
         province: String,
         department: String,
+        image: String,
       },
       destination: {
         countryDestination: String,

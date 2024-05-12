@@ -14,7 +14,6 @@ import {
 } from '../../domain/value-object';
 import { Criteria } from '../../../common/domain/criteria/criteria';
 import { ResponseSearch } from '../../../common/domain/response/response-search';
-import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
 import { ContractMongoPipeline } from './contract-mongo.pipeline';
 import { ContractDetail } from '../../../contract-detail/domain/contract-detail';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
@@ -60,12 +59,9 @@ export class MongoContractRepository
     return rows;
   }
 
-  async searchTravelFound(): Promise<ContractResponse[]> {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 1);
-
+  async searchPendingStartDate(date: Date): Promise<ContractResponse[]> {
     const query = {
-      $and: [{ status: 'pending' }, { startDate: { $lt: date } }],
+      $and: [{ 'status.petTravel': 'pending' }, { startDate: { $lt: date } }],
     };
     const rows: ContractResponse[] = await this.contractModel
       .aggregate(ContractMongoPipeline.executeTravelFound(query))
@@ -78,7 +74,7 @@ export class MongoContractRepository
     date.setDate(date.getDate() - 2);
 
     const query = {
-      $and: [{ status: 'completed' }, { endDate: { $lt: date } }],
+      $and: [{ 'status.petTravel': 'completed' }, { endDate: { $lt: date } }],
     };
     const rows: ContractResponse[] = await this.contractModel
       .aggregate(ContractMongoPipeline.executeTravelFound(query))
@@ -97,25 +93,6 @@ export class MongoContractRepository
     const detail = rows.length > 0 ? rows[0] : null;
     if (!detail) return null;
     return detail;
-  }
-
-  async searchTopico(
-    criteria: Criteria,
-  ): Promise<ResponseSearch<ContractResponse>> {
-    const { query, selectProperties, start, size, sortQuery } =
-      MongoCriteriaConverter.converter(criteria);
-
-    const rows: ContractResponse[] = await this.contractModel
-      .find(query)
-      .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
-      .skip(start)
-      .limit(size)
-      .sort(sortQuery)
-      .lean();
-
-    const count = await this.count(criteria);
-
-    return { rows, count };
   }
 
   async finish(

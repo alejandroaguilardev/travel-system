@@ -8,6 +8,7 @@ import { UserDepartment } from '../../../../../users/domain/value-object/profile
 import { UserDirection } from '../../../../../users/domain/value-object/profile/user-direction';
 import { TravelDocument } from '../travel-document';
 import { TravelDocumentNumber } from '../travel-document-number';
+import { ImageValueObject } from '../../../../../common/domain/value-object/image-value-object';
 
 export class TravelAccompaniedPet {
   constructor(
@@ -20,6 +21,7 @@ export class TravelAccompaniedPet {
     readonly district: UserDistrict,
     readonly province: UserProvince,
     readonly department: UserDepartment,
+    readonly image: ImageValueObject,
   ) {}
 
   toJson(): TravelAccompaniedPetInterface {
@@ -33,6 +35,7 @@ export class TravelAccompaniedPet {
       district: this.district.value,
       province: this.province.value,
       department: this.department.value,
+      image: this.image.value,
     };
   }
 
@@ -48,7 +51,8 @@ export class TravelAccompaniedPet {
       !!accompaniedPet.department &&
       !!accompaniedPet.province &&
       !!accompaniedPet.district &&
-      !!accompaniedPet.direction
+      !!accompaniedPet.direction &&
+      !!accompaniedPet.image
     );
   }
 }

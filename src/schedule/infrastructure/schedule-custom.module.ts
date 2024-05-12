@@ -10,6 +10,7 @@ import { TravelScheduleService } from './services/travel-schedule.service';
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { FinishScheduleService } from './services/finish-schedule.service';
+import { TravelAccompaniedScheduleService } from './services/travel-accompanied-pet.service';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { FinishScheduleService } from './services/finish-schedule.service';
     JWTAdapterService,
     PaymentScheduleService,
     TravelScheduleService,
+    TravelAccompaniedScheduleService,
     FinishScheduleService,
   ],
   exports: [],

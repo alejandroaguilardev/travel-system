@@ -43,6 +43,8 @@ import { TravelDocument } from '../../../domain/value-object/travel/travel-docum
 import { TravelDocumentNumber } from '../../../domain/value-object/travel/travel-document-number';
 import { TravelObservation } from '../../../domain/value-object/travel/travel-observation';
 import { TravelItinerary } from '../../../domain/value-object/travel/travel-itinerary';
+import { ImageValueObject } from '../../../../common/domain/value-object/image-value-object';
+import { TravelArchive } from '../../../domain/value-object/travel/travel-archive';
 
 export class CommandContractTravel {
   static execute(travel: TravelInterface): ContractTravel {
@@ -61,6 +63,7 @@ export class CommandContractTravel {
         new TravelDepartureDate(travel.airlineReservation.departureDate),
         new TravelArrivalDate(travel.airlineReservation?.arrivalDate),
         new TravelItinerary(travel.airlineReservation?.itinerary ?? ''),
+        new TravelArchive(travel.airlineReservation?.archive ?? ''),
         new UuidOptional(travel.airlineReservation?.user ?? ''),
       ),
       CommandContractTravel.travelPetPerCharge(travel?.petPerCharge),
@@ -92,6 +95,7 @@ export class CommandContractTravel {
       new UserDistrict(accompaniedPet?.district ?? ''),
       new UserProvince(accompaniedPet?.province ?? ''),
       new UserDepartment(accompaniedPet?.department ?? ''),
+      new ImageValueObject(accompaniedPet?.image ?? ''),
     );
   }
 

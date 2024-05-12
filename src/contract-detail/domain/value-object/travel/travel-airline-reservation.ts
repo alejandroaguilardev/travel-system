@@ -6,6 +6,7 @@ import { TravelDestinationAirport } from './travel-destination-airport';
 import { TravelDepartureDate } from './travel-departure-date';
 import { TravelArrivalDate } from './travel-arrival-date';
 import { TravelItinerary } from './travel-itinerary';
+import { TravelArchive } from './travel-archive';
 
 export class TravelAirlineReservation {
   constructor(
@@ -16,6 +17,7 @@ export class TravelAirlineReservation {
     readonly departureDate: TravelDepartureDate,
     readonly arrivalDate: TravelArrivalDate,
     readonly itinerary: TravelItinerary,
+    readonly archive: TravelArchive,
     readonly user: UuidOptional,
   ) {}
 
@@ -28,6 +30,7 @@ export class TravelAirlineReservation {
       departureDate: this.departureDate.value,
       itinerary: this.itinerary.value,
       arrivalDate: this.arrivalDate.value,
+      archive: this.archive.value,
       user: this.user.value,
     };
   }

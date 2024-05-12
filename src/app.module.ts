@@ -14,6 +14,7 @@ import { ContractDetailModule } from './contract-detail/infrastructure/contract-
 import { FoldersModule } from './folders/infrastructure/folders.module';
 import { UbigeoModule } from './ubigeo/infrastructure/ubigeo.module';
 import { ScheduleCustomModule } from './schedule/infrastructure/schedule-custom.module';
+import { UploadsModule } from './uploads/uploads.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ScheduleCustomModule } from './schedule/infrastructure/schedule-custom.
     FoldersModule,
     UbigeoModule,
     ScheduleCustomModule,
+    UploadsModule,
   ],
   controllers: [],
   providers: [BcryptService],

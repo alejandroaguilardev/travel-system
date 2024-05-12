@@ -6,24 +6,26 @@ import { TravelPersonMail } from '../../../contract-detail/application/mail/trav
 import { UbigeoQuery } from '../../../ubigeo/infrastructure/ubigeo-query.service';
 import { JWTAdapterService } from '../../../auth/infrastructure/services/jwt.service';
 import { TravelAccompaniedPet } from '../../../contract-detail/domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
+import { DayJsService } from '../../../common/infrastructure/services/dayjs.service';
 
 /**
- * Enviar un correo indicando que debe llenarlos datos de la persona que viaja como acompañante acompañante.
+ * Enviar un correo indicando que la  persona que viaja es la que se tiene registrada como  en el acompañante.
  */
 
 @Injectable()
-export class TravelScheduleService {
+export class TravelAccompaniedScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly mailApiAdapter: LaravelApiAdapter,
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly jwtService: JWTAdapterService,
+    private readonly dayJsService: DayJsService,
   ) {}
 
-  @Cron('0 7 * * 6')
+  @Cron('30 7 * * *')
   async handleCron() {
     const date = new Date();
-    date.setMonth(date.getMonth() - 1);
+
     const contracts =
       await this.mongoContractRepository.searchPendingStartDate(date);
 
@@ -37,10 +39,16 @@ export class TravelScheduleService {
 
     contracts.forEach((contract) => {
       contract.details.forEach((detail) => {
+        const lastWeek = this.dayJsService.getDifferenceInDays(
+          detail.travel.airlineReservation.departureDate,
+          new Date(),
+        );
+        console.log({ lastWeek });
         if (
-          !TravelAccompaniedPet.hasRequiredAccompaniedPetFields(
+          TravelAccompaniedPet.hasRequiredAccompaniedPetFields(
             detail.travel.accompaniedPet,
-          )
+          ) &&
+          lastWeek === 6
         ) {
           requests.push(mail.execute(contract, detail));
         }

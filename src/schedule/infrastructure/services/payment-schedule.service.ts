@@ -6,6 +6,9 @@ import { DayJsService } from '../../../common/infrastructure/services/dayjs.serv
 import { LaravelApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
 import { PendingPaymentMail } from '../../../contracts/application/mail/peding-payment-mail';
 
+/**
+ * Recordatorio de pagos pendientes
+ */
 @Injectable()
 export class PaymentScheduleService {
   constructor(

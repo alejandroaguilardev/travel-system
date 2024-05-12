@@ -4,6 +4,10 @@ import { MongoContractRepository } from '../../../contracts/infrastructure/persi
 import { LaravelApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 
+/**
+ * Reseña de google maps
+ */
+
 @Injectable()
 export class FinishScheduleService {
   constructor(

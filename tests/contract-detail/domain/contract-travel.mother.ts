@@ -30,6 +30,7 @@ export class ContractTravelMother {
         itinerary: faker.airline.airport().name,
         departureDate: DateMother.recent(),
         arrivalDate: DateMother.future(),
+        archive: dto?.airlineReservation?.archive ?? faker.image.url(),
         user: dto?.airlineReservation?.user ?? UuidMother.create(),
       },
       petPerCharge: ContractTravelMother.petPerCharge(dto?.petPerCharge),
@@ -89,6 +90,7 @@ export class ContractTravelMother {
         accompaniedPet?.district ??
         faker.number.int({ min: 100000, max: 999999 }).toString(),
       direction: accompaniedPet?.direction ?? faker.location.direction(),
+      image: accompaniedPet?.image ?? faker.image.url(),
     };
   }
 }

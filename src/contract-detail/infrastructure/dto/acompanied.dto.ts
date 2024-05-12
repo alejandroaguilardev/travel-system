@@ -65,6 +65,9 @@ class TravelAccompaniedPetDto implements TravelAccompaniedPetInterface {
   @IsOptional()
   @IsString()
   department: string;
+  @IsOptional()
+  @IsString()
+  image: string;
 }
 
 export class TravelAccompaniedDto implements TravelAccompaniedRequest {

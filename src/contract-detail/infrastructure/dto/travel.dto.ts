@@ -35,6 +35,9 @@ class TravelAirlineReservationDto
   arrivalDate: Date | null = null;
   @IsOptional()
   @IsString()
+  archive?: string;
+  @IsOptional()
+  @IsString()
   user?: string;
 }
 

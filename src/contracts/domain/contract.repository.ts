@@ -25,7 +25,7 @@ export interface ContractRepository extends Repository<Contract> {
   searchByIdWithPet(uuid: Uuid): Promise<ContractResponse>;
   searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]>;
   findFinishAndUpdateReview(criteria: Criteria): Promise<ContractResponse[]>;
-  searchTravelFound(): Promise<ContractResponse[]>;
+  searchPendingStartDate(date: Date): Promise<ContractResponse[]>;
   updateFolder(
     contractId: Uuid,
     folder: ContractFolder,
