@@ -38,12 +38,12 @@ export class UploadsService {
 
   async uploadImage(
     name: string,
-    file: Express.Multer.File,
-    type: string,
+    fileMulter: Express.Multer.File,
     route: string,
   ) {
     const formData = new FormData();
-    formData.append('file', file.buffer, file.originalname);
+    const file = new File([fileMulter.buffer], fileMulter.originalname);
+    formData.set('file', file);
 
     const { data } = await this.laravelApiAdapter.post<{ name: string }>(
       `/upload-image/${name}/${route}`,
@@ -59,9 +59,11 @@ export class UploadsService {
     return { url };
   }
 
-  async uploadFile(name: string, file: Express.Multer.File) {
+  async uploadFile(name: string, fileMulter: Express.Multer.File) {
     const formData = new FormData();
-    formData.append('file', file.buffer, file.originalname);
+    const file = new File([fileMulter.buffer], fileMulter.originalname);
+
+    formData.set('file', file);
 
     const { data } = await this.laravelApiAdapter.post<{ name: string }>(
       `/upload-file/${name}`,

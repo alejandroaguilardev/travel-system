@@ -18,13 +18,12 @@ import { Response } from 'express';
 
 @Controller('uploads')
 export class UploadsController {
-  constructor(private readonly uploadsService: UploadsService) {}
+  constructor(private readonly uploadsService: UploadsService) { }
 
-  @Post('/image/:type')
+  @Post('/image/:route')
   @UseInterceptors(FileInterceptor('file'))
   uploadImage(
     @Body() { name }: UploadImageDto,
-    @Param('type') type: string,
     @Param('route') route: string,
     @UploadedFile(
       new ParseFilePipe({
@@ -38,7 +37,7 @@ export class UploadsController {
     )
     file: Express.Multer.File,
   ) {
-    return this.uploadsService.uploadImage(name, file, type, route);
+    return this.uploadsService.uploadImage(name, file, route);
   }
 
   @Post('/file')
