@@ -16,7 +16,7 @@ export class ImageValueObject extends ValueObject<string> {
       );
     }
 
-    const urlPattern = /^.*\.(png|jpg|jpeg|gif|svg)$/i;
+    const urlPattern = /^.*\.(png|jpg|jpeg|gif|webp|svg)$/i;
     if (!urlPattern.test(this.value)) {
       throw new ErrorInvalidadArgument(
         'El URL de la imagen debe ser un URL válido y terminar con una extensión de archivo de imagen apropiada.',

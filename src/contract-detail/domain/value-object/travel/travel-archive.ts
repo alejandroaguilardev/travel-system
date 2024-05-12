@@ -16,7 +16,7 @@ export class TravelArchive extends ValueObject<string> {
       );
     }
 
-    const urlPattern = /^.*\.(png|jpg|jpeg|gif|svg|pdf)$/i;
+    const urlPattern = /^.*\.(png|jpg|jpeg|gif|svg|webp|pdf)$/i;
     if (!urlPattern.test(this.value)) {
       throw new ErrorInvalidadArgument(
         'El archivo no tiene una extensión valida "png|jpg|jpeg|gif|svg|pdf" ',

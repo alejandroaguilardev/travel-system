@@ -5,6 +5,7 @@ import { PetChipMother } from './pet-chip.mother';
 import { PetGenderType } from '../../../src/pets/domain/value-object/pet-gender';
 import { ChosenMother } from '../../contract-detail/domain/chosen.mother';
 import { PetInterface } from '../../../src/pets/domain/interfaces/pet.interface';
+import { ImageMother } from '../../common/domain/image.mother';
 
 export class PetMother {
   static create(pet?: Partial<CreatePetRequest>): CreatePetRequest {
@@ -17,7 +18,7 @@ export class PetMother {
       chip: PetChipMother.create(pet?.chip),
       chipDate: pet?.chipDate ?? faker.date.recent(),
       color: pet?.color ?? faker.color.human(),
-      image: pet?.image ?? faker.internet.url(),
+      image: pet?.image ?? ImageMother.create(),
 
       country: pet?.country ?? faker.location.country(),
       type: pet?.type ?? faker.animal.type(),

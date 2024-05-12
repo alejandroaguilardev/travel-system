@@ -13,6 +13,7 @@ import { DateMother } from '../../common/domain/date.mother';
 import { UserDocument } from '../../../src/users/domain/value-object/profile/user-document';
 import { PhoneMother } from '../../common/domain/phone.mother';
 import { StringMother } from '../../common/domain/string.mother';
+import { ImageMother } from '../../common/domain/image.mother';
 
 export class ContractTravelMother {
   static create(dto?: Partial<TravelInterface>): TravelInterface {
@@ -30,7 +31,7 @@ export class ContractTravelMother {
         itinerary: faker.airline.airport().name,
         departureDate: DateMother.recent(),
         arrivalDate: DateMother.future(),
-        archive: dto?.airlineReservation?.archive ?? faker.image.url(),
+        archive: dto?.airlineReservation?.archive ?? ImageMother.create(),
         user: dto?.airlineReservation?.user ?? UuidMother.create(),
       },
       petPerCharge: ContractTravelMother.petPerCharge(dto?.petPerCharge),
@@ -90,7 +91,7 @@ export class ContractTravelMother {
         accompaniedPet?.district ??
         faker.number.int({ min: 100000, max: 999999 }).toString(),
       direction: accompaniedPet?.direction ?? faker.location.direction(),
-      image: accompaniedPet?.image ?? faker.image.url(),
+      image: accompaniedPet?.image ?? ImageMother.create(),
     };
   }
 }
