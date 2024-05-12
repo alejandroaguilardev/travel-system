@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { LaravelApiAdapter } from '../common/infrastructure/services/mail-api-adapter.service';
-import * as FormData from 'form-data';
+import { FormData } from "formdata-node"
 
 @Injectable()
 export class UploadsService {
-  constructor(private readonly laravelApiAdapter: LaravelApiAdapter) {}
+  constructor(private readonly laravelApiAdapter: LaravelApiAdapter) { }
 
   async getUploadImage(
     name: string,
