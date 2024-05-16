@@ -3,7 +3,7 @@ import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
 
-export class TakeSampleMail {
+export class SendMailSenasaIntroduceNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
@@ -24,12 +24,12 @@ export class TakeSampleMail {
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       date: this.dateService.formatDateTime(
         contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
-        'dd/MM/yyyy HH:mm:ss',
+        'dd/MM/yyyy',
       ),
     };
 
     this.http
-      .post(`/mail/detail/taking-sample`, { ...data })
+      .post(`/mail/detail/senasa-introduce`, { ...data })
       .catch((e) => console.log(e));
   }
 }

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { MongoContractRepository } from '../../../contracts/infrastructure/persistence/contract-mongo.repository';
-import { LaravelApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
-import { TravelPersonMail } from '../../../contract-detail/application/mail/travel-person-mail';
+import { LaravelApiAdapter } from '../../../common/infrastructure/services/laravel-adapter.service';
+import { TravelPersonNotification } from '../../../contract-detail/application/notification/travel-person-notification';
 import { UbigeoQuery } from '../../../ubigeo/infrastructure/ubigeo-query.service';
 import { JWTAdapterService } from '../../../auth/infrastructure/services/jwt.service';
 import { TravelAccompaniedPet } from '../../../contract-detail/domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
@@ -16,7 +16,7 @@ import { DayJsService } from '../../../common/infrastructure/services/dayjs.serv
 export class TravelAccompaniedScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailApiAdapter: LaravelApiAdapter,
+    private readonly laravelApiAdapter: LaravelApiAdapter,
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly jwtService: JWTAdapterService,
     private readonly dayJsService: DayJsService,
@@ -29,8 +29,8 @@ export class TravelAccompaniedScheduleService {
     const contracts =
       await this.mongoContractRepository.searchPendingStartDate(date);
 
-    const mail = new TravelPersonMail(
-      this.mailApiAdapter,
+    const mail = new TravelPersonNotification(
+      this.laravelApiAdapter,
       this.ubigeoQuery,
       this.jwtService,
     );

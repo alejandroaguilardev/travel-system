@@ -1,16 +1,12 @@
 import { HttpInterface } from '../../../common/application/services/http-service';
-import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
-import { CageChosenInterface } from '../../../contract-detail/domain/interfaces/cage.interface';
+import { CageChosenInterface } from '../../domain/interfaces/cage.interface';
 import { MeasurementsAndWeightInterface } from '../../../pets/domain/interfaces/pet-measurements-and-weight';
-import { DocumentationInterface } from '../../../contract-detail/domain/interfaces/documentation.interface';
+import { DocumentationInterface } from '../../domain/interfaces/documentation.interface';
 
-export class InfoDetailMail {
-  constructor(
-    private readonly http: HttpInterface,
-    private readonly dateService: DateService,
-  ) {}
+export class InfoDetailNotification {
+  constructor(private readonly http: HttpInterface) {}
 
   async execute(
     contract: ContractResponse,
@@ -36,11 +32,12 @@ export class InfoDetailMail {
       documentation: documentationData.join(' '),
       isBrachycephalic: pet.isBrachycephalic,
       isPotentiallyDangerous: pet.isPotentiallyDangerous,
+      correlative: contract?.correlative,
       message,
     };
 
     this.http
-      .post(`/mail/detail/info`, { ...data })
+      .post(`/notification/detail/info`, { ...data })
       .catch((e) => console.log(e));
   }
 

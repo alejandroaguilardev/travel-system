@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from 'class-validator';
 
-export class MailDetailDto {
+export class NotificationDetailDto {
   @IsOptional()
   @IsString()
   message?: string;

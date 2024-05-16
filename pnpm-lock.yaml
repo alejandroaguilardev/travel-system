@@ -108,9 +108,6 @@ importers:
       '@types/node':
         specifier: ^20.3.1
         version: 20.10.6
-      '@types/nodemailer':
-        specifier: ^6.4.14
-        version: 6.4.14
       '@types/passport-jwt':
         specifier: ^4.0.0
         version: 4.0.0
@@ -873,9 +870,6 @@ packages:
 
   '@types/node@20.10.6':
     resolution: {integrity: sha512-Vac8H+NlRNNlAmDfGUP7b5h/KA+AtWIzuXy0E6OyP8f1tCLYAtPvKRRDJjAPqhpCb0t6U2j7/xqAuLEebW2kiw==}
-
-  '@types/nodemailer@6.4.14':
-    resolution: {integrity: sha512-fUWthHO9k9DSdPCSPRqcu6TWhYyxTBg382vlNIttSe9M7XfsT06y0f24KHXtbnijPGGRIcVvdKHTNikOI6qiHA==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -4723,10 +4717,6 @@ snapshots:
   '@types/node@20.10.6':
     dependencies:
       undici-types: 5.26.5
-
-  '@types/nodemailer@6.4.14':
-    dependencies:
-      '@types/node': 20.10.6
 
   '@types/normalize-package-data@2.4.4': {}
 

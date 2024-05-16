@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { LaravelApiAdapter } from '../common/infrastructure/services/mail-api-adapter.service';
-import { FormData } from "formdata-node"
+import { LaravelApiAdapter } from '../common/infrastructure/services/laravel-adapter.service';
+import { FormData } from 'formdata-node';
 
 @Injectable()
 export class UploadsService {
-  constructor(private readonly laravelApiAdapter: LaravelApiAdapter) { }
+  constructor(private readonly laravelApiAdapter: LaravelApiAdapter) {}
 
   async getUploadImage(
     name: string,
@@ -51,7 +51,7 @@ export class UploadsService {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: process.env.API_MAIL_KEY,
+          Authorization: process.env.API_LARAVEL_KEY,
         },
       },
     );
@@ -71,7 +71,7 @@ export class UploadsService {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: process.env.API_MAIL_KEY,
+          Authorization: process.env.API_LARAVEL_KEY,
         },
       },
     );

@@ -3,7 +3,7 @@ import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
 
-export class SendMailSenasaIntroduce {
+export class RabiesReVaccinationNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
@@ -23,13 +23,13 @@ export class SendMailSenasaIntroduce {
       phone: contract.adviser.profile.phone,
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       date: this.dateService.formatDateTime(
-        contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
-        'dd/MM/yyyy',
+        contractDetail.topico.rabiesReVaccination.date,
+        'dd/MM/yyyy HH:mm:ss',
       ),
     };
 
     this.http
-      .post(`/mail/detail/senasa-introduce`, { ...data })
+      .post(`/mail/detail/rabies-re-vaccination`, { ...data })
       .catch((e) => console.log(e));
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { MongoContractRepository } from '../../../contracts/infrastructure/persistence/contract-mongo.repository';
-import { LaravelApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../../common/infrastructure/services/laravel-adapter.service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 
 /**
@@ -12,7 +12,7 @@ import { ContractResponse } from '../../../contracts/application/response/contra
 export class FinishScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailApiAdapter: LaravelApiAdapter,
+    private readonly laravelApiAdapter: LaravelApiAdapter,
   ) {}
 
   @Cron('00 09 * * *')
@@ -24,8 +24,8 @@ export class FinishScheduleService {
   }
 
   private mailFinish(contract: ContractResponse): void {
-    this.mailApiAdapter
-      .post(`/mail/contract/finish-after`, {
+    this.laravelApiAdapter
+      .post(`/notification/contract/finish-after`, {
         email: contract.client.email,
         client:
           contract?.client?.profile?.name +

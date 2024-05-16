@@ -12,8 +12,8 @@ import {
   AuthGroup,
   AuthPermission,
 } from '../../common/domain/auth-permissions';
-import { SendMailSenasaIntroduce } from '../application/mail/senasa-mail';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { SendMailSenasaIntroduceNotification } from '../application/notification/senasa-notification';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 import { SenasaExcelDownload } from '../application/download/senasa-excel';
 import { CertificateExcelDownload } from '../application/download/certificate-excel';
@@ -80,7 +80,7 @@ export class ContractDetailCertificateService {
       contractDetail.documentation.senasaDocuments.executionDate &&
       !contractDetail.documentation.senasaDocuments.isApplied
     ) {
-      const mail = new SendMailSenasaIntroduce(
+      const mail = new SendMailSenasaIntroduceNotification(
         this.axiosAdapter,
         this.dayJsService,
       );

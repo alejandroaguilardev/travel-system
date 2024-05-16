@@ -22,10 +22,10 @@ import { ContractCancelDto } from './dto/contract-cancel.dto';
 import { ContractReasonForCancellation } from '../domain/value-object/reason-for-cancellation';
 import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
 import { ContractPayInInstallmentsUpdater } from '../application/update/payment-updater';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
-import { NewContractMail } from '../application/mail/new-contract-mail';
-import { CancelContractMail } from '../application/mail/cancel-contract-mail';
-import { FinishContractMail } from '../application/mail/finish-contract';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
+import { NewContractNotification } from '../application/notification/new-contract-notification';
+import { CancelContractNotification } from '../application/notification/cancel-contract-notification';
+import { FinishContractNotification } from '../application/notification/finish-contract-notification';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 
 @Injectable()
@@ -43,7 +43,7 @@ export class ContractsService {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(createContractDto, user.id);
     const response = await contractsCreator.execute(contract, user);
-    const mail = new NewContractMail(
+    const mail = new NewContractNotification(
       this.mongoContractRepository,
       this.axiosAdapter,
       this.dateService,
@@ -61,7 +61,7 @@ export class ContractsService {
 
     const { contract, response } = await contractFinish.execute(id, user);
 
-    const mail = new FinishContractMail(
+    const mail = new FinishContractNotification(
       this.mongoContractRepository,
       this.axiosAdapter,
     );
@@ -84,7 +84,7 @@ export class ContractsService {
       reasonForCancellation,
       user,
     );
-    const mail = new CancelContractMail(
+    const mail = new CancelContractNotification(
       this.mongoContractRepository,
       this.axiosAdapter,
     );

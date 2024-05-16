@@ -21,8 +21,8 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { UserProfileUpdater } from '../application/update/profile-client/user-profile-updater';
 import { UserChangePasswordUpdater } from '../application/update/user-change-password';
 import { ClientProfileDto } from './dto/client-profile.dto';
-import { CredentialsMail } from '../../auth/application/mail/credentials-mail';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { CredentialsNotification } from '../../auth/application/notification/credentials-notification';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 
 @Injectable()
 export class UsersService {
@@ -52,7 +52,7 @@ export class UsersService {
     );
 
     const response = await userCreator.create(userCommand, password, user);
-    const mail = new CredentialsMail(this.adapterApi);
+    const mail = new CredentialsNotification(this.adapterApi);
     mail.execute(
       userCommand.email,
       userCommand.profile.document,

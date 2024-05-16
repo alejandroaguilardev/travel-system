@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { HttpInterface } from '../../../common/application/services/http-service';
+import { HttpInterface } from '../../application/services/http-service';
 
 @Injectable()
 export class LaravelApiAdapter implements HttpInterface {
   private axiosInstance: AxiosInstance;
   constructor() {
-    this.axiosInstance = axios.create({ baseURL: process.env.API_MAIL });
-    axios.defaults.headers.common.Authorization = process.env.API_MAIL_KEY;
+    this.axiosInstance = axios.create({ baseURL: process.env.API_LARAVEL });
+    axios.defaults.headers.common.Authorization = process.env.API_LARAVEL_KEY;
   }
   async get<T>(
     url: string,

@@ -2,7 +2,7 @@ import { HttpInterface } from '../../../common/application/services/http-service
 import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../response/contract.response';
 
-export class PendingPaymentMail {
+export class PendingPaymentNotification {
   private colors = {
     default: '#fff',
     success: '#16B94E',
@@ -15,21 +15,27 @@ export class PendingPaymentMail {
   ) {}
 
   async execute(contract: ContractResponse): Promise<void> {
+    const { payment, payments } = this.getPayments(contract);
     const data = {
       email: contract.client.email,
       client:
         contract?.client?.profile?.name + ' ' + contract?.client?.profile?.name,
       phone: contract.adviser.profile.phone,
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
-      payments: this.getPayments(contract),
+      payments,
+      payment,
     };
 
     this.http
-      .post(`/mail/contract/payment-pending`, data)
+      .post(`/notification/contract/payment-pending`, data)
       .catch((e) => console.log(e));
   }
 
-  private getPayments(contract: ContractResponse): string {
+  private getPayments(contract: ContractResponse): {
+    payment: string;
+    payments: string;
+  } {
+    let payments = '';
     let payment = '';
 
     contract?.payInInstallments?.forEach((payInInstallment) => {
@@ -42,7 +48,7 @@ export class PendingPaymentMail {
             : this.colors.default;
       }
 
-      payment += `<tr>
+      payments += `<tr>
                     <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
                       this.colors.default === selectedColor ? '#000' : '#fff'
                     }'>
@@ -61,8 +67,17 @@ export class PendingPaymentMail {
                         ${payInInstallment.isPay ? 'Pagado' : 'Pendiente'}
                     </td>
                 </tr>`;
+
+      if (!payment && !payInInstallment.isPay) {
+        payment = `$${payInInstallment.price.toFixed(
+          2,
+        )} - ${this.dateService.formatDateTime(
+          payInInstallment.date,
+          'dd/MM/yyyy',
+        )} `;
+      }
     });
 
-    return payment;
+    return { payments, payment };
   }
 }

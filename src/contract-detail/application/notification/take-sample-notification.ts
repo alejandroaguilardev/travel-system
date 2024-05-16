@@ -3,7 +3,7 @@ import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
 
-export class RabiesReVaccinationMail {
+export class TakeSampleNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
@@ -23,13 +23,13 @@ export class RabiesReVaccinationMail {
       phone: contract.adviser.profile.phone,
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       date: this.dateService.formatDateTime(
-        contractDetail.topico.rabiesReVaccination.date,
+        contractDetail.documentation.rabiesSeroLogicalTest.expectedDate,
         'dd/MM/yyyy HH:mm:ss',
       ),
     };
 
     this.http
-      .post(`/mail/detail/mail-topic--rabies-re-vaccination`, { ...data })
+      .post(`/mail/detail/taking-sample`, { ...data })
       .catch((e) => console.log(e));
   }
 }

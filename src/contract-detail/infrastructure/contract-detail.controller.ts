@@ -24,7 +24,7 @@ import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
 import { Response } from 'express';
-import { MailDetailDto } from './dto/mail-detail.dto';
+import { NotificationDetailDto } from './dto/notification-detail.dto';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -126,13 +126,13 @@ export class ContractDetailController {
     );
   }
 
-  @Post(':id/:detail/mailDetail')
+  @Post(':id/:detail/notificationDetail')
   @HttpCode(200)
   @Auth()
   mailDetail(
     @Param('id') id: string,
     @Param('detail') detail: string,
-    @Body() { message = '' }: MailDetailDto,
+    @Body() { message = '' }: NotificationDetailDto,
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailTopicoService.mailDetail(
@@ -143,7 +143,7 @@ export class ContractDetailController {
     );
   }
 
-  @Post(':id/:detail/mailTopicRabiesReVaccination')
+  @Post(':id/:detail/notificationTopicRabiesReVaccination')
   @HttpCode(200)
   @Auth()
   mailTopicRabiesReVaccination(
@@ -158,7 +158,7 @@ export class ContractDetailController {
     );
   }
 
-  @Post(':id/:detail/mailTravelDetail')
+  @Post(':id/:detail/notificationTravelDetail')
   @HttpCode(200)
   @Auth()
   mailTravelDetail(
@@ -169,7 +169,7 @@ export class ContractDetailController {
     return this.contractDetailTopicoService.mailTravelDetail(id, detail, user);
   }
 
-  @Post(':id/:detail/mailTakingSample')
+  @Post(':id/:detail/notificationTakingSample')
   @HttpCode(200)
   @Auth()
   mailTakingSample(
@@ -180,7 +180,7 @@ export class ContractDetailController {
     return this.contractDetailTopicoService.mailTakingSample(id, detail, user);
   }
 
-  @Post(':id/:detail/mailTakingSampleExecuted')
+  @Post(':id/:detail/notificationTakingSampleExecuted')
   @HttpCode(200)
   @Auth()
   mailTakingSampleExecuted(
@@ -195,7 +195,7 @@ export class ContractDetailController {
     );
   }
 
-  @Post(':id/:detail/mailSenasaIntroduceContract')
+  @Post(':id/:detail/notificationSenasaIntroduceContract')
   @HttpCode(200)
   @Auth()
   senasaIntroduceContract(

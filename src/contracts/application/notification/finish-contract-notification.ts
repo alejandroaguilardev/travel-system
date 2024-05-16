@@ -2,7 +2,7 @@ import { HttpInterface } from '../../../common/application/services/http-service
 import { ContractRepository } from '../../domain/contract.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 
-export class CancelContractMail {
+export class FinishContractNotification {
   constructor(
     private readonly contractRepository: ContractRepository,
     private readonly http: HttpInterface,
@@ -13,7 +13,7 @@ export class CancelContractMail {
       await this.contractRepository.searchByIdWithPet(contractId);
 
     this.http
-      .post(`/mail/contract/cancel`, {
+      .post(`/notification/contract/finish`, {
         email: contract.client.email,
         client:
           contract?.client?.profile?.name +
@@ -21,7 +21,6 @@ export class CancelContractMail {
           contract?.client?.profile?.name,
         phone: contract.adviser.profile.phone,
         linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
-        reasonForCancellation: contract.reasonForCancellation,
       })
       .catch((e) => console.log(e));
   }

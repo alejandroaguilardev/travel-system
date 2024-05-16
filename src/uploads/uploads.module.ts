@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { UploadsController } from './uploads.controller';
-import { LaravelApiAdapter } from '../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../common/infrastructure/services/laravel-adapter.service';
 import { UploadsService } from './uploads.service';
 
 @Module({

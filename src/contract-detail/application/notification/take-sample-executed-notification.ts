@@ -2,7 +2,7 @@ import { HttpInterface } from '../../../common/application/services/http-service
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
 
-export class TakeSampleExecutedMail {
+export class TakeSampleExecutedNotification {
   constructor(private readonly http: HttpInterface) {}
 
   async execute(

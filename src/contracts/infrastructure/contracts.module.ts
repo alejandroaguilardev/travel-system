@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ContractModel, ContractSchema } from './schema/contract.schema';
 import { MongoContractRepository } from './persistence/contract-mongo.repository';
 import { AuthModule } from '../../auth/infrastructure/auth.module';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 
 @Module({

@@ -12,15 +12,15 @@ import {
   AuthPermission,
 } from '../../common/domain/auth-permissions';
 import { PermissionValidator } from '../../auth/application/permission/permission-validate';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
-import { InfoDetailMail } from '../application/mail/info.detail-mail';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
+import { InfoDetailNotification } from '../application/notification/info.detail-notification';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
-import { TakeSampleMail } from '../application/mail/take-sample-mail';
-import { TravelPersonMail } from '../application/mail/travel-person-mail';
+import { TakeSampleNotification } from '../application/notification/take-sample-notification';
+import { TravelPersonNotification } from '../application/notification/travel-person-notification';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
-import { TakeSampleExecutedMail } from '../application/mail/take-sample-executed-mail';
-import { RabiesReVaccinationMail } from '../application/mail/re-vaccination.mail';
+import { TakeSampleExecutedNotification } from '../application/notification/take-sample-executed-notification';
+import { RabiesReVaccinationNotification } from '../application/notification/re-vaccination.notification';
 import { MongoPetRepository } from '../../pets/infrastructure/persistence/mongo-pet.repository';
 
 @Injectable()
@@ -85,7 +85,7 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO,
     );
 
-    const mail = new RabiesReVaccinationMail(
+    const mail = new RabiesReVaccinationNotification(
       this.axiosAdapter,
       this.dayJsService,
     );
@@ -110,7 +110,7 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO,
     );
 
-    const mail = new TravelPersonMail(
+    const mail = new TravelPersonNotification(
       this.axiosAdapter,
       this.ubigeoQuery,
       this.jwtService,
@@ -136,7 +136,10 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO,
     );
 
-    const mail = new TakeSampleMail(this.axiosAdapter, this.dayJsService);
+    const mail = new TakeSampleNotification(
+      this.axiosAdapter,
+      this.dayJsService,
+    );
     mail.execute(contract, contractDetail);
   }
 
@@ -157,7 +160,7 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO,
     );
 
-    const mail = new TakeSampleExecutedMail(this.axiosAdapter);
+    const mail = new TakeSampleExecutedNotification(this.axiosAdapter);
     mail.execute(contract, contractDetail);
   }
 
@@ -179,7 +182,7 @@ export class ContractDetailTopicoService {
       AuthPermission.TOPICO || AuthPermission.DOCUMENTATION,
     );
 
-    const mail = new InfoDetailMail(this.axiosAdapter, this.dayJsService);
+    const mail = new InfoDetailNotification(this.axiosAdapter);
     mail.execute(contract, contractDetail, message);
   }
 }

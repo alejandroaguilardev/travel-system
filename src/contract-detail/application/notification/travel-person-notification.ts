@@ -9,9 +9,9 @@ import { TravelPetPerCharge } from '../../domain/value-object/travel/travel-pet-
 import {
   TravelPetPerChargeInterface,
   TypeTravelingType,
-} from '../../../contract-detail/domain/interfaces/travel.interface';
+} from '../../domain/interfaces/travel.interface';
 
-export class TravelPersonMail {
+export class TravelPersonNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly ubigeo: UbigeoQueryInterface,

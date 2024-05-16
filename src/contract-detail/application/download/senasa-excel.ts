@@ -40,7 +40,7 @@ export class SenasaExcelDownload {
 
     const response = await this.http.post(`/excel/senasa`, data, {
       headers: {
-        Authorization: process.env.API_MAIL_KEY,
+        Authorization: process.env.API_LARAVEL_KEY,
       },
       responseType: 'stream',
     });

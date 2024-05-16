@@ -3,8 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import { MongoContractRepository } from '../../../contracts/infrastructure/persistence/contract-mongo.repository';
 import { ContractSearchPayments } from '../../../contracts/application/search-payments/contract-search-payments';
 import { DayJsService } from '../../../common/infrastructure/services/dayjs.service';
-import { LaravelApiAdapter } from '../../../common/infrastructure/services/mail-api-adapter.service';
-import { PendingPaymentMail } from '../../../contracts/application/mail/peding-payment-mail';
+import { LaravelApiAdapter } from '../../../common/infrastructure/services/laravel-adapter.service';
+import { PendingPaymentNotification } from '../../../contracts/application/notification/peding-payment-notification';
 
 /**
  * Recordatorio de pagos pendientes
@@ -13,7 +13,7 @@ import { PendingPaymentMail } from '../../../contracts/application/mail/peding-p
 export class PaymentScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
-    private readonly mailApiAdapter: LaravelApiAdapter,
+    private readonly laravelApiAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
   ) {}
 
@@ -24,7 +24,10 @@ export class PaymentScheduleService {
       this.dayJsService,
     );
     const contracts = await contractSearchPayments.execute();
-    const mail = new PendingPaymentMail(this.mailApiAdapter, this.dayJsService);
+    const mail = new PendingPaymentNotification(
+      this.laravelApiAdapter,
+      this.dayJsService,
+    );
     Promise.allSettled(contracts.map((contract) => mail.execute(contract)));
   }
 }

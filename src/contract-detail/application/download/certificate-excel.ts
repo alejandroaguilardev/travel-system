@@ -58,7 +58,7 @@ export class CertificateExcelDownload {
       data,
       {
         headers: {
-          Authorization: process.env.API_MAIL_KEY,
+          Authorization: process.env.API_LARAVEL_KEY,
         },
         responseType: 'stream',
       },

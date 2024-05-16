@@ -14,15 +14,15 @@ import { UserEmail } from '../../users/domain/value-object/user-email';
 import { ResetPasswordDto } from './dto/reset-password.dto';
 import { ResetPasswordUser } from '../application/reset-password/reset-password-user';
 import { UserPassword } from '../../users/domain/value-object/user-password';
-import { RecoverMail } from '../application/mail/recover-mail';
-import { LaravelApiAdapter } from '../../common/infrastructure/services/mail-api-adapter.service';
+import { RecoverNotification } from '../application/notification/recover-notification';
+import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userMongoRepository: UserMongoRepository,
     private readonly bcryptService: BcryptService,
-    private mailApiAdapter: LaravelApiAdapter,
+    private laravelApiAdapter: LaravelApiAdapter,
     private jwtService: JWTAdapterService,
   ) {}
 
@@ -49,7 +49,7 @@ export class AuthService {
       { expiresIn: 86400 },
     );
 
-    const mail = new RecoverMail(this.mailApiAdapter);
+    const mail = new RecoverNotification(this.laravelApiAdapter);
     await mail.execute(new UserEmail(user.email), generateToken);
 
     return { message: 'Revisa tu correo electrónico' };
