@@ -6,9 +6,16 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ErrorDomain } from '../../domain/errors/error-domain';
+import { IncidentsService } from '../../../errors/infrastructure/incidents.service';
+import { UUIDService } from '../services/uuid.service';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
+  constructor(
+    private readonly incidentsService: IncidentsService,
+    private readonly uuidService: UUIDService,
+  ) {}
+
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
@@ -20,7 +27,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     let error = 'Internal Server Error';
 
     if (
-      exception instanceof HttpException ||
+      (status !== 500 && exception instanceof HttpException) ||
       exception instanceof ErrorDomain
     ) {
       status = exception.getStatus();
@@ -37,6 +44,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     if (status === 500) {
       console.log(exception);
+      this.incidentsService.create({
+        id: this.uuidService.generate(),
+        name: request.url,
+        error: exception.toString(),
+        body: JSON.stringify(request.body),
+      });
     }
 
     response.status(status).json({

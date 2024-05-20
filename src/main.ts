@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { GlobalPipes } from './common/infrastructure/config/global-pipes';
-import { GlobalExceptionFilter } from './common/infrastructure/config/global-filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,8 +11,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.useGlobalPipes(GlobalPipes.getGlobal());
-
-  app.useGlobalFilters(new GlobalExceptionFilter());
 
   const options = new DocumentBuilder()
     .setTitle('Pet travel')

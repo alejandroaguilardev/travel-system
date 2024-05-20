@@ -70,4 +70,14 @@ export const getRolesData = (
         .map((_) => _.id),
     ],
   },
+  {
+    id: uuid.generate(),
+    name: 'Gestión de Incidencias',
+    description: 'Gestionar los errores del sistemas',
+    permissions: [
+      ...permissions
+        .filter((_) => _.group === AuthGroup.INCIDENTS)
+        .map((_) => _.id),
+    ],
+  },
 ];

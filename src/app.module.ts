@@ -15,6 +15,12 @@ import { FoldersModule } from './folders/infrastructure/folders.module';
 import { UbigeoModule } from './ubigeo/infrastructure/ubigeo.module';
 import { ScheduleCustomModule } from './schedule/infrastructure/schedule-custom.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { IncidentsModule } from './errors/infrastructure/incidents.module';
+import { APP_FILTER } from '@nestjs/core';
+import { GlobalExceptionFilter } from './common/infrastructure/config/global-filter';
+import { IncidentsService } from './errors/infrastructure/incidents.service';
+import { UUIDService } from './common/infrastructure/services/uuid.service';
+import { LaravelApiAdapter } from './common/infrastructure/services/laravel-adapter.service';
 
 @Module({
   imports: [
@@ -33,8 +39,18 @@ import { UploadsModule } from './uploads/uploads.module';
     UbigeoModule,
     ScheduleCustomModule,
     UploadsModule,
+    IncidentsModule,
   ],
   controllers: [],
-  providers: [BcryptService],
+  providers: [
+    BcryptService,
+    IncidentsService,
+    UUIDService,
+    LaravelApiAdapter,
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+  ],
 })
 export class AppModule {}
