@@ -7,6 +7,7 @@ import { Auth } from './decorator/auth.decorator';
 import { LoginResponse } from '../application/response/login.response';
 import { RecoverDto } from './dto/recover-auth.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { DocsRecover, DocsResetPassword, DocsLogin, DocsVerify } from './docs';
 
 @Controller('auth')
 export class AuthController {
@@ -14,17 +15,22 @@ export class AuthController {
 
   @Post()
   @HttpCode(200)
+  @DocsLogin()
   login(@Body() loginAuthDto: LoginAuthDto): Promise<LoginResponse> {
     return this.authService.login(loginAuthDto);
   }
 
   @Post('recover')
+  @HttpCode(200)
+  @DocsRecover()
   recover(@Body() recoverDto: RecoverDto) {
     return this.authService.recover(recoverDto);
   }
 
   @Post('reset-password')
   @Auth()
+  @HttpCode(200)
+  @DocsResetPassword()
   resetPassword(
     @GetUser() user: UserWithoutResponse,
     @Body() resetPasswordDto: ResetPasswordDto,
@@ -34,6 +40,7 @@ export class AuthController {
 
   @Get('verify')
   @Auth()
+  @DocsVerify()
   verify(@GetUser() user: UserWithoutResponse) {
     return this.authService.verify(user);
   }

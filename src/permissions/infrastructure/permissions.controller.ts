@@ -14,6 +14,13 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { Auth, GetUser } from '../../auth/infrastructure/decorator';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
+import {
+  DocsPermissionCreate,
+  DocsPermissionFindOne,
+  DocsPermissionFindAll,
+  DocsPermissionUpdate,
+  DocsPermissionRemove,
+} from './docs';
 
 @Controller('permissions')
 export class PermissionsController {
@@ -21,6 +28,7 @@ export class PermissionsController {
 
   @Post()
   @Auth()
+  @DocsPermissionCreate()
   create(
     @Body() createPermissionDto: CreatePermissionDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -30,6 +38,7 @@ export class PermissionsController {
 
   @Get()
   @Auth()
+  @DocsPermissionFindAll()
   findAll(
     @Query() criteria: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -39,6 +48,7 @@ export class PermissionsController {
 
   @Get(':id')
   @Auth()
+  @DocsPermissionFindOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -48,6 +58,7 @@ export class PermissionsController {
 
   @Put(':id')
   @Auth()
+  @DocsPermissionUpdate()
   update(
     @Param('id') id: string,
     @Body() updatePermissionDto: UpdatePermissionDto,
@@ -58,6 +69,7 @@ export class PermissionsController {
 
   @Delete(':id')
   @Auth()
+  @DocsPermissionRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

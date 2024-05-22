@@ -31,8 +31,15 @@ export class UserProfileUpdater {
     }
 
     await this.userRepository.updateProfile(uuid, profile);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(
+      UserProfileUpdater.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'el perfil',
     );
   }
 }

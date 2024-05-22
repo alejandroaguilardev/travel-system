@@ -26,6 +26,13 @@ export class UserUpdater {
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.EDIT);
 
+    if (!userUpdate.profile.documentNumber)
+      throw new ErrorBadRequest(
+        'el número documento de usuario no puede estar vació',
+      );
+    if (!userUpdate.profile.document)
+      throw new ErrorBadRequest('el documento de usuario no puede estar vació');
+
     const uuid = new Uuid(id);
     const response = await this.userRepository.searchById<UserResponse>(uuid);
 

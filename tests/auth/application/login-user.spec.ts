@@ -45,7 +45,7 @@ describe('loginUser', () => {
     generateTokenMock.mockReturnValueOnce('token');
     userRepositoryMock.searchDocument.mockResolvedValue(null);
 
-    const error = new ErrorBadRequest('El correo electrónico es incorrecto');
+    const error = new ErrorBadRequest('El documento es incorrecto');
     try {
       await loginUser.login({
         document: user.profile.document,

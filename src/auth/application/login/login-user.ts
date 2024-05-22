@@ -31,7 +31,7 @@ export class LoginUser {
     );
 
     if (!user) {
-      throw new ErrorBadRequest('El correo electrónico es incorrecto');
+      throw new ErrorBadRequest('El documento es incorrecto');
     }
 
     if (

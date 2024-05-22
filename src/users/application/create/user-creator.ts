@@ -28,6 +28,13 @@ export class UserCreator {
   ): Promise<ResponseSuccess> {
     PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.CREATE);
 
+    if (!newUser.profile.documentNumber)
+      throw new ErrorBadRequest(
+        'el número documento de usuario no puede estar vació',
+      );
+    if (!newUser.profile.document)
+      throw new ErrorBadRequest('el documento de usuario no puede estar vació');
+
     const find = await this.userRepository.searchDocument(
       newUser.profile.document,
       newUser.profile.documentNumber,

@@ -27,7 +27,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
     let error = 'Internal Server Error';
 
     if (
-      (status !== 500 && exception instanceof HttpException) ||
+      exception instanceof HttpException ||
       exception instanceof ErrorDomain
     ) {
       status = exception.getStatus();

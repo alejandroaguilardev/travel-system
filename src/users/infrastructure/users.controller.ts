@@ -18,6 +18,15 @@ import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator'
 import { UserWithoutWithRoleResponse } from '../domain/interfaces/user-without.response';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { ClientProfileDto } from './dto/client-profile.dto';
+import {
+  DocsUserCreate,
+  DocsUserFindAOne,
+  DocsUserFindAll,
+  DocsUserRemove,
+  DocsUserUpdate,
+  DocsUserUpdatePassword,
+  DocsUserUpdateProfile,
+} from './docs';
 
 @Controller('users')
 export class UsersController {
@@ -25,6 +34,7 @@ export class UsersController {
 
   @Post()
   @Auth()
+  @DocsUserCreate()
   create(
     @Body() userCreatorDto: UserCreatorDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -34,6 +44,7 @@ export class UsersController {
 
   @Get()
   @Auth()
+  @DocsUserFindAll()
   findAll(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -43,6 +54,7 @@ export class UsersController {
 
   @Get(':id')
   @Auth()
+  @DocsUserFindAOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -52,6 +64,7 @@ export class UsersController {
 
   @Put(':id')
   @Auth()
+  @DocsUserUpdate()
   update(
     @Param('id') id: string,
     @Body() updateAuthDto: UpdateUserDto,
@@ -62,6 +75,7 @@ export class UsersController {
 
   @Patch('profile')
   @Auth()
+  @DocsUserUpdateProfile()
   updateProfile(
     @Body() profileDto: ClientProfileDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -71,6 +85,7 @@ export class UsersController {
 
   @Patch('change-password')
   @Auth()
+  @DocsUserUpdatePassword()
   updatePassword(
     @Body() changePasswordDto: ChangePasswordDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -80,6 +95,7 @@ export class UsersController {
 
   @Delete(':id')
   @Auth()
+  @DocsUserRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

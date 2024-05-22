@@ -14,6 +14,13 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
+import {
+  DocsRoleCreate,
+  DocsRoleFindAOne,
+  DocsRoleFindAll,
+  DocsRoleRemove,
+  DocsRoleUpdate,
+} from './docs';
 
 @Controller('roles')
 export class RolesController {
@@ -21,6 +28,7 @@ export class RolesController {
 
   @Post()
   @Auth()
+  @DocsRoleCreate()
   create(
     @Body() createRoleDto: CreateRoleDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -30,6 +38,7 @@ export class RolesController {
 
   @Get()
   @Auth()
+  @DocsRoleFindAll()
   findAll(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -39,6 +48,7 @@ export class RolesController {
 
   @Get(':id')
   @Auth()
+  @DocsRoleFindAOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -48,6 +58,7 @@ export class RolesController {
 
   @Put(':id')
   @Auth()
+  @DocsRoleUpdate()
   update(
     @Param('id') id: string,
     @Body() updateRoleDto: UpdateRoleDto,
@@ -58,6 +69,7 @@ export class RolesController {
 
   @Delete(':id')
   @Auth()
+  @DocsRoleRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

@@ -54,8 +54,15 @@ export class UserChangePasswordUpdater {
     );
 
     await this.userRepository.updatePassword(uuid, updatePassword);
-    return ResponseMessage.createDefaultMessage(
-      MessageDefault.SUCCESSFULLY_UPDATED,
+    return ResponseMessage.createSuccessResponse(
+      UserChangePasswordUpdater.messageSuccess(),
+    );
+  }
+
+  static messageSuccess(): string {
+    return MessageDefault.SUCCESSFULLY_UPDATED.replace(
+      '{{elemento}}',
+      'la contraseña',
     );
   }
 }
