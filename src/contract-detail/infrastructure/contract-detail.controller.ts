@@ -25,6 +25,25 @@ import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
 import { Response } from 'express';
 import { NotificationDetailDto } from './dto/notification-detail.dto';
+import {
+  DocsDetailAccompanied,
+  DocsDetailCage,
+  DocsDetailDocumentation,
+  DocsDetailFindAOne,
+  DocsDetailPet,
+  DocsDetailTravel,
+  DocsDetailUpdateTopico,
+  DocsNotificationDetail,
+  DocsNotificationReVaccinationDetail,
+  DocsNotificationTakingSample,
+  DocsNotificationTravelDetail,
+  DocsNotificationSenasaIntroduce,
+  DocsDetailRemove,
+  DocsNotificationTakingExecuted,
+  DocsExcelCertificate,
+  DocsExcelSenasaCertificate,
+  DocsDetailCertificate,
+} from './docs';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -36,6 +55,7 @@ export class ContractDetailController {
 
   @Get(':id/:detail')
   @Auth()
+  @DocsDetailFindAOne()
   findOne(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -46,6 +66,7 @@ export class ContractDetailController {
 
   @Patch(':id/pet')
   @Auth()
+  @DocsDetailPet()
   updatePet(
     @Param('id') id: string,
     @Body() petDetailDto: PetDetailDto,
@@ -56,6 +77,7 @@ export class ContractDetailController {
 
   @Patch(':id/:detail/accompanied')
   @Auth()
+  @DocsDetailAccompanied()
   updateAccompanied(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -72,6 +94,7 @@ export class ContractDetailController {
 
   @Patch(':id/:detail/documentation')
   @Auth()
+  @DocsDetailDocumentation()
   updateDocumentation(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -88,6 +111,7 @@ export class ContractDetailController {
 
   @Patch(':id/:detail/cage')
   @Auth()
+  @DocsDetailCage()
   updateCage(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -99,6 +123,7 @@ export class ContractDetailController {
 
   @Patch(':id/:detail/travel')
   @Auth()
+  @DocsDetailTravel()
   updateTravel(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -110,6 +135,7 @@ export class ContractDetailController {
 
   @Patch(':id/:detail/topico/:value')
   @Auth()
+  @DocsDetailUpdateTopico()
   updateTopico(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -129,6 +155,7 @@ export class ContractDetailController {
   @Post(':id/:detail/notificationDetail')
   @HttpCode(200)
   @Auth()
+  @DocsNotificationDetail()
   mailDetail(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -146,6 +173,7 @@ export class ContractDetailController {
   @Post(':id/:detail/notificationTopicRabiesReVaccination')
   @HttpCode(200)
   @Auth()
+  @DocsNotificationReVaccinationDetail()
   mailTopicRabiesReVaccination(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -161,6 +189,7 @@ export class ContractDetailController {
   @Post(':id/:detail/notificationTravelDetail')
   @HttpCode(200)
   @Auth()
+  @DocsNotificationTravelDetail()
   mailTravelDetail(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -172,6 +201,7 @@ export class ContractDetailController {
   @Post(':id/:detail/notificationTakingSample')
   @HttpCode(200)
   @Auth()
+  @DocsNotificationTakingSample()
   mailTakingSample(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -183,6 +213,7 @@ export class ContractDetailController {
   @Post(':id/:detail/notificationTakingSampleExecuted')
   @HttpCode(200)
   @Auth()
+  @DocsNotificationTakingExecuted()
   mailTakingSampleExecuted(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -198,6 +229,7 @@ export class ContractDetailController {
   @Post(':id/:detail/notificationSenasaIntroduceContract')
   @HttpCode(200)
   @Auth()
+  @DocsNotificationSenasaIntroduce()
   senasaIntroduceContract(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -212,6 +244,7 @@ export class ContractDetailController {
 
   @Post(':id/:detail/excel/senasa')
   @Auth()
+  @DocsExcelSenasaCertificate()
   async downloadSenasaExcel(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -224,6 +257,7 @@ export class ContractDetailController {
         detail,
         user,
       );
+
     response.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
     res.setHeader(
@@ -237,6 +271,7 @@ export class ContractDetailController {
 
   @Post(':id/:detail/excel/certificate/:certificate')
   @Auth()
+  @DocsExcelCertificate()
   async downloadCertificateExcel(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -265,6 +300,7 @@ export class ContractDetailController {
 
   @Patch(':id/:detail/certificate/:value')
   @Auth()
+  @DocsDetailCertificate()
   updateCertificate(
     @Param('id') id: string,
     @Param('detail') detail: string,
@@ -283,6 +319,7 @@ export class ContractDetailController {
 
   @Delete(':id/:detailId')
   @Auth()
+  @DocsDetailRemove()
   remove(
     @Param('id') id: string,
     @Param('detailId') detailId: string,

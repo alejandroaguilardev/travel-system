@@ -9,10 +9,10 @@ export class UploadsService {
   async getUploadImage(
     name: string,
     type: string,
-    route: string,
+    routeType: string,
   ): Promise<any> {
     const response = await this.laravelApiAdapter.get(
-      `/upload-image/${name}/${route}`,
+      `/upload-image/${routeType}/${name}`,
       {
         responseType: type === 'arraybuffer' ? 'arraybuffer' : 'stream',
       },
@@ -39,14 +39,14 @@ export class UploadsService {
   async uploadImage(
     name: string,
     fileMulter: Express.Multer.File,
-    route: string,
+    routeType: string,
   ) {
     const formData = new FormData();
     const file = new File([fileMulter.buffer], fileMulter.originalname);
     formData.set('file', file);
 
     const { data } = await this.laravelApiAdapter.post<{ name: string }>(
-      `/upload-image/${name}/${route}`,
+      `/upload-image/${routeType}/${name}`,
       formData,
       {
         headers: {

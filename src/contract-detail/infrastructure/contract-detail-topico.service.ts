@@ -52,7 +52,6 @@ export class ContractDetailTopicoService {
     );
 
     const topico = CommandContractTopico[value](topicoDto[value], user.id);
-
     const response = await contractDetailPetUpdater.execute(
       contractId,
       contractDetailId,

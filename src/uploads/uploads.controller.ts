@@ -15,16 +15,23 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadImageDto } from './dto/upload-image.dto';
 import { UploadsService } from './uploads.service';
 import { Response } from 'express';
+import { DocsUploadImage } from './docs';
+import { Auth } from '../auth/infrastructure/decorator';
+import { DocsUploadFile } from './docs/upload-file.docs';
+import { DocsGetImage } from './docs/upload-get-image.docs';
+import { DocsGetFile } from './docs/upload-get-file.docs';
 
 @Controller('uploads')
 export class UploadsController {
-  constructor(private readonly uploadsService: UploadsService) { }
+  constructor(private readonly uploadsService: UploadsService) {}
 
-  @Post('/image/:route')
+  @Post('/image/:routeType')
+  @Auth()
   @UseInterceptors(FileInterceptor('file'))
+  @DocsUploadImage()
   uploadImage(
     @Body() { name }: UploadImageDto,
-    @Param('route') route: string,
+    @Param('routeType') routeType: string,
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -37,11 +44,13 @@ export class UploadsController {
     )
     file: Express.Multer.File,
   ) {
-    return this.uploadsService.uploadImage(name, file, route);
+    return this.uploadsService.uploadImage(name, file, routeType);
   }
 
   @Post('/file')
+  @Auth()
   @UseInterceptors(FileInterceptor('file'))
+  @DocsUploadFile()
   uploadFile(
     @Body() { name }: UploadImageDto,
     @UploadedFile(
@@ -54,17 +63,18 @@ export class UploadsController {
     return this.uploadsService.uploadFile(name, file);
   }
 
-  @Get('/image/:name/:type/:route')
+  @Get('/image/:name/:type/:routeType')
+  @DocsGetImage()
   async getImage(
     @Param('name') name: string,
     @Param('type') type: string,
-    @Param('route') route: string,
+    @Param('routeType') routeType: string,
     @Res() res: Response,
   ) {
     const { data, contentType } = await this.uploadsService.getUploadImage(
       name,
       type,
-      route,
+      routeType,
     );
     if (type === 'arraybuffer') {
       const buffer = Buffer.from(data);
@@ -81,6 +91,8 @@ export class UploadsController {
   }
 
   @Get('/file/:name')
+  @Auth()
+  @DocsGetFile()
   async getFile(@Param('name') name: string, @Res() res: Response) {
     const { data, contentType } = await this.uploadsService.getUploadFile(name);
     data.pipe(res);

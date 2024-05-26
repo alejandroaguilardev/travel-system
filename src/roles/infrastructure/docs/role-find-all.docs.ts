@@ -14,7 +14,7 @@ export function DocsRoleFindAll() {
       content: {
         'application/json': {
           schema: {
-            type: 'array',
+            type: 'object',
           },
           example: {
             rows: [

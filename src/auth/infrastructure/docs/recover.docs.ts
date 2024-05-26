@@ -19,6 +19,7 @@ export function DocsRecover() {
       },
     }),
     ApiOkResponse({
+      status: 200,
       description: 'Correo enviado',
       content: {
         'application/json': {

@@ -22,6 +22,7 @@ export function DocsLogin() {
       },
     }),
     ApiOkResponse({
+      status: 200,
       content: {
         'application/json': {
           schema: {

@@ -1,3 +1,3 @@
-import { StringValueObject } from '../../common/domain/value-object/string-value-object';
+import { ValueObject } from '../../common/domain/value-object/value-object';
 
-export class ErrorBody extends StringValueObject {}
+export class ErrorBody extends ValueObject<string> {}

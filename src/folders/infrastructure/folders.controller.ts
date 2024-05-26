@@ -14,6 +14,13 @@ import { UpdateFolderDto } from './dto/update-folder.dto';
 import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { Auth, GetUser } from '../../auth/infrastructure/decorator';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import {
+  DocsFolderCreate,
+  DocsFolderFindAll,
+  DocsFolderFindOne,
+  DocsFolderRemove,
+  DocsFolderUpdate,
+} from './docs';
 
 @Controller('folders')
 export class FoldersController {
@@ -21,6 +28,7 @@ export class FoldersController {
 
   @Post()
   @Auth()
+  @DocsFolderCreate()
   create(
     @Body() createFolderDto: CreateFolderDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -30,6 +38,7 @@ export class FoldersController {
 
   @Get()
   @Auth()
+  @DocsFolderFindAll()
   findAll(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -39,6 +48,7 @@ export class FoldersController {
 
   @Get(':id')
   @Auth()
+  @DocsFolderFindOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -48,6 +58,7 @@ export class FoldersController {
 
   @Put(':id')
   @Auth()
+  @DocsFolderUpdate()
   update(
     @Param('id') id: string,
     @Body() updateFoldersDto: UpdateFolderDto,
@@ -58,6 +69,7 @@ export class FoldersController {
 
   @Delete(':id')
   @Auth()
+  @DocsFolderRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

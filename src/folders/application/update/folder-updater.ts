@@ -43,7 +43,7 @@ export class FolderUpdater {
   static messageSuccess(): string {
     return MessageDefault.SUCCESSFULLY_UPDATED.replace(
       '{{elemento}}',
-      'la jaula',
+      'el expediente',
     );
   }
 }

@@ -28,6 +28,7 @@ export function DocsPermissionCreate() {
       },
     }),
     ApiOkResponse({
+      status: 201,
       content: {
         'application/json': {
           schema: {

@@ -18,7 +18,6 @@ import { UploadsModule } from './uploads/uploads.module';
 import { IncidentsModule } from './errors/infrastructure/incidents.module';
 import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { GlobalExceptionFilter } from './common/infrastructure/config/global-filter';
-import { IncidentsService } from './errors/infrastructure/incidents.service';
 import { UUIDService } from './common/infrastructure/services/uuid.service';
 import { LaravelApiAdapter } from './common/infrastructure/services/laravel-adapter.service';
 import { GlobalPipes } from './common/infrastructure/config/global-pipes';
@@ -44,18 +43,17 @@ import { GlobalPipes } from './common/infrastructure/config/global-pipes';
   ],
   controllers: [],
   providers: [
-    BcryptService,
-    IncidentsService,
     UUIDService,
-    LaravelApiAdapter,
-    {
-      provide: APP_FILTER,
-      useClass: GlobalExceptionFilter,
-    },
     {
       provide: APP_PIPE,
       useValue: GlobalPipes.getGlobal(),
     },
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+    BcryptService,
+    LaravelApiAdapter,
   ],
 })
 export class AppModule {}

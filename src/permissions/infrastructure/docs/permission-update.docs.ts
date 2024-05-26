@@ -10,8 +10,8 @@ import { UpdatePermissionDto } from '../dto/update-permission.dto';
 export function DocsPermissionUpdate() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Crear un nuevo permiso',
-      description: 'Crear un nuevo permiso en el sistema',
+      summary: 'Actualizar un permiso',
+      description: 'Actualizar un permiso en el sistema',
     }),
     ApiBearerAuth(),
     ApiBody({

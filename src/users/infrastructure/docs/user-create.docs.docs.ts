@@ -44,6 +44,7 @@ export function DocsUserCreate() {
       },
     }),
     ApiOkResponse({
+      status: 201,
       content: {
         'application/json': {
           schema: {

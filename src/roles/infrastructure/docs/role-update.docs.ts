@@ -10,8 +10,8 @@ import { UpdateRoleDto } from '../dto/update-role.dto';
 export function DocsRoleUpdate() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Crear un nuevo rol',
-      description: 'Crear un nuevo rol en el sistema',
+      summary: 'Actualizar un rol',
+      description: 'Actualizar un  rol en el sistema',
     }),
     ApiBearerAuth(),
     ApiBody({

@@ -1,0 +1,17 @@
+export { DocsNotificationTakingExecuted } from './detail-noti-tanking-executed.docs';
+export { DocsDetailFindAOne } from './detail-find-one.docs';
+export { DocsDetailPet } from './detail-pet.docs';
+export { DocsDetailAccompanied } from './detail-update-accompanied.docs';
+export { DocsDetailDocumentation } from './detail-update-documentation.docs';
+export { DocsDetailCage } from './detail-cage.docs';
+export { DocsDetailTravel } from './detail-travel.docs';
+export { DocsDetailUpdateTopico } from './detail-topico.docs';
+export { DocsNotificationDetail } from './detail-notification-detail.docs';
+export { DocsNotificationReVaccinationDetail } from './detail-noti-rabies-re-vacc';
+export { DocsNotificationTakingSample } from './detail-noti-taking-sample.docs';
+export { DocsNotificationTravelDetail } from './detail-noti-travel-detail.docs';
+export { DocsNotificationSenasaIntroduce } from './detail-noti-senasa-intro.docs';
+export { DocsDetailRemove } from './detail-remove.docs';
+export { DocsDetailCertificate } from './detail-certificate.docs';
+export { DocsExcelCertificate } from './detail-excel-certificate.docs';
+export { DocsExcelSenasaCertificate } from './detail-excel-senasa.docs';

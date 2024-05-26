@@ -1,0 +1,11 @@
+export { DocsContractCreate } from './contract-create.docs';
+export { DocsContractFindAll } from './contract-find-all.docs';
+export { DocsContractFindAOne } from './contract-find-one.docs';
+export { DocsContractRemove } from './contract-remove.docs';
+export { DocsContractUpdate } from './contract-update.docs';
+export { DocsContractFinish } from './contract-finish.dto';
+export { DocsContractFinishClient } from './contract-client-finish.docs';
+export { DocsContractCancel } from './contract-cancel.dto';
+export { DocsContractClientAll } from './contract-client-pending.docs';
+export { DocsContractFolder } from './contract-folder.dto';
+export { DocsContractPayment } from './contract-payment.dto';

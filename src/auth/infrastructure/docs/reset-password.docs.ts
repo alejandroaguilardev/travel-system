@@ -24,6 +24,7 @@ export function DocsResetPassword() {
       },
     }),
     ApiOkResponse({
+      status: 200,
       description: 'Contraseña restablecida con éxito.',
       content: {
         'application/json': {

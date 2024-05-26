@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   Patch,
+  HttpCode,
 } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
 import { CreateContractDto } from './dto/create-contract.dto';
@@ -19,6 +20,20 @@ import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-
 import { FolderContractDto } from './dto/folder-contract-dto';
 import { ContractCancelDto } from './dto/contract-cancel.dto';
 import { PayInInstallmentArrayDto } from './dto/pay-installment.dto';
+import {
+  DocsContractCancel,
+  DocsContractClientAll,
+  DocsContractCreate,
+  DocsContractFindAOne,
+  DocsContractFindAll,
+  DocsContractFinish,
+  DocsContractFinishClient,
+  DocsContractFolder,
+  DocsContractPayment,
+  DocsContractRemove,
+  DocsContractUpdate,
+} from './docs';
+import { DocsContractClientFindAll } from './docs/contract-client.docs';
 
 @Controller('contracts')
 export class ContractsController {
@@ -26,6 +41,7 @@ export class ContractsController {
 
   @Post()
   @Auth()
+  @DocsContractCreate()
   create(
     @Body() createContractDto: CreateContractDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -34,7 +50,9 @@ export class ContractsController {
   }
 
   @Post(':id/finish')
+  @HttpCode(200)
   @Auth()
+  @DocsContractFinish()
   finish(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -42,7 +60,9 @@ export class ContractsController {
     return this.contractsService.finish(id, user);
   }
   @Post(':id/finish/client')
+  @HttpCode(200)
   @Auth()
+  @DocsContractFinishClient()
   finishClient(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -51,7 +71,9 @@ export class ContractsController {
   }
 
   @Post(':id/cancel')
+  @HttpCode(200)
   @Auth()
+  @DocsContractCancel()
   cancel(
     @Param('id') id: string,
     @Body() contractCancelDto: ContractCancelDto,
@@ -62,6 +84,7 @@ export class ContractsController {
 
   @Get()
   @Auth()
+  @DocsContractFindAll()
   findAll(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -71,12 +94,14 @@ export class ContractsController {
 
   @Get('client/pending')
   @Auth()
+  @DocsContractClientAll()
   findContractByClient(@GetUser() user: UserWithoutWithRoleResponse) {
     return this.contractsService.findContractByClient(user);
   }
 
   @Get('client')
   @Auth()
+  @DocsContractClientFindAll()
   findAllByClient(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -86,6 +111,7 @@ export class ContractsController {
 
   @Get(':id')
   @Auth()
+  @DocsContractFindAOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -95,6 +121,7 @@ export class ContractsController {
 
   @Put(':id')
   @Auth()
+  @DocsContractUpdate()
   update(
     @Param('id') id: string,
     @Body() updateContractDto: UpdateContractDto,
@@ -105,6 +132,7 @@ export class ContractsController {
 
   @Patch(':id/folder')
   @Auth()
+  @DocsContractFolder()
   updateFolder(
     @Param('id') id: string,
     @Body() folderContractDto: FolderContractDto,
@@ -115,6 +143,7 @@ export class ContractsController {
 
   @Patch(':id/payment')
   @Auth()
+  @DocsContractPayment()
   updatePayment(
     @Param('id') id: string,
     @Body() payInInstallmentArrayDto: PayInInstallmentArrayDto,
@@ -129,6 +158,7 @@ export class ContractsController {
 
   @Delete(':id')
   @Auth()
+  @DocsContractRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

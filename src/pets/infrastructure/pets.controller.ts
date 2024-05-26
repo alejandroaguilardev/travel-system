@@ -17,6 +17,13 @@ import { GetUser } from '../../auth/infrastructure/decorator/get-user.decorator'
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
 import { PetChipDto } from './dto/pet-chip.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
+import {
+  DocsPetCreate,
+  DocsPetFindAll,
+  DocsPetFindOne,
+  DocsPetRemove,
+  DocsPetUpdate,
+} from './docs';
 
 @Controller('pets')
 export class PetsController {
@@ -24,6 +31,7 @@ export class PetsController {
 
   @Post()
   @Auth()
+  @DocsPetCreate()
   create(
     @Body() createPetDto: CreatePetDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -33,6 +41,7 @@ export class PetsController {
 
   @Get()
   @Auth()
+  @DocsPetFindAll()
   findAll(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -42,6 +51,7 @@ export class PetsController {
 
   @Get(':id')
   @Auth()
+  @DocsPetFindOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -51,6 +61,7 @@ export class PetsController {
 
   @Put(':id')
   @Auth()
+  @DocsPetUpdate()
   update(
     @Param('id') id: string,
     @Body() updatePetDto: UpdatePetDto,
@@ -71,6 +82,7 @@ export class PetsController {
 
   @Delete(':id')
   @Auth()
+  @DocsPetRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

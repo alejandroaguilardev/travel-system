@@ -44,6 +44,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
     if (status === 500) {
       console.log(exception);
+
       this.incidentsService.create({
         id: this.uuidService.generate(),
         name: request.url,

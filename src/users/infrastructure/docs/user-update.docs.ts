@@ -10,8 +10,8 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export function DocsUserUpdate() {
   return applyDecorators(
     ApiOperation({
-      summary: 'Crear un nuevo usuario',
-      description: 'Crear un nuevo usuario en el sistema',
+      summary: 'Actualizar un usuario',
+      description: 'Actualizar un usuario en el sistema',
     }),
     ApiBearerAuth(),
     ApiBody({

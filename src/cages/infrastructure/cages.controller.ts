@@ -14,6 +14,13 @@ import { CagesService } from './cages.service';
 import { CreateCageDto } from './dto/create-cage.dto';
 import { UpdateCageDto } from './dto/update-cage.dto';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
+import {
+  DocsCageCreate,
+  DocsCageFindAll,
+  DocsCageFindOne,
+  DocsCageRemove,
+  DocsCageUpdate,
+} from './docs';
 
 @Controller('cages')
 export class CagesController {
@@ -21,6 +28,7 @@ export class CagesController {
 
   @Post()
   @Auth()
+  @DocsCageCreate()
   create(
     @Body() createCageDto: CreateCageDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -30,6 +38,7 @@ export class CagesController {
 
   @Get()
   @Auth()
+  @DocsCageFindAll()
   findAll(
     @Query() criteriaDto: CriteriaDto,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -39,6 +48,7 @@ export class CagesController {
 
   @Get(':id')
   @Auth()
+  @DocsCageFindOne()
   findOne(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,
@@ -48,6 +58,7 @@ export class CagesController {
 
   @Put(':id')
   @Auth()
+  @DocsCageUpdate()
   update(
     @Param('id') id: string,
     @Body() updateCageDto: UpdateCageDto,
@@ -58,6 +69,7 @@ export class CagesController {
 
   @Delete(':id')
   @Auth()
+  @DocsCageRemove()
   remove(
     @Param('id') id: string,
     @GetUser() user: UserWithoutWithRoleResponse,

@@ -28,6 +28,7 @@ export function DocsRoleCreate() {
       },
     }),
     ApiOkResponse({
+      status: 201,
       content: {
         'application/json': {
           schema: {
