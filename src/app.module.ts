@@ -16,14 +16,32 @@ import { UbigeoModule } from './ubigeo/infrastructure/ubigeo.module';
 import { ScheduleCustomModule } from './schedule/infrastructure/schedule-custom.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { IncidentsModule } from './errors/infrastructure/incidents.module';
-import { APP_FILTER, APP_PIPE } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { GlobalExceptionFilter } from './common/infrastructure/config/global-filter';
 import { UUIDService } from './common/infrastructure/services/uuid.service';
 import { LaravelApiAdapter } from './common/infrastructure/services/laravel-adapter.service';
 import { GlobalPipes } from './common/infrastructure/config/global-pipes';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([
+      {
+        name: 'short',
+        ttl: 1000,
+        limit: 3,
+      },
+      {
+        name: 'medium',
+        ttl: 10000,
+        limit: 10
+      },
+      {
+        name: 'long',
+        ttl: 60000,
+        limit: 150
+      }
+    ]),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
     AuthModule,
@@ -43,6 +61,10 @@ import { GlobalPipes } from './common/infrastructure/config/global-pipes';
   ],
   controllers: [],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     UUIDService,
     {
       provide: APP_PIPE,
@@ -56,4 +78,4 @@ import { GlobalPipes } from './common/infrastructure/config/global-pipes';
     LaravelApiAdapter,
   ],
 })
-export class AppModule {}
+export class AppModule { }

@@ -2,11 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import welcome from './common/domain/static/welcome';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({ origin: '*' });
+  app.use(helmet());
   app.setGlobalPrefix('api');
 
   /***
