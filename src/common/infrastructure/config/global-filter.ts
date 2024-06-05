@@ -4,7 +4,7 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { FastifyRequest, FastifyReply } from 'fastify';
 import { ErrorDomain } from '../../domain/errors/error-domain';
 import { IncidentsService } from '../../../errors/infrastructure/incidents.service';
 import { UUIDService } from '../services/uuid.service';
@@ -14,12 +14,12 @@ export class GlobalExceptionFilter implements ExceptionFilter {
   constructor(
     private readonly incidentsService: IncidentsService,
     private readonly uuidService: UUIDService,
-  ) {}
+  ) { }
 
   catch(exception: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
-    const request = ctx.getRequest<Request>();
+    const response = ctx.getResponse<FastifyReply>();
+    const request = ctx.getRequest<FastifyRequest>();
 
     let status = 500;
     let message =
@@ -53,7 +53,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       });
     }
 
-    response.status(status).json({
+    response.status(status).send({
       status: status,
       timestamp: new Date().toISOString(),
       path: request.url,

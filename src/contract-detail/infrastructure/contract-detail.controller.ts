@@ -23,7 +23,7 @@ import {
 import { ContractDetailTopicoService } from './contract-detail-topico.service';
 import { TopicoDto } from './dto/topico/topico.dto';
 import { ContractDetailCertificateService } from './contract-detail-certificate.service';
-import { Response } from 'express';
+import { FastifyReply } from 'fastify';
 import { NotificationDetailDto } from './dto/notification-detail.dto';
 import {
   DocsDetailAccompanied,
@@ -51,7 +51,7 @@ export class ContractDetailController {
     private readonly contractDetailService: ContractDetailService,
     private readonly contractDetailTopicoService: ContractDetailTopicoService,
     private readonly contractDetailCertificateService: ContractDetailCertificateService,
-  ) {}
+  ) { }
 
   @Get(':id/:detail')
   @Auth()
@@ -249,7 +249,7 @@ export class ContractDetailController {
     @Param('id') id: string,
     @Param('detail') detail: string,
     @GetUser() user: UserWithoutWithRoleResponse,
-    @Res() res: Response,
+    @Res() res: FastifyReply,
   ) {
     const { response, name } =
       await this.contractDetailCertificateService.senasaExcelDownload(
@@ -260,12 +260,12 @@ export class ContractDetailController {
 
     response.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
-    res.setHeader(
+    res.header(
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
-    res.setHeader('name', name);
+    res.header('Content-Disposition', `attachment; filename="${name}"`);
+    res.header('name', name);
     return response;
   }
 
@@ -277,7 +277,7 @@ export class ContractDetailController {
     @Param('detail') detail: string,
     @Param('certificate') certificate: string,
     @GetUser() user: UserWithoutWithRoleResponse,
-    @Res() res: Response,
+    @Res() res: FastifyReply,
   ) {
     const { response, name } =
       await this.contractDetailCertificateService.certificateExcelDownload(
@@ -289,12 +289,12 @@ export class ContractDetailController {
 
     response.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
-    res.setHeader(
+    res.header(
       'Content-Type',
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     );
-    res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
-    res.setHeader('name', name);
+    res.header('Content-Disposition', `attachment; filename="${name}"`);
+    res.header('name', name);
     return response;
   }
 

@@ -1,15 +1,24 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import welcome from './common/domain/static/welcome';
-import helmet from 'helmet';
+import helmet from '@fastify/helmet';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { AppModule } from './app.module';
+
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    new FastifyAdapter()
+  );
+  await app.register(helmet);
 
   app.enableCors({ origin: '*' });
-  app.use(helmet());
   app.setGlobalPrefix('api');
+
 
   /***
    * @Documentation API

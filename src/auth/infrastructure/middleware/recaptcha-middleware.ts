@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
+import { FastifyRequest, FastifyReply } from 'fastify';
 
 @Injectable()
 export class RecaptchaMiddleware implements NestMiddleware {
@@ -8,7 +8,7 @@ export class RecaptchaMiddleware implements NestMiddleware {
   constructor() {
     this.isProductionMode = process.env.PRODUCTION;
   }
-  async use(req: Request, res: Response, next: NextFunction) {
+  async use(req: FastifyRequest, res: FastifyReply, next: () => void) {
     if (this.getProductionMode()) {
       next();
       return;
@@ -16,7 +16,7 @@ export class RecaptchaMiddleware implements NestMiddleware {
     const token = req.headers['g-recaptcha-response'];
 
     if (!token) {
-      return res.status(400).json({ error: 'No reCAPTCHA token provided' });
+      return res.status(400).send({ error: 'No reCAPTCHA token provided' });
     }
 
     try {
@@ -33,11 +33,11 @@ export class RecaptchaMiddleware implements NestMiddleware {
       if (response.data.success) {
         next();
       } else {
-        return res.status(400).json({ error: 'reCAPTCHA verification failed' });
+        return res.status(400).send({ error: 'reCAPTCHA verification failed' });
       }
     } catch (error) {
       console.error('Error verifying reCAPTCHA token:', error);
-      return res.status(500).json({ error: 'Internal server error' });
+      return res.status(500).send({ error: 'Internal server error' });
     }
   }
 

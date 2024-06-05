@@ -11,23 +11,25 @@ import {
   Param,
   Res,
 } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadImageDto } from './dto/upload-image.dto';
 import { UploadsService } from './uploads.service';
-import { Response } from 'express';
+import { FastifyReply } from 'fastify';
 import { DocsUploadImage } from './docs';
 import { Auth } from '../auth/infrastructure/decorator';
 import { DocsUploadFile } from './docs/upload-file.docs';
 import { DocsGetImage } from './docs/upload-get-image.docs';
 import { DocsGetFile } from './docs/upload-get-file.docs';
+import { ApiConsumes } from '@nestjs/swagger';
+import { FileInterceptor } from '@nest-lab/fastify-multer';
 
 @Controller('uploads')
 export class UploadsController {
-  constructor(private readonly uploadsService: UploadsService) {}
+  constructor(private readonly uploadsService: UploadsService) { }
 
   @Post('/image/:routeType')
   @Auth()
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("file"))
   @DocsUploadImage()
   uploadImage(
     @Body() { name }: UploadImageDto,
@@ -49,7 +51,8 @@ export class UploadsController {
 
   @Post('/file')
   @Auth()
-  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes("multipart/form-data")
+  @UseInterceptors(FileInterceptor("file"))
   @DocsUploadFile()
   uploadFile(
     @Body() { name }: UploadImageDto,
@@ -69,7 +72,7 @@ export class UploadsController {
     @Param('name') name: string,
     @Param('type') type: string,
     @Param('routeType') routeType: string,
-    @Res() res: Response,
+    @Res() res: FastifyReply,
   ) {
     const { data, contentType } = await this.uploadsService.getUploadImage(
       name,
@@ -84,22 +87,22 @@ export class UploadsController {
     }
     data.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
-    res.setHeader('Content-Type', contentType);
-    res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
-    res.setHeader('name', name);
+    res.header('Content-Type', contentType);
+    res.header('Content-Disposition', `attachment; filename="${name}"`);
+    res.header('name', name);
     return data;
   }
 
   @Get('/file/:name')
   @Auth()
   @DocsGetFile()
-  async getFile(@Param('name') name: string, @Res() res: Response) {
+  async getFile(@Param('name') name: string, @Res() res: FastifyReply) {
     const { data, contentType } = await this.uploadsService.getUploadFile(name);
     data.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
-    res.setHeader('Content-Type', contentType);
-    res.setHeader('Content-Disposition', `attachment; filename="${name}"`);
-    res.setHeader('name', name);
+    res.header('Content-Type', contentType);
+    res.header('Content-Disposition', `attachment; filename="${name}"`);
+    res.header('name', name);
     return data;
   }
 }
