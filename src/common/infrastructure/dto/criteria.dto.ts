@@ -1,4 +1,4 @@
-import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString, Max } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { CriteriaRequest } from '../../application/criteria/criteria';
 import { FilterRequest } from '../../application/criteria/filter';
@@ -13,6 +13,7 @@ export class CriteriaDto implements CriteriaRequest {
 
   @IsOptional()
   @IsNumber()
+  @Max(10000)
   @Type(() => Number)
   size: number = 10;
 

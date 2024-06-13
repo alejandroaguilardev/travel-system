@@ -11,7 +11,7 @@ export class UserPassword extends StringValueObject {
   private minLength(password: string): void {
     if (password && password.length < 6) {
       throw new ErrorInvalidadArgument(
-        'El password debe ser mayor a 5 caracteres',
+        'La contraseña debe ser mayor a 5 caracteres',
       );
     }
   }
@@ -19,7 +19,7 @@ export class UserPassword extends StringValueObject {
   private maxLength(password: string): void {
     if (password.length > 128) {
       throw new ErrorInvalidadArgument(
-        'El password debe ser menor a  129 caracteres',
+        'La contraseña debe ser menor a  129 caracteres',
       );
     }
   }
