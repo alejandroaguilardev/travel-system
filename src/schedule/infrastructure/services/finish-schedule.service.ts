@@ -13,13 +13,12 @@ export class FinishScheduleService {
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly laravelApiAdapter: LaravelApiAdapter,
-  ) {}
+  ) { }
 
   @Cron('00 09 * * *')
   async handleCron() {
     const contracts =
       await this.mongoContractRepository.findFinishAndUpdateReview();
-    console.log(contracts);
     Promise.allSettled(contracts.map((contract) => this.mailFinish(contract)));
   }
 

@@ -32,7 +32,7 @@ export class CertificateExcelDownload {
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
     private readonly ubigeo: UbigeoQueryInterface,
-  ) {}
+  ) { }
 
   async execute(
     contractId: Uuid,
@@ -107,9 +107,9 @@ export class CertificateExcelDownload {
 
       inspectionDate: documentation.senasaDocuments.executionDate
         ? this.dateService.formatDateTime(
-            documentation.senasaDocuments.executionDate,
-            'dd/MM/yyyy',
-          )
+          documentation.senasaDocuments.executionDate,
+          'dd/MM/yyyy',
+        )
         : '',
       countryDestiny: destination.countryDestination,
       cityDestiny: destination.cityDestination,
@@ -131,15 +131,15 @@ export class CertificateExcelDownload {
       ),
       vaccinationDate: documentation.vaccinationCertificate.resultDate
         ? this.dateService.formatDateTime(
-            documentation.vaccinationCertificate.resultDate,
-            'dd/MM/yyyy',
-          )
+          documentation.vaccinationCertificate.resultDate,
+          'dd/MM/yyyy',
+        )
         : '',
       healthDayAndMonth: documentation.healthCertificate.resultDate
         ? this.dateService.formatDateTime(
-            documentation.healthCertificate.resultDate,
-            "dd 'de' MMMM",
-          )
+          documentation.healthCertificate.resultDate,
+          "dd 'de' MMMM",
+        )
         : '',
       healthYear: this.dateService.formatDateTime(
         documentation.healthCertificate.resultDate,
@@ -215,8 +215,6 @@ export class CertificateExcelDownload {
 
   private petAge(birthDate: Date) {
     const value = this.dateService.formatDifferenceInYearsAndMonths(birthDate);
-    console.log({ birthDate });
-    console.log({ value });
     return value;
   }
 

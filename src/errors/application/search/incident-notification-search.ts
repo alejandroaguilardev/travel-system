@@ -10,7 +10,7 @@ import {
 import { Criteria } from '../../../common/domain/criteria/criteria';
 
 export class IncidentNotificationSearch {
-  constructor(private readonly http: HttpInterface) {}
+  constructor(private readonly http: HttpInterface) { }
 
   async execute(
     criteria: Criteria,
@@ -19,9 +19,7 @@ export class IncidentNotificationSearch {
     PermissionValidator.execute(user, AuthGroup.INCIDENTS, AuthPermission.LIST);
 
     const queryString = this.queryString(criteria);
-    console.log(queryString);
     const { data } = await this.http.get(`log?${queryString}`);
-    console.log({ data });
     return data;
   }
 

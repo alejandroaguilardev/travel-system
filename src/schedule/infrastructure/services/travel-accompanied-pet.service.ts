@@ -20,7 +20,7 @@ export class TravelAccompaniedScheduleService {
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly jwtService: JWTAdapterService,
     private readonly dayJsService: DayJsService,
-  ) {}
+  ) { }
 
   @Cron('30 7 * * *')
   async handleCron() {
@@ -43,7 +43,6 @@ export class TravelAccompaniedScheduleService {
           detail.travel.airlineReservation.departureDate,
           new Date(),
         );
-        console.log({ lastWeek });
         if (
           TravelAccompaniedPet.hasRequiredAccompaniedPetFields(
             detail.travel.accompaniedPet,

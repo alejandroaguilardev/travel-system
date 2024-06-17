@@ -258,7 +258,6 @@ export class ContractDetailController {
         user,
       );
 
-    response.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
     res.header(
       'Content-Type',
@@ -266,9 +265,10 @@ export class ContractDetailController {
     );
     res.header('Content-Disposition', `attachment; filename="${name}"`);
     res.header('name', name);
-    return response;
+    res.send(response);
   }
 
+  @HttpCode(200)
   @Post(':id/:detail/excel/certificate/:certificate')
   @Auth()
   @DocsExcelCertificate()
@@ -287,15 +287,11 @@ export class ContractDetailController {
         user,
       );
 
-    response.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
-    res.header(
-      'Content-Type',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    );
+    res.header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     res.header('Content-Disposition', `attachment; filename="${name}"`);
     res.header('name', name);
-    return response;
+    res.send(response);
   }
 
   @Patch(':id/:detail/certificate/:value')

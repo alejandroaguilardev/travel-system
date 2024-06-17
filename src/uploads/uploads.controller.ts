@@ -85,12 +85,12 @@ export class UploadsController {
       const dataUrl = `data:${contentType};base64,${imageBase64}`;
       return res.send(dataUrl);
     }
-    data.pipe(res);
+
     res.header('Access-Control-Expose-Headers', 'name');
     res.header('Content-Type', contentType);
     res.header('Content-Disposition', `attachment; filename="${name}"`);
     res.header('name', name);
-    return data;
+    res.send(data);
   }
 
   @Get('/file/:name')
@@ -98,11 +98,10 @@ export class UploadsController {
   @DocsGetFile()
   async getFile(@Param('name') name: string, @Res() res: FastifyReply) {
     const { data, contentType } = await this.uploadsService.getUploadFile(name);
-    data.pipe(res);
     res.header('Access-Control-Expose-Headers', 'name');
     res.header('Content-Type', contentType);
     res.header('Content-Disposition', `attachment; filename="${name}"`);
     res.header('name', name);
-    return data;
+    res.send(data);
   }
 }
