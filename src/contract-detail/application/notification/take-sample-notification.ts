@@ -7,7 +7,7 @@ export class TakeSampleNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -29,7 +29,7 @@ export class TakeSampleNotification {
     };
 
     this.http
-      .post(`/mail/detail/taking-sample`, { ...data })
+      .post(`/notification/detail/taking-sample`, { ...data })
       .catch((e) => console.log(e));
   }
 }

@@ -8,10 +8,16 @@ export class TopicoDate {
   }
 
   private ensureValueIsDate(value: Date): void {
-    if (!(value instanceof Date) || isNaN(value.getTime())) {
+
+    if (!this.isValidDate(value)) {
       throw new ErrorInvalidadArgument(
         'La fecha de ejecución no es una fecha válida',
       );
     }
+  }
+
+  private isValidDate(value) {
+    let date = new Date(value);
+    return date instanceof Date && !isNaN(date.getTime());
   }
 }

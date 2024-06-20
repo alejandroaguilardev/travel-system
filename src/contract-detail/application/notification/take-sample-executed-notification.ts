@@ -3,7 +3,9 @@ import { ContractResponse } from '../../../contracts/application/response/contra
 import { ContractDetailResponse } from '../response/contract-detail.response';
 
 export class TakeSampleExecutedNotification {
-  constructor(private readonly http: HttpInterface) {}
+  constructor(
+    private readonly http: HttpInterface,
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -21,7 +23,7 @@ export class TakeSampleExecutedNotification {
     };
 
     this.http
-      .post(`/mail/detail/taking-sample-executed`, { ...data })
+      .post(`/notification/detail/taking-sample-executed`, { ...data })
       .catch((e) => console.log(e));
   }
 }

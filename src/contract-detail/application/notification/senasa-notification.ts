@@ -7,7 +7,7 @@ export class SendMailSenasaIntroduceNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -29,7 +29,7 @@ export class SendMailSenasaIntroduceNotification {
     };
 
     this.http
-      .post(`/mail/detail/senasa-introduce`, { ...data })
+      .post(`/notification/detail/senasa-introduce`, { ...data })
       .catch((e) => console.log(e));
   }
 }

@@ -7,7 +7,7 @@ export class RabiesReVaccinationNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -29,7 +29,7 @@ export class RabiesReVaccinationNotification {
     };
 
     this.http
-      .post(`/mail/detail/rabies-re-vaccination`, { ...data })
+      .post(`/notification/detail/rabies-re-vaccination`, { ...data })
       .catch((e) => console.log(e));
   }
 }

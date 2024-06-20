@@ -6,7 +6,7 @@ import { MeasurementsAndWeightInterface } from '../../../pets/domain/interfaces/
 import { DocumentationInterface } from '../../domain/interfaces/documentation.interface';
 
 export class InfoDetailNotification {
-  constructor(private readonly http: HttpInterface) {}
+  constructor(private readonly http: HttpInterface) { }
 
   async execute(
     contract: ContractResponse,
@@ -48,9 +48,8 @@ export class InfoDetailNotification {
       !!chosenCage?.typeCage;
 
     const cage = isCage
-      ? `Tipo: ${chosenCage?.typeCage ?? '--'}   Modelo: ${
-          chosenCage?.modelCage ?? 0
-        }   Medidas: ${chosenCage?.dimensionsCage ?? 0} cm`
+      ? `Tipo: ${chosenCage?.typeCage ?? '--'}   Modelo: ${chosenCage?.modelCage ?? 0
+      }   Medidas: ${chosenCage?.dimensionsCage ?? 0} cm`
       : 'Aún no se ha recomendado jaula a la mascota';
 
     return cage;
@@ -66,11 +65,9 @@ export class InfoDetailNotification {
       !!measurementsAndWeight?.weight;
 
     const measurements = isMeasurements
-      ? `${measurementsAndWeight?.height ?? 0} cm  x ${
-          measurementsAndWeight?.width ?? 0
-        } x  ${measurementsAndWeight?.length ?? 0} cm / ${
-          measurementsAndWeight?.weight ?? 0
-        } kg`
+      ? `${measurementsAndWeight?.height ?? 0} cm  x ${measurementsAndWeight?.width ?? 0
+      } x  ${measurementsAndWeight?.length ?? 0} cm / ${measurementsAndWeight?.weight ?? 0
+      } kg`
       : 'Aún no se han tomado las medidas ni el peso de la mascota';
 
     return measurements;
@@ -99,9 +96,8 @@ export class InfoDetailNotification {
     if (!documentation[name].isApplied && !isRequired)
       return `<h4 style='background-color:##5DADE2;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: pendiente</h4>`;
 
-    const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: finalizado</h4><span> ${
-      documentation[name]?.observation ?? ''
-    }</span>`;
+    const value = `<h4 style='background-color:green;padding:10px; color:#fff;border-radius:5px'>${label}  ${required}: finalizado</h4><span> ${documentation[name]?.observation ?? ''
+      }</span>`;
     return value;
   }
 

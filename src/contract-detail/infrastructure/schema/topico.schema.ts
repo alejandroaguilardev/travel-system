@@ -1,6 +1,15 @@
+
 export const topicoSchema = {
   type: {
     chip: {
+      hasIncluded: Boolean,
+      executed: Boolean,
+      date: Date,
+      description: String,
+      observation: String,
+      user: String,
+    },
+    chipReview: {
       hasIncluded: Boolean,
       executed: Boolean,
       date: Date,
@@ -42,3 +51,4 @@ export const topicoSchema = {
   },
   required: false,
 };
+

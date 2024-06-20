@@ -32,7 +32,7 @@ export class ContractDetailTopicoService {
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
-  ) {}
+  ) { }
 
   async updateTopico(
     contractId: string,

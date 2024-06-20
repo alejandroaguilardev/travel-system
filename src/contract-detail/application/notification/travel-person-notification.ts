@@ -16,7 +16,7 @@ export class TravelPersonNotification {
     private readonly http: HttpInterface,
     private readonly ubigeo: UbigeoQueryInterface,
     private readonly jwt: JWT,
-  ) {}
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -25,7 +25,7 @@ export class TravelPersonNotification {
     const data = await this.formatData(contract, contractDetail);
 
     this.http
-      .post(`/mail/detail/travel-person`, { ...data })
+      .post(`/notification/detail/travel-person`, { ...data })
       .catch((e) => console.log(e));
   }
 
