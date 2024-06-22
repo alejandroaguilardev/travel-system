@@ -39,7 +39,7 @@ export class ContractDocumentation {
     readonly rabiesSeroLogicalTest: DocumentationRabiesSerologicalTest,
     readonly importLicense: DocumentationImportLicense,
     readonly emotionalSupportCertificate: DocumentationEmocionalSupportCertificate,
-  ) {}
+  ) { }
 
   toJson(): DocumentationInterface {
     return {
@@ -57,6 +57,10 @@ export class ContractDocumentation {
 
   setStatus(status: StatusInterface): void {
     this.status = new ContractStatusDetail(status);
+  }
+
+  setStatusClient(clientStatus: StatusInterface): void {
+    this.clientStatus = new ContractStatusDetail(clientStatus);
   }
 
   documentationIsApplied(data: DocumentationInterface): StatusInterface {

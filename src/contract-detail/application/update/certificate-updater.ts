@@ -10,7 +10,7 @@ import { CommandContractDocumentation } from './command/command-documentation';
 import { DocumentationInterface } from '../../../contract-detail/domain/interfaces/documentation.interface';
 
 export class ContractDetailCertificateUpdater {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -34,6 +34,8 @@ export class ContractDetailCertificateUpdater {
       AuthPermission.DOCUMENTATION,
     );
 
+
+
     const documentationUpdate = CommandContractDocumentation.execute({
       ...(contractDetailResponse?.documentation ?? {}),
       [value]: documentationPartial.toJson(),
@@ -42,6 +44,10 @@ export class ContractDetailCertificateUpdater {
     documentationUpdate.setStatus(
       documentationUpdate.documentationIsApplied(documentationUpdate.toJson()),
     );
+    documentationUpdate.setStatusClient(
+      documentationUpdate.documentationClientIsApplied(documentationUpdate.toJson()),
+    );
+
 
     const contractDetail = {
       ...contractDetailResponse,

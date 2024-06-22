@@ -33,7 +33,7 @@ export class Contract {
     readonly reasonForCancellation: ContractReasonForCancellation,
     readonly format: ContractFormat,
     readonly user: UuidOptional,
-  ) {}
+  ) { }
 
   toJson(): ContractInterface {
     return {
@@ -73,6 +73,8 @@ export class Contract {
     } else {
       this.status.petTravel.value = 'pending';
     }
+
+    this.establishedClientStatus()
   }
   establishedClientStatus() {
     const details = this.details.map((_) => _.toJson());
