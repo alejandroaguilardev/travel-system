@@ -7,12 +7,10 @@ import { RabiesSerologyPdf } from '../application/pdf/rabies-serology';
 import { PDFDocumentService } from '../../common/infrastructure/services/pdf-document.service';
 import { join } from 'path';
 import { CDCRVMRPdf } from '../application/pdf/CDCRVMR-pdf';
-import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 
 @Injectable()
 export class PdfService {
-  private readonly PATH = "src/contract-detail/domain/pdf";
-
+  private readonly PATH = "../../../pdf/contract-detail/domain/pdf/";
 
   constructor(
     private readonly mongoContractRepository: MongoContractRepository,
@@ -28,8 +26,8 @@ export class PdfService {
       this.pdfDocumentService,
     );
 
-    const originalFilePath = join(process.cwd(), this.PATH, rabiesSerologyPdf.FILENAME);
-    const outputFilePath = join(process.cwd(), this.PATH, `edited_${rabiesSerologyPdf.FILENAME}`);
+    const originalFilePath = join(__dirname, this.PATH, rabiesSerologyPdf.FILENAME);
+    const outputFilePath = join(__dirname, this.PATH, `edited_${rabiesSerologyPdf.FILENAME}`);
 
     const { editedPdfBytes, name } = await rabiesSerologyPdf.execute(new Uuid(contractId), new Uuid(detailId), originalFilePath);
     await fs.writeFile(outputFilePath, Buffer.from(editedPdfBytes, 'base64'));
@@ -44,8 +42,8 @@ export class PdfService {
       this.pdfDocumentService,
     );
 
-    const originalFilePath = join(process.cwd(), this.PATH, rabiesSerologyPdf.FILENAME);
-    const outputFilePath = join(process.cwd(), this.PATH, `edited_${rabiesSerologyPdf.FILENAME}`);
+    const originalFilePath = join(__dirname, this.PATH, rabiesSerologyPdf.FILENAME);
+    const outputFilePath = join(__dirname, this.PATH, `edited_${rabiesSerologyPdf.FILENAME}`);
 
     const { editedPdfBytes, name } = await rabiesSerologyPdf.execute(new Uuid(contractId), new Uuid(detailId), originalFilePath);
     await fs.writeFile(outputFilePath, Buffer.from(editedPdfBytes, 'base64'));

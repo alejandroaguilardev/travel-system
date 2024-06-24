@@ -15,10 +15,6 @@ import { PDFDocumentService } from '../../common/infrastructure/services/pdf-doc
 
 @Module({
   imports: [
-    // ServeStaticModule.forRoot({
-    //   rootPath: join(__dirname, '../../../src/contract-detail/domain/pdf'),
-    //   serveRoot: '/pdf',
-    // }),
     AuthModule, ContractsModule, UbigeoModule, PetsModule],
   controllers: [ContractDetailController],
   providers: [
