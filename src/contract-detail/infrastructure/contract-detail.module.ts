@@ -10,9 +10,16 @@ import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.servic
 import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 import { PetsModule } from '../../pets/infrastructure/pets.module';
+import { PdfService } from './pdf.service';
+import { PDFDocumentService } from '../../common/infrastructure/services/pdf-document.service';
 
 @Module({
-  imports: [AuthModule, ContractsModule, UbigeoModule, PetsModule],
+  imports: [
+    // ServeStaticModule.forRoot({
+    //   rootPath: join(__dirname, '../../../src/contract-detail/domain/pdf'),
+    //   serveRoot: '/pdf',
+    // }),
+    AuthModule, ContractsModule, UbigeoModule, PetsModule],
   controllers: [ContractDetailController],
   providers: [
     ContractDetailService,
@@ -21,7 +28,9 @@ import { PetsModule } from '../../pets/infrastructure/pets.module';
     JWTAdapterService,
     LaravelApiAdapter,
     DayJsService,
+    PdfService,
+    PDFDocumentService,
   ],
   exports: [ContractDetailService],
 })
-export class ContractDetailModule {}
+export class ContractDetailModule { }

@@ -8,6 +8,7 @@ import {
   Post,
   HttpCode,
   Res,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ContractDetailService } from './contract-detail.service';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
@@ -44,6 +45,8 @@ import {
   DocsExcelSenasaCertificate,
   DocsDetailCertificate,
 } from './docs';
+import { DocsRabiesSerology } from './docs/rabiesSeorology.docs';
+import { PdfService } from './pdf.service';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -51,6 +54,7 @@ export class ContractDetailController {
     private readonly contractDetailService: ContractDetailService,
     private readonly contractDetailTopicoService: ContractDetailTopicoService,
     private readonly contractDetailCertificateService: ContractDetailCertificateService,
+    private readonly pdfService: PdfService,
   ) { }
 
   @Get(':id/:detail')
@@ -322,5 +326,33 @@ export class ContractDetailController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailService.remove(id, detailId, user);
+  }
+
+  @Auth()
+  @DocsRabiesSerology()
+  @HttpCode(200)
+  @Post('/rabies-serology/:contractId/:detailId')
+  async rabiesSerology(@Param('contractId', ParseUUIDPipe) contractId, @Param('detailId', ParseUUIDPipe) detailId, @Res() res: FastifyReply) {
+    const { archive, name } = await this.pdfService.rabiesSerology(contractId, detailId);
+    res
+      .header('Access-Control-Expose-Headers', 'name')
+      .header('Content-Disposition', `attachment; filename="${name}"`)
+      .header('name', name)
+      .header('Content-Type', 'application/pdf')
+      .send(archive);
+  }
+
+  @Auth()
+  @DocsRabiesSerology()
+  @HttpCode(200)
+  @Post('/cdcr-rvmr/:contractId/:detailId')
+  async cdcrRvmr(@Param('contractId', ParseUUIDPipe) contractId, @Param('detailId', ParseUUIDPipe) detailId, @Res() res: FastifyReply) {
+    const { archive, name } = await this.pdfService.cdcrRvmr(contractId, detailId);
+    res
+      .header('Access-Control-Expose-Headers', 'name')
+      .header('Content-Disposition', `attachment; filename="${name}"`)
+      .header('name', name)
+      .header('Content-Type', 'application/pdf')
+      .send(archive);
   }
 }
