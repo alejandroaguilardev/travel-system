@@ -8,6 +8,10 @@
   ],
   "routes": [
     {
+      "src": "/pdf/(.*)",
+      "dest": "/pdf/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "src/main.ts"
     }
