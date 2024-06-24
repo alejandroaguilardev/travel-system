@@ -15,7 +15,9 @@
       "dest": "src/main.ts"
     }
   ],
-  "public": [
-    "dist/pdf"
-  ]
+  "functions": {
+    "src/main.ts": {
+      "includeFiles": "dist/pdf/**"
+    }
+  }
 }
