@@ -11,10 +11,5 @@
       "src": "/(.*)",
       "dest": "src/main.ts"
     }
-  ],
-  "functions": {
-    "api/**/*.js": {
-      "includeFiles": "src/contract-detail/domain/pdf/**/*"
-    }
-  }
+  ]
 }
