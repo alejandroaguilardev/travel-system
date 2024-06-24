@@ -7,13 +7,6 @@
     "plugins": [
       "@nestjs/swagger"
     ],
-    "deleteOutDir": true,
-    "assets": [
-      {
-        "include": "**/*.pdf",
-        "outDir": "dist/pdf"
-      }
-    ],
-    "watchAssets": true
+    "deleteOutDir": true
   }
 }

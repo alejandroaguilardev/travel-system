@@ -1,3 +1,3 @@
 export interface IPdfService<T> {
-    load(filePath: string): Promise<T>;
+    load(filePath: File): Promise<T>;
 }

@@ -7,7 +7,7 @@ import { ContractDetailResponse } from '../response/contract-detail.response';
 
 export class RabiesSerologyPdf {
 
-    public readonly FILENAME = 'rabies-serology.pdf';
+    public readonly FILENAME = 'rabies-serology';
 
     constructor(
         private readonly contractRepository: ContractRepository,
@@ -16,7 +16,7 @@ export class RabiesSerologyPdf {
     ) { }
 
 
-    async execute(contractId: Uuid, detailId: Uuid, pathFile: string) {
+    async execute(contractId: Uuid, detailId: Uuid, file: File) {
         const contract = await this.contractRepository.searchByIdWithPet(contractId);
         const contractDetail = contract?.details?.filter(_ => _.id === detailId.value);
 
@@ -24,16 +24,16 @@ export class RabiesSerologyPdf {
             throw new ErrorNotFound("No se encontró el identificador del contrato");
         }
 
-        const { editedPdfBytes, client } = await this.setArchive(contractDetail[0], pathFile);
+        const { editedPdfBytes, client } = await this.setArchive(contractDetail[0], file);
         return {
             editedPdfBytes,
-            name: `rabies-serology-${client.toLowerCase()}.pdf`
+            name: `${this.FILENAME}-${client.toLowerCase()}.pdf`
         };
     }
 
 
-    async setArchive(contractDetail: ContractDetailResponse, pathFile: string) {
-        const pdfBytes = await this.pdfService.load(pathFile);
+    async setArchive(contractDetail: ContractDetailResponse, file: File) {
+        const pdfBytes = await this.pdfService.load(file);
         const form = pdfBytes.getForm();
         // const fields = form.getFields();
         // fields.forEach((field) => { console.log(field.getName()); });

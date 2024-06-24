@@ -4,12 +4,11 @@ import { ContractRepository } from '../../../contracts/domain/contract.repositor
 import { IPdfService } from '../../../common/application/services/pdf-service';
 import { ErrorNotFound } from '../../../common/domain/errors';
 import { ContractDetailResponse } from '../response/contract-detail.response';
-import { UbigeoQueryInterface } from '../../../ubigeo/domain/interfaces/ubigeo-query.interface';
 import { PetGenderType } from '../../../pets/domain/value-object/pet-gender';
 
 export class CDCRVMRPdf {
 
-    public readonly FILENAME = 'CDC-RVMR-2023-508.pdf';
+    private readonly FILENAME = 'CDC-RVMR-2023-508';
 
     constructor(
         private readonly contractRepository: ContractRepository,
@@ -18,7 +17,7 @@ export class CDCRVMRPdf {
     ) { }
 
 
-    async execute(contractId: Uuid, detailId: Uuid, pathFile: string) {
+    async execute(contractId: Uuid, detailId: Uuid, file: File) {
         const contract = await this.contractRepository.searchByIdWithPet(contractId);
         const contractDetail = contract?.details?.filter(_ => _.id === detailId.value);
 
@@ -26,16 +25,16 @@ export class CDCRVMRPdf {
             throw new ErrorNotFound("No se encontró el identificador del contrato");
         }
 
-        const { editedPdfBytes, client } = await this.setArchive(contractDetail[0], pathFile);
+        const { editedPdfBytes, client } = await this.setArchive(contractDetail[0], file);
         return {
             editedPdfBytes,
-            name: `CDC-RVMR-2023-508-${client.toLowerCase()}.pdf`
+            name: `${this.FILENAME}-${client.toLowerCase()}.pdf`
         };
     }
 
 
-    async setArchive(contractDetail: ContractDetailResponse, pathFile: string) {
-        const pdfBytes = await this.pdfService.load(pathFile);
+    async setArchive(contractDetail: ContractDetailResponse, file: File) {
+        const pdfBytes = await this.pdfService.load(file);
         const form = pdfBytes.getForm();
         // const fields = form.getFields();
         // fields.forEach((field) => { console.log(field.getName()); });

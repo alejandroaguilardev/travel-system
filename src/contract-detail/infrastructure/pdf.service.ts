@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 import { MongoContractRepository } from '../../contracts/infrastructure/persistence/contract-mongo.repository';
-import * as fs from 'fs/promises';
 import { Uuid } from '../../common/domain/value-object/uuid';
 import { RabiesSerologyPdf } from '../application/pdf/rabies-serology';
 import { PDFDocumentService } from '../../common/infrastructure/services/pdf-document.service';
@@ -10,7 +9,6 @@ import { CDCRVMRPdf } from '../application/pdf/CDCRVMR-pdf';
 
 @Injectable()
 export class PdfService {
-  private readonly PATH = "dist/pdf/contract-detail/domain/pdf/";
 
 
   constructor(
@@ -20,34 +18,27 @@ export class PdfService {
   ) { }
 
 
-  async rabiesSerology(contractId: string, detailId: string) {
+  async rabiesSerology(contractId: string, detailId: string, file: File) {
     const rabiesSerologyPdf = new RabiesSerologyPdf(
       this.mongoContractRepository,
       this.dayJsService,
       this.pdfDocumentService,
     );
 
-    const originalFilePath = join(process.cwd(), this.PATH, rabiesSerologyPdf.FILENAME);
-    const outputFilePath = join(process.cwd(), this.PATH, `edited_${rabiesSerologyPdf.FILENAME}`);
 
-    const { editedPdfBytes, name } = await rabiesSerologyPdf.execute(new Uuid(contractId), new Uuid(detailId), originalFilePath);
-    await fs.writeFile(outputFilePath, Buffer.from(editedPdfBytes, 'base64'));
+    const { editedPdfBytes, name } = await rabiesSerologyPdf.execute(new Uuid(contractId), new Uuid(detailId), file);
 
     return { archive: editedPdfBytes, name };
   }
 
-  async cdcrRvmr(contractId: string, detailId: string) {
+  async cdcrRvmr(contractId: string, detailId: string, file: File) {
     const rabiesSerologyPdf = new CDCRVMRPdf(
       this.mongoContractRepository,
       this.dayJsService,
       this.pdfDocumentService,
     );
 
-    const originalFilePath = join(process.cwd(), this.PATH, rabiesSerologyPdf.FILENAME);
-    const outputFilePath = join(process.cwd(), this.PATH, `edited_${rabiesSerologyPdf.FILENAME}`);
-
-    const { editedPdfBytes, name } = await rabiesSerologyPdf.execute(new Uuid(contractId), new Uuid(detailId), originalFilePath);
-    await fs.writeFile(outputFilePath, Buffer.from(editedPdfBytes, 'base64'));
+    const { editedPdfBytes, name } = await rabiesSerologyPdf.execute(new Uuid(contractId), new Uuid(detailId), file);
 
     return { archive: editedPdfBytes, name };
   }

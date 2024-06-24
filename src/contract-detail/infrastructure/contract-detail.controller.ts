@@ -9,6 +9,9 @@ import {
   HttpCode,
   Res,
   ParseUUIDPipe,
+  UploadedFile,
+  ParseFilePipe,
+  UseInterceptors,
 } from '@nestjs/common';
 import { ContractDetailService } from './contract-detail.service';
 import { Auth } from '../../auth/infrastructure/decorator/auth.decorator';
@@ -47,6 +50,7 @@ import {
 } from './docs';
 import { DocsRabiesSerology } from './docs/rabiesSeorology.docs';
 import { PdfService } from './pdf.service';
+import { FileInterceptor } from '@nest-lab/fastify-multer';
 
 @Controller('contract-detail')
 export class ContractDetailController {
@@ -331,9 +335,14 @@ export class ContractDetailController {
   @Auth()
   @DocsRabiesSerology()
   @HttpCode(200)
+  @UseInterceptors(FileInterceptor("file"))
   @Post('/rabies-serology/:contractId/:detailId')
-  async rabiesSerology(@Param('contractId', ParseUUIDPipe) contractId, @Param('detailId', ParseUUIDPipe) detailId, @Res() res: FastifyReply) {
-    const { archive, name } = await this.pdfService.rabiesSerology(contractId, detailId);
+  async rabiesSerology(
+    @Param('contractId', ParseUUIDPipe) contractId,
+    @Param('detailId', ParseUUIDPipe) detailId,
+    @UploadedFile() file: File,
+    @Res() res: FastifyReply) {
+    const { archive, name } = await this.pdfService.rabiesSerology(contractId, detailId, file);
     res
       .header('Access-Control-Expose-Headers', 'name')
       .header('Content-Disposition', `attachment; filename="${name}"`)
@@ -345,9 +354,14 @@ export class ContractDetailController {
   @Auth()
   @DocsRabiesSerology()
   @HttpCode(200)
+  @UseInterceptors(FileInterceptor("file"))
   @Post('/cdcr-rvmr/:contractId/:detailId')
-  async cdcrRvmr(@Param('contractId', ParseUUIDPipe) contractId, @Param('detailId', ParseUUIDPipe) detailId, @Res() res: FastifyReply) {
-    const { archive, name } = await this.pdfService.cdcrRvmr(contractId, detailId);
+  async cdcrRvmr(
+    @Param('contractId', ParseUUIDPipe) contractId,
+    @Param('detailId', ParseUUIDPipe) detailId,
+    @UploadedFile() file: File,
+    @Res() res: FastifyReply) {
+    const { archive, name } = await this.pdfService.cdcrRvmr(contractId, detailId, file);
     res
       .header('Access-Control-Expose-Headers', 'name')
       .header('Content-Disposition', `attachment; filename="${name}"`)
