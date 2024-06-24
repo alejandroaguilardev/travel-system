@@ -14,5 +14,8 @@
       "src": "/(.*)",
       "dest": "src/main.ts"
     }
+  ],
+  "public": [
+    "dist/pdf"
   ]
 }
