@@ -15,5 +15,10 @@
       "src": "/(.*)",
       "dest": "src/main.ts"
     }
-  ]
+  ],
+  "functions": {
+    "src/main.ts": {
+      "includeFiles": "dist/pdf/**"
+    }
+  }
 }
