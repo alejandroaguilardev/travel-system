@@ -22,6 +22,8 @@ import { UUIDService } from './common/infrastructure/services/uuid.service';
 import { LaravelApiAdapter } from './common/infrastructure/services/laravel-adapter.service';
 import { GlobalPipes } from './common/infrastructure/config/global-pipes';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -42,6 +44,9 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
         limit: 175
       }
     ]),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'dist/pdf'),
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
     AuthModule,
