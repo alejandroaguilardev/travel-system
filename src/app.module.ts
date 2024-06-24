@@ -45,7 +45,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
       }
     ]),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'dist/pdf'),
+      rootPath: join(__dirname, '..', 'pdf'),
+      serveRoot: '/pdf',
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DATABASE_URL),
@@ -83,4 +84,5 @@ import { ServeStaticModule } from '@nestjs/serve-static';
     LaravelApiAdapter,
   ],
 })
-export class AppModule { }
+export class AppModule {
+}
