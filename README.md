@@ -62,8 +62,14 @@ Before running the application, you need to configure some environment variables
 ```env
 PRODUCTION=false
 PORT=5000
-DATABASE_URL="mongodb://localhost:27017/database_name"
+DATABASE_URL="mongodb://localhost:27017/nombre_de_la_base_de_datos"
+TZ=""
+
 JWT_SECRET_KEY="JWT_SECRET_KEY"
 SALT_ROUNDS=10
+
+RE_CAPTCHA_SECRET=""
+API_LARAVEL="http://127.0.0.1:8000/api"
+API_LARAVEL_KEY="api_key"
 ```
 
