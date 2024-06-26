@@ -23,8 +23,7 @@ import { ContractStatusInterface } from '../../domain/interfaces/contract.interf
 @Injectable()
 export class MongoContractRepository
   extends MongoRepository<ContractModel, Contract>
-  implements ContractRepository
-{
+  implements ContractRepository {
   private contractModel: Model<ContractModel>;
 
   constructor(@InjectModel(ContractModel.name) model: Model<ContractModel>) {

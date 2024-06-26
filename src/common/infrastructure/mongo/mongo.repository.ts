@@ -12,9 +12,8 @@ interface ToJsonFunction {
 
 @Injectable()
 export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
-  implements Repository<T>
-{
-  constructor(private readonly model: ModelMongoose<Model>) {}
+  implements Repository<T> {
+  constructor(private readonly model: ModelMongoose<Model>) { }
 
   async save(data: T): Promise<void> {
     const newData = data.toJson();
@@ -28,7 +27,7 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
     const rows: R[] = await this.model
       .find(query)
       .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
-      .skip(start)
+      .skip(start * size)
       .limit(size)
       .sort(sortQuery)
       .lean();

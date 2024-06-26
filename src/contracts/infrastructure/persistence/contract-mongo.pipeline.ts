@@ -11,18 +11,19 @@ export class ContractMongoPipeline {
       sort.push({ $sort: sortQuery });
     }
 
+
     return [
       ...ContractMongoPipeline.lookup(),
       {
         $match: query,
       },
+      ...sort,
       {
-        $skip: start,
+        $skip: start * size,
       },
       {
         $limit: size,
       },
-      ...sort,
     ];
   }
 

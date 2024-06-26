@@ -13,9 +13,7 @@ export class UserMongoPipeline {
     }
 
     return [
-      {
-        $match: query,
-      },
+
       {
         $lookup: {
           from: 'roles',
@@ -53,6 +51,10 @@ export class UserMongoPipeline {
         },
       },
       {
+        $match: query,
+      },
+      ...sort,
+      {
         $project: {
           _id: 0,
           __v: 0,
@@ -72,12 +74,12 @@ export class UserMongoPipeline {
         },
       },
       {
-        $skip: start,
+        $skip: start * size,
       },
       {
         $limit: size,
       },
-      ...sort,
+
     ];
   }
 

@@ -369,4 +369,25 @@ export class ContractDetailController {
       .header('Content-Type', 'application/pdf')
       .send(archive);
   }
+
+
+  @Auth()
+  @DocsRabiesSerology()
+  @HttpCode(200)
+  @UseInterceptors(FileInterceptor("file"))
+  @Post('/adendas/:contractId/:detailId/:lang')
+  async adendas(
+    @Param('contractId', ParseUUIDPipe) contractId,
+    @Param('detailId', ParseUUIDPipe) detailId,
+    @Param('lang') lang,
+    @UploadedFile() file: File,
+    @Res() res: FastifyReply) {
+    const { archive, name } = await this.pdfService.adendas(contractId, detailId, file, lang);
+    res
+      .header('Access-Control-Expose-Headers', 'name')
+      .header('Content-Disposition', `attachment; filename="${name}"`)
+      .header('name', name)
+      .header('Content-Type', 'application/pdf')
+      .send(archive);
+  }
 }
