@@ -12,7 +12,7 @@ export class PendingPaymentNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
-  ) {}
+  ) { }
 
   async execute(contract: ContractResponse): Promise<void> {
     const { payment, payments } = this.getPayments(contract);
@@ -26,9 +26,8 @@ export class PendingPaymentNotification {
       payment,
     };
 
-    this.http
+    await this.http
       .post(`/notification/contract/payment-pending`, data)
-      .catch((e) => console.log(e));
   }
 
   private getPayments(contract: ContractResponse): {
@@ -43,27 +42,24 @@ export class PendingPaymentNotification {
       if (!payInInstallment.isPay) {
         selectedColor =
           this.dateService.isSame(payInInstallment.date) ||
-          this.dateService.isBefore(payInInstallment.date)
+            this.dateService.isBefore(payInInstallment.date)
             ? this.colors.danger
             : this.colors.default;
       }
 
       payments += `<tr>
-                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
-                      this.colors.default === selectedColor ? '#000' : '#fff'
-                    }'>
+                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${this.colors.default === selectedColor ? '#000' : '#fff'
+        }'>
                         ${this.dateService.formatDateTime(
-                          payInInstallment.date,
-                          'dd/MM/yyyy',
-                        )}
+          payInInstallment.date,
+          'dd/MM/yyyy',
+        )}
                     </td>
-                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
-                      this.colors.default === selectedColor ? '#000' : '#fff'
-                    }'>
+                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${this.colors.default === selectedColor ? '#000' : '#fff'
+        }'>
                     ${payInInstallment.price.toFixed(2)}$</td>
-                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${
-                      this.colors.default === selectedColor ? '#000' : '#fff'
-                    }'>
+                    <td  align='center'style='padding:10px 0; background-color:${selectedColor}; color:${this.colors.default === selectedColor ? '#000' : '#fff'
+        }'>
                         ${payInInstallment.isPay ? 'Pagado' : 'Pendiente'}
                     </td>
                 </tr>`;

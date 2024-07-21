@@ -22,8 +22,7 @@ export class TakeSampleExecutedNotification {
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
     };
 
-    this.http
+    await this.http
       .post(`/notification/detail/taking-sample-executed`, { ...data })
-      .catch((e) => console.log(e));
   }
 }

@@ -28,8 +28,7 @@ export class RabiesReVaccinationNotification {
       ),
     };
 
-    this.http
+    await this.http
       .post(`/notification/detail/rabies-re-vaccination`, { ...data })
-      .catch((e) => console.log(e));
   }
 }

@@ -36,9 +36,8 @@ export class InfoDetailNotification {
       message,
     };
 
-    this.http
+    await this.http
       .post(`/notification/detail/info`, { ...data })
-      .catch((e) => console.log(e));
   }
 
   private chosenCage(chosenCage?: CageChosenInterface): string {

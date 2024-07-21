@@ -24,9 +24,8 @@ export class TravelPersonNotification {
   ): Promise<void> {
     const data = await this.formatData(contract, contractDetail);
 
-    this.http
+    await this.http
       .post(`/notification/detail/travel-person`, { ...data })
-      .catch((e) => console.log(e));
   }
 
   private async formatData(
