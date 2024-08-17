@@ -10,7 +10,7 @@ export class UserSecondLastName extends StringValueObject {
   private isValidName() {
     if (this.value.length > 45) {
       throw new ErrorInvalidadArgument(
-        'El nombre debe ser menor a 45 caracteres',
+        'El segundo apellido debe ser menor a 45 caracteres',
       );
     }
   }
