@@ -12,5 +12,5 @@ export interface ProfileInterface {
   province: string;
   district: string;
   direction: string;
-  job: string;
+  job?: string;
 }
