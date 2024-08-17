@@ -11,11 +11,10 @@ export class UserSeeder {
     private readonly userRepository: UserRepository,
     private readonly hashing: Hashing,
     private readonly uuid: UUID,
-  ) {}
+  ) { }
 
   async execute(): Promise<void> {
     const users = getUserData(this.uuid);
-    const password = new UserPassword(this.hashing.hashPassword('12345678'));
 
     await Promise.all(
       users.map((_) => {
@@ -24,7 +23,7 @@ export class UserSeeder {
           user.auth.setAdmin(new UserAuthAdmin(true));
         }
 
-        user.setPassword(password);
+        user.setPassword(new UserPassword(this.hashing.hashPassword(_.profile.documentNumber)));
 
         return this.userRepository.save(user);
       }),

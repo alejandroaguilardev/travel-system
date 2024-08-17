@@ -7,6 +7,7 @@ import { UserDocument } from './profile/user-document';
 import { UserDocumentNumber } from './profile/user-document-number';
 import { UserFirstName } from './profile/user-first-name';
 import { UserGender } from './profile/user-gender';
+import { UserJob } from './profile/user-job';
 import { UserLastName } from './profile/user-last-name';
 import { UserPhone } from './profile/user-phone';
 import { UserProvince } from './profile/user-province';
@@ -31,7 +32,8 @@ export class UserProfile {
     readonly province: UserProvince,
     readonly district: UserDistrict,
     readonly direction: UserDirection,
-  ) {}
+    readonly job: UserJob,
+  ) { }
 
   toJson(): ProfileInterface {
     return {
@@ -48,6 +50,7 @@ export class UserProfile {
       province: this.province.value,
       district: this.district.value,
       direction: this.direction.value,
+      job: this.job.value,
     };
   }
 }

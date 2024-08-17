@@ -13,6 +13,7 @@ import { UserPhone } from '../../../domain/value-object/profile/user-phone';
 import { UserProvince } from '../../../domain/value-object/profile/user-province';
 import { UserSecondLastName } from '../../../domain/value-object/profile/user-second-last-name';
 import { ProfileInterface } from '../../../domain/interfaces/profile.interface';
+import { UserJob } from '../../../domain/value-object/profile/user-job';
 
 export class CommandProfileUser {
   static execute(profile: ProfileInterface): UserProfile {
@@ -30,6 +31,7 @@ export class CommandProfileUser {
       new UserProvince(profile.province),
       new UserDistrict(profile.district),
       new UserDirection(profile.direction),
+      new UserJob(profile.job),
     );
   }
 }

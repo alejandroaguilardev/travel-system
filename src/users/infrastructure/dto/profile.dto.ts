@@ -35,4 +35,7 @@ export class ProfileDto implements ProfileInterface {
   @IsString({ message: 'La dirección no es un valor válido' })
   @IsOptional()
   readonly direction: string;
+  @IsOptional()
+  @IsString({ message: 'El cargo no es un valor válido' })
+  readonly job: string;
 }
