@@ -27,6 +27,7 @@ import { UserDocumentNumber } from '../../domain/value-object/profile/user-docum
 import { UserIsAdvisor } from '../../domain/value-object/user-advisor';
 import { UserIsDoctor } from '../../domain/value-object/user-is-doctor';
 import { userLinkWhatsApp } from '../../domain/value-object/user-link-whats-app';
+import { UserJob } from '../../domain/value-object/profile/user-job';
 
 export class CommandCreatorUser {
   static execute(data: CreateUserRequest, userId: string): User {
@@ -49,6 +50,7 @@ export class CommandCreatorUser {
         new UserProvince(data.profile.province),
         new UserDistrict(data.profile.district),
         new UserDirection(data.profile.direction),
+        new UserJob(data.profile.job),
       ),
       new StatusValueObject('active'),
       new UuidOptional(userId),
@@ -56,6 +58,11 @@ export class CommandCreatorUser {
         new UserAuthAdmin(
           data?.auth?.admin && data.auth.admin === true
             ? data.auth.admin
+            : false,
+        ),
+        new UserAuthAdmin(
+          data?.auth?.user && data.auth.user === true
+            ? data.auth.user
             : false,
         ),
         new UserAuthRemember(''),

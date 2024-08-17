@@ -6,13 +6,13 @@ export class CancelContractNotification {
   constructor(
     private readonly contractRepository: ContractRepository,
     private readonly http: HttpInterface,
-  ) {}
+  ) { }
 
   async execute(contractId: Uuid): Promise<void> {
     const contract =
       await this.contractRepository.searchByIdWithPet(contractId);
 
-    this.http
+    await this.http
       .post(`/notification/contract/cancel`, {
         email: contract.client.email,
         client:
@@ -24,6 +24,5 @@ export class CancelContractNotification {
         correlative: contract?.correlative ?? '',
         reasonForCancellation: contract.reasonForCancellation,
       })
-      .catch((e) => console.log(e));
   }
 }

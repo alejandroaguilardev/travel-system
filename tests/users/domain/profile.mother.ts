@@ -30,6 +30,7 @@ export class ProfileMother {
         profile?.district ??
         faker.number.int({ min: 100000, max: 999999 }).toString(),
       direction: profile?.direction ?? faker.location.direction(),
+      job: profile?.job ?? faker.person.jobTitle(),
     };
   }
 }

@@ -6,13 +6,13 @@ export class FinishAfterContractNotification {
   constructor(
     private readonly contractRepository: ContractRepository,
     private readonly http: HttpInterface,
-  ) {}
+  ) { }
 
   async execute(contractId: Uuid): Promise<void> {
     const contract =
       await this.contractRepository.searchByIdWithPet(contractId);
 
-    this.http
+    await this.http
       .post(`/notification/contract/finish-after`, {
         email: contract.client.email,
         client:
@@ -22,6 +22,5 @@ export class FinishAfterContractNotification {
         phone: contract.adviser.profile.phone,
         linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       })
-      .catch((e) => console.log(e));
   }
 }

@@ -8,13 +8,13 @@ export class NewContractNotification {
     private readonly contractRepository: ContractRepository,
     private readonly http: HttpInterface,
     private readonly date: DateService,
-  ) {}
+  ) { }
 
   async execute(contractId: Uuid): Promise<void> {
     const contract =
       await this.contractRepository.searchByIdWithPet(contractId);
 
-    this.http
+    await this.http
       .post(`/notification/contract/new`, {
         email: contract.client.email,
         client:
@@ -28,6 +28,5 @@ export class NewContractNotification {
           'dd/MM/yyyy',
         ),
       })
-      .catch((e) => console.log(e));
   }
 }

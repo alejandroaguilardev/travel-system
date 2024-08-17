@@ -8,15 +8,10 @@ export class UserLastName extends StringValueObject {
   }
 
   private isValidName() {
-    if (this.value.length === 0) {
-      throw new ErrorInvalidadArgument(
-        'El nombre debe contener algún carácter',
-      );
-    }
 
     if (this.value.length > 45) {
       throw new ErrorInvalidadArgument(
-        'El nombre debe ser menor a 45 caracteres',
+        'El apellido debe ser menor a 45 caracteres',
       );
     }
   }

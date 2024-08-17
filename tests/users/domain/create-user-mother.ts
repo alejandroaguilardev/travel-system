@@ -39,6 +39,7 @@ export class UserCreatorMother {
       roles: newUser?.roles ?? [],
       auth: newUser?.auth ?? {
         admin: true,
+        user: false,
         rememberToken: '',
         lastLogin: new Date(),
       },

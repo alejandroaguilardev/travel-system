@@ -49,6 +49,7 @@ export class UserModel implements UserInterface {
   @Prop({
     type: {
       admin: Boolean,
+      user: Boolean,
       rememberToken: String,
       lastLogin: String,
     },

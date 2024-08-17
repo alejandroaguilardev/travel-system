@@ -4,7 +4,7 @@ import { CreateUserRequest } from '../../users/application/create/create-user-re
 export const getUserData = (uuid: UUID): CreateUserRequest[] => [
   {
     id: uuid.generate(),
-    email: 'alexaguilar281@gmail.com',
+    email: 'test@prueba.com',
     roles: [],
     profile: {
       document: 'C.E.',
@@ -19,11 +19,13 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       direction: '',
       district: '',
       gender: 'male',
-      phone: '51939130496',
+      phone: '',
+      job: "Desarrollador"
     },
     status: '',
     auth: {
       admin: true,
+      user: true,
       rememberToken: '',
       lastLogin: null,
     },
@@ -32,36 +34,7 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
   },
   {
     id: uuid.generate(),
-    email: 'crichrissuarez82@gmail.com',
-    roles: [],
-    profile: {
-      document: 'D.N.I.',
-      documentNumber: '41233194',
-      name: 'Christian',
-      secondName: '',
-      lastName: 'Suarez',
-      secondLastName: '',
-      birthDate: new Date(),
-      province: '',
-      department: '',
-      direction: '',
-      district: '',
-      gender: 'male',
-      phone: '51994748870',
-    },
-    status: '',
-    auth: {
-      admin: true,
-      rememberToken: '',
-      lastLogin: null,
-    },
-    isAdvisor: true,
-    isDoctor: false,
-  },
-
-  {
-    id: uuid.generate(),
-    email: 'alexaguilar281@gmail.com',
+    email: 'alex@gmail.com',
     roles: [],
     profile: {
       document: 'D.N.I.',
@@ -77,6 +50,7 @@ export const getUserData = (uuid: UUID): CreateUserRequest[] => [
       district: '',
       gender: 'male',
       phone: '51939130496',
+      job: ""
     },
     status: '',
     isDoctor: false,

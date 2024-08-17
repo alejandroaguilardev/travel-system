@@ -5,7 +5,7 @@ import { UserDocument } from '../../../users/domain/value-object/profile/user-do
 import { HttpInterface } from '../../../common/application/services/http-service';
 
 export class CredentialsNotification {
-  constructor(private readonly http: HttpInterface) {}
+  constructor(private readonly http: HttpInterface) { }
 
   async execute(
     email: UserEmail,
@@ -13,13 +13,12 @@ export class CredentialsNotification {
     documentNumber: UserDocumentNumber,
     password: UserPassword,
   ): Promise<void> {
-    this.http
+    await this.http
       .post(`/notification/user/register`, {
         email: email.value,
         document: document.value,
         documentNumber: documentNumber.value,
         password: password.value,
       })
-      .catch((e) => console.log(e));
   }
 }

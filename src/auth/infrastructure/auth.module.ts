@@ -28,7 +28,7 @@ import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('JWT_SECRET_KEY'),
         signOptions: {
-          expiresIn: '1h',
+          expiresIn: '12h',
         },
       }),
     }),

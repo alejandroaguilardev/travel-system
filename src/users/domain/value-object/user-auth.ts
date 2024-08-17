@@ -6,13 +6,15 @@ import { UserAuthRemember } from './auth/user-remember-token';
 export class UserAuth {
   constructor(
     public admin: UserAuthAdmin,
+    public user: UserAuthAdmin,
     readonly rememberToken: UserAuthRemember,
     readonly lastLogin: UserLastLogin,
-  ) {}
+  ) { }
 
   toJson(): UserAuthInterface {
     return {
       admin: this.admin.value,
+      user: this.user.value,
       rememberToken: this.rememberToken.value,
       lastLogin: this.lastLogin.value,
     };
