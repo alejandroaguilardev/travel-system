@@ -33,7 +33,7 @@ export class SeederService {
     private readonly mongoProvinceRepository: MongoProvinceRepository,
     private readonly mongoDistrictRepository: MongoDistrictRepository,
     @InjectConnection() private readonly connection: Connection,
-  ) {}
+  ) { }
   async seeder(): Promise<ResponseSuccess> {
     const permissionSeeder = new PermissionSeeder(
       this.mongoPermissionRepository,
@@ -57,8 +57,8 @@ export class SeederService {
     await this.connection.db.dropDatabase();
 
     await permissionSeeder.execute(permissions);
-    await roleSeeder.execute(roles);
-    await userSeeder.execute();
+    const rolesData = await roleSeeder.execute(roles);
+    await userSeeder.execute(rolesData.rows);
     await cagesSeeder.execute();
     await ubigeoSeeder.execute();
 

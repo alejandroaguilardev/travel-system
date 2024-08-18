@@ -20,7 +20,7 @@ describe('resetPassword', () => {
   );
 
   it('should successfully log in a user with valid credentials', async () => {
-    const user = UserCreatorMother.create();
+    const user = UserCreatorMother.createWithPassword();
     const password = UserPassword.generatePassword();
     const passwordHash = hashing.hashPassword(password);
 

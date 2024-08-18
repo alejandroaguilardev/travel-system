@@ -1,7 +1,26 @@
 import { UUID } from '../../common/application/services/uuid';
 import { CreatePermissionRequest } from '../../permissions/application/create/create-permission';
-import { AuthGroup } from '../../common/domain/auth-permissions';
+import { AuthGroup, AuthPermission } from '../../common/domain/auth-permissions';
 import { RoleCreatorRequest } from '../../roles/application/create/role-creator-request';
+
+
+export enum RoleNameData {
+  USERS = "Gestión de usuarios",
+  CAGES = "Gestión de Jaulas",
+  CONTRACTS = "Gestión de Contratos",
+  PETS = "Gestión de Mascotas",
+  CLIENT = "Gestión de Clientes",
+  FOLDERS = "Gestión de Expedientes",
+  INCIDENTS = "Gestión de Incidencias",
+  CONTRACT_DOCUMENTATION = "Gestión de Documentos",
+  CONTRACT_TOPICO = "Gestión de Topico",
+  CONTRACT_CAGE = "Fase de Jaula",
+  CONTRACT_TRAVEL = "Fase viaje",
+  CONTRACT_SENASA = "Documentación senasa",
+  CONTRACT_FINISH = "Finalizar contrato",
+  CONTRACT_HISTORY = "Historial contrato",
+}
+
 
 export const getRolesData = (
   uuid: UUID,
@@ -9,7 +28,7 @@ export const getRolesData = (
 ): RoleCreatorRequest[] => [
     {
       id: uuid.generate(),
-      name: 'Gestión de usuarios',
+      name: RoleNameData.USERS,
       description: 'Gestionar los usuarios del sistema',
       permissions: [
         ...permissions
@@ -22,7 +41,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Jaulas',
+      name: RoleNameData.CAGES,
       description: 'Gestionar las jaulas del sistema',
       permissions: [
         ...permissions
@@ -32,7 +51,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Contratos',
+      name: RoleNameData.CONTRACTS,
       description: 'Gestionar contratos del sistema',
       permissions: [
         ...permissions
@@ -42,7 +61,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Mascotas',
+      name: RoleNameData.PETS,
       description: 'Gestionar las mascotas del sistema',
       permissions: [
         ...permissions
@@ -52,7 +71,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Clientes',
+      name: RoleNameData.CLIENT,
       description: 'Gestionar los clientes del sistema',
       permissions: [
         ...permissions
@@ -62,7 +81,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Expedientes',
+      name: RoleNameData.FOLDERS,
       description: 'Gestionar los expedientes del sistema',
       permissions: [
         ...permissions
@@ -72,7 +91,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Incidencias',
+      name: RoleNameData.INCIDENTS,
       description: 'Gestionar los errores del sistema',
       permissions: [
         ...permissions
@@ -82,7 +101,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Documentos',
+      name: RoleNameData.CONTRACT_DOCUMENTATION,
       description: 'Gestionar los documentos',
       permissions: [
         ...permissions
@@ -92,7 +111,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Gestión de Topico',
+      name: RoleNameData.CONTRACT_TOPICO,
       description: 'Gestionar los examenes de topico',
       permissions: [
         ...permissions
@@ -102,7 +121,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Fase de Jaula',
+      name: RoleNameData.CONTRACT_CAGE,
       description: 'Gestionar las jaulas',
       permissions: [
         ...permissions
@@ -112,7 +131,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Fase viaje',
+      name: RoleNameData.CONTRACT_TRAVEL,
       description: 'Gestionar los Viajes',
       permissions: [
         ...permissions
@@ -122,7 +141,7 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Documentación senasa',
+      name: RoleNameData.CONTRACT_SENASA,
       description: 'Gestionar Acciones en senasa',
       permissions: [
         ...permissions
@@ -132,11 +151,29 @@ export const getRolesData = (
     },
     {
       id: uuid.generate(),
-      name: 'Finalizar contrato',
+      name: RoleNameData.CONTRACT_FINISH,
       description: 'Finalizar o cancelar contrato',
       permissions: [
         ...permissions
           .filter((_) => _.group === AuthGroup.CONTRACT_FINISH)
+          .map((_) => _.id),
+      ],
+    },
+    {
+      id: uuid.generate(),
+      name: RoleNameData.CONTRACT_HISTORY,
+      description: 'Historial de contratos',
+      permissions: [
+        ...permissions
+          .filter(_ => {
+            if (_.group === AuthGroup.CONTRACTS && AuthPermission.LIST === _.name) {
+              return true
+            }
+            if (_.group === AuthGroup.CONTRACTS && AuthPermission.READ === _.name) {
+              return true
+            }
+            return false;
+          })
           .map((_) => _.id),
       ],
     },

@@ -1,6 +1,5 @@
 export enum AuthGroup {
   ADMIN = 'Administrador',
-  CONTRACTS_DETAIL = 'detalles de contratos',
   PERMISSIONS = 'permisos',
   ROLES = 'roles',
 
