@@ -6,7 +6,6 @@ export class UserMongoPipeline {
   static execute(criteria: Criteria): PipelineStage[] {
     const { query, start, size, sortQuery } =
       MongoCriteriaConverter.converter(criteria);
-
     const sort = [];
     if (Object.keys(sortQuery).length > 0) {
       sort.push({ $sort: sortQuery });
@@ -74,7 +73,7 @@ export class UserMongoPipeline {
         },
       },
       {
-        $skip: start * size,
+        $skip: start,
       },
       {
         $limit: size,

@@ -33,7 +33,7 @@ export class MongoCriteriaConverter {
     }
 
     return {
-      start: start.value,
+      start: start.value * size.value,
       size: size.value,
       query,
       sortQuery,
@@ -97,6 +97,10 @@ export class MongoCriteriaConverter {
     for (const sort of sorting) {
       sortQuery[sort.orderBy.value] =
         sort.orderType.value === OrderValue.DESC ? -1 : 1;
+    }
+
+    if (sorting.length === 0) {
+      sortQuery["createdAt"] = -1;
     }
     return sortQuery;
   }

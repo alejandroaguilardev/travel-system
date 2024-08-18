@@ -19,7 +19,7 @@ export class ContractMongoPipeline {
       },
       ...sort,
       {
-        $skip: start * size,
+        $skip: start,
       },
       {
         $limit: size,

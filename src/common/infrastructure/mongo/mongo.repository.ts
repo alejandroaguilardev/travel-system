@@ -23,11 +23,10 @@ export class MongoRepository<Model, T extends { toJson: ToJsonFunction }>
   async search<R>(criteria: Criteria): Promise<ResponseSearch<R>> {
     const { query, selectProperties, start, size, sortQuery } =
       MongoCriteriaConverter.converter(criteria);
-
     const rows: R[] = await this.model
       .find(query)
       .select([...selectProperties, '-_id', '-__v', '-createdAt', '-updatedAt'])
-      .skip(start * size)
+      .skip(start)
       .limit(size)
       .sort(sortQuery)
       .lean();
