@@ -1,6 +1,6 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
-import { AuthPermission } from '../../../common/domain/auth-permissions';
+import { AuthGroup, AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
@@ -10,7 +10,7 @@ import { CommandContractTopico } from './command/topico-command';
 import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
 
 export class ContractDetailTopicoUpdater {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -31,7 +31,8 @@ export class ContractDetailTopicoUpdater {
     ensureContractDetail.hasPermission(
       user,
       contractResponse,
-      AuthPermission.TOPICO,
+      AuthPermission.EXECUTE,
+      AuthGroup.CONTRACT_TOPICO,
     );
 
     const topicoUpdate = CommandContractTopico.execute(

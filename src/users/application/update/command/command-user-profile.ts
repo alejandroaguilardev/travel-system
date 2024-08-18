@@ -31,7 +31,7 @@ export class CommandProfileUser {
       new UserProvince(profile.province),
       new UserDistrict(profile.district),
       new UserDirection(profile.direction),
-      new UserJob(profile.job),
+      new UserJob(profile?.job ?? ""),
     );
   }
 }

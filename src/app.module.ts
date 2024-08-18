@@ -29,17 +29,17 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
       {
         name: 'short',
         ttl: 1000,
-        limit: 5,
+        limit: 15,
       },
       {
         name: 'medium',
         ttl: 10000,
-        limit: 15
+        limit: 150
       },
       {
         name: 'long',
         ttl: 60000,
-        limit: 175
+        limit: 800
       }
     ]),
     ConfigModule.forRoot({ isGlobal: true }),

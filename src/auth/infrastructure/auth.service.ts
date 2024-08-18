@@ -5,7 +5,7 @@ import { LoginResponse } from '../application/response/login.response';
 import { LoginUser } from '../application/login/login-user';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { JWTAdapterService } from './services/jwt.service';
-import { UserWithoutResponse } from '../../users/domain/interfaces/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { GenerateToken } from '../application/token/generate';
 import { RecoverDto } from './dto/recover-auth.dto';
 import { ResponseSuccess } from '../../common/domain/response/response-success';
@@ -24,7 +24,7 @@ export class AuthService {
     private readonly bcryptService: BcryptService,
     private laravelApiAdapter: LaravelApiAdapter,
     private jwtService: JWTAdapterService,
-  ) {}
+  ) { }
 
   async login(loginAuthDto: LoginAuthDto): Promise<LoginResponse> {
     const loginUser = new LoginUser(
@@ -35,7 +35,7 @@ export class AuthService {
     return await loginUser.login(loginAuthDto);
   }
 
-  async verify(user: UserWithoutResponse): Promise<LoginResponse> {
+  async verify(user: UserWithoutWithRoleResponse): Promise<LoginResponse> {
     const generateToken = new GenerateToken(this.jwtService);
     const token = generateToken.execute(user.id);
     return { user, token };
@@ -56,7 +56,7 @@ export class AuthService {
   }
 
   async resetPassword(
-    user: UserWithoutResponse,
+    user: UserWithoutWithRoleResponse,
     { password }: ResetPasswordDto,
   ): Promise<LoginResponse> {
     const recoverPassword = new ResetPasswordUser(

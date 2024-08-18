@@ -1,7 +1,7 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractCage } from '../../domain/value-object/service-cage';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
-import { AuthPermission } from '../../../common/domain/auth-permissions';
+import { AuthGroup, AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
@@ -9,7 +9,7 @@ import { EnsureContractDetail } from './ensure-contract-detail';
 import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces/contract-detail.interface';
 
 export class ContractDetailCageUpdater {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -28,7 +28,8 @@ export class ContractDetailCageUpdater {
     ensureContractDetail.hasPermission(
       user,
       contractResponse,
-      AuthPermission.CAGE,
+      AuthPermission.EXECUTE,
+      AuthGroup.CONTRACT_CAGE,
     );
 
     cage.changeStatus();

@@ -13,7 +13,7 @@ import {
 import { CommandContractUpdater } from '../update';
 
 export class ContractFinishClientUpdater {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -54,8 +54,8 @@ export class ContractFinishClientUpdater {
 
     PermissionValidator.execute(
       user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.FINISH,
+      AuthGroup.CONTRACT_FINISH,
+      AuthPermission.EXECUTE,
     );
   }
 }

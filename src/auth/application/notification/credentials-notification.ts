@@ -19,6 +19,6 @@ export class CredentialsNotification {
         document: document.value,
         documentNumber: documentNumber.value,
         password: password.value,
-      })
+      }).catch(e => console.log(e))
   }
 }

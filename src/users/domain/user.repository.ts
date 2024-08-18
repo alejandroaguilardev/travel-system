@@ -1,13 +1,14 @@
 import { Repository } from '../../common/domain/repository';
 import { User } from './user';
 import { UserEmail } from './value-object/user-email';
-import { UserResponse, UserResponseWithRole } from './interfaces/user.response';
+import { UserResponse } from './interfaces/user.response';
 import { Uuid } from '../../common/domain/value-object/uuid';
 import { UserPassword } from './value-object/user-password';
 import { UserProfile } from './value-object/user-profile';
 import { UserDocument } from './value-object/profile/user-document';
 import { UserDocumentNumber } from './value-object/profile/user-document-number';
 import { UserInterface } from './interfaces/user.interface';
+import { UserWithoutWithRoleResponse } from './interfaces/user-without.response';
 
 export interface UserRepository extends Repository<User> {
   searchEmail(email: UserEmail): Promise<UserResponse | null>;
@@ -23,5 +24,5 @@ export interface UserRepository extends Repository<User> {
     uuid: Uuid,
     userProfile: UserProfile,
   ): Promise<UserResponse | null>;
-  searchByIdWithRole(uuid: Uuid): Promise<UserResponseWithRole | null>;
+  searchByIdWithRole(uuid: Uuid): Promise<UserWithoutWithRoleResponse | null>;
 }

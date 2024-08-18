@@ -47,7 +47,7 @@ export class UsersService {
 
     const password = new UserPassword(
       this.isProductionMode === 'false'
-        ? UserPassword.generatePassword()
+        ? "12345678"
         : UserPassword.generatePassword(),
     );
 

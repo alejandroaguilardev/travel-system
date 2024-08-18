@@ -19,7 +19,7 @@ export class IncidentNotificationSearch {
     PermissionValidator.execute(user, AuthGroup.INCIDENTS, AuthPermission.LIST);
 
     const queryString = this.queryString(criteria);
-    const { data } = await this.http.get(`log?${queryString}`);
+    const { data } = await this.http.get(`log?${queryString}`).catch(e => console.log(e));
     return data;
   }
 

@@ -1,7 +1,7 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractTravel } from '../../domain/value-object/service-travel';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
-import { AuthPermission } from '../../../common/domain/auth-permissions';
+import { AuthGroup, AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
@@ -9,7 +9,7 @@ import { EnsureContractDetail } from './ensure-contract-detail';
 import { ContractDetailInterface } from '../../../contract-detail/domain/interfaces';
 
 export class ContractDetailTravelUpdater {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -29,7 +29,8 @@ export class ContractDetailTravelUpdater {
     ensureContractDetail.hasPermission(
       user,
       contractResponse,
-      AuthPermission.TRAVEL,
+      AuthPermission.EXECUTE,
+      AuthGroup.CONTRACT_TRAVEL,
     );
 
     const contractDetail: ContractDetailInterface = {

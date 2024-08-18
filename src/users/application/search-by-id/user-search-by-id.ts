@@ -7,9 +7,10 @@ import {
 } from '../../../common/domain/auth-permissions';
 import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import { ErrorNotFound } from '../../../common/domain/errors/error-not-found';
+import { ErrorAccess } from '../error/access';
 
 export class UserSearchById {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) { }
 
   async execute(
     id: string,
@@ -31,6 +32,6 @@ export class UserSearchById {
       return;
     }
 
-    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.READ);
+    ErrorAccess.permission(user, AuthPermission.READ);
   }
 }

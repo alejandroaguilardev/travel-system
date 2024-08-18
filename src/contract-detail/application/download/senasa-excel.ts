@@ -17,7 +17,7 @@ export class SenasaExcelDownload {
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
     private readonly ubigeo: UbigeoQueryInterface,
-  ) {}
+  ) { }
 
   async execute(
     contractId: Uuid,
@@ -32,8 +32,8 @@ export class SenasaExcelDownload {
 
     PermissionValidator.execute(
       user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.DOCUMENTATION,
+      AuthGroup.CONTRACT_SENASA,
+      AuthPermission.EXECUTE,
     );
 
     const data = await this.formatData(contractDetail);
@@ -43,7 +43,7 @@ export class SenasaExcelDownload {
         Authorization: process.env.API_LARAVEL_KEY,
       },
       responseType: 'stream',
-    });
+    }).catch(e => console.log(e));
     return {
       response: response.data,
       name: `senasa-${data.client?.toLowerCase()}.xlsx`,

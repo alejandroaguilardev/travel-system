@@ -28,5 +28,6 @@ export class NewContractNotification {
           'dd/MM/yyyy',
         ),
       })
+      .catch(e => console.log(e));
   }
 }

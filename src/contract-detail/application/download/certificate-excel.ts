@@ -48,8 +48,8 @@ export class CertificateExcelDownload {
 
     PermissionValidator.execute(
       user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.DOCUMENTATION,
+      AuthGroup.CONTRACT_DOCUMENTATION,
+      AuthPermission.EXECUTE,
     );
 
     const data = await this.formatData(contractDetail);
@@ -62,7 +62,7 @@ export class CertificateExcelDownload {
         },
         responseType: 'stream',
       },
-    );
+    ).catch(e => console.log(e));
 
     if (contractDetail.documentation[certificate]?.isPrint) {
       this.updateIsPrint(contractId, contract, contractDetail, certificate);

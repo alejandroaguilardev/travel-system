@@ -9,7 +9,7 @@ export class RecoverNotification {
     await this.http.post(`/notification/user/recover`, {
       email: email.value,
       token: token,
-    })
+    }).catch(e => console.log(e))
 
   }
 }

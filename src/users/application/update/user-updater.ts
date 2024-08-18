@@ -1,5 +1,4 @@
 import {
-  AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
 import { Uuid } from '../../../common/domain/value-object/uuid';
@@ -13,18 +12,19 @@ import {
   ResponseMessage,
 } from '../../../common/domain/response/response-message';
 import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
-import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
+import { UserPassword } from '../../domain/value-object/user-password';
+import { ErrorAccess } from '../error/access';
 
 export class UserUpdater {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) { }
 
   async update(
     id: string,
     userUpdate: User,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.EDIT);
+    ErrorAccess.permission(user, AuthPermission.EDIT);
 
     if (!userUpdate.profile.documentNumber)
       throw new ErrorBadRequest(
@@ -43,7 +43,7 @@ export class UserUpdater {
     if (
       response.profile.document !== userUpdate.profile.document.value ||
       response.profile.documentNumber !==
-        userUpdate.profile.documentNumber.value
+      userUpdate.profile.documentNumber.value
     ) {
       const find = await this.userRepository.searchDocument(
         userUpdate.profile.document,
@@ -52,6 +52,8 @@ export class UserUpdater {
       if (find)
         throw new ErrorBadRequest('el documento del  usuario ya existe');
     }
+
+    userUpdate.setPassword(new UserPassword(response.password));
 
     await this.userRepository.update(uuid, userUpdate);
     return ResponseMessage.createSuccessResponse(UserUpdater.messageSuccess());

@@ -30,5 +30,6 @@ export class RabiesReVaccinationNotification {
 
     await this.http
       .post(`/notification/detail/rabies-re-vaccination`, { ...data })
+      .catch(e => console.log(e));
   }
 }

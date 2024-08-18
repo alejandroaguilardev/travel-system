@@ -168,13 +168,11 @@ export class ContractDetailController {
     @Param('id') id: string,
     @Param('detail') detail: string,
     @Body() { message = '' }: NotificationDetailDto,
-    @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailTopicoService.mailDetail(
       id,
       detail,
       message,
-      user,
     );
   }
 
@@ -185,12 +183,10 @@ export class ContractDetailController {
   mailTopicRabiesReVaccination(
     @Param('id') id: string,
     @Param('detail') detail: string,
-    @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractDetailTopicoService.mailTopicRabiesReVaccination(
       id,
       detail,
-      user,
     );
   }
 
@@ -201,9 +197,8 @@ export class ContractDetailController {
   mailTravelDetail(
     @Param('id') id: string,
     @Param('detail') detail: string,
-    @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractDetailTopicoService.mailTravelDetail(id, detail, user);
+    return this.contractDetailTopicoService.mailTravelDetail(id, detail);
   }
 
   @Post(':id/:detail/notificationTakingSample')
@@ -213,9 +208,8 @@ export class ContractDetailController {
   mailTakingSample(
     @Param('id') id: string,
     @Param('detail') detail: string,
-    @GetUser() user: UserWithoutWithRoleResponse,
   ) {
-    return this.contractDetailTopicoService.mailTakingSample(id, detail, user);
+    return this.contractDetailTopicoService.mailTakingSample(id, detail);
   }
 
   @Post(':id/:detail/notificationTakingSampleExecuted')

@@ -26,6 +26,7 @@ export class TravelPersonNotification {
 
     await this.http
       .post(`/notification/detail/travel-person`, { ...data })
+      .catch(e => console.log(e));
   }
 
   private async formatData(

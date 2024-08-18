@@ -17,7 +17,7 @@ import { Contract } from '../../domain/contract';
 import { ContractReasonForCancellation } from '../../domain/value-object/reason-for-cancellation';
 
 export class ContractCancel {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -71,8 +71,8 @@ export class ContractCancel {
 
     PermissionValidator.execute(
       user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.FINISH,
+      AuthGroup.CONTRACT_FINISH,
+      AuthPermission.DELETE,
     );
   }
 }

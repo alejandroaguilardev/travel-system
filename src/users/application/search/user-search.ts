@@ -8,21 +8,21 @@ import {
   UserWithoutWithRoleResponse,
 } from '../../domain/interfaces/user-without.response';
 import {
-  AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
-import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
+import { ErrorAccess } from '../error/access';
 
 export class UserSearch {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private userRepository: UserRepository) { }
 
   async execute(
     criteriaRequest: CriteriaRequest,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSearch<UserWithoutResponse>> {
-    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.LIST);
+    ErrorAccess.permission(user, AuthPermission.LIST);
 
     const criteria = CommandCriteria.fromData(criteriaRequest);
     return await this.userRepository.search<UserResponse>(criteria);
   }
+
 }

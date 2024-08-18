@@ -24,7 +24,6 @@ export class JwtStrategyService extends PassportStrategy(Strategy) {
     const uuid = new Uuid(id);
     const user = await this.userRepository.searchByIdWithRole(uuid);
     if (!user) throw new ErrorBadRequest('Token no Válido');
-    delete user.password;
     return user;
   }
 }

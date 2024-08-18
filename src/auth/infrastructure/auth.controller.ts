@@ -1,6 +1,6 @@
 import { Controller, Post, Body, HttpCode, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UserWithoutResponse } from '../../users/domain/interfaces/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../users/domain/interfaces/user-without.response';
 import { LoginAuthDto } from './dto/login-auth.dto';
 import { GetUser } from './decorator/get-user.decorator';
 import { Auth } from './decorator/auth.decorator';
@@ -11,7 +11,7 @@ import { DocsRecover, DocsResetPassword, DocsLogin, DocsVerify } from './docs';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   @Post()
   @HttpCode(200)
@@ -32,7 +32,7 @@ export class AuthController {
   @HttpCode(200)
   @DocsResetPassword()
   resetPassword(
-    @GetUser() user: UserWithoutResponse,
+    @GetUser() user: UserWithoutWithRoleResponse,
     @Body() resetPasswordDto: ResetPasswordDto,
   ) {
     return this.authService.resetPassword(user, resetPasswordDto);
@@ -41,7 +41,7 @@ export class AuthController {
   @Get('verify')
   @Auth()
   @DocsVerify()
-  verify(@GetUser() user: UserWithoutResponse) {
+  verify(@GetUser() user: UserWithoutWithRoleResponse) {
     return this.authService.verify(user);
   }
 }

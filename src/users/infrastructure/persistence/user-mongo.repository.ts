@@ -9,7 +9,6 @@ import { UserEmail } from '../../domain/value-object/user-email';
 import { UserRepository } from '../../domain/user.repository';
 import {
   UserResponse,
-  UserResponseWithRole,
 } from '../../domain/interfaces/user.response';
 import { UserModel } from '../schema/user.schema';
 import { UserMongoPipeline } from './user-mongo.pipeline';
@@ -21,12 +20,12 @@ import { UserProfile } from '../../domain/value-object/user-profile';
 import { UserDocument } from '../../domain/value-object/profile/user-document';
 import { UserDocumentNumber } from '../../domain/value-object/profile/user-document-number';
 import { UserInterface } from '../../domain/interfaces/user.interface';
+import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
 
 @Injectable()
 export class UserMongoRepository
   extends MongoRepository<UserModel, User>
-  implements UserRepository
-{
+  implements UserRepository {
   private userModel: Model<UserModel>;
 
   constructor(@InjectModel(UserModel.name) model: Model<UserModel>) {
@@ -73,8 +72,8 @@ export class UserMongoRepository
     return response;
   }
 
-  async searchByIdWithRole(uuid: Uuid): Promise<UserResponseWithRole | null> {
-    const rows: UserResponseWithRole[] = await this.userModel
+  async searchByIdWithRole(uuid: Uuid): Promise<UserWithoutWithRoleResponse | null> {
+    const rows: UserWithoutWithRoleResponse[] = await this.userModel
       .aggregate(UserMongoPipeline.executeById(uuid.value))
       .exec();
 

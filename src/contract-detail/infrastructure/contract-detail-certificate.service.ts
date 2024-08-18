@@ -26,7 +26,7 @@ export class ContractDetailCertificateService {
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
-  ) {}
+  ) { }
 
   async updateCertificate(
     contractId: string,
@@ -72,8 +72,8 @@ export class ContractDetailCertificateService {
     );
     PermissionValidator.execute(
       user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.DOCUMENTATION,
+      AuthGroup.CONTRACT_SENASA,
+      AuthPermission.EXECUTE,
     );
 
     if (

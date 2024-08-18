@@ -8,25 +8,24 @@ import {
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import { User } from '../../domain/user';
 import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
-import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import { ErrorBadRequest } from '../../../common/domain/errors/error-bad-request';
 import {
-  AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
+import { ErrorAccess } from '../error/access';
 
 export class UserCreator {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly hashing: Hashing,
-  ) {}
+  ) { }
 
   async create(
     newUser: User,
     password: UserPassword,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.CREATE);
+    ErrorAccess.permission(user, AuthPermission.CREATE);
 
     if (!newUser.profile.documentNumber)
       throw new ErrorBadRequest(

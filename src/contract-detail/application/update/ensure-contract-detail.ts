@@ -11,7 +11,7 @@ import { ContractDetailInterface } from '../../../contract-detail/domain/interfa
 import { ContractInterface } from '../../../contracts/domain/interfaces/contract.interface';
 
 export class EnsureContractDetail {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async searchEnsure(
     contractUuid: Uuid,
@@ -40,10 +40,12 @@ export class EnsureContractDetail {
     user: UserWithoutWithRoleResponse,
     contract: ContractInterface,
     authPermission: AuthPermission,
+    authGroup?: AuthGroup,
+
   ) {
     if (user.id === contract.client) {
       return;
     }
-    PermissionValidator.execute(user, AuthGroup.CONTRACTS, authPermission);
+    PermissionValidator.execute(user, authGroup ?? AuthGroup.CONTRACTS, authPermission);
   }
 }

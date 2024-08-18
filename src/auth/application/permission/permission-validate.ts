@@ -40,8 +40,9 @@ export class PermissionValidator {
     group: string,
     permission: string,
   ): boolean {
+
     return role.permissions.some(
-      (p) => p.group === group && p.name === permission,
+      (p) => p.group?.toLowerCase() === group?.toLowerCase() && p.name?.toLowerCase() === permission?.toLowerCase(),
     );
   }
 }

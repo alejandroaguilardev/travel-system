@@ -7,11 +7,7 @@ import { CommandContractTopico } from '../application/update/command/topico-comm
 import { ContractDetailUpdaterResponse } from '../application/response/contract-detail-update.response';
 import { ContractTopico } from '../domain/value-object/contract-topico';
 import { Uuid } from '../../common/domain/value-object/uuid';
-import {
-  AuthGroup,
-  AuthPermission,
-} from '../../common/domain/auth-permissions';
-import { PermissionValidator } from '../../auth/application/permission/permission-validate';
+
 import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 import { InfoDetailNotification } from '../application/notification/info.detail-notification';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
@@ -70,18 +66,12 @@ export class ContractDetailTopicoService {
   async mailTopicRabiesReVaccination(
     contractId: string,
     contractDetailId: string,
-    user: UserWithoutWithRoleResponse,
   ): Promise<void> {
     const contract = await this.mongoContractRepository.searchByIdWithPet(
       new Uuid(contractId),
     );
     const contractDetail = contract.details.find(
       (_) => _.id === contractDetailId,
-    );
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.TOPICO,
     );
 
     const mail = new RabiesReVaccinationNotification(
@@ -95,18 +85,12 @@ export class ContractDetailTopicoService {
   async mailTravelDetail(
     contractId: string,
     contractDetailId: string,
-    user: UserWithoutWithRoleResponse,
   ): Promise<void> {
     const contract = await this.mongoContractRepository.searchByIdWithPet(
       new Uuid(contractId),
     );
     const contractDetail = contract.details.find(
       (_) => _.id === contractDetailId,
-    );
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.TOPICO,
     );
 
     const mail = new TravelPersonNotification(
@@ -121,18 +105,12 @@ export class ContractDetailTopicoService {
   async mailTakingSample(
     contractId: string,
     contractDetailId: string,
-    user: UserWithoutWithRoleResponse,
   ): Promise<void> {
     const contract = await this.mongoContractRepository.searchByIdWithPet(
       new Uuid(contractId),
     );
     const contractDetail = contract.details.find(
       (_) => _.id === contractDetailId,
-    );
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.TOPICO,
     );
 
     const mail = new TakeSampleNotification(
@@ -153,11 +131,6 @@ export class ContractDetailTopicoService {
     const contractDetail = contract.details.find(
       (_) => _.id === contractDetailId,
     );
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.TOPICO,
-    );
 
     const mail = new TakeSampleExecutedNotification(this.axiosAdapter);
     mail.execute(contract, contractDetail);
@@ -167,18 +140,12 @@ export class ContractDetailTopicoService {
     contractId: string,
     contractDetailId: string,
     message: string,
-    user: UserWithoutWithRoleResponse,
   ): Promise<void> {
     const contract = await this.mongoContractRepository.searchByIdWithPet(
       new Uuid(contractId),
     );
     const contractDetail = contract.details.find(
       (_) => _.id === contractDetailId,
-    );
-    PermissionValidator.execute(
-      user,
-      AuthGroup.CONTRACTS,
-      AuthPermission.TOPICO || AuthPermission.DOCUMENTATION,
     );
 
     const mail = new InfoDetailNotification(this.axiosAdapter);

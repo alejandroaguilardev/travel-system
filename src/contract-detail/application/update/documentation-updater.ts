@@ -1,7 +1,7 @@
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ContractDocumentation } from '../../domain/value-object/service-documentation';
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
-import { AuthPermission } from '../../../common/domain/auth-permissions';
+import { AuthGroup, AuthPermission } from '../../../common/domain/auth-permissions';
 import { ContractDetailUpdaterResponse } from '../response/contract-detail-update.response';
 import { ContractRepository } from '../../../contracts/domain/contract.repository';
 import { CommandContractUpdater } from '../../../contracts/application/update/command-contract-updater';
@@ -12,7 +12,7 @@ import {
 } from '../../../contract-detail/domain/interfaces/documentation.interface';
 
 export class ContractDetailDocumentationUpdater {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   async execute(
     contractId: string,
@@ -32,7 +32,8 @@ export class ContractDetailDocumentationUpdater {
     ensureContractDetail.hasPermission(
       user,
       contractResponse,
-      AuthPermission.DOCUMENTATION,
+      AuthPermission.EXECUTE,
+      AuthGroup.CONTRACT_DOCUMENTATION,
     );
 
     const contractDetail = {

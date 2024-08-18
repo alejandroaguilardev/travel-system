@@ -1,6 +1,6 @@
 import { UserRepository } from '../../../users/domain/user.repository';
 import { UserPassword } from '../../../users/domain/value-object/user-password';
-import { UserWithoutResponse } from '../../../users/domain/interfaces/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { UserEmail } from '../../../users/domain/value-object/user-email';
 import { LoginResponse } from '../response/login.response';
@@ -13,11 +13,11 @@ export class ResetPasswordUser {
     private userRepository: UserRepository,
     private readonly hashing: Hashing,
     private readonly jwt: JWT,
-  ) {}
+  ) { }
 
   async execute(
     password: UserPassword,
-    user: UserWithoutResponse,
+    user: UserWithoutWithRoleResponse,
   ): Promise<LoginResponse> {
     const uuid = new Uuid(user.id);
     const passwordUpdate = new UserPassword(
@@ -26,15 +26,12 @@ export class ResetPasswordUser {
 
     await this.userRepository.updatePassword(uuid, passwordUpdate);
 
-    const response = await this.userRepository.searchEmail(
-      new UserEmail(user.email),
-    );
 
     const generateToken = new GenerateToken(this.jwt);
     const token = generateToken.execute(user.id);
 
     return {
-      user: response,
+      user,
       token,
     };
   }

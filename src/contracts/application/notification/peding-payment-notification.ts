@@ -28,6 +28,7 @@ export class PendingPaymentNotification {
 
     await this.http
       .post(`/notification/contract/payment-pending`, data)
+      .catch(e => console.log(e));
   }
 
   private getPayments(contract: ContractResponse): {

@@ -24,5 +24,6 @@ export class CancelContractNotification {
         correlative: contract?.correlative ?? '',
         reasonForCancellation: contract.reasonForCancellation,
       })
+      .catch(e => console.log(e));
   }
 }

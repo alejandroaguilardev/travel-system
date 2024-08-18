@@ -1,4 +1,4 @@
-import { UserWithoutResponse } from '../../../users/domain/interfaces/user-without.response';
+import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 import {
   ExecutionContext,
   InternalServerErrorException,
@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 export const GetUser = createParamDecorator(
-  (data, ctx: ExecutionContext): UserWithoutResponse => {
+  (data, ctx: ExecutionContext): UserWithoutWithRoleResponse => {
     const req = ctx.switchToHttp().getRequest();
     const user = req.user;
 

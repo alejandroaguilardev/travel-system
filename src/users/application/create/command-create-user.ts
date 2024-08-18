@@ -50,7 +50,7 @@ export class CommandCreatorUser {
         new UserProvince(data.profile.province),
         new UserDistrict(data.profile.district),
         new UserDirection(data.profile.direction),
-        new UserJob(data.profile.job),
+        new UserJob(data?.profile?.job ?? ""),
       ),
       new StatusValueObject('active'),
       new UuidOptional(userId),

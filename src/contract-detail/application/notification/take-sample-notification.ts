@@ -30,5 +30,6 @@ export class TakeSampleNotification {
 
     await this.http
       .post(`/notification/detail/taking-sample`, { ...data })
+      .catch(e => console.log(e));
   }
 }

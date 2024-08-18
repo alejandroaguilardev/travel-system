@@ -16,7 +16,11 @@ async function bootstrap() {
   );
   await app.register(helmet);
 
-  app.enableCors({ origin: '*' });
+  app.enableCors({
+    origin: process.env.PRODUCTION === "false"
+      ? '*'
+      : 'app.pettravelperu.com'
+  });
   app.setGlobalPrefix('api');
 
 

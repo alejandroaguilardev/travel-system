@@ -2,24 +2,23 @@ import { UserRepository } from '../../domain/user.repository';
 import { Uuid } from '../../../common/domain/value-object/uuid';
 import { ResponseSuccess } from '../../../common/domain/response/response-success';
 import {
-  AuthGroup,
   AuthPermission,
 } from '../../../common/domain/auth-permissions';
-import { PermissionValidator } from '../../../auth/application/permission/permission-validate';
 import { UserWithoutWithRoleResponse } from '../../domain/interfaces/user-without.response';
 import {
   MessageDefault,
   ResponseMessage,
 } from '../../../common/domain/response/response-message';
+import { ErrorAccess } from '../error/access';
 
 export class UserRemover {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) { }
 
   async remove(
     userId: string,
     user: UserWithoutWithRoleResponse,
   ): Promise<ResponseSuccess> {
-    PermissionValidator.execute(user, AuthGroup.USERS, AuthPermission.LIST);
+    ErrorAccess.permission(user, AuthPermission.DELETE);
 
     const uuid = new Uuid(userId);
     await this.userRepository.remove(uuid);

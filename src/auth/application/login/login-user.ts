@@ -9,13 +9,14 @@ import { LoginUserRequest } from './login-user-request';
 import { GenerateToken } from '../token/generate';
 import { UserDocument } from '../../../users/domain/value-object/profile/user-document';
 import { UserDocumentNumber } from '../../../users/domain/value-object/profile/user-document-number';
+import { Uuid } from '../../../common/domain/value-object/uuid';
 
 export class LoginUser {
   constructor(
     private userRepository: UserRepository,
     private readonly hashing: Hashing,
     private readonly jwt: JWT,
-  ) {}
+  ) { }
 
   async login(loginUserRequest: LoginUserRequest): Promise<LoginResponse> {
     const { document, documentNumber, password } = loginUserRequest;
@@ -25,25 +26,25 @@ export class LoginUser {
       new UserPassword(password),
     );
 
-    const user = await this.userRepository.searchDocument(
+    const findByDocumentUser = await this.userRepository.searchDocument(
       credentials.document,
       credentials.documentNumber,
     );
 
-    if (!user) {
+    if (!findByDocumentUser) {
       throw new ErrorBadRequest('El documento es incorrecto');
     }
 
     if (
       !credentials.passwordMatches(
-        new UserPassword(user.password),
+        new UserPassword(findByDocumentUser.password),
         this.hashing,
       )
     ) {
       throw new ErrorBadRequest('La contraseña es incorrecta');
     }
 
-    delete user.password;
+    const user = await this.userRepository.searchByIdWithRole(new Uuid(findByDocumentUser.id));
     const generateToken = new GenerateToken(this.jwt);
     const token = generateToken.execute(user.id);
 
