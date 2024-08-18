@@ -19,7 +19,11 @@ async function bootstrap() {
   app.enableCors({
     origin: process.env.PRODUCTION === "false"
       ? '*'
-      : 'app.pettravelperu.com'
+      : [
+        'https://app.pettravelperu.com',
+        'https://pettravelperu.com',
+        'https://api.pettravelperu.com',
+      ]
   });
   app.setGlobalPrefix('api');
 
