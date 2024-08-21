@@ -15,9 +15,11 @@ export class PaymentScheduleService {
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly laravelApiAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
-  ) {}
+  ) { }
 
-  @Cron('00 08 * * *')
+
+
+  @Cron('00 08 * * 1')
   async handleCron() {
     const contractSearchPayments = new ContractSearchPayments(
       this.mongoContractRepository,
