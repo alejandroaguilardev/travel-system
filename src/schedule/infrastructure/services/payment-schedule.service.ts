@@ -19,7 +19,7 @@ export class PaymentScheduleService {
 
 
 
-  @Cron('00 08 * * 1')
+  @Cron('00 09 * * 1')
   async handleCron() {
     const contractSearchPayments = new ContractSearchPayments(
       this.mongoContractRepository,

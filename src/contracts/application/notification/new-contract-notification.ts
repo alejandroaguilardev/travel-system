@@ -21,7 +21,8 @@ export class NewContractNotification {
           contract?.client?.profile?.name +
           ' ' +
           contract?.client?.profile?.name,
-        phone: contract.adviser.profile.phone,
+        phone: contract?.client?.profile?.phone,
+        phoneAdviser: contract.adviser.profile.phone,
         linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
         estimatedDate: this.date.formatDateTime(
           contract.estimatedDate,

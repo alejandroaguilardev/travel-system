@@ -20,7 +20,8 @@ export class PendingPaymentNotification {
       email: contract.client.email,
       client:
         contract?.client?.profile?.name + ' ' + contract?.client?.profile?.name,
-      phone: contract.adviser.profile.phone,
+      phone: contract?.client?.profile?.phone,
+      phoneAdviser: contract.adviser.profile.phone,
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
       payments,
       payment,
