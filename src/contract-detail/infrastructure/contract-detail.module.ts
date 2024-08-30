@@ -12,10 +12,11 @@ import { DayJsService } from '../../common/infrastructure/services/dayjs.service
 import { PetsModule } from '../../pets/infrastructure/pets.module';
 import { PdfService } from './pdf.service';
 import { PDFDocumentService } from '../../common/infrastructure/services/pdf-document.service';
+import { IncidentsModule } from '../../errors/infrastructure/incidents.module';
 
 @Module({
   imports: [
-    AuthModule, ContractsModule, UbigeoModule, PetsModule],
+    AuthModule, ContractsModule, UbigeoModule, PetsModule, IncidentsModule],
   controllers: [ContractDetailController],
   providers: [
     ContractDetailService,

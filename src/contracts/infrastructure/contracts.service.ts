@@ -27,6 +27,7 @@ import { NewContractNotification } from '../application/notification/new-contrac
 import { CancelContractNotification } from '../application/notification/cancel-contract-notification';
 import { FinishContractNotification } from '../application/notification/finish-contract-notification';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
+import { IncidentsService } from '../../errors/infrastructure/incidents.service';
 
 @Injectable()
 export class ContractsService {
@@ -34,7 +35,8 @@ export class ContractsService {
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dateService: DayJsService,
-  ) {}
+    private readonly incidentsService: IncidentsService,
+  ) { }
 
   async create(
     createContractDto: CreateContractDto,
@@ -47,6 +49,7 @@ export class ContractsService {
       this.mongoContractRepository,
       this.axiosAdapter,
       this.dateService,
+      this.incidentsService,
     );
     mail.execute(contract.id);
 
@@ -64,6 +67,7 @@ export class ContractsService {
     const mail = new FinishContractNotification(
       this.mongoContractRepository,
       this.axiosAdapter,
+      this.incidentsService,
     );
     mail.execute(contract.id);
     return response;
@@ -87,6 +91,7 @@ export class ContractsService {
     const mail = new CancelContractNotification(
       this.mongoContractRepository,
       this.axiosAdapter,
+      this.incidentsService,
     );
     mail.execute(contract.id);
     return response;

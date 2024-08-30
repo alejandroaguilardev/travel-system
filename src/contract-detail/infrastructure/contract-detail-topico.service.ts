@@ -18,6 +18,7 @@ import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 import { TakeSampleExecutedNotification } from '../application/notification/take-sample-executed-notification';
 import { RabiesReVaccinationNotification } from '../application/notification/re-vaccination.notification';
 import { MongoPetRepository } from '../../pets/infrastructure/persistence/mongo-pet.repository';
+import { IncidentsService } from '../../errors/infrastructure/incidents.service';
 
 @Injectable()
 export class ContractDetailTopicoService {
@@ -28,6 +29,7 @@ export class ContractDetailTopicoService {
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
+    private readonly incidentsService: IncidentsService
   ) { }
 
   async updateTopico(
@@ -77,6 +79,7 @@ export class ContractDetailTopicoService {
     const mail = new RabiesReVaccinationNotification(
       this.axiosAdapter,
       this.dayJsService,
+      this.incidentsService,
     );
 
     mail.execute(contract, contractDetail);
@@ -97,6 +100,7 @@ export class ContractDetailTopicoService {
       this.axiosAdapter,
       this.ubigeoQuery,
       this.jwtService,
+      this.incidentsService,
     );
 
     mail.execute(contract, contractDetail);
@@ -116,6 +120,7 @@ export class ContractDetailTopicoService {
     const mail = new TakeSampleNotification(
       this.axiosAdapter,
       this.dayJsService,
+      this.incidentsService,
     );
     mail.execute(contract, contractDetail);
   }
@@ -132,7 +137,7 @@ export class ContractDetailTopicoService {
       (_) => _.id === contractDetailId,
     );
 
-    const mail = new TakeSampleExecutedNotification(this.axiosAdapter);
+    const mail = new TakeSampleExecutedNotification(this.axiosAdapter, this.incidentsService);
     mail.execute(contract, contractDetail);
   }
 
@@ -148,7 +153,7 @@ export class ContractDetailTopicoService {
       (_) => _.id === contractDetailId,
     );
 
-    const mail = new InfoDetailNotification(this.axiosAdapter);
+    const mail = new InfoDetailNotification(this.axiosAdapter, this.incidentsService);
     mail.execute(contract, contractDetail, message);
   }
 }

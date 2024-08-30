@@ -1,6 +1,7 @@
 import { HttpInterface } from '../../../common/application/services/http-service';
 import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../response/contract.response';
+import { IncidentServiceInterface } from '../../../errors/domain/incident-service-interface';
 
 export class PendingPaymentNotification {
   private colors = {
@@ -12,6 +13,7 @@ export class PendingPaymentNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
+    private readonly incidentsService: IncidentServiceInterface,
   ) { }
 
   async execute(contract: ContractResponse): Promise<void> {
@@ -29,7 +31,14 @@ export class PendingPaymentNotification {
 
     await this.http
       .post(`/notification/contract/payment-pending`, data)
-      .catch(e => console.log(e));
+      .catch(e => {
+        this.incidentsService.create({
+          id: crypto.randomUUID(),
+          name: "/notification/contract/payment-pending",
+          error: e.getMessage(),
+          body: JSON.stringify(data),
+        });
+      });
   }
 
   private getPayments(contract: ContractResponse): {

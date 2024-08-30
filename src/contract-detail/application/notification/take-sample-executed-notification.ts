@@ -1,10 +1,12 @@
 import { HttpInterface } from '../../../common/application/services/http-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
+import { IncidentServiceInterface } from '../../../errors/domain/incident-service-interface';
 
 export class TakeSampleExecutedNotification {
   constructor(
     private readonly http: HttpInterface,
+    private readonly incidentsService: IncidentServiceInterface,
   ) { }
 
   async execute(
@@ -25,6 +27,13 @@ export class TakeSampleExecutedNotification {
 
     await this.http
       .post(`/notification/detail/taking-sample-executed`, { ...data })
-      .catch(e => console.log(e));
+      .catch(e => {
+        this.incidentsService.create({
+          id: crypto.randomUUID(),
+          name: "/notification/detail/taking-sample-executed",
+          error: e.getMessage(),
+          body: JSON.stringify(data),
+        });
+      });
   }
 }

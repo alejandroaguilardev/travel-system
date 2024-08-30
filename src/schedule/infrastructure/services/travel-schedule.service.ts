@@ -6,6 +6,7 @@ import { TravelPersonNotification } from '../../../contract-detail/application/n
 import { UbigeoQuery } from '../../../ubigeo/infrastructure/ubigeo-query.service';
 import { JWTAdapterService } from '../../../auth/infrastructure/services/jwt.service';
 import { TravelAccompaniedPet } from '../../../contract-detail/domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
+import { IncidentsService } from '../../../errors/infrastructure/incidents.service';
 
 /**
  * Enviar un correo indicando que debe llenarlos datos de la persona que viaja como acompañante acompañante.
@@ -18,7 +19,8 @@ export class TravelScheduleService {
     private readonly laravelApiAdapter: LaravelApiAdapter,
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly jwtService: JWTAdapterService,
-  ) {}
+    private readonly incidentsService: IncidentsService,
+  ) { }
 
   @Cron('0 7 * * 6')
   async handleCron() {
@@ -31,6 +33,7 @@ export class TravelScheduleService {
       this.laravelApiAdapter,
       this.ubigeoQuery,
       this.jwtService,
+      this.incidentsService,
     );
 
     const requests = [];

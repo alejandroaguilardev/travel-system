@@ -11,12 +11,14 @@ import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
 import { JWTAdapterService } from '../../auth/infrastructure/services/jwt.service';
 import { FinishScheduleService } from './services/finish-schedule.service';
 import { TravelAccompaniedScheduleService } from './services/travel-accompanied-pet.service';
+import { IncidentsModule } from 'src/errors/infrastructure/incidents.module';
 
 @Module({
   imports: [
     ScheduleModule.forRoot(),
     ContractsModule,
     AuthModule,
+    IncidentsModule,
     UbigeoModule,
   ],
   providers: [
@@ -31,4 +33,4 @@ import { TravelAccompaniedScheduleService } from './services/travel-accompanied-
   ],
   exports: [],
 })
-export class ScheduleCustomModule {}
+export class ScheduleCustomModule { }

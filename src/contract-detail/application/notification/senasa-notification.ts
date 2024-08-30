@@ -2,11 +2,13 @@ import { HttpInterface } from '../../../common/application/services/http-service
 import { DateService } from '../../../common/application/services/date-service';
 import { ContractResponse } from '../../../contracts/application/response/contract.response';
 import { ContractDetailResponse } from '../response/contract-detail.response';
+import { IncidentServiceInterface } from '../../../errors/domain/incident-service-interface';
 
 export class SendMailSenasaIntroduceNotification {
   constructor(
     private readonly http: HttpInterface,
     private readonly dateService: DateService,
+    private readonly incidentsService: IncidentServiceInterface,
   ) { }
 
   async execute(
@@ -31,6 +33,13 @@ export class SendMailSenasaIntroduceNotification {
 
     this.http
       .post(`/notification/detail/senasa-introduce`, { ...data })
-      .catch((e) => console.log(e));
+      .catch(e => {
+        this.incidentsService.create({
+          id: crypto.randomUUID(),
+          name: "/notification/detail/senasa-introduce",
+          error: e.getMessage(),
+          body: JSON.stringify(data),
+        });
+      });
   }
 }

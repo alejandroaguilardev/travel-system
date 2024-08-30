@@ -12,13 +12,14 @@ import { IncidentNotificationSearchById } from '../application/search-by-id/inci
 import { IncidentNotificationSearch } from '../application/search/incident-notification-search';
 import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 import { IncidentDto } from './dto/incident.dto';
+import { IncidentServiceInterface } from '../domain/incident-service-interface';
 
 @Injectable()
-export class IncidentsService {
+export class IncidentsService implements IncidentServiceInterface {
   constructor(
     private readonly mongoIncidentRepository: MongoIncidentRepository,
     private readonly laravelApi: LaravelApiAdapter,
-  ) {}
+  ) { }
 
   create(dto: IncidentDto) {
     const createIncident = new CreateIncident(this.mongoIncidentRepository);

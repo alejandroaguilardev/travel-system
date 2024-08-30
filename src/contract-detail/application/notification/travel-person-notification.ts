@@ -6,6 +6,7 @@ import { UbigeoQueryInterface } from '../../../ubigeo/domain/interfaces/ubigeo-q
 import { TravelDestination } from '../../domain/value-object/travel/destination/travel-destination';
 import { TravelAccompaniedPet } from '../../domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
 import { TravelPetPerCharge } from '../../domain/value-object/travel/travel-pet-per-charge';
+import { IncidentServiceInterface } from '../../../errors/domain/incident-service-interface';
 import {
   TravelPetPerChargeInterface,
   TypeTravelingType,
@@ -16,6 +17,7 @@ export class TravelPersonNotification {
     private readonly http: HttpInterface,
     private readonly ubigeo: UbigeoQueryInterface,
     private readonly jwt: JWT,
+    private readonly incidentsService: IncidentServiceInterface,
   ) { }
 
   async execute(
@@ -26,7 +28,14 @@ export class TravelPersonNotification {
 
     await this.http
       .post(`/notification/detail/travel-person`, { ...data })
-      .catch(e => console.log(e));
+      .catch(e => {
+        this.incidentsService.create({
+          id: crypto.randomUUID(),
+          name: "/notification/detail/travel-person",
+          error: e.getMessage(),
+          body: JSON.stringify(data),
+        });
+      });
   }
 
   private async formatData(

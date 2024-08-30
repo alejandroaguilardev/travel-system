@@ -4,9 +4,13 @@ import { ContractDetailResponse } from '../response/contract-detail.response';
 import { CageChosenInterface } from '../../domain/interfaces/cage.interface';
 import { MeasurementsAndWeightInterface } from '../../../pets/domain/interfaces/pet-measurements-and-weight';
 import { DocumentationInterface } from '../../domain/interfaces/documentation.interface';
+import { IncidentServiceInterface } from '../../../errors/domain/incident-service-interface';
 
 export class InfoDetailNotification {
-  constructor(private readonly http: HttpInterface) { }
+  constructor(
+    private readonly http: HttpInterface,
+    private readonly incidentsService: IncidentServiceInterface,
+  ) { }
 
   async execute(
     contract: ContractResponse,
@@ -39,7 +43,14 @@ export class InfoDetailNotification {
 
     await this.http
       .post(`/notification/detail/info`, { ...data })
-      .catch(e => console.log(e));
+      .catch(e => {
+        this.incidentsService.create({
+          id: crypto.randomUUID(),
+          name: "/notification/detail/info",
+          error: e.getMessage(),
+          body: JSON.stringify(data),
+        });
+      });
   }
 
   private chosenCage(chosenCage?: CageChosenInterface): string {

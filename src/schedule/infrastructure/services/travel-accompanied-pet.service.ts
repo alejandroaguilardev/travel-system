@@ -7,6 +7,7 @@ import { UbigeoQuery } from '../../../ubigeo/infrastructure/ubigeo-query.service
 import { JWTAdapterService } from '../../../auth/infrastructure/services/jwt.service';
 import { TravelAccompaniedPet } from '../../../contract-detail/domain/value-object/travel/accompanied-pet/travel-accompanied-pet';
 import { DayJsService } from '../../../common/infrastructure/services/dayjs.service';
+import { IncidentsService } from '../../../errors/infrastructure/incidents.service';
 
 /**
  * Enviar un correo indicando que la  persona que viaja es la que se tiene registrada como  en el acompañante.
@@ -20,6 +21,7 @@ export class TravelAccompaniedScheduleService {
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly jwtService: JWTAdapterService,
     private readonly dayJsService: DayJsService,
+    private readonly incidentsService: IncidentsService,
   ) { }
 
   @Cron('30 7 * * *')
@@ -33,6 +35,7 @@ export class TravelAccompaniedScheduleService {
       this.laravelApiAdapter,
       this.ubigeoQuery,
       this.jwtService,
+      this.incidentsService,
     );
 
     const requests = [];

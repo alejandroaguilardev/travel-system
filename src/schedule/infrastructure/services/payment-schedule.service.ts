@@ -5,6 +5,7 @@ import { ContractSearchPayments } from '../../../contracts/application/search-pa
 import { DayJsService } from '../../../common/infrastructure/services/dayjs.service';
 import { LaravelApiAdapter } from '../../../common/infrastructure/services/laravel-adapter.service';
 import { PendingPaymentNotification } from '../../../contracts/application/notification/peding-payment-notification';
+import { IncidentsService } from '../../../errors/infrastructure/incidents.service';
 
 /**
  * Recordatorio de pagos pendientes
@@ -15,6 +16,7 @@ export class PaymentScheduleService {
     private readonly mongoContractRepository: MongoContractRepository,
     private readonly laravelApiAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
+    private readonly incidentsService: IncidentsService,
   ) { }
 
 
@@ -29,6 +31,7 @@ export class PaymentScheduleService {
     const mail = new PendingPaymentNotification(
       this.laravelApiAdapter,
       this.dayJsService,
+      this.incidentsService,
     );
     Promise.allSettled(contracts.map((contract) => mail.execute(contract)));
   }

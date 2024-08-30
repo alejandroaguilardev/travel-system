@@ -18,6 +18,7 @@ import { DayJsService } from '../../common/infrastructure/services/dayjs.service
 import { SenasaExcelDownload } from '../application/download/senasa-excel';
 import { CertificateExcelDownload } from '../application/download/certificate-excel';
 import { UbigeoQuery } from '../../ubigeo/infrastructure/ubigeo-query.service';
+import { IncidentsService } from '../../errors/infrastructure/incidents.service';
 
 @Injectable()
 export class ContractDetailCertificateService {
@@ -26,6 +27,7 @@ export class ContractDetailCertificateService {
     private readonly ubigeoQuery: UbigeoQuery,
     private readonly axiosAdapter: LaravelApiAdapter,
     private readonly dayJsService: DayJsService,
+    private readonly incidentsService: IncidentsService
   ) { }
 
   async updateCertificate(
@@ -83,6 +85,7 @@ export class ContractDetailCertificateService {
       const mail = new SendMailSenasaIntroduceNotification(
         this.axiosAdapter,
         this.dayJsService,
+        this.incidentsService
       );
       mail.execute(contract, contractDetail);
     }

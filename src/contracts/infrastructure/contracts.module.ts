@@ -7,6 +7,7 @@ import { MongoContractRepository } from './persistence/contract-mongo.repository
 import { AuthModule } from '../../auth/infrastructure/auth.module';
 import { LaravelApiAdapter } from '../../common/infrastructure/services/laravel-adapter.service';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
+import { IncidentsModule } from '../../errors/infrastructure/incidents.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { DayJsService } from '../../common/infrastructure/services/dayjs.service
       { name: ContractModel.name, schema: ContractSchema },
     ]),
     AuthModule,
+    IncidentsModule,
   ],
   controllers: [ContractsController],
   providers: [
@@ -24,4 +26,4 @@ import { DayJsService } from '../../common/infrastructure/services/dayjs.service
   ],
   exports: [MongoContractRepository],
 })
-export class ContractsModule {}
+export class ContractsModule { }
