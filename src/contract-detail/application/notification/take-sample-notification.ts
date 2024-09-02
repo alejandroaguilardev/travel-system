@@ -37,7 +37,7 @@ export class TakeSampleNotification {
         this.incidentsService.create({
           id: crypto.randomUUID(),
           name: "/notification/detail/taking-sample",
-          error: e.getMessage(),
+          error: typeof e?.getMessage === "function" ? e?.getMessage() : e?.message ?? JSON.stringify(e),
           body: JSON.stringify(data),
         });
       });

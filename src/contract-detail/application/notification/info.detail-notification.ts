@@ -47,7 +47,7 @@ export class InfoDetailNotification {
         this.incidentsService.create({
           id: crypto.randomUUID(),
           name: "/notification/detail/info",
-          error: e.getMessage(),
+          error: typeof e?.getMessage === "function" ? e?.getMessage() : e?.message ?? JSON.stringify(e),
           body: JSON.stringify(data),
         });
       });

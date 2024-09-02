@@ -37,7 +37,7 @@ export class SendMailSenasaIntroduceNotification {
         this.incidentsService.create({
           id: crypto.randomUUID(),
           name: "/notification/detail/senasa-introduce",
-          error: e.getMessage(),
+          error: typeof e?.getMessage === "function" ? e?.getMessage() : e?.message ?? JSON.stringify(e),
           body: JSON.stringify(data),
         });
       });
