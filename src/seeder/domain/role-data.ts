@@ -10,6 +10,7 @@ export enum RoleNameData {
   CONTRACTS = "Gestión de Contratos",
   PETS = "Gestión de Mascotas",
   CLIENT = "Gestión de Clientes",
+  CLIENT_HISTORY = "Listado de Clientes",
   FOLDERS = "Gestión de Expedientes",
   INCIDENTS = "Gestión de Incidencias",
   CONTRACT_DOCUMENTATION = "Gestión de Documentos",
@@ -170,6 +171,24 @@ export const getRolesData = (
               return true
             }
             if (_.group === AuthGroup.CONTRACTS && AuthPermission.READ === _.name) {
+              return true
+            }
+            return false;
+          })
+          .map((_) => _.id),
+      ],
+    },
+    {
+      id: uuid.generate(),
+      name: RoleNameData.CLIENT_HISTORY,
+      description: 'Historial de clientes',
+      permissions: [
+        ...permissions
+          .filter(_ => {
+            if (_.group === AuthGroup.CLIENT && AuthPermission.LIST === _.name) {
+              return true
+            }
+            if (_.group === AuthGroup.CLIENT && AuthPermission.READ === _.name) {
               return true
             }
             return false;
