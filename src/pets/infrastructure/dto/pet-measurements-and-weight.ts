@@ -1,10 +1,9 @@
-import { IsNumber, ValidateNested } from 'class-validator';
+import { IsNumber, ValidateNested, IsDate } from 'class-validator';
 import { Type } from 'class-transformer';
 import { MeasurementsAndWeightInterface } from '../../../pets/domain/interfaces/pet-measurements-and-weight';
 
 export class MeasurementsAndWeightDto
-  implements MeasurementsAndWeightInterface
-{
+  implements MeasurementsAndWeightInterface {
   @IsNumber()
   weight: number;
   @IsNumber()

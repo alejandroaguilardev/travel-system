@@ -1,6 +1,7 @@
 import { PipelineStage } from 'mongoose';
 import { Criteria } from '../../../common/domain/criteria/criteria';
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
+import { MongoPipeline } from '../../../common/infrastructure/mongo/mongo-pipeline';
 
 export class UserMongoPipeline {
   static execute(criteria: Criteria): PipelineStage[] {
@@ -72,12 +73,7 @@ export class UserMongoPipeline {
           'profile._id': 0,
         },
       },
-      {
-        $skip: start,
-      },
-      {
-        $limit: size,
-      },
+      ...MongoPipeline.queryCountTotal(sortQuery, start, size),
 
     ];
   }

@@ -73,6 +73,7 @@ export class PetModel implements PetInterface {
       height: Number,
       width: Number,
       length: Number,
+      updatedAt: Date,
     },
     required: false,
   })

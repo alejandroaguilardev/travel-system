@@ -25,6 +25,8 @@ import { PetIsPotentiallyDangerous } from '../../domain/value-object/pet-is-pote
 import { CommandContractTopico } from '../../../contract-detail/application/update/command/topico-command';
 import { PetInterface } from '../../domain/interfaces/pet.interface';
 import { CreatePetRequest } from '../create/create-pet-request';
+import { PetUpdatedAt } from '../../domain/value-object/pet-updated-at';
+import { MeasurementsAndWeightInterface } from '../../domain/interfaces/pet-measurements-and-weight';
 
 export class CommandPetUpdater {
   static execute(pet: PetInterface, data?: CreatePetRequest): Pet {
@@ -51,35 +53,48 @@ export class CommandPetUpdater {
       new CageChosen(
         new CageChosenModel(
           data?.cageRecommendation?.modelCage ??
-            pet.cageRecommendation.modelCage,
+          pet.cageRecommendation.modelCage,
         ),
         new CageChosenType(
           data?.cageRecommendation?.typeCage ?? pet.cageRecommendation.typeCage,
         ),
         new CageChosenDimensions(
           data?.cageRecommendation?.dimensionsCage ??
-            pet.cageRecommendation.dimensionsCage,
+          pet.cageRecommendation.dimensionsCage,
         ),
         new UuidOptional(''),
       ),
       new PetMeasurementsAndWeight(
         new PetWeight(
           data?.measurementsAndWeight?.weight ??
-            pet.measurementsAndWeight.weight,
+          pet.measurementsAndWeight.weight,
         ),
         new PetMeasurement(
           data?.measurementsAndWeight?.height ??
-            pet.measurementsAndWeight.height,
+          pet.measurementsAndWeight.height,
         ),
         new PetMeasurement(
           data?.measurementsAndWeight?.length ??
-            pet.measurementsAndWeight.length,
+          pet.measurementsAndWeight.length,
         ),
         new PetMeasurement(
           data?.measurementsAndWeight?.width ?? pet.measurementsAndWeight.width,
         ),
+        new PetUpdatedAt(CommandPetUpdater.setPetUpdatedAt(data?.measurementsAndWeight, pet.measurementsAndWeight)),
       ),
       CommandContractTopico.execute(pet?.topico),
     );
+  }
+
+  private static setPetUpdatedAt(measurementsAndWeight: MeasurementsAndWeightInterface, newMeasurementsAndWeight: MeasurementsAndWeightInterface): Date {
+    if (!measurementsAndWeight?.updatedAt) return new Date();
+
+    const hasChanged =
+      measurementsAndWeight.weight !== newMeasurementsAndWeight.weight ||
+      measurementsAndWeight.height !== newMeasurementsAndWeight.height ||
+      measurementsAndWeight.width !== newMeasurementsAndWeight.width ||
+      measurementsAndWeight.length !== newMeasurementsAndWeight.length;
+
+    return hasChanged ? new Date() : measurementsAndWeight.updatedAt;
   }
 }

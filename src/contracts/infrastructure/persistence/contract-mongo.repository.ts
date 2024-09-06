@@ -42,13 +42,10 @@ export class MongoContractRepository
   async search<ContractResponse>(
     criteria: Criteria,
   ): Promise<ResponseSearch<ContractResponse>> {
-    const rows: ContractResponse[] = await this.contractModel
+    const results: any = await this.contractModel
       .aggregate(ContractMongoPipeline.execute(criteria))
       .exec();
-
-    const count = await this.count(criteria);
-
-    return { rows, count };
+    return { rows: results[0].rows, count: results[0].totalCount } as ResponseSearch<ContractResponse>;
   }
 
   async searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]> {

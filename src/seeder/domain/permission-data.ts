@@ -141,8 +141,8 @@ export const getPermissionsData = (uuid: UUID): CreatePermissionRequest[] => [
   },
   {
     id: uuid.generate(),
-    name: AuthPermission.LIST,
-    description: 'Listar elementos',
+    name: AuthPermission.READ,
+    description: 'Leer detalles de elementos',
     group: AuthGroup.CONTRACT_SENASA,
   },
   //TRAVEL

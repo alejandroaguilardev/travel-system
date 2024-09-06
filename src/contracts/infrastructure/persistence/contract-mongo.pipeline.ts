@@ -1,29 +1,19 @@
 import { FilterQuery, PipelineStage } from 'mongoose';
 import { Criteria } from '../../../common/domain/criteria/criteria';
 import { MongoCriteriaConverter } from '../../../common/infrastructure/mongo/mongo-criteria-converter';
+import { MongoPipeline } from '../../../common/infrastructure/mongo/mongo-pipeline';
 
 export class ContractMongoPipeline {
   static execute(criteria: Criteria): PipelineStage[] {
     const { query, start, size, sortQuery } =
       MongoCriteriaConverter.converter(criteria);
-    const sort = [];
-    if (Object.keys(sortQuery).length > 0) {
-      sort.push({ $sort: sortQuery });
-    }
-
-
+  
     return [
       ...ContractMongoPipeline.lookup(),
       {
         $match: query,
       },
-      ...sort,
-      {
-        $skip: start,
-      },
-      {
-        $limit: size,
-      },
+      ...MongoPipeline.queryCountTotal(sortQuery, start, size),
     ];
   }
 

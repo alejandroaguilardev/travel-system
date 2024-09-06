@@ -34,12 +34,11 @@ export class UserMongoRepository
   }
 
   async search<R>(criteria: Criteria): Promise<ResponseSearch<R>> {
-    const rows: R[] = await this.userModel
+    const results: any = await this.userModel
       .aggregate(UserMongoPipeline.execute(criteria))
       .exec();
 
-    const count: number = await this.count(criteria);
-    return { rows, count };
+    return { rows: results[0].rows, count: results[0].totalCount } as ResponseSearch<R>;
   }
 
   async searchEmail(email: UserEmail): Promise<UserResponse | null> {

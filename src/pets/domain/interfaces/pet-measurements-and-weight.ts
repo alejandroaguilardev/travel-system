@@ -3,4 +3,5 @@ export interface MeasurementsAndWeightInterface {
   height: number;
   width: number;
   length: number;
+  updatedAt?: Date;
 }
