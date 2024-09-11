@@ -19,7 +19,7 @@ import { PetChipDate } from '../../domain/value-object/pet-chip-date';
 import { CommandPetCreator } from '../create/command-pet-creator';
 
 export class PetChipUpdater {
-  constructor(private readonly petRepository: PetRepository) {}
+  constructor(private readonly petRepository: PetRepository) { }
 
   async execute(
     id: string,
@@ -38,7 +38,8 @@ export class PetChipUpdater {
     }
 
     const petWithChip = await this.petRepository.searchByChip(chip);
-    if (petWithChip?.chip !== response?.chip && petWithChip) {
+
+    if (petWithChip && petWithChip.id !== response.id) {
       throw new ErrorDuplicateElement('El chip ya se encuentra utilizado');
     }
 
