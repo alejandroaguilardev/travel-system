@@ -37,7 +37,7 @@ import { DocsContractClientFindAll } from './docs/contract-client.docs';
 
 @Controller('contracts')
 export class ContractsController {
-  constructor(private readonly contractsService: ContractsService) {}
+  constructor(private readonly contractsService: ContractsService) { }
 
   @Post()
   @Auth()
@@ -80,6 +80,16 @@ export class ContractsController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.contractsService.cancel(id, contractCancelDto, user);
+  }
+
+  @Post(':id/notification-new-contract')
+  @HttpCode(200)
+  @Auth()
+  @DocsContractCancel()
+  notificationNewContract(
+    @Param('id') id: string,
+  ) {
+    return this.contractsService.notificationNewContract(id);
   }
 
   @Get()

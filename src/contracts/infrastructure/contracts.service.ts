@@ -28,6 +28,7 @@ import { CancelContractNotification } from '../application/notification/cancel-c
 import { FinishContractNotification } from '../application/notification/finish-contract-notification';
 import { DayJsService } from '../../common/infrastructure/services/dayjs.service';
 import { IncidentsService } from '../../errors/infrastructure/incidents.service';
+import { Uuid } from '../../common/domain/value-object/uuid';
 
 @Injectable()
 export class ContractsService {
@@ -45,14 +46,6 @@ export class ContractsService {
     const contractsCreator = new ContractCreator(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(createContractDto, user.id);
     const response = await contractsCreator.execute(contract, user);
-    const mail = new NewContractNotification(
-      this.mongoContractRepository,
-      this.axiosAdapter,
-      this.dateService,
-      this.incidentsService,
-    );
-    mail.execute(contract.id);
-
     return response;
   }
 
@@ -186,5 +179,15 @@ export class ContractsService {
   ): Promise<ResponseSuccess> {
     const contractRemover = new ContractRemover(this.mongoContractRepository);
     return contractRemover.execute(id, user);
+  }
+
+  async notificationNewContract(contractId: string) {
+    const mail = new NewContractNotification(
+      this.mongoContractRepository,
+      this.axiosAdapter,
+      this.dateService,
+      this.incidentsService,
+    );
+    mail.execute(new Uuid(contractId));
   }
 }

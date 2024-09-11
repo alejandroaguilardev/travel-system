@@ -17,7 +17,7 @@ export class TakeSampleExecutedNotification {
 
     const data = {
       client:
-        contract?.client?.profile?.name + ' ' + contract?.client?.profile?.name,
+        contract?.client?.profile?.name + ' ' + contract?.client?.profile?.lastName,
       email: contract.client.email,
       petName: pet?.name ?? '',
       phone: contract?.client?.profile?.phone,

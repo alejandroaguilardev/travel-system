@@ -21,7 +21,7 @@ export class NewContractNotification {
       client:
         contract?.client?.profile?.name +
         ' ' +
-        contract?.client?.profile?.name,
+        contract?.client?.profile?.lastName,
       phone: contract?.client?.profile?.phone,
       phoneAdviser: contract.adviser.profile.phone,
       linkWhatsApp: contract.adviser?.linkWhatsApp ?? '',
