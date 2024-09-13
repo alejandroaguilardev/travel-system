@@ -63,7 +63,7 @@ export class ContractDocumentation {
     this.clientStatus = new ContractStatusDetail(clientStatus);
   }
 
-  documentationIsApplied(data: DocumentationInterface): StatusInterface {
+  static documentationIsApplied(data: DocumentationInterface): StatusInterface {
     let count = 0;
     let isRequired = 0;
     data.chipCertificate.hasServiceIncluded;

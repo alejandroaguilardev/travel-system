@@ -8,6 +8,7 @@ import { EnsureContractDetail } from './ensure-contract-detail';
 import { ContractTopico } from '../../../contract-detail/domain/value-object/contract-topico';
 import { CommandContractTopico } from './command/topico-command';
 import { ContractTopicoInterface } from '../../../contract-detail/domain/interfaces/topico.interface';
+import { ContractDetailStatusUpdate } from '../../domain/contract-detail-status';
 
 export class ContractDetailTopicoUpdater {
   constructor(private readonly contractRepository: ContractRepository) { }
@@ -43,10 +44,10 @@ export class ContractDetailTopicoUpdater {
       user.id,
     );
 
-    const contractDetail = {
+    const contractDetail = ContractDetailStatusUpdate.statusUpdate({
       ...contractDetailResponse,
       topico: topicoUpdate.toJson(),
-    };
+    });
 
     const contract = CommandContractUpdater.execute({
       ...contractResponse,

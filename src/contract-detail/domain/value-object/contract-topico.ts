@@ -52,7 +52,7 @@ export class ContractTopico {
     this.status = new ContractStatusDetail(status);
   }
 
-  documentationIsApplied(data: ContractTopicoInterface): StatusInterface {
+  static topicoIsApplied(data: ContractTopicoInterface): StatusInterface {
     let isRequired = 0;
     let executed = 0;
     Object.keys(data).forEach((key) => {

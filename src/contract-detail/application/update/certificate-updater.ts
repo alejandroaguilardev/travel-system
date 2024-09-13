@@ -8,6 +8,7 @@ import { EnsureContractDetail } from './ensure-contract-detail';
 import { ContractDocumentation } from '../../domain/value-object/service-documentation';
 import { CommandContractDocumentation } from './command/command-documentation';
 import { DocumentationInterface } from '../../../contract-detail/domain/interfaces/documentation.interface';
+import { ContractDetailStatusUpdate } from '../../domain/contract-detail-status';
 
 export class ContractDetailCertificateUpdater {
   constructor(private readonly contractRepository: ContractRepository) { }
@@ -42,18 +43,13 @@ export class ContractDetailCertificateUpdater {
       [value]: documentationPartial.toJson(),
     } as DocumentationInterface);
 
-    documentationUpdate.setStatus(
-      documentationUpdate.documentationIsApplied(documentationUpdate.toJson()),
-    );
-    documentationUpdate.setStatusClient(
-      documentationUpdate.documentationClientIsApplied(documentationUpdate.toJson()),
-    );
 
 
-    const contractDetail = {
+    const contractDetail = ContractDetailStatusUpdate.statusUpdate({
       ...contractDetailResponse,
       documentation: documentationUpdate.toJson(),
-    };
+    })
+      ;
     const contract = CommandContractUpdater.execute({
       ...contractResponse,
       details: contractResponse.details.map((_) =>

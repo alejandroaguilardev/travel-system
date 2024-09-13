@@ -16,7 +16,7 @@ export class ContractDetail {
     readonly pet: UuidOptional,
     readonly user: UuidOptional,
     readonly topico: ContractTopico,
-  ) {}
+  ) { }
 
   toJson(): ContractDetailInterface {
     return {
