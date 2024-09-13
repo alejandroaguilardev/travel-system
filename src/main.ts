@@ -17,7 +17,7 @@ async function bootstrap() {
   await app.register(helmet);
 
   app.enableCors({
-    origin: process.env.PRODUCTION === "false"
+    origin: process.env.PRODUCTION === "true"
       ? '*'
       : [
         'https://app.pettravelperu.com',
