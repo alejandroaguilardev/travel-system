@@ -15,8 +15,11 @@ import {
   TakingSampleSerologicalTestContractInterface,
   VaccinationContractInterface,
 } from '../../../domain/interfaces/topico.interface';
+import { StatusInterface } from 'src/contract-detail/domain/interfaces';
 
 class ValuesDto {
+  @IsBoolean()
+  hasIncluded: boolean;
   @IsBoolean()
   executed: boolean;
   @IsDate()
@@ -91,4 +94,5 @@ export class TopicoDto implements ContractTopicoInterface {
   @Type(() => TakingSampleSerologicalTestContractDto)
   @ValidateNested()
   takingSampleSerologicalTest: TakingSampleSerologicalTestContractInterface;
+
 }
