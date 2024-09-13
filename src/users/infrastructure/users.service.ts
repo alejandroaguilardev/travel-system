@@ -45,11 +45,7 @@ export class UsersService {
     );
     const userCommand = CommandCreatorUser.execute(createAuthDto, user.id);
 
-    const password = new UserPassword(
-      this.isProductionMode === 'false'
-        ? "12345678"
-        : UserPassword.generatePassword(),
-    );
+    const password = new UserPassword(userCommand.profile.documentNumber.value);
 
     const response = await userCreator.create(userCommand, password, user);
     const mail = new CredentialsNotification(this.adapterApi);

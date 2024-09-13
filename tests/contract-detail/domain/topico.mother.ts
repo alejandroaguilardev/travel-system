@@ -82,6 +82,7 @@ export class TopicoMother {
   ): RabiesReVaccinationContractInterface {
     return (
       rabiesVaccination ?? {
+        hasIncluded: faker.datatype.boolean(),
         executed: faker.datatype.boolean(),
         date: faker.date.recent(),
         description: StringMother.create(),
@@ -110,6 +111,7 @@ export class TopicoMother {
   ): TakingSampleSerologicalTestContractInterface {
     return (
       takingSampleSerologicalTest ?? {
+        hasIncluded: faker.datatype.boolean(),
         executed: faker.datatype.boolean(),
         date: faker.date.recent(),
         description: StringMother.create(),

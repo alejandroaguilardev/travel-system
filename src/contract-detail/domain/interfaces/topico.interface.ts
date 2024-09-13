@@ -1,3 +1,5 @@
+import { StatusInterface } from "./status.interface";
+
 export interface ChipContractInterface {
   hasIncluded: boolean;
   executed: boolean;
@@ -26,6 +28,7 @@ export interface RabiesVaccinationContractInterface {
 }
 
 export interface RabiesReVaccinationContractInterface {
+  hasIncluded: boolean;
   executed: boolean;
   date: Date;
   description: string;
@@ -42,6 +45,7 @@ export interface ChipReviewContractInterface {
 }
 
 export interface TakingSampleSerologicalTestContractInterface {
+  hasIncluded: boolean;
   executed: boolean;
   date: Date;
   description: string;
@@ -57,4 +61,5 @@ export interface ContractTopicoInterface {
   rabiesReVaccination: RabiesReVaccinationContractInterface;
   chipReview: ChipReviewContractInterface;
   takingSampleSerologicalTest: TakingSampleSerologicalTestContractInterface;
+  status?: StatusInterface;
 }

@@ -10,7 +10,6 @@ export const topicoSchema = {
       user: String,
     },
     chipReview: {
-      hasIncluded: Boolean,
       executed: Boolean,
       date: Date,
       description: String,
@@ -34,6 +33,7 @@ export const topicoSchema = {
       user: String,
     },
     rabiesReVaccination: {
+      hasIncluded: Boolean,
       executed: Boolean,
       date: Date,
       description: String,
@@ -41,6 +41,7 @@ export const topicoSchema = {
       user: String,
     },
     takingSampleSerologicalTest: {
+      hasIncluded: Boolean,
       executed: Boolean,
       date: Date,
       description: String,
@@ -48,6 +49,7 @@ export const topicoSchema = {
       typeSample: String,
       user: String,
     },
+    status: String
   },
   required: false,
 };

@@ -18,7 +18,7 @@ import { TopicoRabiesReVaccination } from '../../../domain/value-object/topico/t
 import { TopicoReviewChip } from '../../../domain/value-object/topico/topico-review-chip';
 import { TakingSampleSerologicalTest } from '../../../domain/value-object/topico/taking-sample-serological-test';
 import { TopicoObservation } from '../../../domain/value-object/topico/topico-observation';
-import { UuidOptional } from '../../../../common/domain/value-object';
+import { ContractStatusDetail, UuidOptional } from '../../../../common/domain/value-object';
 import { RabiesVaccinationContractInterface } from '../../../domain/interfaces/topico.interface';
 import { TopicoTakingSampleType } from '../../../domain/value-object/topico/topico-taking-sample-type';
 
@@ -48,6 +48,9 @@ export class CommandContractTopico {
       CommandContractTopico.takingSampleSerologicalTest(
         contractTopicoInterface?.takingSampleSerologicalTest,
         userId,
+      ),
+      new ContractStatusDetail(
+        contractTopicoInterface?.status ?? 'pending',
       ),
     );
   }
@@ -96,6 +99,7 @@ export class CommandContractTopico {
     userId?: string,
   ): TopicoRabiesReVaccination {
     return new TopicoRabiesReVaccination(
+      new TopicoHasIncluded(rabiesReVaccination?.hasIncluded ?? false),
       new TopicoExecuted(rabiesReVaccination?.executed ?? false),
       new TopicoDate(rabiesReVaccination?.date ?? null),
       new TopicoDescription(rabiesReVaccination?.description ?? ''),
@@ -122,6 +126,7 @@ export class CommandContractTopico {
     userId?: string,
   ): TakingSampleSerologicalTest {
     return new TakingSampleSerologicalTest(
+      new TopicoHasIncluded(takingSampleSerologicalTest?.hasIncluded ?? false),
       new TopicoExecuted(takingSampleSerologicalTest?.executed ?? false),
       new TopicoDate(takingSampleSerologicalTest?.date ?? null),
       new TopicoDescription(takingSampleSerologicalTest?.description ?? ''),

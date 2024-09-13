@@ -12,7 +12,7 @@ export class TopicoReviewChip {
     readonly description: TopicoDescription,
     readonly observation: TopicoObservation,
     readonly user: UuidOptional,
-  ) {}
+  ) { }
 
   toJson(): ChipReviewContractInterface {
     return {

@@ -64,6 +64,12 @@ export class Contract {
       const hasCompleted = detail.documentation.status === 'completed';
       count += 1;
       countHasCompleted += hasCompleted ? 1 : 0;
+      // Para no romper los contratos antiguos
+      if (detail.topico.status) {
+        const hasCompletedTopic = detail.topico.status === 'completed';
+        count += 1;
+        countHasCompleted += hasCompletedTopic ? 1 : 0;
+      }
     });
 
     if (count === countHasCompleted) {
