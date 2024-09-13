@@ -43,18 +43,7 @@ export class UserMongoRepository
 
   async searchEmail(email: UserEmail): Promise<UserResponse | null> {
     const response = await this.userModel.findOne({ email }).lean();
-    if (!response) return null;
-
-    const { id, password } = response;
-    const criteria = CommandCriteria.fromData({
-      filters: [{ field: 'id', value: id, operator: FilterOperator.EQUAL }],
-    });
-    const rows: UserResponse[] = await this.userModel
-      .aggregate(UserMongoPipeline.execute(criteria))
-      .exec();
-
-    const user = rows.length > 0 ? rows[0] : null;
-    return { ...user, password };
+    return response;
   }
 
   async searchDocument(
