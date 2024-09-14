@@ -10,7 +10,7 @@ import { PermissionValidator } from '../../../auth/application/permission/permis
 import { UserWithoutWithRoleResponse } from '../../../users/domain/interfaces/user-without.response';
 
 export class PetSearchById {
-  constructor(private readonly petRepository: PetRepository) {}
+  constructor(private readonly petRepository: PetRepository) { }
 
   async execute(
     id: string,
@@ -21,7 +21,7 @@ export class PetSearchById {
     const response = await this.petRepository.searchById<PetResponse>(uuid);
 
     if (!response) {
-      throw new ErrorNotFound(ErrorNotFound.messageDefault('jaulas'));
+      throw new ErrorNotFound(ErrorNotFound.messageDefault('mascotas'));
     }
 
     return response;

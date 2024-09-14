@@ -27,7 +27,7 @@ import {
 
 @Controller('pets')
 export class PetsController {
-  constructor(private readonly petsService: PetsService) {}
+  constructor(private readonly petsService: PetsService) { }
 
   @Post()
   @Auth()
@@ -47,6 +47,16 @@ export class PetsController {
     @GetUser() user: UserWithoutWithRoleResponse,
   ) {
     return this.petsService.findAll(criteriaDto, user);
+  }
+
+  @Get(':idClient/pets')
+  @Auth()
+  @DocsPetFindOne()
+  findClientPets(
+    @Param('idClient') idClient: string,
+    @GetUser() user: UserWithoutWithRoleResponse,
+  ) {
+    return this.petsService.findClientPets(idClient, user);
   }
 
   @Get(':id')

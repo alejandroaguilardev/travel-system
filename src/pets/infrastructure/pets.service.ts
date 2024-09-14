@@ -4,7 +4,7 @@ import { MongoPetRepository } from './persistence/mongo-pet.repository';
 import { CreatePetDto } from './dto/create-pet.dto';
 import { UpdatePetDto } from './dto/update-pet.dto';
 import { ResponseSuccess, ResponseSearch } from '../../common/domain/response';
-import { PetResponse } from '../domain/interfaces/pet.response';
+import { PetResponse, PetsClientResponse } from '../domain/interfaces/pet.response';
 import { PetCreator } from '../application/create/pet-creator';
 import { CommandPetCreator } from '../application/create/command-pet-creator';
 import { CriteriaDto } from '../../common/infrastructure/dto/criteria.dto';
@@ -17,10 +17,11 @@ import { PetChipDto } from './dto/pet-chip.dto';
 import { PetChip } from '../domain/value-object/pet-chip';
 import { PetChipDate } from '../domain/value-object/pet-chip-date';
 import { PetChipUpdater } from '../application/update/pet-chip-updater';
+import { PetSearchByClient } from '../application/search-by-id/pet-client-search';
 
 @Injectable()
 export class PetsService {
-  constructor(private readonly mongoPetRepository: MongoPetRepository) {}
+  constructor(private readonly mongoPetRepository: MongoPetRepository) { }
 
   create(
     createPetDto: CreatePetDto,
@@ -43,6 +44,11 @@ export class PetsService {
   findOne(id: string, user: UserWithoutWithRoleResponse): Promise<PetResponse> {
     const petSearchById = new PetSearchById(this.mongoPetRepository);
     return petSearchById.execute(id, user);
+  }
+
+  findClientPets(idClient: string, user: UserWithoutWithRoleResponse): Promise<PetsClientResponse[]> {
+    const petSearchByClient = new PetSearchByClient(this.mongoPetRepository);
+    return petSearchByClient.execute(idClient, user);
   }
 
   update(

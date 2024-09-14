@@ -6,15 +6,14 @@ import { Pet } from '../../domain/pet';
 import { PetModel } from '../schema/pet.schema';
 import { MongoRepository } from '../../../common/infrastructure/mongo/mongo.repository';
 import { PetChip } from '../../domain/value-object/pet-chip';
-import { PetResponse } from '../../../pets/domain/interfaces/pet.response';
+import { PetResponse, PetsClientResponse } from '../../../pets/domain/interfaces/pet.response';
 import { Uuid } from '../../../common/domain/value-object';
 import { ContractTopico } from '../../../contract-detail/domain/value-object/contract-topico';
 
 @Injectable()
 export class MongoPetRepository
   extends MongoRepository<PetModel, Pet>
-  implements PetRepository
-{
+  implements PetRepository {
   private petModel: Model<PetModel>;
 
   constructor(@InjectModel(PetModel.name) model: Model<PetModel>) {
@@ -26,6 +25,13 @@ export class MongoPetRepository
     return await this.petModel
       .findOne({ chip: chip.value })
       .select(['-_id', '-__v', '-createdAt', '-updatedAt'])
+      .lean();
+  }
+
+  async searchByClient(idClient: Uuid): Promise<PetsClientResponse[]> {
+    return await this.petModel
+      .find({ adopter: idClient })
+      .select(["id", "name", "chip",])
       .lean();
   }
 
