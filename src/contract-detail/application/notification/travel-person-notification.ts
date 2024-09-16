@@ -62,7 +62,7 @@ export class TravelPersonNotification {
       accompaniedProvince = province?.name ?? '--';
       accompaniedDistrict = district?.name ?? '--';
     } else {
-      token = this.jwt.generateToken({ id: contract.client.id });
+      token = this.jwt.generateToken({ id: contract.client.id }, { expiresIn: '30d' });
     }
 
     return {
