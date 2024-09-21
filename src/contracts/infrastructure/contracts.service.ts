@@ -144,7 +144,6 @@ export class ContractsService {
   ): Promise<ResponseSuccess> {
     const contractUpdater = new ContractUpdater(this.mongoContractRepository);
     const contract = CommandContractCreator.execute(updateContractDto, user.id);
-
     return contractUpdater.execute(id, contract, user);
   }
 

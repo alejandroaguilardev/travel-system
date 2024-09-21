@@ -32,6 +32,8 @@ export class CommandContractUpdater {
     contract: ContractInterface,
     data?: ContractInterface,
   ): Contract {
+    const payInInstallments = data?.payInInstallments?.length > 0 ? data?.payInInstallments : contract?.payInInstallments ?? [];
+
     return new Contract(
       new Uuid(contract.id),
       new ContractFolder(data?.folder ?? contract.folder),
@@ -47,7 +49,7 @@ export class CommandContractUpdater {
       CommandContractDetailsUpdater.execute(contract.details, data?.details),
       new ContractPrice(data?.price ?? contract.price),
       new PayInInstallments(
-        data?.payInInstallments?.map(
+        payInInstallments?.map(
           (_) =>
             new PayInInstallment(
               new ContractPrice(_.price),
@@ -65,7 +67,7 @@ export class CommandContractUpdater {
                 ) ?? [],
               ),
             ),
-        ) ?? [],
+        ),
       ),
       new Uuid(data?.adviser ?? contract.adviser),
       new ContractFinishClient(data?.finishClient ?? contract.finishClient),

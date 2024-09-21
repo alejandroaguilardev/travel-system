@@ -65,8 +65,6 @@ export class AdendasPdf {
     async setArchive(contractDetail: ContractDetailResponse, file: File, lang: string) {
         const pdfBytes = await this.pdfService.load(file);
         const form = pdfBytes.getForm();
-        const fields = form.getFields();
-        // fields.forEach((field) => { console.log(field.getName()); });
         const client = this.formFill(contractDetail, form, lang);
         const editedPdfBytes = await pdfBytes.save();
         return { editedPdfBytes, client };

@@ -61,7 +61,7 @@ export class CommandPetCreator {
         new PetMeasurement(data?.measurementsAndWeight?.width ?? 0),
         new PetUpdatedAt(new Date()),
       ),
-      CommandContractTopico.execute(data?.topico, userId),
+      CommandContractTopico.execute(data?.topico, undefined, userId),
     );
   }
 }

@@ -41,6 +41,7 @@ export class ContractDetailTopicoUpdater {
         ...(contractDetailResponse?.topico ?? {}),
         [value]: topicoPartial.toJson(),
       } as ContractTopicoInterface,
+      undefined,
       user.id,
     );
 

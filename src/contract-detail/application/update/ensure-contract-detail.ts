@@ -22,6 +22,7 @@ export class EnsureContractDetail {
   }> {
     const contractResponse =
       await this.contractRepository.searchById<ContractInterface>(contractUuid);
+
     const contractDetailResponse = contractResponse.details.find(
       (_) => _.id === contractDetailUuid.value,
     );

@@ -36,8 +36,6 @@ export class CDCRVMRPdf {
     async setArchive(contractDetail: ContractDetailResponse, file: File) {
         const pdfBytes = await this.pdfService.load(file);
         const form = pdfBytes.getForm();
-        // const fields = form.getFields();
-        // fields.forEach((field) => { console.log(field.getName()); });
         const client = await this.formFill(contractDetail, form);
         const editedPdfBytes = await pdfBytes.save();
         return { editedPdfBytes, client };

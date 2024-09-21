@@ -25,32 +25,33 @@ import { TopicoTakingSampleType } from '../../../domain/value-object/topico/topi
 export class CommandContractTopico {
   static execute(
     contractTopicoInterface?: ContractTopicoInterface,
+    data?: ContractTopicoInterface,
     userId?: string,
   ): ContractTopico {
     return new ContractTopico(
-      CommandContractTopico.chip(contractTopicoInterface?.chip, userId),
+      CommandContractTopico.chip(data?.chip ?? contractTopicoInterface?.chip, userId),
       CommandContractTopico.vaccination(
-        contractTopicoInterface?.vaccination,
+        data?.vaccination ?? contractTopicoInterface?.vaccination,
         userId,
       ),
       CommandContractTopico.rabiesVaccination(
-        contractTopicoInterface?.rabiesVaccination,
+        data?.rabiesVaccination ?? contractTopicoInterface?.rabiesVaccination,
         userId,
       ),
       CommandContractTopico.rabiesReVaccination(
-        contractTopicoInterface?.rabiesReVaccination,
+        data?.rabiesReVaccination ?? contractTopicoInterface?.rabiesReVaccination,
         userId,
       ),
       CommandContractTopico.chipReview(
-        contractTopicoInterface?.chipReview,
+        data?.chipReview ?? contractTopicoInterface?.chipReview,
         userId,
       ),
       CommandContractTopico.takingSampleSerologicalTest(
-        contractTopicoInterface?.takingSampleSerologicalTest,
+        data?.takingSampleSerologicalTest ?? contractTopicoInterface?.takingSampleSerologicalTest,
         userId,
       ),
       new ContractStatusDetail(
-        contractTopicoInterface?.status ?? 'pending',
+        data?.status ?? contractTopicoInterface?.status ?? 'pending',
       ),
     );
   }

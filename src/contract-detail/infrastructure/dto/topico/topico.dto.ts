@@ -15,9 +15,9 @@ import {
   TakingSampleSerologicalTestContractInterface,
   VaccinationContractInterface,
 } from '../../../domain/interfaces/topico.interface';
-import { StatusInterface } from 'src/contract-detail/domain/interfaces';
 
 class ValuesDto {
+  @IsOptional()
   @IsBoolean()
   hasIncluded: boolean;
   @IsBoolean()

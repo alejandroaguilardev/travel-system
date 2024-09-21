@@ -30,7 +30,7 @@ export class CommandContractDetailsUpdater {
       CommandContractTravel.execute(services.travel),
       new UuidOptional(data?.pet ?? contract.pet),
       new UuidOptional(data?.user ?? contract.user),
-      CommandContractTopico.execute(contract?.topico),
+      CommandContractTopico.execute(contract?.topico, data?.topico),
     );
   }
 

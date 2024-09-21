@@ -59,6 +59,7 @@ export class ContractsController {
   ) {
     return this.contractsService.finish(id, user);
   }
+
   @Post(':id/finish/client')
   @HttpCode(200)
   @Auth()
@@ -175,4 +176,5 @@ export class ContractsController {
   ) {
     return this.contractsService.remove(id, user);
   }
+
 }
