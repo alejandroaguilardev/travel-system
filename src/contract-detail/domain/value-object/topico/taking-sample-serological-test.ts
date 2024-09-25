@@ -6,6 +6,7 @@ import { UuidOptional } from '../../../../common/domain/value-object/uuid-option
 import { TopicoObservation } from './topico-observation';
 import { TopicoTakingSampleType } from './topico-taking-sample-type';
 import { TopicoHasIncluded } from './topico-has-included';
+import { TopicoDoctorProvince } from './topico-doctor-province';
 
 export class TakingSampleSerologicalTest {
   constructor(
@@ -14,8 +15,8 @@ export class TakingSampleSerologicalTest {
     readonly date: TopicoDate,
     readonly description: TopicoDescription,
     readonly observation: TopicoObservation,
+    readonly doctorProvince: TopicoDoctorProvince,
     readonly typeSample: TopicoTakingSampleType,
-
     readonly user: UuidOptional,
   ) { }
 
@@ -27,6 +28,7 @@ export class TakingSampleSerologicalTest {
       description: this.description.value,
       observation: this.observation.value,
       typeSample: this.typeSample.value,
+      doctorProvince: this.doctorProvince.value,
       user: this.user.value,
     };
   }

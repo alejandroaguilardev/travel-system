@@ -6,6 +6,7 @@ export interface ChipContractInterface {
   date: Date;
   description: string;
   observation: string;
+  doctorProvince: string;
   user: string;
 }
 
@@ -15,6 +16,7 @@ export interface VaccinationContractInterface {
   date: Date;
   description: string;
   observation: string;
+  doctorProvince: string;
   user: string;
 }
 
@@ -24,6 +26,7 @@ export interface RabiesVaccinationContractInterface {
   date: Date;
   description: string;
   observation: string;
+  doctorProvince: string;
   user: string;
 }
 
@@ -33,6 +36,7 @@ export interface RabiesReVaccinationContractInterface {
   date: Date;
   description: string;
   observation: string;
+  doctorProvince: string;
   user: string;
 }
 
@@ -41,6 +45,7 @@ export interface ChipReviewContractInterface {
   date: Date;
   description: string;
   observation: string;
+  doctorProvince: string;
   user: string;
 }
 
@@ -51,6 +56,7 @@ export interface TakingSampleSerologicalTestContractInterface {
   description: string;
   observation: string;
   typeSample: string;
+  doctorProvince: string;
   user: string;
 }
 

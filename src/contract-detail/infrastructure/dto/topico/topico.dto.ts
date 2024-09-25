@@ -32,6 +32,9 @@ class ValuesDto {
   observation: string;
   @IsOptional()
   @IsString()
+  doctorProvince: string;
+  @IsOptional()
+  @IsString()
   user: string;
 }
 

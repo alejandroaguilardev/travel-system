@@ -7,6 +7,7 @@ export const topicoSchema = {
       date: Date,
       description: String,
       observation: String,
+      doctorProvince: String,
       user: String,
     },
     chipReview: {
@@ -14,6 +15,7 @@ export const topicoSchema = {
       date: Date,
       description: String,
       observation: String,
+      doctorProvince: String,
       user: String,
     },
     vaccination: {
@@ -22,6 +24,7 @@ export const topicoSchema = {
       date: Date,
       description: String,
       observation: String,
+      doctorProvince: String,
       user: String,
     },
     rabiesVaccination: {
@@ -30,6 +33,7 @@ export const topicoSchema = {
       date: Date,
       description: String,
       observation: String,
+      doctorProvince: String,
       user: String,
     },
     rabiesReVaccination: {
@@ -38,6 +42,7 @@ export const topicoSchema = {
       date: Date,
       description: String,
       observation: String,
+      doctorProvince: String,
       user: String,
     },
     takingSampleSerologicalTest: {
@@ -47,6 +52,7 @@ export const topicoSchema = {
       description: String,
       observation: String,
       typeSample: String,
+      doctorProvince: String,
       user: String,
     },
     status: String

@@ -21,6 +21,7 @@ import { TopicoObservation } from '../../../domain/value-object/topico/topico-ob
 import { ContractStatusDetail, UuidOptional } from '../../../../common/domain/value-object';
 import { RabiesVaccinationContractInterface } from '../../../domain/interfaces/topico.interface';
 import { TopicoTakingSampleType } from '../../../domain/value-object/topico/topico-taking-sample-type';
+import { TopicoDoctorProvince } from '../../../domain/value-object/topico/topico-doctor-province';
 
 export class CommandContractTopico {
   static execute(
@@ -63,6 +64,7 @@ export class CommandContractTopico {
       new TopicoDate(chip?.date ?? null),
       new TopicoDescription(chip?.description ?? ''),
       new TopicoObservation(chip?.observation ?? ''),
+      new TopicoDoctorProvince(chip?.doctorProvince ?? ''),
       new UuidOptional(chip?.user ?? userId ?? ''),
     );
   }
@@ -77,6 +79,7 @@ export class CommandContractTopico {
       new TopicoDate(vaccination?.date ?? null),
       new TopicoDescription(vaccination?.description ?? ''),
       new TopicoObservation(vaccination?.observation ?? ''),
+      new TopicoDoctorProvince(vaccination?.doctorProvince ?? ''),
       new UuidOptional(vaccination?.user ?? userId ?? ''),
     );
   }
@@ -91,6 +94,7 @@ export class CommandContractTopico {
       new TopicoDate(rabiesVaccination?.date ?? null),
       new TopicoDescription(rabiesVaccination?.description ?? ''),
       new TopicoObservation(rabiesVaccination?.observation ?? ''),
+      new TopicoDoctorProvince(rabiesVaccination?.doctorProvince ?? ''),
       new UuidOptional(rabiesVaccination?.user ?? userId ?? ''),
     );
   }
@@ -105,6 +109,7 @@ export class CommandContractTopico {
       new TopicoDate(rabiesReVaccination?.date ?? null),
       new TopicoDescription(rabiesReVaccination?.description ?? ''),
       new TopicoObservation(rabiesReVaccination?.observation ?? ''),
+      new TopicoDoctorProvince(rabiesReVaccination?.doctorProvince ?? ''),
       new UuidOptional(rabiesReVaccination?.user ?? userId ?? ''),
     );
   }
@@ -118,6 +123,7 @@ export class CommandContractTopico {
       new TopicoDate(chipReview?.date ?? null),
       new TopicoDescription(chipReview?.description ?? ''),
       new TopicoObservation(chipReview?.observation ?? ''),
+      new TopicoDoctorProvince(chipReview?.doctorProvince ?? ''),
       new UuidOptional(chipReview?.user ?? userId ?? ''),
     );
   }
@@ -132,6 +138,7 @@ export class CommandContractTopico {
       new TopicoDate(takingSampleSerologicalTest?.date ?? null),
       new TopicoDescription(takingSampleSerologicalTest?.description ?? ''),
       new TopicoObservation(takingSampleSerologicalTest?.observation ?? ''),
+      new TopicoDoctorProvince(takingSampleSerologicalTest?.doctorProvince ?? ''),
       new TopicoTakingSampleType(takingSampleSerologicalTest?.typeSample ?? ''),
       new UuidOptional(takingSampleSerologicalTest?.user ?? userId ?? ''),
     );

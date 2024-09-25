@@ -5,6 +5,7 @@ import { TopicoExecuted } from './topico-executed';
 import { UuidOptional } from '../../../../common/domain/value-object/uuid-optional-value-object';
 import { TopicoObservation } from './topico-observation';
 import { TopicoHasIncluded } from './topico-has-included';
+import { TopicoDoctorProvince } from './topico-doctor-province';
 
 export class TopicoRabiesReVaccination {
   constructor(
@@ -13,6 +14,7 @@ export class TopicoRabiesReVaccination {
     readonly date: TopicoDate,
     readonly description: TopicoDescription,
     readonly observation: TopicoObservation,
+    readonly doctorProvince: TopicoDoctorProvince,
     readonly user: UuidOptional,
   ) { }
 
@@ -23,6 +25,7 @@ export class TopicoRabiesReVaccination {
       date: this.date.value,
       description: this.description.value,
       observation: this.observation.value,
+      doctorProvince: this.doctorProvince.value,
       user: this.user.value,
     };
   }

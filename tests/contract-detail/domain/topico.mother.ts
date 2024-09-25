@@ -42,6 +42,7 @@ export class TopicoMother {
         date: faker.date.recent(),
         description: StringMother.create(),
         observation: StringMother.create(),
+        doctorProvince: StringMother.create(),
         user: UuidMother.create(),
       }
     );
@@ -57,6 +58,7 @@ export class TopicoMother {
         date: faker.date.recent(),
         description: StringMother.create(),
         observation: StringMother.create(),
+        doctorProvince: StringMother.create(),
         user: UuidMother.create(),
       }
     );
@@ -72,6 +74,7 @@ export class TopicoMother {
         date: faker.date.recent(),
         description: StringMother.create(),
         observation: StringMother.create(),
+        doctorProvince: StringMother.create(),
         user: UuidMother.create(),
       }
     );
@@ -87,6 +90,7 @@ export class TopicoMother {
         date: faker.date.recent(),
         description: StringMother.create(),
         observation: StringMother.create(),
+        doctorProvince: StringMother.create(),
         user: UuidMother.create(),
       }
     );
@@ -101,6 +105,7 @@ export class TopicoMother {
         date: faker.date.recent(),
         description: StringMother.create(),
         observation: StringMother.create(),
+        doctorProvince: StringMother.create(),
         user: UuidMother.create(),
       }
     );
@@ -117,6 +122,7 @@ export class TopicoMother {
         description: StringMother.create(),
         observation: StringMother.create(),
         typeSample: StringMother.create(),
+        doctorProvince: StringMother.create(),
         user: UuidMother.create(),
       }
     );
