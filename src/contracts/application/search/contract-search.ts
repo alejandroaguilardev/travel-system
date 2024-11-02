@@ -11,7 +11,7 @@ import {
 import { ContractResponse } from '../response/contract.response';
 
 export class ContractSearch {
-  constructor(private readonly contractRepository: ContractRepository) {}
+  constructor(private readonly contractRepository: ContractRepository) { }
 
   execute(
     criteriaRequest: CriteriaRequest,

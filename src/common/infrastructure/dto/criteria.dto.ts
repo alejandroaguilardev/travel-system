@@ -19,7 +19,6 @@ export class CriteriaDto implements CriteriaRequest {
 
   @IsOptional()
   @IsArray()
-  @IsArray()
   @Transform(({ value }): FilterRequest[] => {
     if (typeof value === 'string') return JSON.parse(value);
     return [];
@@ -27,7 +26,6 @@ export class CriteriaDto implements CriteriaRequest {
   filters: FilterRequest[] = [];
 
   @IsOptional()
-  @IsArray()
   @IsArray()
   @Transform(({ value }): SortingRequest[] => {
     if (typeof value === 'string') return JSON.parse(value);

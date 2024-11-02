@@ -37,8 +37,8 @@ export class UserMongoRepository
     const results: any = await this.userModel
       .aggregate(UserMongoPipeline.execute(criteria))
       .exec();
+    return { rows: results[0]?.rows ?? [], count: results[0]?.totalCount ?? 0 } as ResponseSearch<R>;
 
-    return { rows: results[0].rows, count: results[0].totalCount } as ResponseSearch<R>;
   }
 
   async searchEmail(email: UserEmail): Promise<UserResponse | null> {

@@ -45,7 +45,7 @@ export class MongoContractRepository
     const results: any = await this.contractModel
       .aggregate(ContractMongoPipeline.execute(criteria))
       .exec();
-    return { rows: results[0].rows, count: results[0].totalCount } as ResponseSearch<ContractResponse>;
+    return { rows: results[0]?.rows ?? [], count: results[0]?.totalCount ?? 0 } as ResponseSearch<ContractResponse>;
   }
 
   async searchPaymentsMissing(criteria: Criteria): Promise<ContractResponse[]> {

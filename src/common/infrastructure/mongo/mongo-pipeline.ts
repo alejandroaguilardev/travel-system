@@ -1,4 +1,3 @@
-import { Sorting } from '../../domain/criteria/sorting';
 
 export class MongoPipeline {
 

@@ -78,6 +78,10 @@ export class PetModel implements PetInterface {
     required: false,
   })
   measurementsAndWeight: MeasurementsAndWeightInterface;
+
+  @Prop({ type: Boolean, required: false })
+  isPuppy?: boolean;
+
 }
 
 export type PetDocument = HydratedDocument<PetModel>;

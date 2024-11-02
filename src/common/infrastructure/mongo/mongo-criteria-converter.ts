@@ -66,6 +66,7 @@ export class MongoCriteriaConverter {
   }
 
   private static queryFilters<T>(query: FilterQuery<T>, filters: Filter[]) {
+
     for (const filter of filters) {
       const field = filter.field.value as string;
       const filterValue = filter.value.getValue();
@@ -74,11 +75,20 @@ export class MongoCriteriaConverter {
         query[field as keyof FilterQuery<T>] = filterValue;
       } else if (filterValue === '{{no_empty}}') {
         query[field as keyof FilterQuery<T>] = { $ne: '' };
+
       } else if (typeof filterValue === 'string') {
-        const filterValueRegex = filterValue
-          ? new RegExp(filterValue as string, 'i')
-          : filterValue;
-        query[field as keyof FilterQuery<T>] = filterValueRegex;
+        const startOfDay = new Date(filterValue);
+        if (!isNaN(startOfDay.getTime())) {
+          startOfDay.setUTCHours(0, 0, 0, 0);
+          const endOfDayCorrect = new Date(startOfDay);
+          endOfDayCorrect.setUTCHours(23, 59, 59, 999);
+          query[field as keyof FilterQuery<T>] = { $gte: startOfDay, $lt: endOfDayCorrect };
+        } else {
+          const filterValueRegex = filterValue
+            ? new RegExp(filterValue as string, 'i')
+            : filterValue;
+          query[field as keyof FilterQuery<T>] = filterValueRegex;
+        }
       } else if (filterValue && Array.isArray(filterValue)) {
         const array: any = filterValue;
         if (array.length === 2 && !array[0] && !array[1]) {

@@ -27,6 +27,7 @@ import { PetInterface } from '../../domain/interfaces/pet.interface';
 import { CreatePetRequest } from '../create/create-pet-request';
 import { PetUpdatedAt } from '../../domain/value-object/pet-updated-at';
 import { MeasurementsAndWeightInterface } from '../../domain/interfaces/pet-measurements-and-weight';
+import { PetIsPuppy } from '../../domain/value-object/pet-is-puppy';
 
 export class CommandPetUpdater {
   static execute(pet: PetInterface, data?: CreatePetRequest): Pet {
@@ -83,6 +84,7 @@ export class CommandPetUpdater {
         new PetUpdatedAt(CommandPetUpdater.setPetUpdatedAt(data?.measurementsAndWeight, pet.measurementsAndWeight)),
       ),
       CommandContractTopico.execute(pet?.topico),
+      new PetIsPuppy(data?.isPuppy ?? pet.isPuppy),
     );
   }
 

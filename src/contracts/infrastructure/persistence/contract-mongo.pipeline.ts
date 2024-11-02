@@ -7,7 +7,7 @@ export class ContractMongoPipeline {
   static execute(criteria: Criteria): PipelineStage[] {
     const { query, start, size, sortQuery } =
       MongoCriteriaConverter.converter(criteria);
-  
+
     return [
       ...ContractMongoPipeline.lookup(),
       {

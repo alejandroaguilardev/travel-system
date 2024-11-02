@@ -75,4 +75,8 @@ export class CreatePetDto implements CreatePetRequest {
   @Type(() => CageChosenDto)
   @ValidateNested()
   cageRecommendation: CageChosenInterface;
+
+  @IsOptional()
+  @IsBoolean()
+  isPuppy?: boolean;
 }

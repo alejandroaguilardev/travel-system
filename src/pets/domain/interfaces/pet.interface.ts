@@ -25,4 +25,5 @@ export interface PetInterface {
   isPotentiallyDangerous: boolean;
   topico?: ContractTopicoInterface;
   user?: string;
+  isPuppy?: boolean;
 }

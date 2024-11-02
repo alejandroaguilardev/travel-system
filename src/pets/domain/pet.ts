@@ -18,6 +18,7 @@ import { PetMeasurementsAndWeight } from './value-object/pet-measurements-and-we
 import { PetIsBrachycephalic } from './value-object/pet-is-brachycephalic';
 import { PetIsPotentiallyDangerous } from './value-object/pet-is-potentially-dangerous';
 import { ContractTopico } from '../../contract-detail/domain/value-object/contract-topico';
+import { PetIsPuppy } from './value-object/pet-is-puppy';
 
 export class Pet {
   constructor(
@@ -41,7 +42,8 @@ export class Pet {
     readonly cageRecommendation: CageChosen,
     readonly measurementsAndWeight: PetMeasurementsAndWeight,
     readonly topico: ContractTopico,
-  ) {}
+    readonly isPuppy: PetIsPuppy,
+  ) { }
 
   toJson(): PetInterface {
     return {
@@ -65,6 +67,7 @@ export class Pet {
       cageRecommendation: this.cageRecommendation.toJson(),
       measurementsAndWeight: this.measurementsAndWeight.toJson(),
       topico: this.topico.toJson(),
+      isPuppy: this.isPuppy.value,
     };
   }
 

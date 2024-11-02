@@ -25,6 +25,7 @@ import { PetIsBrachycephalic } from '../../domain/value-object/pet-is-brachyceph
 import { PetIsPotentiallyDangerous } from '../../domain/value-object/pet-is-potentially-dangerous';
 import { CommandContractTopico } from '../../../contract-detail/application/update/command/topico-command';
 import { PetUpdatedAt } from '../../domain/value-object/pet-updated-at';
+import { PetIsPuppy } from '../../domain/value-object/pet-is-puppy';
 
 export class CommandPetCreator {
   static execute(data: CreatePetRequest, userId: string): Pet {
@@ -62,6 +63,8 @@ export class CommandPetCreator {
         new PetUpdatedAt(new Date()),
       ),
       CommandContractTopico.execute(data?.topico, undefined, userId),
+      new PetIsPuppy(data?.isPuppy ?? false),
+
     );
   }
 }
